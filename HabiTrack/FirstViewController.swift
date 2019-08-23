@@ -8,8 +8,14 @@
 
 import UIKit
 
-class HabitTableViewCell: UITableViewCell {
+class DateCollectionViewCell: UICollectionViewCell {
     
+    @IBOutlet weak var monthUILabel: UILabel!
+    @IBOutlet weak var dayUILabel: UILabel!
+    
+}
+
+class HabitTableViewCell: UITableViewCell {
     
     @IBOutlet weak var habitUILabel: UILabel!
     @IBOutlet weak var timeUILabel: UILabel!
@@ -17,29 +23,54 @@ class HabitTableViewCell: UITableViewCell {
     
 }
 
-class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class JournalViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
+
+    var month = "Aug"
+    var days = 31
     
-    var list = ["Brush teeth","Workout/Yoga","Code/Paint","Something really thing that hopefully wraps around"]
+    var habitList = ["Brush teeth", "Workout", "Yoga","Code", "Paint", "Clean", "Vacuum", "Laundry"]
     var timeList = ["Morning","Afternoon","Evening","Evening"]
+    var timeTemp = "Evening"
     
-    var streakArray = [0,0,0,0]
+    var streakArray = Array(repeating: 0, count: 8)
+    
+    var daysArray = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
+    
     
     @IBOutlet weak var habitTableView: UITableView!
+    @IBOutlet weak var dateCollectionView: UICollectionView!
+    
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return (daysArray.count)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let item = collectionView.dequeueReusableCell(withReuseIdentifier: "dateCell", for: indexPath)
+            as! DateCollectionViewCell
+        
+        item.monthUILabel?.text = month
+        
+        item.dayUILabel?.text = String(daysArray[indexPath.row])
+        
+        return (item)
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (list.count)
+        return (habitList.count)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "cell")
-        
+
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
             as! HabitTableViewCell
         
-        cell.habitUILabel?.text = list[indexPath.row]
+        cell.habitUILabel?.text = habitList[indexPath.row]
         
-        cell.timeUILabel?.text = timeList[indexPath.row]
+        cell.timeUILabel?.text = timeTemp
         
+//        cell.streakUILabel?.text = String(streakArray[indexPath.row])
         cell.streakUILabel?.text = String(streakArray[indexPath.row])
         
         return (cell)
@@ -48,12 +79,10 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath)
     {
         if (editingStyle == UITableViewCell.EditingStyle.delete) {
-            list.remove(at: indexPath.row)
+            habitList.remove(at: indexPath.row)
             habitTableView.reloadData()
         }
     }
-    
-    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) {
@@ -67,18 +96,15 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
             }
         }
         //Change the selected background view of the cell.
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-        let delayInSeconds = 0.1
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
-            
-            // here code perfomed with delay
-            self.habitTableView.reloadData()
-            
-        }
+        self.habitTableView.reloadData()
     }
     
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
+    {
+        if let cell = collectionView.cellForItem(at: indexPath) {
+            cell.isSelected = true;
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,6 +112,4 @@ class FirstViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
     }
 
-
 }
-
