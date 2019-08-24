@@ -26,18 +26,17 @@ class HabitTableViewCell: UITableViewCell {
 
 class JournalViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
 
-    var month = "Aug"
-    var days = 31
+    let month = "Aug"
+    let days = 31
     
-    var habitList = ["Brush teeth", "Workout", "Yoga","Code", "Paint", "Clean", "Vacuum", "Laundry"]
+//    var habitList = ["Brush teeth", "Workout", "Yoga","Code", "Paint", "Clean", "Vacuum", "Laundry"]
     var habitsList = Array(repeating: "", count: 0)
     var timeList = ["Morning","Afternoon","Evening","Evening"]
     var timeTemp = "Evening"
     
     var streakArray = Array(repeating: 0, count: 8)
     var doneArray = Array(repeating: false, count: 8)
-    
-    var daysArray = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
+    var daysArray = [1]
     
     var database: Connection!
     let habitsTable = Table("habits")
@@ -52,6 +51,14 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func getHabit() {
         
+    }
+    
+    func createDaysArray() {
+        var day = 2
+        while day <= days {
+            daysArray.append(day)
+            day += 1
+        }
     }
     
     // UIButton : createTable (create SQL table)
@@ -109,6 +116,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     // UIButton : deleteHabit (delete an entry)
+    // *** Disconnected - Not being used ***
     @IBAction func deleteHabit(_ sender: Any) {
         print("Deleting entry...")
         let alert = UIAlertController(title: "Delete Habit", message: nil, preferredStyle: .alert)
@@ -161,6 +169,22 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         present(alert, animated: true, completion: nil)
     }
     
+    // custom : getTableSize (size of database table)
+    func getTableSize() -> Int {
+        
+        print("Getting table size...")
+        var count = 0;
+        do {
+            let habits = try self.database.prepare(self.habitsTable)
+            for _ in habits {
+                count += 1
+            }
+        } catch {
+            print (error)
+        }
+        print("# entries: \(count)")
+        return (count)
+    }
     
     // UIButton : printTable
     @IBAction func printTable(_ sender: Any) {
@@ -168,6 +192,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         do {
             let habits = try self.database.prepare(self.habitsTable)
+//            print("# entries: \(getTableSize())")
             for habit in habits {
                 print("id: \(habit[self.id]), habit: \(habit[self.habit]), time: \(habit[self.time]), streak: \(habit[self.streak])")
             }
@@ -178,6 +203,9 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     // collectionView : numberOfItemsInSection
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if (daysArray.count == 1) {
+            createDaysArray()
+        }
         return (daysArray.count)
     }
     
@@ -201,10 +229,13 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
-    
     // tableView : numberOfRowsInSection
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (habitList.count)
+        //new
+        print("Getting numberOfRowsInSection...")
+        return (getTableSize())
+        // old
+//        return (habitList.count)
     }
     
     // tableView : cellForRowAt
@@ -213,10 +244,35 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
             as! HabitTableViewCell
         
-        cell.habitUILabel?.text = habitList[indexPath.row]
-        cell.timeUILabel?.text = timeTemp
-        cell.streakUILabel?.text = String(streakArray[indexPath.row])
-        
+        // new
+        var count = 0
+        do {
+            let habits = try self.database.prepare(self.habitsTable)
+            print("row: \(indexPath.row)")
+            for habit in habits {
+                print("count: \(count)")
+                if (count == indexPath.row) {
+                    print("count: \(count) == row\(indexPath.row)")
+                    cell.habitUILabel?.text = habit[self.habit]
+                    cell.timeUILabel?.text = habit[self.time]
+                    cell.streakUILabel?.text = String(habit[self.streak])
+//                    print("id: \(habit[self.id]), habit: \(habit[self.habit]), time: \(habit[self.time]), streak: \(habit[self.streak])")
+                    return (cell)
+                } else {
+                    print("incrementing count...")
+                    count += 1
+                }
+                
+                
+            }
+        } catch {
+            print (error)
+        }
+        // old
+//        cell.habitUILabel?.text = habitList[indexPath.row]
+//        cell.timeUILabel?.text = timeTemp
+//        cell.streakUILabel?.text = String(streakArray[indexPath.row])
+
         return (cell)
     }
     
@@ -233,9 +289,8 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             } catch {
                 print(error)
             }
-            
             // old
-            habitList.remove(at: indexPath.row)
+//            habitList.remove(at: indexPath.row)
             habitTableView.reloadData()
         }
     }
@@ -262,6 +317,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+//        createDaysArray()
         do {
             let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
             let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
