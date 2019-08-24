@@ -141,11 +141,19 @@
                                 </connections>
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pab-wK-qDa">
-                                <rect key="frame" x="232" y="39" width="46" height="30"/>
+                                <rect key="frame" x="184" y="39" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
+                                <state key="normal" title="Create"/>
                                 <connections>
                                     <action selector="createTable:" destination="9pv-A4-QxB" eventType="touchUpInside" id="GMC-ca-6i7"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cKN-Sc-Jxs">
+                                <rect key="frame" x="282" y="41" width="32" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Print"/>
+                                <connections>
+                                    <action selector="printTable:" destination="9pv-A4-QxB" eventType="touchUpInside" id="cV6-8n-Lhe"/>
                                 </connections>
                             </button>
                         </subviews>

@@ -50,18 +50,12 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var dateCollectionView: UICollectionView!
     
     
-    func updateTable() {
-        print("Updating table...")
-        
-        do {
-            let habits = try self.database.prepare(self.habitsTable)
-            
-        } catch {
-            print (error)
-        }
+    func getHabit() {
         
     }
     
+    
+    // UIButton : createTable
     @IBAction func createTable(_ sender: Any)
     {
         print("Create Table")
@@ -82,6 +76,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         
     }
     
+    // UIButton : addEntry
     @IBAction func addEntry(_ sender: Any)
     {
         print("Add Entry")
@@ -119,42 +114,65 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         
     }
     
+    // UIButton : printTable
+    @IBAction func printTable(_ sender: Any) {
+        print("Printing table...")
+        
+        do {
+            let habits = try self.database.prepare(self.habitsTable)
+            for habit in habits {
+                print("id: \(habit[self.id]), habit: \(habit[self.habit]), time: \(habit[self.time]), streak: \(habit[self.streak])")
+            }
+        } catch {
+            print (error)
+        }
+    }
     
+    // collectionView : numberOfItemsInSection
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return (daysArray.count)
     }
     
+    // collectionView : cellForItemAt
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let item = collectionView.dequeueReusableCell(withReuseIdentifier: "dateCell", for: indexPath)
             as! DateCollectionViewCell
         
         item.monthUILabel?.text = month
-        
         item.dayUILabel?.text = String(daysArray[indexPath.row])
         
         return (item)
     }
     
+    // collectionView : didSelectItemAt
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
+    {
+        if let cell = collectionView.cellForItem(at: indexPath) {
+            cell.isSelected = true;
+        }
+    }
+    
+    
+    // tableView : numberOfRowsInSection
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return (habitList.count)
     }
     
+    // tableView : cellForRowAt
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
             as! HabitTableViewCell
         
         cell.habitUILabel?.text = habitList[indexPath.row]
-        
         cell.timeUILabel?.text = timeTemp
-        
-//        cell.streakUILabel?.text = String(streakArray[indexPath.row])
         cell.streakUILabel?.text = String(streakArray[indexPath.row])
         
         return (cell)
     }
     
+    // tableView : editingStyle
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath)
     {
         if (editingStyle == UITableViewCell.EditingStyle.delete) {
@@ -163,6 +181,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
+    // tableView : didSelectRowAt
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         print(indexPath.row)
@@ -177,19 +196,10 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                 streakArray[indexPath.row] += 1
             }
         }
-        //Change the selected background view of the cell.
         self.habitTableView.reloadData()
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
-    {
-        if let cell = collectionView.cellForItem(at: indexPath) {
-            cell.isSelected = true;
-        }
-    }
-    
-    
-    
+    // viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
