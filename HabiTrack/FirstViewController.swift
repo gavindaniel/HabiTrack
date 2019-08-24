@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SQLite
 
 class DateCollectionViewCell: UICollectionViewCell {
     
@@ -29,16 +30,94 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     var days = 31
     
     var habitList = ["Brush teeth", "Workout", "Yoga","Code", "Paint", "Clean", "Vacuum", "Laundry"]
+    var habitsList = Array(repeating: "", count: 0)
     var timeList = ["Morning","Afternoon","Evening","Evening"]
     var timeTemp = "Evening"
     
     var streakArray = Array(repeating: 0, count: 8)
+    var doneArray = Array(repeating: false, count: 8)
     
     var daysArray = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
     
+    var database: Connection!
+    let habitsTable = Table("habits")
+    let id = Expression<Int>("id")
+    let habit = Expression<String>("habit")
+    let time = Expression<String>("time")
+    let streak = Expression<Int>("streak")
     
     @IBOutlet weak var habitTableView: UITableView!
     @IBOutlet weak var dateCollectionView: UICollectionView!
+    
+    
+    func updateTable() {
+        print("Updating table...")
+        
+        do {
+            let habits = try self.database.prepare(self.habitsTable)
+            
+        } catch {
+            print (error)
+        }
+        
+    }
+    
+    @IBAction func createTable(_ sender: Any)
+    {
+        print("Create Table")
+        
+        let createTable = self.habitsTable.create { (table) in
+            table.column(self.id, primaryKey: true)
+            table.column(self.habit)
+            table.column(self.time)
+            table.column(self.streak)
+        }
+        
+        do {
+            try self.database.run(createTable)
+            print("Created Table")
+        } catch {
+            print (error)
+        }
+        
+    }
+    
+    @IBAction func addEntry(_ sender: Any)
+    {
+        print("Add Entry")
+        
+        let alert = UIAlertController(title: "Add Habit", message: nil, preferredStyle: .alert)
+        alert.addTextField { (tf) in
+            tf.placeholder = "Habit"
+        }
+        alert.addTextField { (tf) in
+            tf.placeholder = "Time"
+        }
+    
+        let action = UIAlertAction(title: "Submit", style: .default) { (_) in
+            guard let habit = alert.textFields?.first?.text, let time = alert.textFields?.last?.text
+                else {
+                    return
+                }
+            print(habit)
+            print(time)
+            
+            let addHabit = self.habitsTable.insert(self.habit <- habit, self.time <- time, self.streak <- 0)
+            
+            do {
+                try self.database.run(addHabit)
+                print("Habit Added")
+//                self.habitTableView.reloadData()
+            } catch {
+                print (error)
+            }
+            
+            
+        }
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+        
+    }
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -85,6 +164,9 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        print(indexPath.row)
+        
         if let cell = tableView.cellForRow(at: indexPath) {
             if cell.accessoryType == UITableViewCell.AccessoryType.checkmark {
                 cell.accessoryType = .none
@@ -106,10 +188,22 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-
+        
+        do {
+            let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+            let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
+            let database = try Connection(fileUrl.path)
+            self.database = database
+            
+        } catch {
+            print(error)
+        }
+        
     }
 
 }
