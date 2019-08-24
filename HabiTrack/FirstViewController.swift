@@ -293,6 +293,8 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                         do {
                             try self.database.run(deleteHabit)
                             print("Deleted Habit")
+                            habitTableView.reloadData()
+                            return
                         } catch {
                             print(error)
                         }
@@ -315,7 +317,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
 //            }
             // old
 //            habitList.remove(at: indexPath.row)
-            habitTableView.reloadData()
+//            habitTableView.reloadData()
         }
     }
     
