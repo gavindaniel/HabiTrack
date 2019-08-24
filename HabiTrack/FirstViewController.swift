@@ -9,31 +9,26 @@
 import UIKit
 import SQLite
 
+// class: DateCollectionViewCell
 class DateCollectionViewCell: UICollectionViewCell {
-    
     @IBOutlet weak var monthUILabel: UILabel!
     @IBOutlet weak var dayUILabel: UILabel!
-    
 }
 
+// class: HabitTableViewCell
 class HabitTableViewCell: UITableViewCell {
-    
     @IBOutlet weak var habitUILabel: UILabel!
     @IBOutlet weak var timeUILabel: UILabel!
     @IBOutlet weak var streakUILabel: UILabel!
-    
 }
 
+// class: JournalViewController
 class JournalViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
 
+    // variables
     let month = "Aug"
     let days = 31
-    
-//    var habitList = ["Brush teeth", "Workout", "Yoga","Code", "Paint", "Clean", "Vacuum", "Laundry"]
-    var habitsList = Array(repeating: "", count: 0)
-//    var timeList = ["Morning","Afternoon","Evening","Evening"]
-//    var timeTemp = "Evening"
-    
+
 //    var streakArray = Array(repeating: 0, count: 8)
     var doneArray = Array(repeating: false, count: 8)
     var daysArray = [1]
@@ -48,11 +43,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var habitTableView: UITableView!
     @IBOutlet weak var dateCollectionView: UICollectionView!
     
-    
-    func getHabit() {
-        
-    }
-    
+    // custom : createDaysArray (init daysArray)
     func createDaysArray() {
         var day = 2
         while day <= days {
@@ -62,7 +53,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     // UIButton : createTable (create SQL table)
-    @IBAction func createTable(_ sender: Any)
+   func createTable()
     {
         print("Creating Table...")
         
@@ -85,6 +76,8 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     {
         print("Add Entry")
         
+        createTable()
+        
         let alert = UIAlertController(title: "Add Habit", message: nil, preferredStyle: .alert)
         alert.addTextField { (tf) in
             tf.placeholder = "Habit"
@@ -98,14 +91,12 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             else {
                 return
             }
-            print(habit)
-            print(time)
             
             let addHabit = self.habitsTable.insert(self.habit <- habit, self.time <- time, self.streak <- 0)
             
             do {
                 try self.database.run(addHabit)
-                print("Habit Added")
+                print("Habit Added -> habit: \(habit), time: \(time)")
                 self.habitTableView.reloadData()
             } catch {
                 print (error)
@@ -126,13 +117,12 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             guard let habitIdString = alert.textFields?.first?.text,
                 let habitId = Int(habitIdString)
             else { return }
-            print(habitIdString)
             
             let habit = self.habitsTable.filter(self.id == habitId)
             let deleteHabit = habit.delete()
             do {
                 try self.database.run(deleteHabit)
-                print("Deleted Habit")
+                print("Deleted Habit #: \(habitIdString)")
             } catch {
                 print(error)
             }
@@ -153,14 +143,13 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         let action = UIAlertAction(title: "Submit", style: .default) { (_) in
             guard let habitIdString = alert.textFields?.first?.text, let habitId = Int(habitIdString), let habitString = alert.textFields?.last?.text
                 else { return }
-            print(habitIdString)
-            print(habitString)
             
             let habit = self.habitsTable.filter(self.id == habitId)
             let updateHabit = habit.update(self.habit <- habitString)
             do {
                 try self.database.run(updateHabit)
-                print("Updated Habit")
+                print("Updated Habit -> id: \(habitIdString), habit: \(habitString)")
+                self.habitTableView.reloadData()
             } catch {
                 print(error)
             }
@@ -306,25 +295,13 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             } catch {
                 print (error)
             }
-            // old
-//            let habit = self.habitsTable.filter(self.id == indexPath.row)
-//            let deleteHabit = habit.delete()
-//            do {
-//                try self.database.run(deleteHabit)
-//                print("Deleted Habit")
-//            } catch {
-//                print(error)
-//            }
-            // old
-//            habitList.remove(at: indexPath.row)
-//            habitTableView.reloadData()
         }
     }
     
     // tableView : didSelectRowAt
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        print(indexPath.row)
+        print("row: \(indexPath.row)")
         
         if let cell = tableView.cellForRow(at: indexPath) {
             if cell.accessoryType == UITableViewCell.AccessoryType.checkmark {
