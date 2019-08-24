@@ -54,8 +54,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         
     }
     
-    
-    // UIButton : createTable
+    // UIButton : createTable (create SQL table)
     @IBAction func createTable(_ sender: Any)
     {
         print("Create Table")
@@ -66,17 +65,15 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             table.column(self.time)
             table.column(self.streak)
         }
-        
         do {
             try self.database.run(createTable)
             print("Created Table")
         } catch {
             print (error)
         }
-        
     }
     
-    // UIButton : addEntry
+    // UIButton : addEntry (add an entry)
     @IBAction func addEntry(_ sender: Any)
     {
         print("Add Entry")
@@ -88,12 +85,12 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         alert.addTextField { (tf) in
             tf.placeholder = "Time"
         }
-    
         let action = UIAlertAction(title: "Submit", style: .default) { (_) in
-            guard let habit = alert.textFields?.first?.text, let time = alert.textFields?.last?.text
-                else {
-                    return
-                }
+            guard let habit = alert.textFields?.first?.text,
+                let time = alert.textFields?.last?.text
+            else {
+                return
+            }
             print(habit)
             print(time)
             
@@ -106,23 +103,21 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             } catch {
                 print (error)
             }
-            
-            
         }
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
-        
     }
     
-    
+    // UIButton : deleteHabit (delete an entry)
     @IBAction func deleteHabit(_ sender: Any) {
         print("Deleting entry...")
         let alert = UIAlertController(title: "Delete Habit", message: nil, preferredStyle: .alert)
         alert.addTextField { (tf) in
             tf.placeholder = "Habit ID" }
         let action = UIAlertAction(title: "Submit", style: .default) { (_) in
-            guard let habitIdString = alert.textFields?.first?.text, let habitId = Int(habitIdString)
-                else { return }
+            guard let habitIdString = alert.textFields?.first?.text,
+                let habitId = Int(habitIdString)
+            else { return }
             print(habitIdString)
             
             let habit = self.habitsTable.filter(self.id == habitId)
@@ -133,16 +128,16 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             } catch {
                 print(error)
             }
-            
-            //            let updateHabit = self.habitTable.update(
-            
         }
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
     }
     
+    // UIButton : updateTable (edit an entry)
     @IBAction func updateTable(_ sender: Any) {
+        
         print("Updating table...")
+        
         let alert = UIAlertController(title: "Update Habit", message: nil, preferredStyle: .alert)
         alert.addTextField { (tf) in
             tf.placeholder = "Habit ID" }
@@ -161,9 +156,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             } catch {
                 print(error)
             }
-            
-//            let updateHabit = self.habitTable.update(
-            
         }
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
@@ -233,7 +225,14 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     {
         if (editingStyle == UITableViewCell.EditingStyle.delete) {
             // new
-            
+            let habit = self.habitsTable.filter(self.id == indexPath.row)
+            let deleteHabit = habit.delete()
+            do {
+                try self.database.run(deleteHabit)
+                print("Deleted Habit")
+            } catch {
+                print(error)
+            }
             
             // old
             habitList.remove(at: indexPath.row)
@@ -263,7 +262,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
         do {
             let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
             let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
