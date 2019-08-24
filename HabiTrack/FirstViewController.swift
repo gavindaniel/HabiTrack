@@ -114,6 +114,62 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         
     }
     
+    
+    @IBAction func deleteHabit(_ sender: Any) {
+        print("Deleting entry...")
+        let alert = UIAlertController(title: "Delete Habit", message: nil, preferredStyle: .alert)
+        alert.addTextField { (tf) in
+            tf.placeholder = "Habit ID" }
+        let action = UIAlertAction(title: "Submit", style: .default) { (_) in
+            guard let habitIdString = alert.textFields?.first?.text, let habitId = Int(habitIdString)
+                else { return }
+            print(habitIdString)
+            
+            let habit = self.habitsTable.filter(self.id == habitId)
+            let deleteHabit = habit.delete()
+            do {
+                try self.database.run(deleteHabit)
+                print("Deleted Habit")
+            } catch {
+                print(error)
+            }
+            
+            //            let updateHabit = self.habitTable.update(
+            
+        }
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    @IBAction func updateTable(_ sender: Any) {
+        print("Updating table...")
+        let alert = UIAlertController(title: "Update Habit", message: nil, preferredStyle: .alert)
+        alert.addTextField { (tf) in
+            tf.placeholder = "Habit ID" }
+        alert.addTextField {(tf) in tf.placeholder = "Habit" }
+        let action = UIAlertAction(title: "Submit", style: .default) { (_) in
+            guard let habitIdString = alert.textFields?.first?.text, let habitId = Int(habitIdString), let habitString = alert.textFields?.last?.text
+                else { return }
+            print(habitIdString)
+            print(habitString)
+            
+            let habit = self.habitsTable.filter(self.id == habitId)
+            let updateHabit = habit.update(self.habit <- habitString)
+            do {
+                try self.database.run(updateHabit)
+                print("Updated Habit")
+            } catch {
+                print(error)
+            }
+            
+//            let updateHabit = self.habitTable.update(
+            
+        }
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    
     // UIButton : printTable
     @IBAction func printTable(_ sender: Any) {
         print("Printing table...")
@@ -176,6 +232,10 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath)
     {
         if (editingStyle == UITableViewCell.EditingStyle.delete) {
+            // new
+            
+            
+            // old
             habitList.remove(at: indexPath.row)
             habitTableView.reloadData()
         }
