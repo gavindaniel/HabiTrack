@@ -31,10 +31,10 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     
 //    var habitList = ["Brush teeth", "Workout", "Yoga","Code", "Paint", "Clean", "Vacuum", "Laundry"]
     var habitsList = Array(repeating: "", count: 0)
-    var timeList = ["Morning","Afternoon","Evening","Evening"]
-    var timeTemp = "Evening"
+//    var timeList = ["Morning","Afternoon","Evening","Evening"]
+//    var timeTemp = "Evening"
     
-    var streakArray = Array(repeating: 0, count: 8)
+//    var streakArray = Array(repeating: 0, count: 8)
     var doneArray = Array(repeating: false, count: 8)
     var daysArray = [1]
     
@@ -64,7 +64,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     // UIButton : createTable (create SQL table)
     @IBAction func createTable(_ sender: Any)
     {
-        print("Create Table")
+        print("Creating Table...")
         
         let createTable = self.habitsTable.create { (table) in
             table.column(self.id, primaryKey: true)
@@ -172,7 +172,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     // custom : getTableSize (size of database table)
     func getTableSize() -> Int {
         
-        print("Getting table size...")
+//        print("Getting table size...")
         var count = 0;
         do {
             let habits = try self.database.prepare(self.habitsTable)
@@ -279,15 +279,15 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             var firstId = 0
             do {
                 let habits = try self.database.prepare(self.habitsTable)
-                print("row: \(indexPath.row)")
+//                print("row: \(indexPath.row)")
                 for habit in habits {
                     if (count == 0) {
                         firstId = habit[self.id]
-                        print("firstId: \(firstId)")
+//                        print("firstId: \(firstId)")
                     }
-                    print("count: \(count)")
+//                    print("count: \(count)")
                     if (count == indexPath.row) {
-                        print("count: \(count) == row\(indexPath.row)")
+//                        print("count: \(count) == row\(indexPath.row)")
                         let habit = self.habitsTable.filter(self.id == (count+firstId))
                         let deleteHabit = habit.delete()
                         do {
@@ -299,7 +299,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                             print(error)
                         }
                     } else {
-                        print("incrementing count...")
+//                        print("incrementing count...")
                         count += 1
                     }
                 }
@@ -329,11 +329,11 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         if let cell = tableView.cellForRow(at: indexPath) {
             if cell.accessoryType == UITableViewCell.AccessoryType.checkmark {
                 cell.accessoryType = .none
-                streakArray[indexPath.row] -= 1
+//                streakArray[indexPath.row] -= 1
             }
             else {
                 cell.accessoryType = .checkmark
-                streakArray[indexPath.row] += 1
+//                streakArray[indexPath.row] += 1
             }
         }
         self.habitTableView.reloadData()
