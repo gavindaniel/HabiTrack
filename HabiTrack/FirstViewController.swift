@@ -298,6 +298,46 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
+    // custom : updateStreak
+    func updateStreak(row: Int, inc: Int) {
+        
+        print("Updating streak...")
+        
+        // new
+        var count = 0
+        var firstId = 0
+        do {
+            let habits = try self.database.prepare(self.habitsTable)
+            //                print("row: \(indexPath.row)")
+            for habit in habits {
+                if (count == 0) {
+                    firstId = habit[self.id]
+                    //                        print("firstId: \(firstId)")
+                }
+                //                    print("count: \(count)")
+                if (count == row) {
+                    //                        print("count: \(count) == row\(indexPath.row)")
+                    let habit = self.habitsTable.filter(self.id == count+firstId)
+                    let currentStreak = habit[self.streak] + inc
+                    let updateHabit = habit.update(self.streak <- currentStreak)
+                    do {
+                        try self.database.run(updateHabit)
+                        print("Updated Streak")
+                        self.habitTableView.reloadData()
+                        return
+                    } catch {
+                        print(error)
+                    }
+                } else {
+                    //                        print("incrementing count...")
+                    count += 1
+                }
+            }
+        } catch {
+            print (error)
+        }
+    }
+    
     // tableView : didSelectRowAt
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
@@ -306,10 +346,12 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         if let cell = tableView.cellForRow(at: indexPath) {
             if cell.accessoryType == UITableViewCell.AccessoryType.checkmark {
                 cell.accessoryType = .none
+                updateStreak(row: indexPath.row, inc: -1)
 //                streakArray[indexPath.row] -= 1
             }
             else {
                 cell.accessoryType = .checkmark
+                updateStreak(row: indexPath.row, inc: 1)
 //                streakArray[indexPath.row] += 1
             }
         }
