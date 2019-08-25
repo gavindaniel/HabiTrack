@@ -28,9 +28,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     // variables
     let month = "Aug"
     let days = 31
-
-//    var streakArray = Array(repeating: 0, count: 8)
-    var doneArray = Array(repeating: false, count: 8)
     var daysArray = [1]
     
     var database: Connection!
@@ -53,10 +50,8 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     // UIButton : createTable (create SQL table)
-   func createTable()
-    {
+   func createTable() {
         print("Creating Table...")
-        
         let createTable = self.habitsTable.create { (table) in
             table.column(self.id, primaryKey: true)
             table.column(self.habit)
@@ -72,12 +67,9 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     // UIButton : addEntry (add an entry)
-    @IBAction func addEntry(_ sender: Any)
-    {
-        print("Add Entry")
-        
+    @IBAction func addEntry(_ sender: Any) {
+        print("Adding habit...")
         createTable()
-        
         let alert = UIAlertController(title: "Add Habit", message: nil, preferredStyle: .alert)
         alert.addTextField { (tf) in
             tf.placeholder = "Habit"
@@ -133,9 +125,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     // UIButton : updateTable (edit an entry)
     @IBAction func updateTable(_ sender: Any) {
-        
         print("Updating table...")
-        
         let alert = UIAlertController(title: "Update Habit", message: nil, preferredStyle: .alert)
         alert.addTextField { (tf) in
             tf.placeholder = "Habit ID" }
@@ -148,7 +138,8 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             let updateHabit = habit.update(self.habit <- habitString)
             do {
                 try self.database.run(updateHabit)
-                print("Updated Habit -> id: \(habitIdString), habit: \(habitString)")
+                print("Updated table.")
+//                print("Updated Habit -> id: \(habitIdString), habit: \(habitString)")
                 self.habitTableView.reloadData()
             } catch {
                 print(error)
@@ -160,8 +151,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     // custom : getTableSize (size of database table)
     func getTableSize() -> Int {
-        
-//        print("Getting table size...")
         var count = 0;
         do {
             let habits = try self.database.prepare(self.habitsTable)
@@ -171,14 +160,12 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         } catch {
             print (error)
         }
-//        print("# entries: \(count)")
         return (count)
     }
     
     // UIButton : printTable
     @IBAction func printTable(_ sender: Any) {
         print("Printing table...")
-        
         do {
             let habits = try self.database.prepare(self.habitsTable)
 //            getTableSize()
@@ -207,7 +194,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         item.monthUILabel?.text = month
         item.dayUILabel?.text = String(daysArray[indexPath.row])
-        
+    
         return (item)
     }
     
@@ -221,11 +208,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     // tableView : numberOfRowsInSection
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //new
-//        print("Getting numberOfRowsInSection...")
         return (getTableSize())
-        // old
-//        return (habitList.count)
     }
     
     // tableView : cellForRowAt
@@ -234,21 +217,18 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
             as! HabitTableViewCell
         
-        // new
+        // since the database only increments from the last ID,
+        // this for loop fixes issues with gaps in the database.
         var count = 0
         do {
             let habits = try self.database.prepare(self.habitsTable)
-//            print("row: \(indexPath.row)")
             for habit in habits {
-//                print("count: \(count)")
                 if (count == indexPath.row) {
-//                    print("count: \(count) == row\(indexPath.row)")
                     cell.habitUILabel?.text = habit[self.habit]
                     cell.timeUILabel?.text = habit[self.time]
                     cell.streakUILabel?.text = String(habit[self.streak])
                     return (cell)
                 } else {
-//                    print("incrementing count...")
                     count += 1
                 }
             }
@@ -262,7 +242,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath)
     {
         if (editingStyle == UITableViewCell.EditingStyle.delete) {
-            print("Deleting row...")
+            print("Deleting habit...")
             // new
             var count = 0
             var firstId = 0
@@ -281,7 +261,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                         let deleteHabit = habit.delete()
                         do {
                             try self.database.run(deleteHabit)
-                            print("Deleted Habit")
+                            print("Deleted habit")
                             habitTableView.reloadData()
                             return
                         } catch {
@@ -300,36 +280,28 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     // custom : updateStreak
     func updateStreak(row: Int, inc: Int) {
-        
         print("Updating streak...")
-        
-        // new
         var count = 0
         var firstId = 0
         do {
             let habits = try self.database.prepare(self.habitsTable)
-            //                print("row: \(indexPath.row)")
             for habit in habits {
                 if (count == 0) {
                     firstId = habit[self.id]
-                    //                        print("firstId: \(firstId)")
                 }
-                //                    print("count: \(count)")
                 if (count == row) {
-                    //                        print("count: \(count) == row\(indexPath.row)")
                     let habit = self.habitsTable.filter(self.id == count+firstId)
                     let currentStreak = habit[self.streak] + inc
                     let updateHabit = habit.update(self.streak <- currentStreak)
                     do {
                         try self.database.run(updateHabit)
-                        print("Updated Streak")
+                        print("Updated streak")
                         self.habitTableView.reloadData()
                         return
                     } catch {
                         print(error)
                     }
                 } else {
-                    //                        print("incrementing count...")
                     count += 1
                 }
             }
@@ -340,19 +312,15 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     // tableView : didSelectRowAt
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        print("row: \(indexPath.row)")
-        
+        print("Selected row: \(indexPath.row)")
         if let cell = tableView.cellForRow(at: indexPath) {
             if cell.accessoryType == UITableViewCell.AccessoryType.checkmark {
                 cell.accessoryType = .none
                 updateStreak(row: indexPath.row, inc: -1)
-//                streakArray[indexPath.row] -= 1
             }
             else {
                 cell.accessoryType = .checkmark
                 updateStreak(row: indexPath.row, inc: 1)
-//                streakArray[indexPath.row] += 1
             }
         }
         self.habitTableView.reloadData()
@@ -362,13 +330,11 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-//        createDaysArray()
         do {
             let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
             let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
             let database = try Connection(fileUrl.path)
             self.database = database
-            
         } catch {
             print(error)
         }
