@@ -38,11 +38,10 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     // custom : printTable (select row in table)
-    func printTableSelect() {
+    func printTable() {
         print("Printing table...")
         do {
             let habits = try self.database.prepare(self.habitsTable)
-            //            getTableSize()
             print("# entries: \(getTableSize())")
             for habit in habits {
                 print("id: \(habit[self.id]), habit: \(habit[self.habit]), time: \(habit[self.time]), streak: \(habit[self.streak])")
@@ -70,7 +69,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         print("Selected row: \(indexPath.row)")
 //        if let cell = tableView.cellForRow(at: indexPath) {
             if (list[indexPath.row] == "Print Table") {
-                printTableSelect()
+                printTable()
             }
 //        }
         tableView.deselectRow(at: indexPath, animated: true)
