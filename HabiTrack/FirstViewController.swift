@@ -95,6 +95,8 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
         }
         alert.addAction(action)
+        let cancel = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil)
+        alert.addAction(cancel)
         present(alert, animated: true, completion: nil)
     }
     
@@ -146,6 +148,8 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
         }
         alert.addAction(action)
+        let cancel = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil)
+        alert.addAction(cancel)
         present(alert, animated: true, completion: nil)
     }
     
