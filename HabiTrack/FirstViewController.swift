@@ -182,6 +182,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
+    
     // collectionView : numberOfItemsInSection
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if (daysArray.count == 1) {
