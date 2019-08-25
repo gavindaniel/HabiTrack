@@ -20,6 +20,7 @@ class HabitTableViewCell: UITableViewCell {
     @IBOutlet weak var habitUILabel: UILabel!
     @IBOutlet weak var timeUILabel: UILabel!
     @IBOutlet weak var streakUILabel: UILabel!
+    @IBOutlet weak var habitUITextField: UITextField!
 }
 
 // class: JournalViewController
@@ -232,6 +233,8 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                     cell.habitUILabel?.text = habit[self.habit]
                     cell.timeUILabel?.text = habit[self.time]
                     cell.streakUILabel?.text = String(habit[self.streak])
+                    // testing
+//                    cell.habitUITextField?.text = habit[self.habit]
                     return (cell)
                 } else {
                     count += 1
@@ -346,4 +349,13 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         
     }
 
+    func update() {
+        print("Updating View Controller...")
+        let date = Date()
+        let calendar = Calendar.current
+        print(calendar.component(.year, from: date))
+        print(calendar.component(.month, from: date))
+        print(calendar.component(.day, from: date))
+    }
+    
 }

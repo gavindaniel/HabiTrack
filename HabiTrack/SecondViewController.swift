@@ -69,6 +69,12 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         print("Selected row: \(indexPath.row)")
 //        if let cell = tableView.cellForRow(at: indexPath) {
             if (list[indexPath.row] == "Print Table") {
+//                print(Date())
+//                let date = Date()
+//                let calendar = Calendar.current
+//                print(calendar.component(.year, from: date))
+//                print(calendar.component(.month, from: date))
+//                print(calendar.component(.day, from: date))
                 printTable()
             }
 //        }
@@ -88,7 +94,5 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             print(error)
         }
     }
-
-
 }
 
