@@ -31,6 +31,12 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     let days = 31
     var daysArray = [1]
     
+    let date = Date()
+    let calendar = Calendar.current
+    var lastSavedYear = 0
+    var lastSavedMonth = 0
+    var lastSavedDay = 0
+    
     var database: Connection!
     let habitsTable = Table("habits")
     let id = Expression<Int>("id")
@@ -133,7 +139,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                 return
             }
 
-//            let addHabit = self.habitsTable.insert(self.habit <- habit, self.time <- time)
             let addHabit = self.habitsTable.insert(self.habit <- habit, self.time <- time, self.streak <- 0, self.currentDay <- 1)
             
             do {
@@ -448,9 +453,29 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         print("Updating View Controller...")
         let date = Date()
         let calendar = Calendar.current
-        print(calendar.component(.year, from: date))
-        print(calendar.component(.month, from: date))
-        print(calendar.component(.day, from: date))
+        let tempYear = calendar.component(.year, from: date)
+        let tempMonth = calendar.component(.month, from: date)
+        let tempDay = calendar.component(.day, from: date)
+        print("year: \(tempYear), month: \(tempMonth), day: \(tempDay)")
+        print("last saved -> year: \(lastSavedYear), month: \(lastSavedMonth), day: \(lastSavedDay)")
+        if (tempDay != lastSavedDay || tempMonth != lastSavedMonth || tempDay != lastSavedYear) {
+            print("Date has changed. Updating last saved date...")
+        } else {
+            print("Date has not changed.")
+        }
     }
     
+    func initDate() {
+        // save date
+        print("initializing date...")
+        if (lastSavedDay == 0) {
+            print("should be updating date...")
+            let date = Date()
+            let calendar = Calendar.current
+            lastSavedYear = calendar.component(.year, from: date)
+            lastSavedMonth = calendar.component(.month, from: date)
+            lastSavedDay = calendar.component(.day, from: date)
+        }
+        print("last saved -> year: \(lastSavedYear), month: \(lastSavedMonth), day: \(lastSavedDay)")
+    }
 }
