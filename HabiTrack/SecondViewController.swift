@@ -11,14 +11,18 @@ import SQLite
 
 class SettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    var list = ["Manage Habits", "Dark Mode", "Print Table"]
+    var list = ["Manage Habits", "Dark Mode", "Print Table", "Print Habit Table", "Delete Table"]
     
     var database: Connection!
     let habitsTable = Table("habits")
     let id = Expression<Int>("id")
     let habit = Expression<String>("habit")
     let time = Expression<String>("time")
-    let streak = Expression<Int>("streak")
+    
+    let year = Expression<Int>("year")
+    let month = Expression<Int>("month")
+    let day = Expression<Int>("day")
+    let completed = Expression<Int>("completed")
     
     @IBOutlet weak var settingsTableView: UITableView!
 
@@ -44,10 +48,38 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             let habits = try self.database.prepare(self.habitsTable)
             print("# entries: \(getTableSize())")
             for habit in habits {
-                print("id: \(habit[self.id]), habit: \(habit[self.habit]), time: \(habit[self.time]), streak: \(habit[self.streak])")
+                print("id: \(habit[self.id]), habit: \(habit[self.habit]), time: \(habit[self.time])")
             }
         } catch {
             print(error)
+        }
+    }
+    
+    // UIButton : printTable
+    func printHabitTable(_ habit: String) {
+        print("Printing habit table...")
+        do {
+            let table = Table(habit)
+            let habits = try self.database.prepare(table)
+            //            getTableSize()
+            print("# entries: \(getTableSize())")
+            for entry in habits {
+                print("id: \(entry[self.id]), year: \(entry[self.year]), month: \(entry[self.month]), day: \(entry[self.day]), done: \(entry[self.completed])")
+            }
+        } catch {
+            print (error)
+        }
+    }
+    
+    // custom : deleteTable (delete SQL table)
+    func deleteTable() {
+        print("Deleting Table...")
+        let deleteTable = self.habitsTable.drop()
+        do {
+            try self.database.run(deleteTable)
+            print("Deleted Table")
+        } catch {
+            print (error)
         }
     }
     
@@ -76,6 +108,12 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
 //                print(calendar.component(.month, from: date))
 //                print(calendar.component(.day, from: date))
                 printTable()
+            }
+        if (list[indexPath.row] == "Print Habit Table") {
+            printHabitTable("test")
+        }
+            else if (list[indexPath.row] == "Delete Table") {
+                deleteTable()
             }
 //        }
         tableView.deselectRow(at: indexPath, animated: true)
