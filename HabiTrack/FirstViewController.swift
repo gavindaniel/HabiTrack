@@ -359,7 +359,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     // custom : countStreak
     func countStreak(habit: String) -> Int {
         print("Counting streak...")
-        var count = 1
+        var count = 0
         do {
             let table = Table(habit)
             let days = try self.database.prepare(table)
