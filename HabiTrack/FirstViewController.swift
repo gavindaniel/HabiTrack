@@ -457,11 +457,25 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         let lastRun = defaults.object(forKey: "lastRun") as! Date
         print("last run: \(lastRun))")
         
-        if (lastRun != date) {
-            print("Date has changed. Updating last saved date...")
+        let yearToday = Calendar.current.component(.year, from: date)
+        let monthToday = Calendar.current.component(.month, from: date)
+        let dayToday = Calendar.current.component(.day, from: date)
+        let yearLastRun = Calendar.current.component(.year, from: lastRun)
+        let monthLastRun = Calendar.current.component(.month, from: lastRun)
+        let dayLastRun = Calendar.current.component(.day, from: lastRun)
+
+        if (yearLastRun != yearToday || monthLastRun != monthToday || dayLastRun != dayToday) {
+            print("Date has changed. Updating last run date...")
+            UserDefaults.standard.set(Date(), forKey: "lastRun")
         } else {
-            print("Date has not changed.")
+            print("Day has not changed.")
         }
+//        if (lastRun != date) {
+//            print("Date has changed. Updating last saved date...")
+//            UserDefaults.standard.set(Date(), forKey: "lastRun")
+//        } else {
+//            print("Date has not changed.")
+//        }
     }
     
     func initDate() {
