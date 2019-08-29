@@ -452,13 +452,12 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     func update() {
         print("Updating View Controller...")
         let date = Date()
-        let calendar = Calendar.current
-        let tempYear = calendar.component(.year, from: date)
-        let tempMonth = calendar.component(.month, from: date)
-        let tempDay = calendar.component(.day, from: date)
-        print("year: \(tempYear), month: \(tempMonth), day: \(tempDay)")
-        print("last saved -> year: \(lastSavedYear), month: \(lastSavedMonth), day: \(lastSavedDay)")
-        if (tempDay != lastSavedDay || tempMonth != lastSavedMonth || tempDay != lastSavedYear) {
+        print("date: \(date)")
+        let defaults = UserDefaults.standard
+        let lastRun = defaults.object(forKey: "lastRun") as! Date
+        print("last run: \(lastRun))")
+        
+        if (lastRun != date) {
             print("Date has changed. Updating last saved date...")
         } else {
             print("Date has not changed.")
@@ -477,5 +476,10 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             lastSavedDay = calendar.component(.day, from: date)
         }
         print("last saved -> year: \(lastSavedYear), month: \(lastSavedMonth), day: \(lastSavedDay)")
+    }
+    
+    func setDefaults() {
+        let defaults = UserDefaults.standard
+        defaults.set(Date(), forKey: "lastRun")
     }
 }
