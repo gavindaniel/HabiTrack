@@ -466,9 +466,11 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
 
         if (yearLastRun != yearToday || monthLastRun != monthToday || dayLastRun != dayToday) {
             print("Date has changed. Updating last run date...")
+            countDays(date1: lastRun, date2: date)
             UserDefaults.standard.set(Date(), forKey: "lastRun")
         } else {
             print("Day has not changed.")
+            countDays(date1: lastRun, date2: date)
         }
 //        if (lastRun != date) {
 //            print("Date has changed. Updating last saved date...")
@@ -476,6 +478,15 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
 //        } else {
 //            print("Date has not changed.")
 //        }
+    }
+    
+    func countDays(date1: Date, date2: Date) {
+        print("counting number of days between dates...")
+        let calendar = Calendar.current
+        let d1 = calendar.startOfDay(for: date1)
+        let d2 = calendar.startOfDay(for: date2)
+        let components = calendar.dateComponents([.day], from: d1, to: d2).day ?? 0
+        print("# days between \(d1) and \(d2): \(components)")
     }
     
     func initDate() {
