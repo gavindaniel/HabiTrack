@@ -94,18 +94,18 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         do {
             try self.database.run(createTable)
             print("Created Table")
-            addDay(habit: habitString)
+            addDay(habit: habitString, date: Date())
         } catch {
             print (error)
         }
     }
     
     // custom : addDay(add a day to habit completed table)
-    func addDay(habit: String) {
+    func addDay(habit: String, date: Date) {
         print("Adding day...")
         do {
             let table = Table(habit)
-            let date = Date()
+//            let date = Date()
             let calendar = Calendar.current
             let year = calendar.component(.year, from: date)
             let month = calendar.component(.month, from: date)
@@ -312,6 +312,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             do {
                 let habits = try self.database.prepare(self.habitsTable)
                 for habit in habits {
+                    // get the id of the first habit
                     if (count == 0) {
                         firstId = habit[self.id]
                     }
@@ -466,11 +467,12 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
 
         if (yearLastRun != yearToday || monthLastRun != monthToday || dayLastRun != dayToday) {
             print("Date has changed. Updating last run date...")
-            countDays(date1: lastRun, date2: date)
+            let count = countDays(date1: lastRun, date2: date)
+            addDays(numDays: count, startDate: lastRun)
             UserDefaults.standard.set(Date(), forKey: "lastRun")
         } else {
             print("Day has not changed.")
-            countDays(date1: lastRun, date2: date)
+//            countDays(date1: lastRun, date2: date)
         }
 //        if (lastRun != date) {
 //            print("Date has changed. Updating last saved date...")
@@ -480,13 +482,26 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
 //        }
     }
     
-    func countDays(date1: Date, date2: Date) {
+    func addDays(numDays: Int, startDate: Date) {
+        var temp = 0
+        var nextDay = Calendar.current.date(byAdding: .day, value: 1, to: startDate)
+        while temp < numDays {
+            // not sure why the ! is needed below
+            addDay(habit: "Paint", date: nextDay!)
+            temp += 1
+            // not sure why the ! is needed below
+            nextDay = Calendar.current.date(byAdding: .day, value: 1, to: nextDay!)
+        }
+    }
+    
+    func countDays(date1: Date, date2: Date) -> Int {
         print("counting number of days between dates...")
         let calendar = Calendar.current
         let d1 = calendar.startOfDay(for: date1)
         let d2 = calendar.startOfDay(for: date2)
         let components = calendar.dateComponents([.day], from: d1, to: d2).day ?? 0
         print("# days between \(d1) and \(d2): \(components)")
+        return(components)
     }
     
     func initDate() {
