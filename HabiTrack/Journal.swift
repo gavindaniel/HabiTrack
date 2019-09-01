@@ -62,27 +62,6 @@ class Journal {
         }
     }
 
-    // custom : addDay(add a day to habit completed table)
-    func addDay(habit: String, date: Date) {
-        print("Adding day...")
-        do {
-            let table = Table(habit)
-            //            let date = Date()
-            let calendar = Calendar.current
-            let year = calendar.component(.year, from: date)
-            let month = calendar.component(.month, from: date)
-            let day = calendar.component(.day, from: date)
-            
-            let addDay = table.insert(self.year <- year, self.month <- month, self.day <- day, self.completed <- 0)
-            
-            
-            try self.database.run(addDay)
-            print("Day Added -> year: \(year), month: \(month), day: \(day)")
-        } catch {
-            print (error)
-        }
-    }
-
     // custom : getTableSize (size of database table)
     func getTableSize() -> Int {
         var count = 0;
@@ -190,12 +169,54 @@ class Journal {
         }
     }
     
+    // custom : addDay(add a day to habit completed table)
+    func addDay(habit: String, date: Date) {
+        print("Adding day to \(habit) table...")
+        
+        print("getting table...")
+//        let table = Table(habit)
+         let table = Table("Paint")
+        // testing
+//        let connection = try Connection()
+        do {
+//            let connection = try Connection()
+//            try connection.scalar(table.exists)
+            try database.scalar(table.exists)
+            print("table exists")
+            //exists
+        } catch {
+            //doesn't
+            print("error finding table...")
+            print(error)
+        }
+        
+        print("getting calendar...")
+        let calendar = Calendar.current
+        let year = calendar.component(.year, from: date)
+        let month = calendar.component(.month, from: date)
+        let day = calendar.component(.day, from: date)
+        print("inserting day into table...")
+        let addDay = table.insert(self.year <- year, self.month <- month, self.day <- day, self.completed <- 0)
+        print("trying to add day into database...")
+        do {
+            try self.database.run(addDay)
+            print("Day Added -> year: \(year), month: \(month), day: \(day)")
+        } catch {
+            print (error)
+        }
+    }
+    
     func addDays(numDays: Int, startDate: Date) {
+        print("adding day to habit entries...")
         var temp = 0
         var nextDay = Calendar.current.date(byAdding: .day, value: 1, to: startDate)
+        print("temp: \(temp) < numDays: \(numDays)")
+        print("next day: \(nextDay ?? Date())")
         while temp < numDays {
             // not sure why the ! is needed below
-            addDay(habit: "Paint", date: nextDay!)
+//            addDay(habit: "Paint", date: nextDay!)
+            addDay(habit: "Paint", date: Date())
+            print("incrementing day...")
             temp += 1
             // not sure why the ! is needed below
             nextDay = Calendar.current.date(byAdding: .day, value: 1, to: nextDay!)

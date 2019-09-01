@@ -292,7 +292,12 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     func update() {
         print("Updating View Controller...")
+        
         let date = Date()
+//        let tempDate = Date()
+        // testing
+//        let date = Calendar.current.date(byAdding: .day, value: 1, to: tempDate)
+        
         print("date: \(date)")
         let defaults = UserDefaults.standard
         let lastRun = defaults.object(forKey: "lastRun") as! Date
@@ -305,14 +310,17 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         let monthLastRun = Calendar.current.component(.month, from: lastRun)
         let dayLastRun = Calendar.current.component(.day, from: lastRun)
 
-        if (yearLastRun != yearToday || monthLastRun != monthToday || dayLastRun != dayToday) {
+//        if (yearLastRun != yearToday || monthLastRun != monthToday || dayLastRun != dayToday) {
+        if (1 != 0) {
             print("Date has changed. Updating last run date...")
 
-            //            let count = countDays(date1: lastRun, date2: date)
-            let count = journal.countDays(date1: lastRun, date2: date)
+            // not sure why the ! is needed below
+            let nextDay = Calendar.current.date(byAdding: .day, value: 1, to: date)
             
-//            addDays(numDays: count, startDate: lastRun)
-//            journal.addDays(numDays: count, startDate: lastRun)
+//            let count = journal.countDays(date1: lastRun, date2: date)
+            let count = journal.countDays(date1: lastRun, date2: nextDay ?? Date())
+            
+            journal.addDays(numDays: count, startDate: lastRun)
             
             UserDefaults.standard.set(Date(), forKey: "lastRun")
         } else {
