@@ -94,4 +94,31 @@ class Journal {
             print (error)
         }
     }
+    
+    // custom : addDays
+    func addDays(numDays: Int, startDate: Date) {
+        print("adding day to habit entries...")
+        var temp = 0
+        var nextDay = Calendar.current.date(byAdding: .day, value: 1, to: startDate)
+        print("temp: \(temp) < numDays: \(numDays)")
+        print("next day: \(nextDay ?? Date())")
+        while temp < numDays {
+            // not sure why the ! is needed below
+            //            addDay(habit: "Paint", date: nextDay!)
+            do {
+                let habits = try self.database.prepare(self.habitsTable)
+                for habit in habits {
+                    // do something...
+                    let tempString = habit[self.habit]
+                    habitEntries.addDay(habit: tempString, date: Date())
+                }
+            } catch {
+                print(error)
+            }
+            print("incrementing day...")
+            temp += 1
+            // not sure why the ! is needed below
+            nextDay = Calendar.current.date(byAdding: .day, value: 1, to: nextDay!)
+        }
+    }
 }

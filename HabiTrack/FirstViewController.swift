@@ -306,7 +306,8 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         let monthLastRun = Calendar.current.component(.month, from: lastRun)
         let dayLastRun = Calendar.current.component(.day, from: lastRun)
 
-        if (yearLastRun != yearToday || monthLastRun != monthToday || dayLastRun != dayToday) {
+//        if (yearLastRun != yearToday || monthLastRun != monthToday || dayLastRun != dayToday) {
+        if (1 != 0) {
             print("Date has changed. Updating last run date...")
 
             // not sure why the ! is needed below
@@ -327,7 +328,8 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                 print(error)
             }
             
-            self.journal.habitEntries.addDays(numDays: count, startDate: lastRun)
+//            self.journal.habitEntries.addDays(numDays: count, startDate: lastRun)
+            self.journal.addDays(numDays: count, startDate: lastRun)
             
             UserDefaults.standard.set(Date(), forKey: "lastRun")
         } else {

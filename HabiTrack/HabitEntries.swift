@@ -44,8 +44,8 @@ class HabitEntries {
         var count = 0;
         let table = Table(habit)
         do {
-            let habits = try self.database.prepare(table)
-            for _ in habits {
+            let days = try self.database.prepare(table)
+            for _ in days {
                 count += 1
             }
         } catch {
@@ -94,7 +94,7 @@ class HabitEntries {
     
     // custom : countStreak
     func countStreak(habit: String) -> Int {
-        print("Counting streak...")
+        print("Counting \(habit) habit streak...")
         var count = 0
         do {
             let table = Table(habit)
@@ -119,20 +119,13 @@ class HabitEntries {
         print("Adding day to \(habit) table...")
         
         createTable(habitString: habit)
-        
-        print("getting table...")
         let table = Table(habit)
-        
-        print("getting calendar...")
         let calendar = Calendar.current
         let year = calendar.component(.year, from: date)
         let month = calendar.component(.month, from: date)
         let day = calendar.component(.day, from: date)
-        print("inserting day into table...")
         let addDay = table.insert(self.year <- year, self.month <- month, self.day <- day, self.completed <- 0)
-        print("trying to add day into database...")
         do {
-            print("try to run...")
             try self.database.run(addDay)
             print("Day Added -> year: \(year), month: \(month), day: \(day)")
         } catch {

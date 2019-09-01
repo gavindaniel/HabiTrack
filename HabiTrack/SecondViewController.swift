@@ -11,7 +11,7 @@ import SQLite
 
 class SettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    var list = ["Manage Habits", "Dark Mode", "Print Table", "Print Habit Table", "Delete Table", "Add Day"]
+    var list = ["Manage Habits", "Dark Mode", "Print Table", "Print Eat Table", "Print Paint Table", "Print Code Table", "Delete Table", "Add Day"]
     
     var database: Connection!
     let journal = Journal()
@@ -126,8 +126,14 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         if (list[indexPath.row] == "Print Table") {
             printTable()
         }
-        else if (list[indexPath.row] == "Print Habit Table") {
+        else if (list[indexPath.row] == "Print Eat Table") {
+            printHabitTable("Eat")
+        }
+        else if (list[indexPath.row] == "Print Paint Table") {
             printHabitTable("Paint")
+        }
+        else if (list[indexPath.row] == "Print Code Table") {
+            printHabitTable("Code")
         }
         else if (list[indexPath.row] == "Delete Table") {
             deleteTable()
