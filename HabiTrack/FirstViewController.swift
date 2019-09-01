@@ -37,18 +37,8 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     var lastSavedMonth = 0
     var lastSavedDay = 0
     
-    var database: Connection!
-    let habitsTable = Table("habits")
-    let id = Expression<Int>("id")
-    let habit = Expression<String>("habit")
-    let time = Expression<String>("time")
-    let streak = Expression<Int>("streak")
-     let currentDay = Expression<Int>("currentDay")
-    
-    let year = Expression<Int>("year")
-    let month = Expression<Int>("month")
-    let day = Expression<Int>("day")
-    let completed = Expression<Int>("completed")
+    // new
+    var journal = Journal()
 
     @IBOutlet weak var habitTableView: UITableView!
     @IBOutlet weak var dateCollectionView: UICollectionView!
@@ -62,168 +52,91 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
-    // custom : createTable (create SQL table)
-   func createTable() {
-        print("Creating Table...")
-        let createTable = self.habitsTable.create { (table) in
-            table.column(self.id, primaryKey: true)
-            table.column(self.habit)
-            table.column(self.time)
-            table.column(self.streak)
-            table.column(self.currentDay)
-        }
-        do {
-            try self.database.run(createTable)
-            print("Created Table")
-        } catch {
-            print (error)
-        }
-    }
-    
-    // custom : createTable (create SQL table for each new habit)
-    func createHabitTable(_ habitString: String) {
-        print("Creating \(habitString) Table...")
-        let tempTable = Table(habitString)
-        let createTable = tempTable.create { (table) in
-            table.column(self.id, primaryKey: true)
-            table.column(self.year)
-            table.column(self.month)
-            table.column(self.day)
-            table.column(self.completed)
-        }
-        do {
-            try self.database.run(createTable)
-            print("Created Table")
-            addDay(habit: habitString, date: Date())
-        } catch {
-            print (error)
-        }
-    }
-    
-    // custom : addDay(add a day to habit completed table)
-    func addDay(habit: String, date: Date) {
-        print("Adding day...")
-        do {
-            let table = Table(habit)
-//            let date = Date()
-            let calendar = Calendar.current
-            let year = calendar.component(.year, from: date)
-            let month = calendar.component(.month, from: date)
-            let day = calendar.component(.day, from: date)
-            
-            let addDay = table.insert(self.year <- year, self.month <- month, self.day <- day, self.completed <- 0)
-            
-            
-                try self.database.run(addDay)
-                print("Day Added -> year: \(year), month: \(month), day: \(day)")
-        } catch {
-            print (error)
-        }
-    }
-    
     // UIButton : addEntry (add an entry)
     @IBAction func addEntry(_ sender: Any) {
         print("Adding habit...")
-        createTable()
+        // create table if there isn't one
+        journal.createTable()
+        // create alert controller
         let alert = UIAlertController(title: "Add Habit", message: nil, preferredStyle: .alert)
+        // add text fields
         alert.addTextField { (tf) in
             tf.placeholder = "Habit"
         }
         alert.addTextField { (tf) in
             tf.placeholder = "Time"
         }
-        let action = UIAlertAction(title: "Submit", style: .default) { (_) in
+        // create action event "Submit"
+        let submit = UIAlertAction(title: "Submit", style: .default) { (_) in
+            // get habit string from text field
             guard let habit = alert.textFields?.first?.text,
+                // get time string from text field
                 let time = alert.textFields?.last?.text
             else {
                 return
             }
-
-            let addHabit = self.habitsTable.insert(self.habit <- habit, self.time <- time, self.streak <- 0, self.currentDay <- 1)
-            
+            // insert new habit into journal
+            let addHabit = self.journal.habitsTable.insert(self.journal.habit <- habit,
+                                                           self.journal.time <- time,
+                                                           self.journal.streak <- 0,
+                                                           self.journal.currentDay <- 1)
+            // attempt to add habit to database
             do {
-                try self.database.run(addHabit)
+                try self.journal.database.run(addHabit)
                 print("Habit Added -> habit: \(habit), time: \(time)")
-                self.createHabitTable(habit)
+                // create entries table for habit
+                self.journal.createHabitTable(habit)
                 self.habitTableView.reloadData()
             } catch {
                 print (error)
             }
         }
-        alert.addAction(action)
+        alert.addAction(submit)
+        // create "Cancel" action
         let cancel = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil)
         alert.addAction(cancel)
         present(alert, animated: true, completion: nil)
     }
     
-    // UIButton : deleteHabit (delete an entry)
-    // *** Disconnected - Not being used ***
-    @IBAction func deleteHabit(_ sender: Any) {
-        print("Deleting entry...")
-        let alert = UIAlertController(title: "Delete Habit", message: nil, preferredStyle: .alert)
-        alert.addTextField { (tf) in
-            tf.placeholder = "Habit ID" }
-        let action = UIAlertAction(title: "Submit", style: .default) { (_) in
-            guard let habitIdString = alert.textFields?.first?.text,
-                let habitId = Int(habitIdString)
-            else { return }
-            
-            let habit = self.habitsTable.filter(self.id == habitId)
-            let deleteHabit = habit.delete()
-            do {
-                try self.database.run(deleteHabit)
-                print("Deleted Habit #: \(habitIdString)")
-            } catch {
-                print(error)
-            }
-        }
-        alert.addAction(action)
-        present(alert, animated: true, completion: nil)
-    }
     
     // UIButton : updateTable (edit an entry)
     @IBAction func updateTable(_ sender: Any) {
         print("Updating table...")
+        // create alert controller
         let alert = UIAlertController(title: "Update Habit", message: nil, preferredStyle: .alert)
+        // add text fields
         alert.addTextField { (tf) in
             tf.placeholder = "Habit ID" }
         alert.addTextField {(tf) in tf.placeholder = "Habit" }
-        let action = UIAlertAction(title: "Submit", style: .default) { (_) in
+        // create 'Submit' action
+        let submit = UIAlertAction(title: "Submit", style: .default) { (_) in
+            // get strings from text fields
             guard let habitIdString = alert.textFields?.first?.text, let habitId = Int(habitIdString), let habitString = alert.textFields?.last?.text
                 else { return }
+            // find the correct in the table
+            let habit = self.journal.habitsTable.filter(self.journal.id == habitId)
+            // udpate the habit
+            let updateHabit = habit.update(self.journal.habit <- habitString)
             
-            let habit = self.habitsTable.filter(self.id == habitId)
-            let updateHabit = habit.update(self.habit <- habitString)
+            // attempt to update the database
             do {
-                try self.database.run(updateHabit)
+                try self.journal.database.run(updateHabit)
                 print("Updated table.")
                 self.habitTableView.reloadData()
             } catch {
                 print(error)
             }
         }
-        alert.addAction(action)
+        alert.addAction(submit)
+        // create 'Cancel' alert action
         let cancel = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil)
         alert.addAction(cancel)
         present(alert, animated: true, completion: nil)
     }
     
-    // custom : getTableSize (size of database table)
-    func getTableSize() -> Int {
-        var count = 0;
-        do {
-            let habits = try self.database.prepare(self.habitsTable)
-            for _ in habits {
-                count += 1
-            }
-        } catch {
-            print (error)
-        }
-        return (count)
-    }
-    
     // collectionView : numberOfItemsInSection
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        // if the days array has not been initialized, create the array
         if (daysArray.count == 1) {
             createDaysArray()
         }
@@ -232,19 +145,20 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     // collectionView : cellForItemAt
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
+        // create collectionView item
         let item = collectionView.dequeueReusableCell(withReuseIdentifier: "dateCell", for: indexPath)
             as! DateCollectionViewCell
-        
+        // add labels
         item.monthUILabel?.text = currentMonth
         item.dayUILabel?.text = String(daysArray[indexPath.row])
-    
+        // return initialized item
         return (item)
     }
     
     // collectionView : didSelectItemAt
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
+        // check if the cell was selected
         if let cell = collectionView.cellForItem(at: indexPath) {
             cell.isSelected = true;
         }
@@ -252,12 +166,14 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     // tableView : numberOfRowsInSection
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (getTableSize())
+        // get the number of habits in the journal
+        return (journal.getTableSize())
+    
     }
     
     // tableView : cellForRowAt
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
+        // create tableView cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
             as! HabitTableViewCell
         
@@ -265,12 +181,14 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         // this for loop fixes issues with gaps in the database.
         var count = 0
         do {
-            let habits = try self.database.prepare(self.habitsTable)
+            // get the table
+            let habits = try self.journal.database.prepare(self.journal.habitsTable)
+            // loop through the list of habits
             for habit in habits {
                 if (count == indexPath.row) {
-                    cell.habitUILabel?.text = habit[self.habit]
-                    cell.timeUILabel?.text = habit[self.time]
-                    cell.streakUILabel?.text = String(habit[self.streak])
+                    cell.habitUILabel?.text = habit[self.journal.habit]
+                    cell.timeUILabel?.text = habit[self.journal.time]
+                    cell.streakUILabel?.text = String(habit[self.journal.streak])
                     return (cell)
                 } else {
                     count += 1
@@ -282,45 +200,41 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         return (cell)
     }
     
-    // custom : deleteTable (delete SQL table)
-    func deleteHabitTable(habit: String) {
-        print("Deleting \(habit) Table...")
-        let table = Table(habit)
-        let deleteTable = table.drop()
-        do {
-            try self.database.run(deleteTable)
-            print("Deleted Table")
-        } catch {
-            print (error)
-        }
-    }
     
     // tableView : editingStyle
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath)
     {
+        // check if the editingStyle is delete
         if (editingStyle == UITableViewCell.EditingStyle.delete) {
             print("Deleting habit...")
-            // new
+            // variables
             var count = 0
             var firstId = 0
-            
             var tempString = ""
-            if let cell: HabitTableViewCell = (tableView.cellForRow(at: indexPath) as! HabitTableViewCell) {
-                tempString = cell.habitUILabel?.text as! String
+            // get the habit string from the tableview cell
+            if let cell: HabitTableViewCell = (tableView.cellForRow(at: indexPath) as? HabitTableViewCell) {
+                tempString = cell.habitUILabel?.text ?? "error"
             }
-            deleteHabitTable(habit: tempString)
+            // delete the habit from the table
+            journal.deleteHabitTable(habit: tempString)
+            // do something
             do {
-                let habits = try self.database.prepare(self.habitsTable)
+                // get the habits table
+                let habits = try self.journal.database.prepare(self.journal.habitsTable)
+                // loop through the table
                 for habit in habits {
                     // get the id of the first habit
                     if (count == 0) {
-                        firstId = habit[self.id]
+                        firstId = habit[self.journal.id]
                     }
                     if (count == indexPath.row) {
-                        let habit = self.habitsTable.filter(self.id == (count+firstId))
+                        // get the habit whose id matches the count + first ID in the tableView
+                         let habit = self.journal.habitsTable.filter(self.journal.id == (count+firstId))
+                        // delete the habit
                         let deleteHabit = habit.delete()
+                        // attempt to delete the habit from the database
                         do {
-                            try self.database.run(deleteHabit)
+                            try self.journal.database.run(deleteHabit)
                             print("Deleted habit")
                             habitTableView.reloadData()
                             return
@@ -337,99 +251,22 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
-    // custom : markCompleted
-    func markCompleted(habit: String, row: Int, val: Int) {
-        print("Updating completed...")
-        do {
-            let table = Table(habit)
-            let days = try self.database.prepare(table)
-            for day in days {
-                print("id: \(day[self.id]), completed: \(day[self.completed])")
-                if (day[self.id] == row) {
-                    print("id == \(row)")
-                    let temp = table.filter(self.id == row)
-                    let updateHabit = temp.update(self.completed <- val)
-                    do {
-                        try self.database.run(updateHabit)
-                        print("Habit (completed) updated")
-                    } catch {
-                        print(error)
-                    }
-                }
-            }
-        } catch {
-            print(error)
-        }
-    }
-    
-    // custom : countStreak
-    func countStreak(habit: String) -> Int {
-        print("Counting streak...")
-        var count = 0
-        do {
-            let table = Table(habit)
-            let days = try self.database.prepare(table)
-            for day in days {
-                print("id: \(day[self.id]), completed: \(day[self.completed])")
-                if (day[self.completed] == 1) {
-                    print("incrementing count...")
-                    count += 1
-                }
-            }
-        } catch {
-            print(error)
-        }
-        print("streak: \(count)")
-        return(count)
-    }
-    
-    // custom : updateStreak
-    func updateStreak(row: Int, inc: Int, habitString: String) {
-        print("Updating streak...")
-        var count = 0
-        var firstId = 0
-        do {
-            let habits = try self.database.prepare(self.habitsTable)
-            for habit in habits {
-                if (count == 0) {
-                    firstId = habit[self.id]
-                }
-                if (count == row) {
-                    let habit = self.habitsTable.filter(self.id == count+firstId)
-                    let tempRow = 1
-                    markCompleted(habit: habitString, row: tempRow, val: inc)
-                    let currentStreak = countStreak(habit: habitString)
-                    let updateHabit = habit.update(self.streak <- currentStreak)
-                    do {
-                        try self.database.run(updateHabit)
-                        print("Updated streak")
-                        self.habitTableView.reloadData()
-                        return
-                    } catch {
-                        print(error)
-                    }
-                } else {
-                    count += 1
-                }
-            }
-        } catch {
-            print (error)
-        }
-    }
     
     // tableView : didSelectRowAt
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("Selected row: \(indexPath.row)")
-        if let cell: HabitTableViewCell = (tableView.cellForRow(at: indexPath) as! HabitTableViewCell) {
-            let tempString = cell.habitUILabel?.text as! String
+        // get the cell from the tableView
+        if let cell: HabitTableViewCell = (tableView.cellForRow(at: indexPath) as? HabitTableViewCell) {
+            // get the habit string from the cell
+            let tempString = cell.habitUILabel?.text
+            // check if the cell has been completed
             if cell.accessoryType == UITableViewCell.AccessoryType.checkmark {
                 cell.accessoryType = .none
-//                let temp = cell.
-                updateStreak(row: indexPath.row, inc: 0, habitString: tempString)
+                journal.updateStreak(row: indexPath.row, inc: 0, habitString: tempString ?? "none")
             }
             else {
                 cell.accessoryType = .checkmark
-                updateStreak(row: indexPath.row, inc: 1, habitString: tempString)
+                journal.updateStreak(row: indexPath.row, inc: 1, habitString: tempString ?? "none")
             }
         }
         self.habitTableView.reloadData()
@@ -443,7 +280,10 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
             let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
             let database = try Connection(fileUrl.path)
-            self.database = database
+            
+//            self.database = database
+            self.journal.database = database
+            
         } catch {
             print(error)
         }
@@ -467,8 +307,13 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
 
         if (yearLastRun != yearToday || monthLastRun != monthToday || dayLastRun != dayToday) {
             print("Date has changed. Updating last run date...")
-            let count = countDays(date1: lastRun, date2: date)
-            addDays(numDays: count, startDate: lastRun)
+
+            //            let count = countDays(date1: lastRun, date2: date)
+            let count = journal.countDays(date1: lastRun, date2: date)
+            
+//            addDays(numDays: count, startDate: lastRun)
+//            journal.addDays(numDays: count, startDate: lastRun)
+            
             UserDefaults.standard.set(Date(), forKey: "lastRun")
         } else {
             print("Day has not changed.")
@@ -482,27 +327,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
 //        }
     }
     
-    func addDays(numDays: Int, startDate: Date) {
-        var temp = 0
-        var nextDay = Calendar.current.date(byAdding: .day, value: 1, to: startDate)
-        while temp < numDays {
-            // not sure why the ! is needed below
-            addDay(habit: "Paint", date: nextDay!)
-            temp += 1
-            // not sure why the ! is needed below
-            nextDay = Calendar.current.date(byAdding: .day, value: 1, to: nextDay!)
-        }
-    }
-    
-    func countDays(date1: Date, date2: Date) -> Int {
-        print("counting number of days between dates...")
-        let calendar = Calendar.current
-        let d1 = calendar.startOfDay(for: date1)
-        let d2 = calendar.startOfDay(for: date2)
-        let components = calendar.dateComponents([.day], from: d1, to: d2).day ?? 0
-        print("# days between \(d1) and \(d2): \(components)")
-        return(components)
-    }
     
     func initDate() {
         // save date
