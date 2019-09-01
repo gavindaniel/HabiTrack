@@ -122,20 +122,6 @@ class HabitEntries {
         
         print("getting table...")
         let table = Table(habit)
-        //         let table = Table("Test")
-        // testing
-        //        let connection = try Connection()
-        do {
-            //            let connection = try Connection()
-            //            try connection.scalar(table.exists)
-            try self.database.scalar(table.exists)
-            print("table exists")
-            //exists
-        } catch {
-            //doesn't
-            print("error finding table...")
-            print(error)
-        }
         
         print("getting calendar...")
         let calendar = Calendar.current

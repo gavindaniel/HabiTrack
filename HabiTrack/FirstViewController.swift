@@ -294,10 +294,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         print("Updating View Controller...")
         
         let date = Date()
-//        let tempDate = Date()
-        // testing
-//        let date = Calendar.current.date(byAdding: .day, value: 1, to: tempDate)
-        
         print("date: \(date)")
         let defaults = UserDefaults.standard
         let lastRun = defaults.object(forKey: "lastRun") as! Date
@@ -310,14 +306,12 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         let monthLastRun = Calendar.current.component(.month, from: lastRun)
         let dayLastRun = Calendar.current.component(.day, from: lastRun)
 
-//        if (yearLastRun != yearToday || monthLastRun != monthToday || dayLastRun != dayToday) {
-        if (1 != 0) {
+        if (yearLastRun != yearToday || monthLastRun != monthToday || dayLastRun != dayToday) {
             print("Date has changed. Updating last run date...")
 
             // not sure why the ! is needed below
             let nextDay = Calendar.current.date(byAdding: .day, value: 1, to: date)
             
-//            let count = journal.countDays(date1: lastRun, date2: date)
             let count = self.journal.habitEntries.countDays(date1: lastRun, date2: nextDay ?? Date())
             
             // testing
@@ -338,14 +332,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             UserDefaults.standard.set(Date(), forKey: "lastRun")
         } else {
             print("Day has not changed.")
-//            countDays(date1: lastRun, date2: date)
         }
-//        if (lastRun != date) {
-//            print("Date has changed. Updating last saved date...")
-//            UserDefaults.standard.set(Date(), forKey: "lastRun")
-//        } else {
-//            print("Date has not changed.")
-//        }
     }
     
     
