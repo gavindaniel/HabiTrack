@@ -56,7 +56,7 @@ class Journal {
         do {
             try self.database.run(createTable)
             print("Created Table")
-            addDay(habit: habitString, date: Date())
+//            addDay(habit: habitString, date: Date())
         } catch {
             print (error)
         }
@@ -173,15 +173,17 @@ class Journal {
     func addDay(habit: String, date: Date) {
         print("Adding day to \(habit) table...")
         
+        createHabitTable(habit)
+        
         print("getting table...")
-//        let table = Table(habit)
-         let table = Table("Paint")
+        let table = Table(habit)
+//         let table = Table("Test")
         // testing
 //        let connection = try Connection()
         do {
 //            let connection = try Connection()
 //            try connection.scalar(table.exists)
-            try database.scalar(table.exists)
+            try self.database.scalar(table.exists)
             print("table exists")
             //exists
         } catch {
@@ -199,6 +201,7 @@ class Journal {
         let addDay = table.insert(self.year <- year, self.month <- month, self.day <- day, self.completed <- 0)
         print("trying to add day into database...")
         do {
+            print("try to run...")
             try self.database.run(addDay)
             print("Day Added -> year: \(year), month: \(month), day: \(day)")
         } catch {
@@ -215,7 +218,10 @@ class Journal {
         while temp < numDays {
             // not sure why the ! is needed below
 //            addDay(habit: "Paint", date: nextDay!)
-            addDay(habit: "Paint", date: Date())
+            
+            let tempString = "Paint"
+            addDay(habit: tempString, date: Date())
+            
             print("incrementing day...")
             temp += 1
             // not sure why the ! is needed below

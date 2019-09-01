@@ -28,10 +28,12 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
 
     
     // custom : getTableSize (size of database table)
-    func getTableSize() -> Int {
+    func getTableSize(habit: String) -> Int {
         var count = 0;
         do {
-            let habits = try self.database.prepare(self.habitsTable)
+//            let habits = try self.database.prepare(self.habitsTable)
+            let table = Table(habit)
+            let habits = try self.database.prepare(table)
             for _ in habits {
                 count += 1
             }
@@ -46,7 +48,8 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         print("Printing table...")
         do {
             let habits = try self.database.prepare(self.habitsTable)
-            print("# entries: \(getTableSize())")
+//            print("# entries: \(getTableSize())")
+            print("# entries: \(getTableSize(habit: "habits"))")
             for habit in habits {
                 print("id: \(habit[self.id]), habit: \(habit[self.habit]), time: \(habit[self.time])")
             }
@@ -57,12 +60,12 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     
     // UIButton : printTable
     func printHabitTable(_ habit: String) {
-        print("Printing habit table...")
+        print("Printing \(habit) entries table...")
         do {
             let table = Table(habit)
             let habits = try self.database.prepare(table)
             //            getTableSize()
-            print("# entries: \(getTableSize())")
+            print("# entries: \(getTableSize(habit: habit))")
             for entry in habits {
                 print("id: \(entry[self.id]), year: \(entry[self.year]), month: \(entry[self.month]), day: \(entry[self.day]), done: \(entry[self.completed])")
             }
@@ -110,7 +113,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
                 printTable()
             }
         if (list[indexPath.row] == "Print Habit Table") {
-            printHabitTable("test")
+            printHabitTable("Paint")
         }
             else if (list[indexPath.row] == "Delete Table") {
                 deleteTable()

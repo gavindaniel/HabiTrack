@@ -84,8 +84,13 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             do {
                 try self.journal.database.run(addHabit)
                 print("Habit Added -> habit: \(habit), time: \(time)")
+                
                 // create entries table for habit
-                self.journal.createHabitTable(habit)
+//                self.journal.createHabitTable(habit)
+                
+                // testing
+                self.journal.addDay(habit: habit, date: Date())
+                
                 self.habitTableView.reloadData()
             } catch {
                 print (error)
