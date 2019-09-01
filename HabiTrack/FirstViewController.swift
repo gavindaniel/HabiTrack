@@ -43,6 +43,23 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var habitTableView: UITableView!
     @IBOutlet weak var dateCollectionView: UICollectionView!
     
+    // viewDidLoad
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+        do {
+            let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+            let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
+            let database = try Connection(fileUrl.path)
+            
+            self.journal.database = database
+            self.journal.habitEntries.database = database
+            
+        } catch {
+            print(error)
+        }
+    }
+    
     // custom : createDaysArray (init daysArray)
     func createDaysArray() {
         var day = 2
@@ -85,11 +102,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                 try self.journal.database.run(addHabit)
                 print("Habit Added -> habit: \(habit), time: \(time)")
                 
-                // create entries table for habit
-//                self.journal.createHabitTable(habit)
-                
-                // testing
-                self.journal.addDay(habit: habit, date: Date())
+                self.journal.habitEntries.addDay(habit: habit, date: Date())
                 
                 self.habitTableView.reloadData()
             } catch {
@@ -221,7 +234,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                 tempString = cell.habitUILabel?.text ?? "error"
             }
             // delete the habit from the table
-            journal.deleteHabitTable(habit: tempString)
+            journal.habitEntries.deleteTable(habit: tempString)
             // do something
             do {
                 // get the habits table
@@ -276,24 +289,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
         self.habitTableView.reloadData()
     }
-    
-    // viewDidLoad
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        do {
-            let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-            let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
-            let database = try Connection(fileUrl.path)
-            
-//            self.database = database
-            self.journal.database = database
-            
-        } catch {
-            print(error)
-        }
-        
-    }
 
     func update() {
         print("Updating View Controller...")
@@ -323,9 +318,22 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             let nextDay = Calendar.current.date(byAdding: .day, value: 1, to: date)
             
 //            let count = journal.countDays(date1: lastRun, date2: date)
-            let count = journal.countDays(date1: lastRun, date2: nextDay ?? Date())
+            let count = self.journal.habitEntries.countDays(date1: lastRun, date2: nextDay ?? Date())
             
-            journal.addDays(numDays: count, startDate: lastRun)
+            // testing
+            do {
+                let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+                let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
+                let database = try Connection(fileUrl.path)
+                
+                self.journal.database = database
+                self.journal.habitEntries.database = database
+                
+            } catch {
+                print(error)
+            }
+            
+            self.journal.habitEntries.addDays(numDays: count, startDate: lastRun)
             
             UserDefaults.standard.set(Date(), forKey: "lastRun")
         } else {

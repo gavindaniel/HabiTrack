@@ -11,27 +11,31 @@ import SQLite
 
 class SettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    var list = ["Manage Habits", "Dark Mode", "Print Table", "Print Habit Table", "Delete Table"]
+    var list = ["Manage Habits", "Dark Mode", "Print Table", "Print Habit Table", "Delete Table", "Add Day"]
     
     var database: Connection!
-    let habitsTable = Table("habits")
-    let id = Expression<Int>("id")
-    let habit = Expression<String>("habit")
-    let time = Expression<String>("time")
-    
-    let year = Expression<Int>("year")
-    let month = Expression<Int>("month")
-    let day = Expression<Int>("day")
-    let completed = Expression<Int>("completed")
+    let journal = Journal()
     
     @IBOutlet weak var settingsTableView: UITableView!
 
+    // viewDidLoad
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+        do {
+            let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+            let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
+            let database = try Connection(fileUrl.path)
+            self.database = database
+        } catch {
+            print(error)
+        }
+    }
     
     // custom : getTableSize (size of database table)
     func getTableSize(habit: String) -> Int {
         var count = 0;
         do {
-//            let habits = try self.database.prepare(self.habitsTable)
             let table = Table(habit)
             let habits = try self.database.prepare(table)
             for _ in habits {
@@ -47,11 +51,11 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     func printTable() {
         print("Printing table...")
         do {
-            let habits = try self.database.prepare(self.habitsTable)
-//            print("# entries: \(getTableSize())")
+            let habits = try self.database.prepare(self.journal.habitsTable)
+            
             print("# entries: \(getTableSize(habit: "habits"))")
             for habit in habits {
-                print("id: \(habit[self.id]), habit: \(habit[self.habit]), time: \(habit[self.time])")
+                print("id: \(habit[self.journal.id]), habit: \(habit[self.journal.habit]), time: \(habit[self.journal.time])")
             }
         } catch {
             print(error)
@@ -64,10 +68,9 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         do {
             let table = Table(habit)
             let habits = try self.database.prepare(table)
-            //            getTableSize()
             print("# entries: \(getTableSize(habit: habit))")
             for entry in habits {
-                print("id: \(entry[self.id]), year: \(entry[self.year]), month: \(entry[self.month]), day: \(entry[self.day]), done: \(entry[self.completed])")
+                print("id: \(entry[self.journal.habitEntries.id]), year: \(entry[self.journal.habitEntries.year]), month: \(entry[self.journal.habitEntries.month]), day: \(entry[self.journal.habitEntries.day]), done: \(entry[self.journal.habitEntries.completed])")
             }
         } catch {
             print (error)
@@ -77,7 +80,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     // custom : deleteTable (delete SQL table)
     func deleteTable() {
         print("Deleting Table...")
-        let deleteTable = self.habitsTable.drop()
+        let deleteTable = self.journal.habitsTable.drop()
         do {
             try self.database.run(deleteTable)
             print("Deleted Table")
@@ -85,6 +88,24 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             print (error)
         }
     }
+    
+    // custom : Add Day to "Paint" Habit Table
+    func addDay() {
+        // to be changed for testing
+        let habit = "Paint"
+        print("Force adding day to \(habit) entries table...")
+        let table = Table(habit)
+        let year = Calendar.current.component(.year, from: Date())
+        let month = Calendar.current.component(.month, from:  Date())
+        let day = Calendar.current.component(.day, from:  Date())
+        let dayAdd = table.insert(self.journal.habitEntries.year <- year, self.journal.habitEntries.month <- month, self.journal.habitEntries.day <- day, self.journal.habitEntries.completed <- 0)
+        do {
+            try self.database.run(dayAdd)
+        } catch {
+            print(error)
+        }
+    }
+    
     
     // tableView : numberOfRowsInSection
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -102,38 +123,21 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     // tableView : didSelectRowAt
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("Selected row: \(indexPath.row)")
-//        if let cell = tableView.cellForRow(at: indexPath) {
-            if (list[indexPath.row] == "Print Table") {
-//                print(Date())
-//                let date = Date()
-//                let calendar = Calendar.current
-//                print(calendar.component(.year, from: date))
-//                print(calendar.component(.month, from: date))
-//                print(calendar.component(.day, from: date))
-                printTable()
-            }
-        if (list[indexPath.row] == "Print Habit Table") {
+        if (list[indexPath.row] == "Print Table") {
+            printTable()
+        }
+        else if (list[indexPath.row] == "Print Habit Table") {
             printHabitTable("Paint")
         }
-            else if (list[indexPath.row] == "Delete Table") {
-                deleteTable()
-            }
-//        }
+        else if (list[indexPath.row] == "Delete Table") {
+            deleteTable()
+        }
+        else if (list[indexPath.row] == "Add Day") {
+            addDay()
+        }
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    // viewDidLoad
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        do {
-            let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-            let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
-            let database = try Connection(fileUrl.path)
-            self.database = database
-        } catch {
-            print(error)
-        }
-    }
+    
 }
 
