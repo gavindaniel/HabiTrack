@@ -177,22 +177,30 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     // collectionView : cellForItemAt
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         // create collectionView item
-        let item = collectionView.dequeueReusableCell(withReuseIdentifier: "dateCell", for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "dateCell", for: indexPath)
             as! DateCollectionViewCell
         // add labels
-        item.monthUILabel?.text = currentMonth
-        item.dayUILabel?.text = String(daysArray[indexPath.row])
+        cell.monthUILabel?.text = currentMonth
+        cell.dayUILabel?.text = String(daysArray[indexPath.row])
+        cell.layer.borderWidth = 1.0
+        cell.layer.borderColor = UIColor.lightGray.cgColor
+        //testing
+        cell.layer.cornerRadius = 10.0;
         // return initialized item
-        return (item)
+        return (cell)
     }
     
     // collectionView : didDeselectItemAt
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         // do somthing...
         print("Deselecting item: \(indexPath.row)...")
-        if let item: DateCollectionViewCell = (collectionView.cellForItem(at: indexPath) as? DateCollectionViewCell) {
+        if let cell: DateCollectionViewCell = (collectionView.cellForItem(at: indexPath) as? DateCollectionViewCell) {
             // clear the selection
-            item.layer.borderWidth = 0.0
+//            cell.layer.borderWidth = 0.0
+            cell.layer.borderWidth = 1.0
+            cell.layer.borderColor = UIColor.lightGray.cgColor
+            //testing
+            cell.layer.cornerRadius = 10.0;
 //            item.layer.borderColor = UIColor.white.cgColor
             print("Item deselected.")
         }
@@ -202,7 +210,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
                 print("Selected item: \(indexPath.row)")
         // get the cell from the tableView
-        if let item: DateCollectionViewCell = (collectionView.cellForItem(at: indexPath) as? DateCollectionViewCell) {
+        if let cell: DateCollectionViewCell = (collectionView.cellForItem(at: indexPath) as? DateCollectionViewCell) {
             // set the last selected item
             if (lastSelectedItem == -1) {
                 print("lastSelectedItem == -1")
@@ -230,11 +238,16 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
             lastSelectedItem = indexPath.row
             // change the border fo the selected item
-            item.layer.borderWidth = 2.0
-            item.layer.borderColor = UIColor.gray.cgColor
+            cell.layer.borderWidth = 1.0
+            cell.layer.borderColor = UIColor.blue.cgColor
+            //testing
+            cell.layer.cornerRadius = 10.0;
+//            cell.contentView.layer.borderWidth = 1.0f;
+//            cell.contentView.layer.borderColor = [UIColor clearColor].CGColor;
+            
             // get the habit string from the cell
-            let tempMonth = item.monthUILabel?.text
-            let tempDay = item.dayUILabel?.text
+            let tempMonth = cell.monthUILabel?.text
+            let tempDay = cell.dayUILabel?.text
             
             let defaultMonth = Calendar.current.component(.month, from: Date())
             let defaultDay = Calendar.current.component(.day, from: Date())
