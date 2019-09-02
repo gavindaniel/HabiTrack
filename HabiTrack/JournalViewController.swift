@@ -56,25 +56,19 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
             let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
             let database = try Connection(fileUrl.path)
-            
             self.journal.database = database
             self.journal.habitEntries.database = database
-            
         } catch {
             print(error)
         }
-//        habitTableView.reloadData()
     }
     
     @objc func applicationWillEnterForeground() {
-        
         habitTableView.reloadData()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated) // No need for semicolon
-//        print("viewWillAppear...")
         self.habitTableView.reloadData()
     }
     
