@@ -1,5 +1,5 @@
 //
-//  FirstViewController.swift
+//  JournalViewController.swift
 //  HabiTrack
 //
 //  Created by Gavin Daniel on 8/22/19.
