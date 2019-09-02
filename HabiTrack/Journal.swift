@@ -21,10 +21,6 @@ class Journal {
     let streak = Expression<Int>("streak")
     let currentDay = Expression<Int>("currentDay")
     // individual habit journal entry table columns
-//    let year = Expression<Int>("year")
-//    let month = Expression<Int>("month")
-//    let day = Expression<Int>("day")
-//    let completed = Expression<Int>("completed")
     
     
     
@@ -63,7 +59,7 @@ class Journal {
     
     // custom : updateStreak
     func updateStreak(row: Int, inc: Int, habitString: String) {
-        print("Updating streak...")
+//        print("Updating streak...")
         var count = 0
         var firstId = 0
         do {
@@ -74,7 +70,7 @@ class Journal {
                 }
                 if (count == row) {
                     let habit = self.habitsTable.filter(self.id == count+firstId)
-                    let tempRow = 1
+                    let tempRow = self.habitEntries.getTableSize(habit: habitString)
                     habitEntries.markCompleted(habit: habitString, row: tempRow, val: inc)
                     let currentStreak = habitEntries.countStreak(habit: habitString)
                     let updateHabit = habit.update(self.streak <- currentStreak)
@@ -97,14 +93,12 @@ class Journal {
     
     // custom : addDays
     func addDays(numDays: Int, startDate: Date) {
-        print("adding day to habit entries...")
+//        print("adding day to habit entries...")
         var temp = 0
         var nextDay = Calendar.current.date(byAdding: .day, value: 1, to: startDate)
-        print("temp: \(temp) < numDays: \(numDays)")
-        print("next day: \(nextDay ?? Date())")
+//        print("temp: \(temp) < numDays: \(numDays)")
+//        print("next day: \(nextDay ?? Date())")
         while temp < numDays {
-            // not sure why the ! is needed below
-            //            addDay(habit: "Paint", date: nextDay!)
             do {
                 let habits = try self.database.prepare(self.habitsTable)
                 for habit in habits {
@@ -115,7 +109,7 @@ class Journal {
             } catch {
                 print(error)
             }
-            print("incrementing day...")
+//            print("incrementing day...")
             temp += 1
             // not sure why the ! is needed below
             nextDay = Calendar.current.date(byAdding: .day, value: 1, to: nextDay!)

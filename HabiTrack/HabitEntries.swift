@@ -21,7 +21,7 @@ class HabitEntries {
     
     // custom : createTable (create SQL table for each new habit)
     func createTable(habitString: String) {
-        print("Creating \(habitString) Table...")
+//        print("Creating \(habitString) Table...")
         let tempTable = Table(habitString)
         let createTable = tempTable.create { (table) in
             table.column(self.id, primaryKey: true)
@@ -32,7 +32,7 @@ class HabitEntries {
         }
         do {
             try self.database.run(createTable)
-            print("Created Table")
+//            print("Created Table")
             //            addDay(habit: habitString, date: Date())
         } catch {
             print (error)
@@ -54,14 +54,41 @@ class HabitEntries {
         return (count)
     }
     
+    // custom : checkCompleted
+    func checkCompleted(habit: String, index: Int) -> Bool {
+//        print("checking if \(habit) is completed at index: \(index) ...")
+        let table = Table(habit)
+//        let size = getTableSize(habit: habit)
+        do {
+            let days = try self.database.prepare(table)
+            var count = 1
+            for day in days {
+                // check if the day (index) in array is completed
+//                print("day[self.completed]: \(day[self.completed])")
+                if (count == index) {
+//                    print("count: \(count) == index: \(index)")
+                    if (day[self.completed] == 1) {
+//                        print("day at index is completed")
+                        return true
+                    }
+                }
+                count += 1
+            }
+        } catch {
+            print(error)
+        }
+        // most recent day (today) not completed, return false
+        return false
+    }
+    
     // custom : deleteTable (delete SQL table)
     func deleteTable(habit: String) {
-        print("Deleting \(habit) Table...")
+//        print("Deleting \(habit) Table...")
         let table = Table(habit)
         let deleteTable = table.drop()
         do {
             try self.database.run(deleteTable)
-            print("Deleted Table")
+//            print("Deleted Table")
         } catch {
             print (error)
         }
@@ -69,19 +96,19 @@ class HabitEntries {
     
     // custom : markCompleted
     func markCompleted(habit: String, row: Int, val: Int) {
-        print("Updating completed...")
+//        print("Updating completed...")
         do {
             let table = Table(habit)
             let days = try self.database.prepare(table)
             for day in days {
-                print("id: \(day[self.id]), completed: \(day[self.completed])")
+//                print("id: \(day[self.id]), completed: \(day[self.completed])")
                 if (day[self.id] == row) {
-                    print("id == \(row)")
+//                    print("id == \(row)")
                     let temp = table.filter(self.id == row)
                     let updateHabit = temp.update(self.completed <- val)
                     do {
                         try self.database.run(updateHabit)
-                        print("Habit (completed) updated")
+//                        print("Habit (completed) updated")
                     } catch {
                         print(error)
                     }
@@ -94,29 +121,31 @@ class HabitEntries {
     
     // custom : countStreak
     func countStreak(habit: String) -> Int {
-        print("Counting \(habit) habit streak...")
+//        print("Counting \(habit) habit streak...")
         var count = 0
         do {
             let table = Table(habit)
             let days = try self.database.prepare(table)
             for day in days {
-                print("id: \(day[self.id]), completed: \(day[self.completed])")
+//                print("id: \(day[self.id]), completed: \(day[self.completed])")
                 if (day[self.completed] == 1) {
-                    print("incrementing count...")
+//                    print("incrementing count...")
                     count += 1
+                } else {
+                    count = 0
                 }
             }
         } catch {
             print(error)
         }
-        print("streak: \(count)")
+//        print("streak: \(count)")
         return(count)
     }
     
     
     // custom : addDay(add a day to habit completed table)
     func addDay(habit: String, date: Date) {
-        print("Adding day to \(habit) table...")
+//        print("Adding day to \(habit) table...")
         
         createTable(habitString: habit)
         let table = Table(habit)
@@ -127,39 +156,19 @@ class HabitEntries {
         let addDay = table.insert(self.year <- year, self.month <- month, self.day <- day, self.completed <- 0)
         do {
             try self.database.run(addDay)
-            print("Day Added -> year: \(year), month: \(month), day: \(day)")
+//            print("Day Added -> year: \(year), month: \(month), day: \(day)")
         } catch {
             print (error)
         }
     }
     
-    func addDays(numDays: Int, startDate: Date) {
-        print("adding day to habit entries...")
-        var temp = 0
-        var nextDay = Calendar.current.date(byAdding: .day, value: 1, to: startDate)
-        print("temp: \(temp) < numDays: \(numDays)")
-        print("next day: \(nextDay ?? Date())")
-        while temp < numDays {
-            // not sure why the ! is needed below
-            //            addDay(habit: "Paint", date: nextDay!)
-            
-            let tempString = "Paint"
-            addDay(habit: tempString, date: Date())
-            
-            print("incrementing day...")
-            temp += 1
-            // not sure why the ! is needed below
-            nextDay = Calendar.current.date(byAdding: .day, value: 1, to: nextDay!)
-        }
-    }
-    
     func countDays(date1: Date, date2: Date) -> Int {
-        print("counting number of days between dates...")
+//        print("counting number of days between dates...")
         let calendar = Calendar.current
         let d1 = calendar.startOfDay(for: date1)
         let d2 = calendar.startOfDay(for: date2)
         let components = calendar.dateComponents([.day], from: d1, to: d2).day ?? 0
-        print("# days between \(d1) and \(d2): \(components)")
+//        print("# days between \(d1) and \(d2): \(components)")
         return(components)
     }
 }

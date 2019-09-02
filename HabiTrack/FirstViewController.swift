@@ -58,6 +58,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         } catch {
             print(error)
         }
+//        habitTableView.reloadData()
     }
     
     // custom : createDaysArray (init daysArray)
@@ -194,7 +195,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         // create tableView cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
             as! HabitTableViewCell
-        
+//        print("cellForRowAt...\(indexPath.row)...")
         // since the database only increments from the last ID,
         // this for loop fixes issues with gaps in the database.
         var count = 0
@@ -206,7 +207,28 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                 if (count == indexPath.row) {
                     cell.habitUILabel?.text = habit[self.journal.habit]
                     cell.timeUILabel?.text = habit[self.journal.time]
-                    cell.streakUILabel?.text = String(habit[self.journal.streak])
+//                    cell.streakUILabel?.text = String(habit[self.journal.streak])
+                    
+                    
+                    let tempString = habit[self.journal.habit]
+//                    print("tempString: \(tempString)")
+                    let tempSize = self.journal.habitEntries.getTableSize(habit: tempString)
+                    // check if today has already been completed
+//                    print("tempSize: \(String(tempSize))")
+                    
+                    // testing
+                    let tempStreak = self.journal.habitEntries.countStreak(habit: tempString)
+                    // testing
+                    cell.streakUILabel?.text = String(tempStreak)
+                    
+                    if (self.journal.habitEntries.checkCompleted(habit: tempString, index: tempSize)) {
+//                        print("today is already completed")
+                        cell.accessoryType = .checkmark
+                    } else {
+//                        print("today is not completed")
+                        cell.accessoryType = .none
+                    }
+//                    self.habitTableView.reloadData()
                     return (cell)
                 } else {
                     count += 1
@@ -215,6 +237,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         } catch {
             print (error)
         }
+//        self.habitTableView.reloadData()
         return (cell)
     }
     
@@ -290,6 +313,10 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.habitTableView.reloadData()
     }
 
+    func refresh() {
+        habitTableView.reloadData()
+    }
+    
     func update() {
         print("Updating View Controller...")
         
@@ -335,6 +362,8 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         } else {
             print("Day has not changed.")
         }
+//        self.habitTableView.reloadData()
+//        habitTableView.reloadData()
     }
     
     
