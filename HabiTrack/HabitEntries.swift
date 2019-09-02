@@ -122,18 +122,23 @@ class HabitEntries {
     // custom : countStreak
     func countStreak(habit: String) -> Int {
 //        print("Counting \(habit) habit streak...")
+        var index = 1
         var count = 0
         do {
             let table = Table(habit)
             let days = try self.database.prepare(table)
             for day in days {
 //                print("id: \(day[self.id]), completed: \(day[self.completed])")
-                if (day[self.completed] == 1) {
-//                    print("incrementing count...")
-                    count += 1
-                } else {
-                    count = 0
-                }
+                
+                    if (day[self.completed] == 1) {
+    //                    print("incrementing count...")
+                        count += 1
+                    } else {
+                        if (index != getTableSize(habit: habit)) {
+                            count = 0
+                        }
+                    }
+                index += 1
             }
         } catch {
             print(error)
