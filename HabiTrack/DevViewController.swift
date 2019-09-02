@@ -9,15 +9,15 @@
 import UIKit
 import SQLite
 
-class SettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    var list = ["Manage Habits", "Dark Mode", "Print Table", "Print Eat Table", "Print Paint Table", "Print Code Table", "Delete Table", "Add Day"]
+    var list = ["Print Table", "Print Eat Table", "Print Paint Table", "Print Code Table", "Delete Table", "Add Day"]
     
     var database: Connection!
     let journal = Journal()
     
-    @IBOutlet weak var settingsTableView: UITableView!
-
+    @IBOutlet weak var devTableView: UITableView!
+    
     // viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -114,7 +114,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     
     // tableView : cellForRowAt -> cell
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "settingCell")
+        let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "devCell")
         cell.textLabel?.text = list[indexPath.row]
         
         return (cell)

@@ -21,7 +21,6 @@ class HabitEntries {
     
     // custom : createTable (create SQL table for each new habit)
     func createTable(habitString: String) {
-//        print("Creating \(habitString) Table...")
         let tempTable = Table(habitString)
         let createTable = tempTable.create { (table) in
             table.column(self.id, primaryKey: true)
@@ -32,8 +31,6 @@ class HabitEntries {
         }
         do {
             try self.database.run(createTable)
-//            print("Created Table")
-            //            addDay(habit: habitString, date: Date())
         } catch {
             print (error)
         }
@@ -56,19 +53,14 @@ class HabitEntries {
     
     // custom : checkCompleted
     func checkCompleted(habit: String, index: Int) -> Bool {
-//        print("checking if \(habit) is completed at index: \(index) ...")
         let table = Table(habit)
-//        let size = getTableSize(habit: habit)
         do {
             let days = try self.database.prepare(table)
             var count = 1
             for day in days {
                 // check if the day (index) in array is completed
-//                print("day[self.completed]: \(day[self.completed])")
                 if (count == index) {
-//                    print("count: \(count) == index: \(index)")
                     if (day[self.completed] == 1) {
-//                        print("day at index is completed")
                         return true
                     }
                 }
@@ -83,12 +75,10 @@ class HabitEntries {
     
     // custom : deleteTable (delete SQL table)
     func deleteTable(habit: String) {
-//        print("Deleting \(habit) Table...")
         let table = Table(habit)
         let deleteTable = table.drop()
         do {
             try self.database.run(deleteTable)
-//            print("Deleted Table")
         } catch {
             print (error)
         }
@@ -96,19 +86,15 @@ class HabitEntries {
     
     // custom : markCompleted
     func markCompleted(habit: String, row: Int, val: Int) {
-//        print("Updating completed...")
         do {
             let table = Table(habit)
             let days = try self.database.prepare(table)
             for day in days {
-//                print("id: \(day[self.id]), completed: \(day[self.completed])")
                 if (day[self.id] == row) {
-//                    print("id == \(row)")
                     let temp = table.filter(self.id == row)
                     let updateHabit = temp.update(self.completed <- val)
                     do {
                         try self.database.run(updateHabit)
-//                        print("Habit (completed) updated")
                     } catch {
                         print(error)
                     }
@@ -121,17 +107,13 @@ class HabitEntries {
     
     // custom : countStreak
     func countStreak(habit: String) -> Int {
-//        print("Counting \(habit) habit streak...")
         var index = 1
         var count = 0
         do {
             let table = Table(habit)
             let days = try self.database.prepare(table)
             for day in days {
-//                print("id: \(day[self.id]), completed: \(day[self.completed])")
-                
                     if (day[self.completed] == 1) {
-    //                    print("incrementing count...")
                         count += 1
                     } else {
                         if (index != getTableSize(habit: habit)) {
@@ -150,8 +132,6 @@ class HabitEntries {
     
     // custom : addDay(add a day to habit completed table)
     func addDay(habit: String, date: Date) {
-//        print("Adding day to \(habit) table...")
-        
         createTable(habitString: habit)
         let table = Table(habit)
         let calendar = Calendar.current
@@ -168,7 +148,6 @@ class HabitEntries {
     }
     
     func countDays(date1: Date, date2: Date) -> Int {
-//        print("counting number of days between dates...")
         let calendar = Calendar.current
         let d1 = calendar.startOfDay(for: date1)
         let d2 = calendar.startOfDay(for: date2)

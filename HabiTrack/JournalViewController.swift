@@ -204,7 +204,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // get the number of habits in the journal
         return (journal.getTableSize())
-    
     }
     
     // tableView : cellForRowAt
@@ -212,7 +211,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         // create tableView cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
             as! HabitTableViewCell
-//        print("cellForRowAt...\(indexPath.row)...")
         // since the database only increments from the last ID,
         // this for loop fixes issues with gaps in the database.
         var count = 0
@@ -224,28 +222,19 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                 if (count == indexPath.row) {
                     cell.habitUILabel?.text = habit[self.journal.habit]
                     cell.timeUILabel?.text = habit[self.journal.time]
-//                    cell.streakUILabel?.text = String(habit[self.journal.streak])
-                    
-                    
+                    // get the name of habit and size of habit entries table
                     let tempString = habit[self.journal.habit]
-//                    print("tempString: \(tempString)")
                     let tempSize = self.journal.habitEntries.getTableSize(habit: tempString)
-                    // check if today has already been completed
-//                    print("tempSize: \(String(tempSize))")
-                    
-                    // testing
+                    // count the streak
                     let tempStreak = self.journal.habitEntries.countStreak(habit: tempString)
-                    // testing
+                    // set the streak
                     cell.streakUILabel?.text = String(tempStreak)
-                    
+                    // check if today has already been completed
                     if (self.journal.habitEntries.checkCompleted(habit: tempString, index: tempSize)) {
-//                        print("today is already completed")
                         cell.accessoryType = .checkmark
                     } else {
-//                        print("today is not completed")
                         cell.accessoryType = .none
                     }
-//                    self.habitTableView.reloadData()
                     return (cell)
                 } else {
                     count += 1
@@ -312,7 +301,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     // tableView : didSelectRowAt
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("Selected row: \(indexPath.row)")
+//        print("Selected row: \(indexPath.row)")
         // get the cell from the tableView
         if let cell: HabitTableViewCell = (tableView.cellForRow(at: indexPath) as? HabitTableViewCell) {
             // get the habit string from the cell
@@ -350,8 +339,8 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         let monthLastRun = Calendar.current.component(.month, from: lastRun)
         let dayLastRun = Calendar.current.component(.day, from: lastRun)
 
-//        if (yearLastRun != yearToday || monthLastRun != monthToday || dayLastRun != dayToday) {
-        if (1 != 0) {
+        if (yearLastRun != yearToday || monthLastRun != monthToday || dayLastRun != dayToday) {
+//        if (1 != 0) {
             print("Date has changed. Updating last run date...")
 
             // not sure why the ! is needed below
@@ -359,28 +348,20 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             
             let count = self.journal.habitEntries.countDays(date1: lastRun, date2: nextDay ?? Date())
             
-            // testing
             do {
                 let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
                 let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
                 let database = try Connection(fileUrl.path)
-                
                 self.journal.database = database
                 self.journal.habitEntries.database = database
-                
             } catch {
                 print(error)
             }
-            
-//            self.journal.habitEntries.addDays(numDays: count, startDate: lastRun)
             self.journal.addDays(numDays: count, startDate: lastRun)
-            
             UserDefaults.standard.set(Date(), forKey: "lastRun")
         } else {
             print("Day has not changed.")
         }
-//        self.habitTableView.reloadData()
-//        habitTableView.reloadData()
     }
     
     

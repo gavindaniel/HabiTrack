@@ -59,7 +59,6 @@ class Journal {
     
     // custom : updateStreak
     func updateStreak(row: Int, inc: Int, habitString: String) {
-//        print("Updating streak...")
         var count = 0
         var firstId = 0
         do {
@@ -76,8 +75,6 @@ class Journal {
                     let updateHabit = habit.update(self.streak <- currentStreak)
                     do {
                         try self.database.run(updateHabit)
-                        print("Updated streak")
-//                        self.habitTableView.reloadData()
                         return
                     } catch {
                         print(error)
@@ -93,11 +90,8 @@ class Journal {
     
     // custom : addDays
     func addDays(numDays: Int, startDate: Date) {
-//        print("adding day to habit entries...")
         var temp = 0
         var nextDay = Calendar.current.date(byAdding: .day, value: 1, to: startDate)
-//        print("temp: \(temp) < numDays: \(numDays)")
-//        print("next day: \(nextDay ?? Date())")
         while temp < numDays {
             do {
                 let habits = try self.database.prepare(self.habitsTable)
@@ -109,7 +103,6 @@ class Journal {
             } catch {
                 print(error)
             }
-//            print("incrementing day...")
             temp += 1
             // not sure why the ! is needed below
             nextDay = Calendar.current.date(byAdding: .day, value: 1, to: nextDay!)
