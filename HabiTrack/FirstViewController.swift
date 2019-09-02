@@ -47,6 +47,11 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(applicationWillEnterForeground),
+                                               name: UIApplication.willEnterForegroundNotification,
+                                               object: nil)
+        
         do {
             let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
             let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
@@ -59,6 +64,18 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             print(error)
         }
 //        habitTableView.reloadData()
+    }
+    
+    @objc func applicationWillEnterForeground() {
+        
+        habitTableView.reloadData()
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated) // No need for semicolon
+        print("viewWillAppear...")
+        self.habitTableView.reloadData()
     }
     
     // custom : createDaysArray (init daysArray)
