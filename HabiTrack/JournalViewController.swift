@@ -37,6 +37,8 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     var lastSavedMonth = 0
     var lastSavedDay = 0
     
+    var lastSelectedItem = -1
+    
     // new
     var journal = Journal()
 
@@ -68,7 +70,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated) // No need for semicolon
+        super.viewWillAppear(animated)
         self.habitTableView.reloadData()
     }
     
@@ -83,7 +85,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     // UIButton : addEntry (add an entry)
     @IBAction func addEntry(_ sender: Any) {
-        print("Adding habit...")
         // create table if there isn't one
         journal.createTable()
         // create alert controller
@@ -185,12 +186,50 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         return (item)
     }
     
+    // collectionView : didDeselectItemAt
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        // do somthing...
+        print("Deselecting item: \(indexPath.row)...")
+        if let item: DateCollectionViewCell = (collectionView.cellForItem(at: indexPath) as? DateCollectionViewCell) {
+            // clear the selection
+            item.layer.borderWidth = 0.0
+            item.layer.borderColor = UIColor.white.cgColor
+            print("Item deselected.")
+        }
+    }
+    
     // collectionView : didSelectItemAt
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
-    {
-        // check if the cell was selected
-        if let cell = collectionView.cellForItem(at: indexPath) {
-            cell.isSelected = true;
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+                print("Selected item: \(indexPath.row)")
+        // get the cell from the tableView
+        if let item: DateCollectionViewCell = (collectionView.cellForItem(at: indexPath) as? DateCollectionViewCell) {
+            // set the last selected item
+            if (lastSelectedItem == -1) {
+                print("lastSelectedItem == -1")
+                lastSelectedItem = indexPath.row
+                print("lastSelectedItem: \(lastSelectedItem) = indexPath.row: \(indexPath.row) ")
+            }
+            // if the selected item is different from the last, deselect the last item
+            if (lastSelectedItem != indexPath.row) {
+                print("lastSelectedItem: \(lastSelectedItem) != indexPath.row: \(indexPath.row)")
+                let lastIndexPath = IndexPath(row: lastSelectedItem, section: 0)
+                print("lastIndexPath: \(lastIndexPath)")
+                collectionView.deselectItem(at: lastIndexPath, animated: false)
+            }
+            lastSelectedItem = indexPath.row
+            // change the border fo the selected item
+            item.layer.borderWidth = 2.0
+            item.layer.borderColor = UIColor.gray.cgColor
+            // get the habit string from the cell
+            let tempMonth = item.monthUILabel?.text
+            let tempDay = item.dayUILabel?.text
+            
+            let defaultMonth = Calendar.current.component(.month, from: Date())
+            let defaultDay = Calendar.current.component(.day, from: Date())
+            
+            print("Selected date; month: \(tempMonth ?? String(defaultMonth)), day: \(tempDay ?? String(defaultDay))")
+            
+            // deselect the last row
         }
     }
     
