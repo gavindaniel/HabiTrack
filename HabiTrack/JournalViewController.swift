@@ -74,7 +74,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated) // No need for semicolon
-        print("viewWillAppear...")
+//        print("viewWillAppear...")
         self.habitTableView.reloadData()
     }
     
@@ -344,9 +344,10 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             print("Date has changed. Updating last run date...")
 
             // not sure why the ! is needed below
-            let nextDay = Calendar.current.date(byAdding: .day, value: 1, to: date)
+//            let nextDay = Calendar.current.date(byAdding: .day, value: 1, to: date)
             
-            let count = self.journal.habitEntries.countDays(date1: lastRun, date2: nextDay ?? Date())
+//            let count = self.journal.habitEntries.countDays(date1: lastRun, date2: nextDay ?? Date())
+            let count = self.journal.habitEntries.countDays(date1: lastRun, date2: date)
             
             do {
                 let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
