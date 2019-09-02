@@ -193,7 +193,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         if let item: DateCollectionViewCell = (collectionView.cellForItem(at: indexPath) as? DateCollectionViewCell) {
             // clear the selection
             item.layer.borderWidth = 0.0
-            item.layer.borderColor = UIColor.white.cgColor
+//            item.layer.borderColor = UIColor.white.cgColor
             print("Item deselected.")
         }
     }
@@ -212,9 +212,21 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             // if the selected item is different from the last, deselect the last item
             if (lastSelectedItem != indexPath.row) {
                 print("lastSelectedItem: \(lastSelectedItem) != indexPath.row: \(indexPath.row)")
-                let lastIndexPath = IndexPath(row: lastSelectedItem, section: 0)
-                print("lastIndexPath: \(lastIndexPath)")
-                collectionView.deselectItem(at: lastIndexPath, animated: false)
+                var tempIndex = 0
+                while tempIndex < days {
+                    // do somthing...
+                    if (tempIndex != indexPath.row) {
+                        let tempIndexPath = IndexPath(row: tempIndex, section: 0)
+    //                    print("lastIndexPath: \(lastIndexPath)")
+                        collectionView.deselectItem(at: tempIndexPath, animated: false)
+                    }
+                    // increment index
+                    tempIndex += 1
+                }
+                
+//                let lastIndexPath = IndexPath(row: lastSelectedItem, section: 0)
+//                print("lastIndexPath: \(lastIndexPath)")
+//                collectionView.deselectItem(at: lastIndexPath, animated: false)
             }
             lastSelectedItem = indexPath.row
             // change the border fo the selected item
@@ -228,8 +240,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             let defaultDay = Calendar.current.component(.day, from: Date())
             
             print("Selected date; month: \(tempMonth ?? String(defaultMonth)), day: \(tempDay ?? String(defaultDay))")
-            
-            // deselect the last row
         }
     }
     
