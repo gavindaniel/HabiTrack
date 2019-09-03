@@ -29,12 +29,9 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     // variables
     let days = 31
     var daysArray: Array<Date> = []
-
-//    let date = Date()
-//    let calendar = Calendar.current
     
-//    var lastSelectedItem = -1
-    var lastSelectedItem = 3
+    var lastSelectedItem = -1
+    var dateSelected = Date()
     
     // new
     var journal = Journal()
@@ -42,14 +39,14 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var habitTableView: UITableView!
     @IBOutlet weak var dateCollectionView: UICollectionView!
     
-    // viewDidAppear
+    // load : viewDidAppear
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.dateCollectionView.selectItem(at: IndexPath(row: 3, section: 0), animated: false, scrollPosition: [])
         self.dateCollectionView.delegate?.collectionView!(self.dateCollectionView, didSelectItemAt: IndexPath(item: 3, section: 0))
     }
     
-    // viewDidLoad
+    // load : viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -57,32 +54,29 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                                                selector: #selector(applicationWillEnterForeground),
                                                name: UIApplication.willEnterForegroundNotification,
                                                object: nil)
-        
         do {
             let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
             let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
             let database = try Connection(fileUrl.path)
             self.journal.database = database
             self.journal.habitEntries.database = database
-            
-            
         } catch {
             print(error)
         }
     }
     
+    // load : viewWillAppear
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.habitTableView.reloadData()
         self.dateCollectionView.reloadData()
     }
     
+    // load : applicationWillEnterForeground
     @objc func applicationWillEnterForeground() {
         habitTableView.reloadData()
         dateCollectionView.reloadData()
     }
-    
-    
     
     // custom : createDaysArray (init daysArray)
     func createDaysArray() {
@@ -111,8 +105,10 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "dateCell", for: indexPath)
             as! DateCollectionViewCell
         // add labels
-        cell.monthUILabel?.text = getMonth(date: daysArray[indexPath.row])
+        cell.monthUILabel?.text = getMonthString(date: daysArray[indexPath.row])
         cell.dayUILabel?.text = String(getDay(date: daysArray[indexPath.row]))
+        cell.monthUILabel?.textColor = UIColor.gray
+        cell.dayUILabel?.textColor = UIColor.gray
         cell.layer.borderWidth = 1.0
         let tempDay = Calendar.current.component(.day, from: Date())
         // check if today, mark blue, else mark gray
@@ -133,24 +129,32 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             cell.layer.borderWidth = 1.0
             cell.layer.borderColor = UIColor.lightGray.cgColor
             cell.layer.cornerRadius = 10.0;
+            cell.monthUILabel?.textColor = UIColor.gray
+            cell.dayUILabel?.textColor = UIColor.gray
         }
     }
     
     // collectionView : didSelectItemAt
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-                print("Selected item: \(indexPath.row)")
+//                print("Selected item: \(indexPath.row)")
         // get the cell from the tableView
         if let cell: DateCollectionViewCell = (collectionView.cellForItem(at: indexPath) as? DateCollectionViewCell) {
             // if the selected item is different from the last, deselect the last item
             if (lastSelectedItem != indexPath.row) {
                 lastSelectedItem = indexPath.row
-                var tempIndex = 0
+                
+                let month = cell.monthUILabel?.text ?? String(Calendar.current.component(.month, from: Date()))
+                let day = cell.dayUILabel?.text ?? String(Calendar.current.component(.day, from: Date()))
+                let date = getDate(month: getMonth(month: month), day: Int(day) ?? Calendar.current.component(.day, from: Date()))
+//                print("date: \(date)")
+                dateSelected = date
+                
                 // FIXME: replace 'days' with a calculation for number of days in the month
                 // loop through cells and deselect
+                var tempIndex = 0
                 while tempIndex < days {
                     if (tempIndex != lastSelectedItem) {
-                        let tempIndexPath = IndexPath(row: tempIndex, section: 0)
-                        self.dateCollectionView.deselectItem(at: tempIndexPath, animated: false)
+                        self.dateCollectionView.deselectItem(at: IndexPath(row: tempIndex, section: 0), animated: false)
                     }
                     // increment index
                     tempIndex += 1
@@ -160,12 +164,22 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             cell.layer.borderWidth = 1.0
             cell.layer.borderColor = UIColor.blue.cgColor
             cell.layer.cornerRadius = 10.0;
+            
+            // testing
+            cell.tintColor = UIColor.lightGray
+            cell.monthUILabel?.textColor = UIColor.blue
+            cell.dayUILabel?.textColor = UIColor.blue
+            
+            
+            
             // get the habit string from the cell
 //            let tempMonth = cell.monthUILabel?.text
 //            let tempDay = cell.dayUILabel?.text
             
             // FIXME: Add call to update TableView with data from this date
         }
+        print("reloading...")
+        self.habitTableView.reloadData()
     }
     
     // tableView : numberOfRowsInSection
@@ -176,6 +190,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     // tableView : cellForRowAt
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        print("cellForRowAt...\(indexPath.row)")
         // create tableView cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
             as! HabitTableViewCell
@@ -192,13 +207,16 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                     cell.timeUILabel?.text = habit[self.journal.time]
                     // get the name of habit and size of habit entries table
                     let tempString = habit[self.journal.habit]
-                    let tempSize = self.journal.habitEntries.getTableSize(habit: tempString)
+//                    let tempSize = self.journal.habitEntries.getTableSize(habit: tempString)
                     // count the streak
-                    let tempStreak = self.journal.habitEntries.countStreak(habit: tempString)
+//                    let tempStreak = self.journal.habitEntries.countStreak(habit: tempString)
+//                    print("dateSelected: \(dateSelected)")
+                    let tempStreak = self.journal.habitEntries.countDateStreak(habit: tempString, date: dateSelected)
                     // set the streak
                     cell.streakUILabel?.text = String(tempStreak)
                     // check if today has already been completed
-                    if (self.journal.habitEntries.checkCompleted(habit: tempString, index: tempSize)) {
+//                    if (self.journal.habitEntries.checkCompleted(habit: tempString, index: tempSize)) {
+                    if (self.journal.habitEntries.checkDateCompleted(habit: tempString, date: dateSelected)) {
                         cell.accessoryType = .checkmark
                     } else {
                         cell.accessoryType = .none
@@ -211,11 +229,32 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         } catch {
             print (error)
         }
-//        self.habitTableView.reloadData()
+        self.habitTableView.reloadData()
         return (cell)
     }
     
-    
+    // tableView : didSelectRowAt
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        print("Selected row: \(indexPath.row)")
+        // get the cell from the tableView
+        if let cell: HabitTableViewCell = (tableView.cellForRow(at: indexPath) as? HabitTableViewCell) {
+            // get the habit string from the cell
+            let tempString = cell.habitUILabel?.text
+            // check if the cell has been completed
+            if cell.accessoryType == UITableViewCell.AccessoryType.checkmark {
+                cell.accessoryType = .none
+//                journal.updateStreak(row: indexPath.row, inc: 0, habitString: tempString ?? "none")
+                journal.updateDateStreak(row: indexPath.row, inc: 0, date: dateSelected, habitString: tempString ?? "none")
+            }
+            else {
+                cell.accessoryType = .checkmark
+//                journal.updateStreak(row: indexPath.row, inc: 1, habitString: tempString ?? "none")
+                journal.updateDateStreak(row: indexPath.row, inc: 1, date: dateSelected, habitString: tempString ?? "none")
+            }
+        }
+        self.habitTableView.reloadData()
+    }
+
     // tableView : editingStyle
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath)
     {
@@ -244,7 +283,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                     }
                     if (count == indexPath.row) {
                         // get the habit whose id matches the count + first ID in the tableView
-                         let habit = self.journal.habitsTable.filter(self.journal.id == (count+firstId))
+                        let habit = self.journal.habitsTable.filter(self.journal.id == (count+firstId))
                         // delete the habit
                         let deleteHabit = habit.delete()
                         // attempt to delete the habit from the database
@@ -265,28 +304,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
         }
     }
-    
-    
-    // tableView : didSelectRowAt
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        print("Selected row: \(indexPath.row)")
-        // get the cell from the tableView
-        if let cell: HabitTableViewCell = (tableView.cellForRow(at: indexPath) as? HabitTableViewCell) {
-            // get the habit string from the cell
-            let tempString = cell.habitUILabel?.text
-            // check if the cell has been completed
-            if cell.accessoryType == UITableViewCell.AccessoryType.checkmark {
-                cell.accessoryType = .none
-                journal.updateStreak(row: indexPath.row, inc: 0, habitString: tempString ?? "none")
-            }
-            else {
-                cell.accessoryType = .checkmark
-                journal.updateStreak(row: indexPath.row, inc: 1, habitString: tempString ?? "none")
-            }
-        }
-        self.habitTableView.reloadData()
-    }
-
     
     // UIButton : addEntry (add an entry)
     @IBAction func addEntry(_ sender: Any) {
@@ -386,15 +403,14 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         let monthLastRun = Calendar.current.component(.month, from: lastRun)
         let dayLastRun = Calendar.current.component(.day, from: lastRun)
 
-//        if (yearLastRun != yearToday || monthLastRun != monthToday || dayLastRun != dayToday) {
-        if (1 != 0) {
+        if (yearLastRun != yearToday || monthLastRun != monthToday || dayLastRun != dayToday) {
+//        if (1 != 0) {
             print("Date has changed. Updating last run date...")
 
             // not sure why the ! is needed below
-            let nextDay = Calendar.current.date(byAdding: .day, value: 1, to: date)
-            
-            let count = self.journal.habitEntries.countDays(date1: lastRun, date2: nextDay ?? Date())
-//            let count = self.journal.habitEntries.countDays(date1: lastRun, date2: date)
+//            let nextDay = Calendar.current.date(byAdding: .day, value: 1, to: date)
+//            let count = self.journal.habitEntries.countDays(date1: lastRun, date2: nextDay ?? Date())
+            let count = self.journal.habitEntries.countDays(date1: lastRun, date2: date)
             
             do {
                 let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
@@ -412,11 +428,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
-//    func refresh() {
-//        habitTableView.reloadData()
-//        dateCollectionView.reloadData()
-//    }
-    
     func setDefaults() {
         let defaults = UserDefaults.standard
         defaults.set(Date(), forKey: "lastRun")
@@ -427,7 +438,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         return day
     }
     
-    func getMonth(date: Date) -> String {
+    func getMonthString(date: Date) -> String {
         let month = Calendar.current.component(.month, from: date)
         switch (month) {
         case 1:
@@ -457,5 +468,42 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         default:
             return ("Jan")
         }
+    }
+    func getMonth(month: String) -> Int {
+        switch (month) {
+        case "Jan":
+            return (1)
+        case "Feb":
+            return (2)
+        case "Mar":
+            return (3)
+        case "Apr":
+            return (4)
+        case "May":
+            return (5)
+        case "Jun":
+            return (6)
+        case "Jul":
+            return (7)
+        case "Aug":
+            return (8)
+        case "Sep":
+            return (9)
+        case "Oct":
+            return (10)
+        case "Nov":
+            return (11)
+        case "Dec":
+            return (12)
+        default:
+            return (1)
+        }
+    }
+    func getDate(month: Int, day: Int) -> Date {
+        
+        let components = DateComponents(year: 2019, month: month, day: day, hour: 0, minute: 0, second: 0)
+        let date = Calendar.current.date(from: components) ?? Date()
+        
+        return date
     }
 }

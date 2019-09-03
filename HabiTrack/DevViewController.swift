@@ -11,7 +11,7 @@ import SQLite
 
 class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    var list = ["Print Table", "Print Eat Table", "Print Paint Table", "Print Code Table", "Delete Table", "Add Day"]
+    var list = ["Print Table", "Delete Table", "Add Day"]
     
     var database: Connection!
     let journal = Journal()
@@ -49,13 +49,17 @@ class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     
     // custom : printTable (select row in table)
     func printTable() {
+        print()
         print("Printing table...")
+//        print()
         do {
             let habits = try self.database.prepare(self.journal.habitsTable)
             
-            print("# entries: \(getTableSize(habit: "habits"))")
+//            print("# entries: \(getTableSize(habit: "habits"))")
             for habit in habits {
+                print()
                 print("id: \(habit[self.journal.id]), habit: \(habit[self.journal.habit]), time: \(habit[self.journal.time])")
+                printHabitTable(habit[self.journal.habit])
             }
         } catch {
             print(error)
@@ -64,13 +68,13 @@ class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     
     // UIButton : printTable
     func printHabitTable(_ habit: String) {
-        print("Printing \(habit) entries table...")
+//        print("Printing \(habit) entries table...")
         do {
             let table = Table(habit)
             let habits = try self.database.prepare(table)
-            print("# entries: \(getTableSize(habit: habit))")
+//            print("# entries: \(getTableSize(habit: habit))")
             for entry in habits {
-                print("id: \(entry[self.journal.habitEntries.id]), year: \(entry[self.journal.habitEntries.year]), month: \(entry[self.journal.habitEntries.month]), day: \(entry[self.journal.habitEntries.day]), done: \(entry[self.journal.habitEntries.completed])")
+                print("\tid: \(entry[self.journal.habitEntries.id]), year: \(entry[self.journal.habitEntries.year]), month: \(entry[self.journal.habitEntries.month]), day: \(entry[self.journal.habitEntries.day]), done: \(entry[self.journal.habitEntries.completed])")
             }
         } catch {
             print (error)
@@ -122,7 +126,7 @@ class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     
     // tableView : didSelectRowAt
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("Selected row: \(indexPath.row)")
+//        print("Selected row: \(indexPath.row)")
         if (list[indexPath.row] == "Print Table") {
             printTable()
         }
