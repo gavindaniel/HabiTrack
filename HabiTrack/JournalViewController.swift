@@ -42,6 +42,11 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     // load : viewDidAppear
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        print("viewDidAppear...")
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(applicationWillEnterForeground),
+                                               name: UIApplication.willEnterForegroundNotification,
+                                               object: nil)
         self.dateCollectionView.selectItem(at: IndexPath(row: 3, section: 0), animated: false, scrollPosition: [])
         self.dateCollectionView.delegate?.collectionView!(self.dateCollectionView, didSelectItemAt: IndexPath(item: 3, section: 0))
     }
@@ -60,6 +65,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             let database = try Connection(fileUrl.path)
             self.journal.database = database
             self.journal.habitEntries.database = database
+
         } catch {
             print(error)
         }
@@ -68,6 +74,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     // load : viewWillAppear
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print("viewWillAppear...")
         self.habitTableView.reloadData()
         self.dateCollectionView.reloadData()
     }
@@ -113,9 +120,13 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         let tempDay = Calendar.current.component(.day, from: Date())
         // check if today, mark blue, else mark gray
         if (tempDay == getDay(date: daysArray[indexPath.row])) {
-           cell.layer.borderColor = UIColor.blue.cgColor
+            cell.layer.borderColor = UIColor.blue.cgColor
+            cell.monthUILabel?.textColor = UIColor.blue
+            cell.dayUILabel?.textColor = UIColor.blue
         } else {
             cell.layer.borderColor = UIColor.lightGray.cgColor
+            cell.monthUILabel?.textColor = UIColor.gray
+            cell.dayUILabel?.textColor = UIColor.gray
         }
         cell.layer.cornerRadius = 10.0;
         // return initialized item
@@ -136,7 +147,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     // collectionView : didSelectItemAt
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//                print("Selected item: \(indexPath.row)")
+                print("Selected item: \(indexPath.row)")
         // get the cell from the tableView
         if let cell: DateCollectionViewCell = (collectionView.cellForItem(at: indexPath) as? DateCollectionViewCell) {
             // if the selected item is different from the last, deselect the last item
@@ -164,13 +175,10 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             cell.layer.borderWidth = 1.0
             cell.layer.borderColor = UIColor.blue.cgColor
             cell.layer.cornerRadius = 10.0;
-            
             // testing
             cell.tintColor = UIColor.lightGray
             cell.monthUILabel?.textColor = UIColor.blue
             cell.dayUILabel?.textColor = UIColor.blue
-            
-            
             
             // get the habit string from the cell
 //            let tempMonth = cell.monthUILabel?.text
@@ -390,6 +398,8 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     func update() {
         print("Updating View Controller...")
         
+//        self.dateCollectionView.selectItem(at: IndexPath(row: 3, section: 0), animated: false, scrollPosition: [])
+        
         let date = Date()
         print("date: \(date)")
         let defaults = UserDefaults.standard
@@ -423,6 +433,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
             self.journal.addDays(numDays: count, startDate: lastRun)
             UserDefaults.standard.set(Date(), forKey: "lastRun")
+            createDaysArray()
         } else {
             print("Day has not changed.")
         }

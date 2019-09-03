@@ -53,7 +53,7 @@ class HabitEntries {
     
     // custom : checkDateCompleted
     func checkDateCompleted(habit: String, date: Date) -> Bool {
-        print("check date completed...")
+//        print("check date completed...")
         let table = Table(habit)
         do {
             let days = try self.database.prepare(table)
@@ -63,7 +63,7 @@ class HabitEntries {
             let month = Calendar.current.component(.month, from: date)
             let tempDay = Calendar.current.component(.day, from: date)
             
-            print("year: \(year), month: \(month), day: \(tempDay)")
+//            print("year: \(year), month: \(month), day: \(tempDay)")
             
             // testing
 //            let temp = table.filter(self.id == row)
