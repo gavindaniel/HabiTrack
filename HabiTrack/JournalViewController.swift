@@ -214,11 +214,11 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                     cell.timeUILabel?.text = habit[self.journal.time]
                     // get the name of habit and size of habit entries table
                     let tempString = habit[self.journal.habit]
-                    let tempStreak = self.journal.habitEntries.countDateStreak(habit: tempString, date: dateSelected)
+                    let tempStreak = self.journal.habitEntries.countStreak(habit: tempString, date: dateSelected)
                     // set the streak
                     cell.streakUILabel?.text = String(tempStreak)
                     // check if today has already been completed
-                    if (self.journal.habitEntries.checkDateCompleted(habit: tempString, date: dateSelected)) {
+                    if (self.journal.habitEntries.checkCompleted(habit: tempString, date: dateSelected)) {
                         cell.accessoryType = .checkmark
                     } else {
                         cell.accessoryType = .none

@@ -70,8 +70,8 @@ class Journal {
                 if (count == row) {
                     let habit = self.habitsTable.filter(self.id == count+firstId)
                     print("date: \(date)")
-                    habitEntries.markDateCompleted(habit: habitString, date: date, val: inc)
-                    let currentStreak = habitEntries.countDateStreak(habit: habitString, date: date)
+                    habitEntries.markCompleted(habit: habitString, date: date, val: inc)
+                    let currentStreak = habitEntries.countStreak(habit: habitString, date: date)
                     let updateHabit = habit.update(self.streak <- currentStreak)
                     do {
                         try self.database.run(updateHabit)
@@ -100,8 +100,8 @@ class Journal {
                 }
                 if (count == row) {
                     let habit = self.habitsTable.filter(self.id == count+firstId)
-                    habitEntries.markDateCompleted(habit: habitString, date: Date(), val: inc)
-                    let currentStreak = habitEntries.countDateStreak(habit: habitString, date: Date())
+                    habitEntries.markCompleted(habit: habitString, date: Date(), val: inc)
+                    let currentStreak = habitEntries.countStreak(habit: habitString, date: Date())
                     let updateHabit = habit.update(self.streak <- currentStreak)
                     do {
                         try self.database.run(updateHabit)

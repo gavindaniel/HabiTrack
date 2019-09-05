@@ -36,6 +36,17 @@ class HabitEntries {
         }
     }
     
+    // custom : deleteTable (delete SQL table)
+    func deleteTable(habit: String) {
+        let table = Table(habit)
+        let deleteTable = table.drop()
+        do {
+            try self.database.run(deleteTable)
+        } catch {
+            print (error)
+        }
+    }
+    
     // custom : getTableSize (size of database table)
     func getTableSize(habit: String) -> Int {
         var count = 0;
@@ -52,7 +63,7 @@ class HabitEntries {
     }
     
     // custom : checkDateCompleted
-    func checkDateCompleted(habit: String, date: Date) -> Bool {
+    func checkCompleted(habit: String, date: Date) -> Bool {
         let table = Table(habit)
         do {
             let days = try self.database.prepare(table)
@@ -78,41 +89,8 @@ class HabitEntries {
         return false
     }
     
-    // custom : checkCompleted
-    func checkCompleted(habit: String, index: Int) -> Bool {
-        let table = Table(habit)
-        do {
-            let days = try self.database.prepare(table)
-            var count = 1
-            for day in days {
-                // check if the day (index) in array is completed
-                if (count == index) {
-                    if (day[self.completed] == 1) {
-                        return true
-                    }
-                }
-                count += 1
-            }
-        } catch {
-            print(error)
-        }
-        // most recent day (today) not completed, return false
-        return false
-    }
-    
-    // custom : deleteTable (delete SQL table)
-    func deleteTable(habit: String) {
-        let table = Table(habit)
-        let deleteTable = table.drop()
-        do {
-            try self.database.run(deleteTable)
-        } catch {
-            print (error)
-        }
-    }
-    
     // custom : markDateCompleted
-    func markDateCompleted(habit: String, date: Date, val: Int) {
+    func markCompleted(habit: String, date: Date, val: Int) {
         print("mark date: \(date) completed...")
         do {
             let table = Table(habit)
@@ -141,29 +119,8 @@ class HabitEntries {
         }
     }
     
-    // custom : markCompleted
-    func markCompleted(habit: String, row: Int, val: Int) {
-        do {
-            let table = Table(habit)
-            let days = try self.database.prepare(table)
-            for day in days {
-                if (day[self.id] == row) {
-                    let temp = table.filter(self.id == row)
-                    let updateHabit = temp.update(self.completed <- val)
-                    do {
-                        try self.database.run(updateHabit)
-                    } catch {
-                        print(error)
-                    }
-                }
-            }
-        } catch {
-            print(error)
-        }
-    }
-    
     // custom : countDateStreak
-    func countDateStreak(habit: String, date: Date) -> Int {
+    func countStreak(habit: String, date: Date) -> Int {
         var index = 1
         var count = 0
         do {
@@ -192,31 +149,6 @@ class HabitEntries {
         }
         return(count)
     }
-    
-    // custom : countStreak
-    func countStreak(habit: String) -> Int {
-        var index = 1
-        var count = 0
-        do {
-            let table = Table(habit)
-            let days = try self.database.prepare(table)
-            for day in days {
-                    if (day[self.completed] == 1) {
-                        count += 1
-                    } else {
-                        if (index != getTableSize(habit: habit)) {
-                            count = 0
-                        }
-                    }
-                index += 1
-            }
-        } catch {
-            print(error)
-        }
-//        print("streak: \(count)")
-        return(count)
-    }
-    
     
     // custom : addDay(add a day to habit completed table)
     func addDay(habit: String, date: Date) {
