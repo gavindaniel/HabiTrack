@@ -53,7 +53,6 @@ class HabitEntries {
     
     // custom : checkDateCompleted
     func checkDateCompleted(habit: String, date: Date) -> Bool {
-//        print("check date completed...")
         let table = Table(habit)
         do {
             let days = try self.database.prepare(table)
@@ -62,11 +61,6 @@ class HabitEntries {
             let year = Calendar.current.component(.year, from: date)
             let month = Calendar.current.component(.month, from: date)
             let tempDay = Calendar.current.component(.day, from: date)
-            
-//            print("year: \(year), month: \(month), day: \(tempDay)")
-            
-            // testing
-//            let temp = table.filter(self.id == row)
             
             for day in days {
                 // check if the day (index) in array is completed
@@ -170,42 +164,32 @@ class HabitEntries {
     
     // custom : countDateStreak
     func countDateStreak(habit: String, date: Date) -> Int {
-//        print("counting \(habit) date streak...")
         var index = 1
         var count = 0
-        
-        let year = Calendar.current.component(.year, from: date)
-        let month = Calendar.current.component(.month, from: date)
-        let tempDay = Calendar.current.component(.day, from: date)
-//        print("year: \(year), month: \(month), day: \(tempDay)")
-//        print("date: \(date)")
-        
         do {
             let table = Table(habit)
             let days = try self.database.prepare(table)
             for day in days {
-//                print("year: \(day[self.year]), month: \(day[self.month]), day: \(day[self.day])")
-                if (day[self.completed] == 1) {
-                    count += 1
-//                    print("count: \(count)")
-                } else {
-//                    print("not completed -> year: \(day[self.year]), month: \(day[self.month]), day: \(day[self.day])")
-//                    if (day[self.year] != year && day[self.month] != month && day[self.day] != tempDay) {
-//                        count = 0
-//                        print("count: \(count)")
-//                    }
-//                    print("day[self.day]: \(day[self.day]) != \(tempDay)")
-                    if (day[self.day] != tempDay) {
-                        count = 0
-//                        print("count: \(count)")
+                    if (day[self.year] == Calendar.current.component(.year, from: date) &&
+                        day[self.month] == Calendar.current.component(.month, from: date) &&
+                        day[self.day] == Calendar.current.component(.day, from: date)) {
+                        if (day[self.completed] == 1) {
+                            count += 1
+                        }
+                        break
+                    } else {
+                        if (day[self.completed] == 1) {
+                            count += 1
+                        } else {
+                                print("clearing streak...")
+                                count = 0
+                        }
                     }
-                }
                 index += 1
             }
         } catch {
             print(error)
         }
-        //        print("streak: \(count)")
         return(count)
     }
     

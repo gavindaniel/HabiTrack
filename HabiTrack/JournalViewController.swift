@@ -198,7 +198,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     // tableView : cellForRowAt
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        print("cellForRowAt...\(indexPath.row)")
         // create tableView cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
             as! HabitTableViewCell
