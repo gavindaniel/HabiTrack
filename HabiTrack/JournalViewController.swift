@@ -27,7 +27,7 @@ class HabitTableViewCell: UITableViewCell {
 class JournalViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
 
     // variables
-    let days = 31
+//    let days = 31
     var daysArray: Array<Date> = []
     
     var lastSelectedItem = -1
@@ -42,7 +42,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     // load : viewDidAppear
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print("viewDidAppear...")
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(applicationWillEnterForeground),
                                                name: UIApplication.willEnterForegroundNotification,
@@ -74,7 +73,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     // load : viewWillAppear
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("viewWillAppear...")
         self.habitTableView.reloadData()
         self.dateCollectionView.reloadData()
     }
@@ -86,7 +84,8 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     // custom : createDaysArray (init daysArray)
-    func createDaysArray() {
+    func updateDaysArray() {
+        daysArray = []
         var day = Calendar.current.date(byAdding: .day, value: -3, to: Date())
         var count = -3
         while count <= 3 {
@@ -101,7 +100,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // if the days array has not been initialized, create the array
         if (daysArray.count == 0) {
-            createDaysArray()
+            updateDaysArray()
         }
         return (daysArray.count)
     }
@@ -163,7 +162,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                 // FIXME: replace 'days' with a calculation for number of days in the month
                 // loop through cells and deselect
                 var tempIndex = 0
-                while tempIndex < days {
+                while tempIndex < daysArray.count {
                     if (tempIndex != lastSelectedItem) {
                         self.dateCollectionView.deselectItem(at: IndexPath(row: tempIndex, section: 0), animated: false)
                     }
@@ -186,7 +185,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             
             // FIXME: Add call to update TableView with data from this date
         }
-        print("reloading...")
         self.habitTableView.reloadData()
     }
     
@@ -420,7 +418,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
             self.journal.addDays(numDays: count, startDate: lastRun)
             UserDefaults.standard.set(Date(), forKey: "lastRun")
-            createDaysArray()
+            updateDaysArray()
         } else {
             print("Day has not changed.")
         }

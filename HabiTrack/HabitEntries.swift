@@ -91,7 +91,6 @@ class HabitEntries {
     
     // custom : markDateCompleted
     func markCompleted(habit: String, date: Date, val: Int) {
-        print("mark date: \(date) completed...")
         do {
             let table = Table(habit)
             let days = try self.database.prepare(table)
@@ -99,10 +98,8 @@ class HabitEntries {
             let year = Calendar.current.component(.year, from: date)
             let month = Calendar.current.component(.month, from: date)
             let tempDay = Calendar.current.component(.day, from: date)
-            print("year: \(year), month: \(month), day: \(tempDay)")
             
             for day in days {
-                print("year: \(day[self.year]), month: \(day[self.month]), day: \(day[self.day])")
                 if (day[self.year] == year && day[self.month] == month && day[self.day] == tempDay) {
                     let temp = table.filter(self.year == year).filter(self.month == month).filter(self.day == tempDay)
                     let updateHabit = temp.update(self.completed <- val)
@@ -112,7 +109,6 @@ class HabitEntries {
                         print(error)
                     }
                 }
-                print("incrementing...")
             }
         } catch {
             print(error)
@@ -126,23 +122,29 @@ class HabitEntries {
         do {
             let table = Table(habit)
             let days = try self.database.prepare(table)
+            
+            var flag = false
+            
             for day in days {
-                    if (day[self.year] == Calendar.current.component(.year, from: date) &&
-                        day[self.month] == Calendar.current.component(.month, from: date) &&
-                        day[self.day] == Calendar.current.component(.day, from: date)) {
-                        if (day[self.completed] == 1) {
-                            count += 1
-                        }
-                        break
-                    } else {
-                        if (day[self.completed] == 1) {
-                            count += 1
-                        } else {
-                                print("clearing streak...")
-                                count = 0
-                        }
+                if (day[self.year] == Calendar.current.component(.year, from: date) &&
+                    day[self.month] == Calendar.current.component(.month, from: date) &&
+                    day[self.day] == Calendar.current.component(.day, from: date)) {
+                    flag = true
+                    if (day[self.completed] == 1) {
+                        count += 1
                     }
+                    break
+                } else {
+                    if (day[self.completed] == 1) {
+                        count += 1
+                    } else {
+                        count = 0
+                    }
+                }
                 index += 1
+            }
+            if (!flag) {
+                count = 0
             }
         } catch {
             print(error)
@@ -161,7 +163,6 @@ class HabitEntries {
         let addDay = table.insert(self.year <- year, self.month <- month, self.day <- day, self.completed <- 0)
         do {
             try self.database.run(addDay)
-//            print("Day Added -> year: \(year), month: \(month), day: \(day)")
         } catch {
             print (error)
         }
@@ -172,7 +173,6 @@ class HabitEntries {
         let d1 = calendar.startOfDay(for: date1)
         let d2 = calendar.startOfDay(for: date2)
         let components = calendar.dateComponents([.day], from: d1, to: d2).day ?? 0
-//        print("# days between \(d1) and \(d2): \(components)")
         return(components)
     }
 }
