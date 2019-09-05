@@ -215,15 +215,10 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                     cell.timeUILabel?.text = habit[self.journal.time]
                     // get the name of habit and size of habit entries table
                     let tempString = habit[self.journal.habit]
-//                    let tempSize = self.journal.habitEntries.getTableSize(habit: tempString)
-                    // count the streak
-//                    let tempStreak = self.journal.habitEntries.countStreak(habit: tempString)
-//                    print("dateSelected: \(dateSelected)")
                     let tempStreak = self.journal.habitEntries.countDateStreak(habit: tempString, date: dateSelected)
                     // set the streak
                     cell.streakUILabel?.text = String(tempStreak)
                     // check if today has already been completed
-//                    if (self.journal.habitEntries.checkCompleted(habit: tempString, index: tempSize)) {
                     if (self.journal.habitEntries.checkDateCompleted(habit: tempString, date: dateSelected)) {
                         cell.accessoryType = .checkmark
                     } else {
@@ -251,12 +246,10 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             // check if the cell has been completed
             if cell.accessoryType == UITableViewCell.AccessoryType.checkmark {
                 cell.accessoryType = .none
-//                journal.updateStreak(row: indexPath.row, inc: 0, habitString: tempString ?? "none")
                 journal.updateDateStreak(row: indexPath.row, inc: 0, date: dateSelected, habitString: tempString ?? "none")
             }
             else {
                 cell.accessoryType = .checkmark
-//                journal.updateStreak(row: indexPath.row, inc: 1, habitString: tempString ?? "none")
                 journal.updateDateStreak(row: indexPath.row, inc: 1, date: dateSelected, habitString: tempString ?? "none")
             }
         }
@@ -268,7 +261,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     {
         // check if the editingStyle is delete
         if (editingStyle == UITableViewCell.EditingStyle.delete) {
-            print("Deleting habit...")
             // variables
             var count = 0
             var firstId = 0
@@ -294,7 +286,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                         let habit = self.journal.habitsTable.filter(self.journal.id == (count+firstId))
                         // delete the habit
                         let deleteHabit = habit.delete()
-                        // attempt to delete the habit from the database
                         do {
                             try self.journal.database.run(deleteHabit)
                             print("Deleted habit")
@@ -395,11 +386,9 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         present(alert, animated: true, completion: nil)
     }
     
+    // custom : update
     func update() {
         print("Updating View Controller...")
-        
-//        self.dateCollectionView.selectItem(at: IndexPath(row: 3, section: 0), animated: false, scrollPosition: [])
-        
         let date = Date()
         print("date: \(date)")
         let defaults = UserDefaults.standard
@@ -416,7 +405,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         if (yearLastRun != yearToday || monthLastRun != monthToday || dayLastRun != dayToday) {
 //        if (1 != 0) {
             print("Date has changed. Updating last run date...")
-
             // not sure why the ! is needed below
 //            let nextDay = Calendar.current.date(byAdding: .day, value: 1, to: date)
 //            let count = self.journal.habitEntries.countDays(date1: lastRun, date2: nextDay ?? Date())
@@ -437,84 +425,5 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         } else {
             print("Day has not changed.")
         }
-    }
-    
-    func setDefaults() {
-        let defaults = UserDefaults.standard
-        defaults.set(Date(), forKey: "lastRun")
-    }
-    
-    func getDay(date: Date) -> Int {
-        let day = Calendar.current.component(.day, from: date)
-        return day
-    }
-    
-    func getMonthString(date: Date) -> String {
-        let month = Calendar.current.component(.month, from: date)
-        switch (month) {
-        case 1:
-            return ("Jan")
-        case 2:
-            return ("Feb")
-        case 3:
-            return ("Mar")
-        case 4:
-            return ("Apr")
-        case 5:
-            return ("May")
-        case 6:
-            return ("Jun")
-        case 7:
-            return ("Jul")
-        case 8:
-            return ("Aug")
-        case 9:
-            return ("Sep")
-        case 10:
-            return ("Oct")
-        case 11:
-            return ("Nov")
-        case 12:
-            return ("Dec")
-        default:
-            return ("Jan")
-        }
-    }
-    func getMonth(month: String) -> Int {
-        switch (month) {
-        case "Jan":
-            return (1)
-        case "Feb":
-            return (2)
-        case "Mar":
-            return (3)
-        case "Apr":
-            return (4)
-        case "May":
-            return (5)
-        case "Jun":
-            return (6)
-        case "Jul":
-            return (7)
-        case "Aug":
-            return (8)
-        case "Sep":
-            return (9)
-        case "Oct":
-            return (10)
-        case "Nov":
-            return (11)
-        case "Dec":
-            return (12)
-        default:
-            return (1)
-        }
-    }
-    func getDate(month: Int, day: Int) -> Date {
-        
-        let components = DateComponents(year: 2019, month: month, day: day, hour: 0, minute: 0, second: 0)
-        let date = Calendar.current.date(from: components) ?? Date()
-        
-        return date
     }
 }
