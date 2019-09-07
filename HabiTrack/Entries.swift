@@ -1,5 +1,5 @@
 //
-//  HabitEntries.swift
+//  Entries.swift
 //  HabiTrack
 //
 //  Created by Gavin Daniel on 9/1/19.
@@ -9,7 +9,7 @@
 import Foundation
 import SQLite
 
-class HabitEntries {
+class Entries {
     
     var database: Connection!
     // individual habit journal entry table columns
@@ -165,6 +165,27 @@ class HabitEntries {
             try self.database.run(addDay)
         } catch {
             print (error)
+        }
+    }
+    
+    // custom : addDay(add a day to habit completed table)
+    func deleteDay(habit: String, date: Date) {
+        let table = Table(habit)
+        let calendar = Calendar.current
+        let year = calendar.component(.year, from: date)
+        let month = calendar.component(.month, from: date)
+        let day = calendar.component(.day, from: date)
+//        let addDay = table.insert(self.year <- year, self.month <- month, self.day <- day, self.completed <- 0)
+        
+        do {
+            // loop through the table
+            let entry = table.filter(self.year == year).filter(self.month == month).filter(self.day == day)
+            // delete the habit
+            let deleteDay = entry.delete()
+            try self.database.run(deleteDay)
+            print("Deleted entry")
+        } catch {
+            print(error)
         }
     }
     

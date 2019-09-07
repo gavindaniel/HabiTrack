@@ -63,7 +63,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
             let database = try Connection(fileUrl.path)
             self.journal.database = database
-            self.journal.habitEntries.database = database
+            self.journal.entries.database = database
 
         } catch {
             print(error)
@@ -86,12 +86,15 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     // custom : createDaysArray (init daysArray)
     func updateDaysArray() {
         daysArray = []
-        var day = Calendar.current.date(byAdding: .day, value: -3, to: Date())
+//        var day = Calendar.current.date(byAdding: .day, value: -3, to: Date())
+        var day = Calendar.current.date(byAdding: .day, value: -3, to: getLocalDate(date: Date()))
         var count = -3
         while count <= 3 {
-            daysArray.append(day ?? Date())
+//            daysArray.append(day ?? Date())
+            daysArray.append(day ?? getLocalDate(date: Date()))
             // increment day count
-            day = Calendar.current.date(byAdding: .day, value: 1, to: day ?? Date())
+//            day = Calendar.current.date(byAdding: .day, value: 1, to: day ?? Date())
+            day = Calendar.current.date(byAdding: .day, value: 1, to: day ?? getLocalDate(date: Date()))
             count += 1
         }
     }
@@ -111,14 +114,14 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "dateCell", for: indexPath)
             as! DateCollectionViewCell
         // add labels
-        cell.monthUILabel?.text = getMonthString(date: daysArray[indexPath.row])
-        cell.dayUILabel?.text = String(getDay(date: daysArray[indexPath.row]))
+        cell.monthUILabel?.text = getMonthAsString(date: daysArray[indexPath.row])
+        cell.dayUILabel?.text = String(getDayAsInt(date: daysArray[indexPath.row]))
         cell.monthUILabel?.textColor = UIColor.gray
         cell.dayUILabel?.textColor = UIColor.gray
         cell.layer.borderWidth = 1.0
         let tempDay = Calendar.current.component(.day, from: Date())
         // check if today, mark blue, else mark gray
-        if (tempDay == getDay(date: daysArray[indexPath.row])) {
+        if (tempDay == getDayAsInt(date: daysArray[indexPath.row])) {
             cell.layer.borderColor = UIColor.blue.cgColor
             cell.monthUILabel?.textColor = UIColor.blue
             cell.dayUILabel?.textColor = UIColor.blue
@@ -153,9 +156,12 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             if (lastSelectedItem != indexPath.row) {
                 lastSelectedItem = indexPath.row
                 
-                let month = cell.monthUILabel?.text ?? String(Calendar.current.component(.month, from: Date()))
-                let day = cell.dayUILabel?.text ?? String(Calendar.current.component(.day, from: Date()))
-                let date = getDate(month: getMonth(month: month), day: Int(day) ?? Calendar.current.component(.day, from: Date()))
+//                let month = cell.monthUILabel?.text ?? String(Calendar.current.component(.month, from: Date()))
+                let month = cell.monthUILabel?.text ?? String(Calendar.current.component(.month, from: getLocalDate(date:Date())))
+//                let day = cell.dayUILabel?.text ?? String(Calendar.current.component(.day, from: Date()))
+                let day = cell.dayUILabel?.text ?? String(Calendar.current.component(.day, from: getLocalDate(date: Date())))
+//                let date = getDate(month: getMonth(month: month), day: Int(day) ?? Calendar.current.component(.day, from: Date()))
+                let date = getDate(month: getMonthAsInt(month: month), day: Int(day) ?? Calendar.current.component(.day, from: getLocalDate(date: Date())))
 //                print("date: \(date)")
                 dateSelected = date
                 
@@ -212,11 +218,11 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                     cell.timeUILabel?.text = habit[self.journal.time]
                     // get the name of habit and size of habit entries table
                     let tempString = habit[self.journal.habit]
-                    let tempStreak = self.journal.habitEntries.countStreak(habit: tempString, date: dateSelected)
+                    let tempStreak = self.journal.entries.countStreak(habit: tempString, date: dateSelected)
                     // set the streak
                     cell.streakUILabel?.text = String(tempStreak)
                     // check if today has already been completed
-                    if (self.journal.habitEntries.checkCompleted(habit: tempString, date: dateSelected)) {
+                    if (self.journal.entries.checkCompleted(habit: tempString, date: dateSelected)) {
                         cell.accessoryType = .checkmark
                     } else {
                         cell.accessoryType = .none
@@ -258,7 +264,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     {
         // check if the editingStyle is delete
         if (editingStyle == UITableViewCell.EditingStyle.delete) {
-            // variables
             var count = 0
             var firstId = 0
             var tempString = ""
@@ -267,8 +272,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                 tempString = cell.habitUILabel?.text ?? "error"
             }
             // delete the habit from the table
-            journal.habitEntries.deleteTable(habit: tempString)
-            // do something
+            journal.entries.deleteTable(habit: tempString)
             do {
                 // get the habits table
                 let habits = try self.journal.database.prepare(self.journal.habitsTable)
@@ -333,7 +337,8 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                 try self.journal.database.run(addHabit)
                 print("Habit Added -> habit: \(habit), time: \(time)")
                 
-                self.journal.habitEntries.addDay(habit: habit, date: Date())
+//                self.journal.entries.addDay(habit: habit, date: Date())
+                self.journal.entries.addDay(habit: habit, date: getLocalDate(date: Date()))
                 
                 self.habitTableView.reloadData()
             } catch {
@@ -387,10 +392,13 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     func update() {
         print("Updating View Controller...")
         let date = Date()
-        print("date: \(date)")
+//        let date = getLocalDate(date: Date())
+//        print("date hour: \(date)")
+        print("date hour: \(Calendar.current.component(.hour, from: date))")
         let defaults = UserDefaults.standard
         let lastRun = defaults.object(forKey: "lastRun") as! Date
-        print("last run: \(lastRun))")
+//        print("last run: \(lastRun)")
+        print("last run hour: \(Calendar.current.component(.hour, from: lastRun))")
         
         let yearToday = Calendar.current.component(.year, from: date)
         let monthToday = Calendar.current.component(.month, from: date)
@@ -405,19 +413,20 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             // not sure why the ! is needed below
 //            let nextDay = Calendar.current.date(byAdding: .day, value: 1, to: date)
 //            let count = self.journal.habitEntries.countDays(date1: lastRun, date2: nextDay ?? Date())
-            let count = self.journal.habitEntries.countDays(date1: lastRun, date2: date)
+            let count = self.journal.entries.countDays(date1: lastRun, date2: date)
             
             do {
                 let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
                 let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
                 let database = try Connection(fileUrl.path)
                 self.journal.database = database
-                self.journal.habitEntries.database = database
+                self.journal.entries.database = database
             } catch {
                 print(error)
             }
             self.journal.addDays(numDays: count, startDate: lastRun)
             UserDefaults.standard.set(Date(), forKey: "lastRun")
+//            UserDefaults.standard.set(getLocalDate(date: Date()), forKey: "lastRun")
             updateDaysArray()
         } else {
             print("Day has not changed.")

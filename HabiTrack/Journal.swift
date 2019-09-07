@@ -13,7 +13,7 @@ class Journal {
 
     var database: Connection!
     let habitsTable = Table("habits")
-    let habitEntries = HabitEntries()
+    let entries = Entries()
     // habits table columns
     let id = Expression<Int>("id")
     let habit = Expression<String>("habit")
@@ -70,8 +70,8 @@ class Journal {
                 if (count == row) {
                     let habit = self.habitsTable.filter(self.id == count+firstId)
                     print("date: \(date)")
-                    habitEntries.markCompleted(habit: habitString, date: date, val: inc)
-                    let currentStreak = habitEntries.countStreak(habit: habitString, date: date)
+                    entries.markCompleted(habit: habitString, date: date, val: inc)
+                    let currentStreak = entries.countStreak(habit: habitString, date: date)
                     let updateHabit = habit.update(self.streak <- currentStreak)
                     do {
                         try self.database.run(updateHabit)
@@ -100,8 +100,10 @@ class Journal {
                 }
                 if (count == row) {
                     let habit = self.habitsTable.filter(self.id == count+firstId)
-                    habitEntries.markCompleted(habit: habitString, date: Date(), val: inc)
-                    let currentStreak = habitEntries.countStreak(habit: habitString, date: Date())
+//                    entries.markCompleted(habit: habitString, date: Date(), val: inc)
+                    entries.markCompleted(habit: habitString, date: getLocalDate(date: Date()), val: inc)
+//                    let currentStreak = entries.countStreak(habit: habitString, date: Date())
+                    let currentStreak = entries.countStreak(habit: habitString, date: getLocalDate(date: Date()))
                     let updateHabit = habit.update(self.streak <- currentStreak)
                     do {
                         try self.database.run(updateHabit)
@@ -129,8 +131,8 @@ class Journal {
                 for habit in habits {
                     // do something...
                     let tempString = habit[self.habit]
-//                    habitEntries.addDay(habit: tempString, date: Date())
-                    habitEntries.addDay(habit: tempString, date: nextDay ?? Date())
+//                    entries.addDay(habit: tempString, date: nextDay ?? Date())
+                    entries.addDay(habit: tempString, date: nextDay ?? getLocalDate(date: Date()))
                 }
             } catch {
                 print(error)
@@ -138,6 +140,21 @@ class Journal {
             temp += 1
             // not sure why the ! is needed below
             nextDay = Calendar.current.date(byAdding: .day, value: 1, to: nextDay!)
+        }
+    }
+    
+    // custom : deleteDays
+    func deleteDays(date: Date) {
+        do {
+            let habits = try self.database.prepare(self.habitsTable)
+            for habit in habits {
+                // do something...
+                let tempString = habit[self.habit]
+                //                    entries.addDay(habit: tempString, date: nextDay ?? Date())
+                entries.deleteDay(habit: tempString, date: date)
+            }
+        } catch {
+            print(error)
         }
     }
 }

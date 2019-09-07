@@ -11,7 +11,7 @@ import SQLite
 
 class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    var list = ["Print Table", "Delete Table", "Add Day"]
+    var list = ["Print Table", "Delete Table", "Add Day", "Delete Day"]
     
     var database: Connection!
     let journal = Journal()
@@ -27,6 +27,7 @@ class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
             let database = try Connection(fileUrl.path)
             self.database = database
+            self.journal.database = database
         } catch {
             print(error)
         }
@@ -74,7 +75,7 @@ class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             let habits = try self.database.prepare(table)
 //            print("# entries: \(getTableSize(habit: habit))")
             for entry in habits {
-                print("\tid: \(entry[self.journal.habitEntries.id]), year: \(entry[self.journal.habitEntries.year]), month: \(entry[self.journal.habitEntries.month]), day: \(entry[self.journal.habitEntries.day]), done: \(entry[self.journal.habitEntries.completed])")
+                print("\tid: \(entry[self.journal.entries.id]), year: \(entry[self.journal.entries.year]), month: \(entry[self.journal.entries.month]), day: \(entry[self.journal.entries.day]), done: \(entry[self.journal.entries.completed])")
             }
         } catch {
             print (error)
@@ -94,15 +95,15 @@ class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     // custom : Add Day to "Paint" Habit Table
-    func addDay() {
+    func addDay(habit: String) {
         // to be changed for testing
-        let habit = "Paint"
+//        let habit = "Paint"
         print("Force adding day to \(habit) entries table...")
         let table = Table(habit)
         let year = Calendar.current.component(.year, from: Date())
         let month = Calendar.current.component(.month, from:  Date())
         let day = Calendar.current.component(.day, from:  Date())
-        let dayAdd = table.insert(self.journal.habitEntries.year <- year, self.journal.habitEntries.month <- month, self.journal.habitEntries.day <- day, self.journal.habitEntries.completed <- 0)
+        let dayAdd = table.insert(self.journal.entries.year <- year, self.journal.entries.month <- month, self.journal.entries.day <- day, self.journal.entries.completed <- 0)
         do {
             try self.database.run(dayAdd)
         } catch {
@@ -110,6 +111,68 @@ class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         }
     }
     
+    // custom: addDays
+    func addDays() {
+        var temp = 0
+//        var nextDay = Calendar.current.date(byAdding: .day, value: 1, to: Date)
+        //        print("nextDay: \(nextDay)")
+        let table = Table("habits")
+        let numDays = 1
+        while temp < numDays {
+            do {
+                let habits = try self.database.prepare(table)
+                for habit in habits {
+                    // do something...
+//                    let tempString = habit[self.journal.habit]
+//                    self.journal.habitEntries.addDay(habit: tempString, date: Date())
+                    addDay(habit: habit[self.journal.habit])
+                }
+            } catch {
+                print(error)
+            }
+            temp += 1
+            // not sure why the ! is needed below
+//            nextDay = Calendar.current.date(byAdding: .day, value: 1, to: nextDay!)
+        }
+    }
+    
+    // custom : addDay(add a day to habit completed table)
+    func deleteDay(habit: String, date: Date) {
+        let table = Table(habit)
+        let calendar = Calendar.current
+        let year = calendar.component(.year, from: date)
+        let month = calendar.component(.month, from: date)
+        let day = calendar.component(.day, from: date)
+        //        let addDay = table.insert(self.year <- year, self.month <- month, self.day <- day, self.completed <- 0)
+        
+        do {
+            // loop through the table
+            let entry = table.filter(self.journal.entries.year == year).filter(self.journal.entries.month == month).filter(self.journal.entries.day == day)
+            // delete the habit
+            let deleteDay = entry.delete()
+            try self.database.run(deleteDay)
+            print("Deleted entry")
+        } catch {
+            print(error)
+        }
+    }
+    
+    // custom : deleteDays
+    func deleteDays() {
+        let table = Table("habits")
+        do {
+            let habits = try self.database.prepare(table)
+            for habit in habits {
+                // do something...
+                let tempString = habit[self.journal.habit]
+                //                    entries.addDay(habit: tempString, date: nextDay ?? Date())
+                let day = Calendar.current.date(byAdding: .day, value: 1, to: Date())
+                deleteDay(habit: tempString, date: day ?? Date())
+            }
+        } catch {
+            print(error)
+        }
+    }
     
     // tableView : numberOfRowsInSection
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -130,20 +193,16 @@ class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         if (list[indexPath.row] == "Print Table") {
             printTable()
         }
-        else if (list[indexPath.row] == "Print Eat Table") {
-            printHabitTable("Eat")
-        }
-        else if (list[indexPath.row] == "Print Paint Table") {
-            printHabitTable("Paint")
-        }
-        else if (list[indexPath.row] == "Print Code Table") {
-            printHabitTable("Code")
-        }
         else if (list[indexPath.row] == "Delete Table") {
             deleteTable()
         }
         else if (list[indexPath.row] == "Add Day") {
-            addDay()
+//            addDay()
+            addDays()
+        }
+        else if (list[indexPath.row] == "Delete Day") {
+            //            addDay()
+            deleteDays()
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }

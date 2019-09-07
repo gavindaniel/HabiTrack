@@ -17,7 +17,7 @@
 		4C4FF7D1230F620D00DAC450 /* HabiTrackUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4FF7D0230F620D00DAC450 /* HabiTrackUITests.swift */; };
 		4C6A161A2320BA4000274316 /* CustomDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A16192320BA4000274316 /* CustomDate.swift */; };
 		4C89B815231B62D500AE45F4 /* Journal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C89B814231B62D500AE45F4 /* Journal.swift */; };
-		4C89B81D231C44E400AE45F4 /* HabitEntries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C89B81C231C44E400AE45F4 /* HabitEntries.swift */; };
+		4C89B81D231C44E400AE45F4 /* Entries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C89B81C231C44E400AE45F4 /* Entries.swift */; };
 		4C89B81F231CE2A600AE45F4 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C89B81E231CE2A600AE45F4 /* SettingsViewController.swift */; };
 		4CB004C82311A59400417248 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB004BA2311A56E00417248 /* SQLite.framework */; };
 		4CB004C92311A59400417248 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB004BA2311A56E00417248 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -127,7 +127,7 @@
 		4C4FF7D2230F620D00DAC450 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4C6A16192320BA4000274316 /* CustomDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDate.swift; sourceTree = "<group>"; };
 		4C89B814231B62D500AE45F4 /* Journal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Journal.swift; sourceTree = "<group>"; };
-		4C89B81C231C44E400AE45F4 /* HabitEntries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitEntries.swift; sourceTree = "<group>"; };
+		4C89B81C231C44E400AE45F4 /* Entries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entries.swift; sourceTree = "<group>"; };
 		4C89B81E231CE2A600AE45F4 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		4CB004AF2311A56D00417248 /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = "../SQLite.swift-master/SQLite.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -193,7 +193,7 @@
 				4C4FF7AE230F620B00DAC450 /* AppDelegate.swift */,
 				4C6A16192320BA4000274316 /* CustomDate.swift */,
 				4C89B814231B62D500AE45F4 /* Journal.swift */,
-				4C89B81C231C44E400AE45F4 /* HabitEntries.swift */,
+				4C89B81C231C44E400AE45F4 /* Entries.swift */,
 				4C4FF7B0230F620B00DAC450 /* JournalViewController.swift */,
 				4C4FF7B2230F620B00DAC450 /* DevViewController.swift */,
 				4C89B81E231CE2A600AE45F4 /* SettingsViewController.swift */,
@@ -429,7 +429,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4C4FF7B3230F620B00DAC450 /* DevViewController.swift in Sources */,
-				4C89B81D231C44E400AE45F4 /* HabitEntries.swift in Sources */,
+				4C89B81D231C44E400AE45F4 /* Entries.swift in Sources */,
 				4C4FF7AF230F620B00DAC450 /* AppDelegate.swift in Sources */,
 				4C4FF7B1230F620B00DAC450 /* JournalViewController.swift in Sources */,
 				4C6A161A2320BA4000274316 /* CustomDate.swift in Sources */,
