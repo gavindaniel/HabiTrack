@@ -100,10 +100,8 @@ class Journal {
                 }
                 if (count == row) {
                     let habit = self.habitsTable.filter(self.id == count+firstId)
-//                    entries.markCompleted(habit: habitString, date: Date(), val: inc)
-                    entries.markCompleted(habit: habitString, date: getLocalDate(date: Date()), val: inc)
-//                    let currentStreak = entries.countStreak(habit: habitString, date: Date())
-                    let currentStreak = entries.countStreak(habit: habitString, date: getLocalDate(date: Date()))
+                    entries.markCompleted(habit: habitString, date: Date(), val: inc)
+                    let currentStreak = entries.countStreak(habit: habitString, date: Date())
                     let updateHabit = habit.update(self.streak <- currentStreak)
                     do {
                         try self.database.run(updateHabit)
@@ -131,8 +129,7 @@ class Journal {
                 for habit in habits {
                     // do something...
                     let tempString = habit[self.habit]
-//                    entries.addDay(habit: tempString, date: nextDay ?? Date())
-                    entries.addDay(habit: tempString, date: nextDay ?? getLocalDate(date: Date()))
+                    entries.addDay(habit: tempString, date: nextDay ?? Date())
                 }
             } catch {
                 print(error)

@@ -20,20 +20,15 @@ class HabitTableViewCell: UITableViewCell {
     @IBOutlet weak var habitUILabel: UILabel!
     @IBOutlet weak var timeUILabel: UILabel!
     @IBOutlet weak var streakUILabel: UILabel!
-//    @IBOutlet weak var habitUITextField: UITextField!
 }
 
 // class: JournalViewController
 class JournalViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
 
     // variables
-//    let days = 31
     var daysArray: Array<Date> = []
-    
     var lastSelectedItem = -1
     var dateSelected = Date()
-    
-    // new
     var journal = Journal()
 
     @IBOutlet weak var habitTableView: UITableView!
@@ -79,22 +74,19 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     // load : applicationWillEnterForeground
     @objc func applicationWillEnterForeground() {
-        habitTableView.reloadData()
-        dateCollectionView.reloadData()
+        self.habitTableView.reloadData()
+        self.dateCollectionView.reloadData()
     }
     
-    // custom : createDaysArray (init daysArray)
-    func updateDaysArray() {
+    // custom : updateDaysArray (init daysArray)
+    func updateDaysArray(date: Date) {
         daysArray = []
-//        var day = Calendar.current.date(byAdding: .day, value: -3, to: Date())
-        var day = Calendar.current.date(byAdding: .day, value: -3, to: getLocalDate(date: Date()))
+        var day = Calendar.current.date(byAdding: .day, value: -3, to: date)
         var count = -3
         while count <= 3 {
-//            daysArray.append(day ?? Date())
-            daysArray.append(day ?? getLocalDate(date: Date()))
+            daysArray.append(day ?? Date())
             // increment day count
-//            day = Calendar.current.date(byAdding: .day, value: 1, to: day ?? Date())
-            day = Calendar.current.date(byAdding: .day, value: 1, to: day ?? getLocalDate(date: Date()))
+            day = Calendar.current.date(byAdding: .day, value: 1, to: day ?? date)
             count += 1
         }
     }
@@ -103,7 +95,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // if the days array has not been initialized, create the array
         if (daysArray.count == 0) {
-            updateDaysArray()
+            updateDaysArray(date: Date())
         }
         return (daysArray.count)
     }
@@ -149,20 +141,16 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     // collectionView : didSelectItemAt
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-                print("Selected item: \(indexPath.row)")
+//        print("Selected item: \(indexPath.row)")
         // get the cell from the tableView
         if let cell: DateCollectionViewCell = (collectionView.cellForItem(at: indexPath) as? DateCollectionViewCell) {
             // if the selected item is different from the last, deselect the last item
             if (lastSelectedItem != indexPath.row) {
                 lastSelectedItem = indexPath.row
                 
-//                let month = cell.monthUILabel?.text ?? String(Calendar.current.component(.month, from: Date()))
-                let month = cell.monthUILabel?.text ?? String(Calendar.current.component(.month, from: getLocalDate(date:Date())))
-//                let day = cell.dayUILabel?.text ?? String(Calendar.current.component(.day, from: Date()))
-                let day = cell.dayUILabel?.text ?? String(Calendar.current.component(.day, from: getLocalDate(date: Date())))
-//                let date = getDate(month: getMonth(month: month), day: Int(day) ?? Calendar.current.component(.day, from: Date()))
-                let date = getDate(month: getMonthAsInt(month: month), day: Int(day) ?? Calendar.current.component(.day, from: getLocalDate(date: Date())))
-//                print("date: \(date)")
+                let month = cell.monthUILabel?.text ?? String(Calendar.current.component(.month, from: Date()))
+                let day = cell.dayUILabel?.text ?? String(Calendar.current.component(.day, from: Date()))
+                let date = getDate(month: getMonthAsInt(month: month), day: Int(day) ?? Calendar.current.component(.day, from: Date()))
                 dateSelected = date
                 
                 // FIXME: replace 'days' with a calculation for number of days in the month
@@ -192,6 +180,8 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             // FIXME: Add call to update TableView with data from this date
         }
         self.habitTableView.reloadData()
+        // testing ...
+//        self.dateCollectionView.reloadData()
     }
     
     // tableView : numberOfRowsInSection
@@ -217,12 +207,12 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                     cell.habitUILabel?.text = habit[self.journal.habit]
                     cell.timeUILabel?.text = habit[self.journal.time]
                     // get the name of habit and size of habit entries table
-                    let tempString = habit[self.journal.habit]
-                    let tempStreak = self.journal.entries.countStreak(habit: tempString, date: dateSelected)
+                    let habitString = habit[self.journal.habit]
+                    let habitStreak = self.journal.entries.countStreak(habit: habitString, date: dateSelected)
                     // set the streak
-                    cell.streakUILabel?.text = String(tempStreak)
+                    cell.streakUILabel?.text = String(habitStreak)
                     // check if today has already been completed
-                    if (self.journal.entries.checkCompleted(habit: tempString, date: dateSelected)) {
+                    if (self.journal.entries.checkCompleted(habit: habitString, date: dateSelected)) {
                         cell.accessoryType = .checkmark
                     } else {
                         cell.accessoryType = .none
@@ -266,13 +256,13 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         if (editingStyle == UITableViewCell.EditingStyle.delete) {
             var count = 0
             var firstId = 0
-            var tempString = ""
+            var habitString = ""
             // get the habit string from the tableview cell
             if let cell: HabitTableViewCell = (tableView.cellForRow(at: indexPath) as? HabitTableViewCell) {
-                tempString = cell.habitUILabel?.text ?? "error"
+                habitString = cell.habitUILabel?.text ?? "error"
             }
             // delete the habit from the table
-            journal.entries.deleteTable(habit: tempString)
+            journal.entries.deleteTable(habit: habitString)
             do {
                 // get the habits table
                 let habits = try self.journal.database.prepare(self.journal.habitsTable)
@@ -338,7 +328,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                 print("Habit Added -> habit: \(habit), time: \(time)")
                 
 //                self.journal.entries.addDay(habit: habit, date: Date())
-                self.journal.entries.addDay(habit: habit, date: getLocalDate(date: Date()))
+                self.journal.entries.addDay(habit: habit, date: Date())
                 
                 self.habitTableView.reloadData()
             } catch {
@@ -392,27 +382,20 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     func update() {
         print("Updating View Controller...")
         let date = Date()
-//        let date = getLocalDate(date: Date())
-//        print("date hour: \(date)")
-        print("date hour: \(Calendar.current.component(.hour, from: date))")
         let defaults = UserDefaults.standard
         let lastRun = defaults.object(forKey: "lastRun") as! Date
-//        print("last run: \(lastRun)")
-        print("last run hour: \(Calendar.current.component(.hour, from: lastRun))")
-        
-        let yearToday = Calendar.current.component(.year, from: date)
-        let monthToday = Calendar.current.component(.month, from: date)
-        let dayToday = Calendar.current.component(.day, from: date)
-        let yearLastRun = Calendar.current.component(.year, from: lastRun)
-        let monthLastRun = Calendar.current.component(.month, from: lastRun)
-        let dayLastRun = Calendar.current.component(.day, from: lastRun)
 
-        if (yearLastRun != yearToday || monthLastRun != monthToday || dayLastRun != dayToday) {
+        // comment for testing
+        if (Calendar.current.component(.year, from: lastRun) != Calendar.current.component(.year, from: date) ||
+            Calendar.current.component(.month, from: lastRun) != Calendar.current.component(.month, from: date) ||
+            Calendar.current.component(.day, from: lastRun) != Calendar.current.component(.day, from: date)) {
+            
+            // uncomment for testing
 //        if (1 != 0) {
-            print("Date has changed. Updating last run date...")
-            // not sure why the ! is needed below
 //            let nextDay = Calendar.current.date(byAdding: .day, value: 1, to: date)
 //            let count = self.journal.habitEntries.countDays(date1: lastRun, date2: nextDay ?? Date())
+            
+            print("Date has changed. Updating last run date...")
             let count = self.journal.entries.countDays(date1: lastRun, date2: date)
             
             do {
@@ -425,9 +408,13 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                 print(error)
             }
             self.journal.addDays(numDays: count, startDate: lastRun)
-            UserDefaults.standard.set(Date(), forKey: "lastRun")
-//            UserDefaults.standard.set(getLocalDate(date: Date()), forKey: "lastRun")
-            updateDaysArray()
+            UserDefaults.standard.set(date, forKey: "lastRun")
+            updateDaysArray(date: date)
+            
+            // testing
+            self.habitTableView.reloadData()
+            self.dateCollectionView.reloadData()
+            
         } else {
             print("Day has not changed.")
         }
