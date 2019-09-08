@@ -78,19 +78,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.dateCollectionView.reloadData()
     }
     
-    // custom : updateDaysArray (init daysArray)
-    func updateDaysArray(date: Date) {
-        daysArray = []
-        var day = Calendar.current.date(byAdding: .day, value: -3, to: date)
-        var count = -3
-        while count <= 3 {
-            daysArray.append(day ?? Date())
-            // increment day count
-            day = Calendar.current.date(byAdding: .day, value: 1, to: day ?? date)
-            count += 1
-        }
-    }
-    
     // collectionView : numberOfItemsInSection
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // if the days array has not been initialized, create the array
@@ -342,7 +329,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         present(alert, animated: true, completion: nil)
     }
     
-    
     // UIButton : updateTable (edit an entry)
     @IBAction func updateTable(_ sender: Any) {
         print("Updating table...")
@@ -376,6 +362,19 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         let cancel = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil)
         alert.addAction(cancel)
         present(alert, animated: true, completion: nil)
+    }
+    
+    // custom : updateDaysArray (init daysArray)
+    func updateDaysArray(date: Date) {
+        daysArray = []
+        var day = Calendar.current.date(byAdding: .day, value: -3, to: date)
+        var count = -3
+        while count <= 3 {
+            daysArray.append(day ?? Date())
+            // increment day count
+            day = Calendar.current.date(byAdding: .day, value: 1, to: day ?? date)
+            count += 1
+        }
     }
     
     // custom : update
