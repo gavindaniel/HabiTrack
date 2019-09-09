@@ -155,20 +155,13 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             cell.layer.borderWidth = 1.0
             cell.layer.borderColor = UIColor.blue.cgColor
             cell.layer.cornerRadius = 10.0;
-            // testing
-            cell.tintColor = UIColor.lightGray
             cell.monthUILabel?.textColor = UIColor.blue
             cell.dayUILabel?.textColor = UIColor.blue
-            
-            // get the habit string from the cell
-//            let tempMonth = cell.monthUILabel?.text
-//            let tempDay = cell.dayUILabel?.text
-            
-            // FIXME: Add call to update TableView with data from this date
         }
         self.habitTableView.reloadData()
         // testing ...
-//        self.dateCollectionView.reloadData()
+        updateDaysArray(date: dateSelected)
+        self.dateCollectionView.reloadData()
     }
     
     // tableView : numberOfRowsInSection
