@@ -87,10 +87,6 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
         self.tableView.reloadData()
     }
     
-    func customFilter(id: Int, count: Int) {
-//        let tempHabit = self.journal.habitsTable.filter(id == count)
-    }
-    
     // tableView : editingStyle
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath)
     {
@@ -116,17 +112,8 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
                     }
                     if (count == indexPath.row) {
                         // get the habit whose id matches the count + first ID in the tableView
-                        let tempID = habit[self.journal.id]
-//                            let habit = self.journal.habitsTable.filter(tempID == (count+firstId))
-//                        let tempID = self.journal.id as! Int
-//                        let habit = self.journal.habitsTable.filter(tempID == (count+firstId))
-                        let tempCount = count + firstId
-                        
-//                        let tempHabit = habits.where(tempID == tempCount)
-//                        let tempHabit = self.journal.habitsTable.filter(tempID == (count+firstId))
-                        let tempHabit = self.journal.habitsTable.where(self.journal.id == 8)
+                        let tempHabit = self.journal.habitsTable.where(self.journal.id == (count+firstId))
                         // delete the habit
-//                        
                         let deleteHabit = tempHabit.delete()
                         do {
                             try self.journal.database.run(deleteHabit)
@@ -148,7 +135,6 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
     
     // custom : updateTableView
     func update(date: Date) {
-//        tableView = habitTableView
         dateSelected = date
     }
 }
