@@ -16,9 +16,15 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
     var journal: Journal
     var tableView: UITableView
     
+    override init () {
+        self.journal = Journal()
+        self.tableView = UITableView()
+        super.init()
+    }
+    
     init(journal: Journal, habitTableView: UITableView) {
         self.journal = journal
-        tableView = habitTableView
+        self.tableView = habitTableView
         super.init()
     }
     

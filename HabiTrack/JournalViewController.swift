@@ -32,8 +32,14 @@ class JournalViewController: UIViewController {
     var journal = Journal()
     
     // testing
-    var journalTableView: JournalTableView?
-    var journalDateView: JournalDateView?
+//    var journalTableView: JournalTableView?
+//    var journalDateView: JournalDateView?
+    
+//    var journalTableView = JournalTableView()
+//    var journalDateView = JournalDateView()
+    
+    var journalTableView: JournalTableView!
+    var journalDateView: JournalDateView!
     
     
     // load : viewDidAppear
@@ -45,22 +51,26 @@ class JournalViewController: UIViewController {
                                                object: nil)
         self.dateCollectionView.selectItem(at: IndexPath(row: 3, section: 0), animated: false, scrollPosition: [])
         self.dateCollectionView.delegate?.collectionView!(self.dateCollectionView, didSelectItemAt: IndexPath(item: 3, section: 0))
+        
+        //testing
+        self.habitTableView?.reloadData()
+        self.dateCollectionView?.reloadData()
+        
+//        journalDateView?.updateDaysArray(date: date)
+        
+        // testing
+//        journalTableView?.updateTableView(habitTableView: habitTableView)
+//        journalDateView?.updateDateView(dateCollectionView: dateCollectionView)
+        self.journalTableView.updateTableView(habitTableView: habitTableView)
+        self.journalDateView.updateDateView(dateCollectionView: dateCollectionView)
+        self.habitTableView?.reloadData()
+        self.dateCollectionView?.reloadData()
     }
     
     // load : viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
-        // testing
-        journalTableView = JournalTableView(journal: journal, habitTableView: habitTableView)
-        journalDateView = JournalDateView(dateCollectionView: dateCollectionView, journalTableView: journalTableView!, habitTableView: habitTableView)
-        
-        habitTableView.dataSource = journalTableView
-        habitTableView.delegate = journalTableView
-        
-        dateCollectionView.dataSource = journalDateView
-        dateCollectionView.delegate = journalDateView
             
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(applicationWillEnterForeground),
@@ -72,6 +82,17 @@ class JournalViewController: UIViewController {
             let database = try Connection(fileUrl.path)
             self.journal.database = database
             self.journal.entries.database = database
+            
+            // testing
+            journalTableView = JournalTableView(journal: journal, habitTableView: habitTableView)
+            //        journalDateView = JournalDateView(dateCollectionView: dateCollectionView, journalTableView: journalTableView!, habitTableView: habitTableView)
+            journalDateView = JournalDateView(dateCollectionView: dateCollectionView, journalTableView: journalTableView, habitTableView: habitTableView)
+            
+            habitTableView.dataSource = journalTableView
+            habitTableView.delegate = journalTableView
+            
+            dateCollectionView.dataSource = journalDateView
+            dateCollectionView.delegate = journalDateView
 
         } catch {
             print(error)
@@ -201,13 +222,24 @@ class JournalViewController: UIViewController {
             }
             self.journal.addDays(numDays: count, startDate: lastRun)
             UserDefaults.standard.set(date, forKey: "lastRun")
-            journalDateView?.updateDaysArray(date: date)
+            
+            //testing
+            self.habitTableView?.reloadData()
+            self.dateCollectionView?.reloadData()
+            
+            print("trying to updateDaysArray...")
+//            self.journalDateView?.updateDaysArray(date: date)
+            self.journalDateView?.updateDaysArray(date: date)
             
             // testing
-			self.journalTableView.updateTableView(habitTableView: habitTableView)
-			self.journalDateView.updateTableView(dateCollectionView: dateCollectionView)
-            self.habitTableView.reloadData()
-            self.dateCollectionView.reloadData()
+            print("trying to update views...")
+//            self.journalTableView?.updateTableView(habitTableView: habitTableView)
+//            self.journalDateView?.updateDateView(dateCollectionView: dateCollectionView)
+            self.journalTableView?.updateTableView(habitTableView: habitTableView)
+            self.journalDateView?.updateDateView(dateCollectionView: dateCollectionView)
+            print("trying to reload data...")
+            self.habitTableView?.reloadData()
+            self.dateCollectionView?.reloadData()
             
         } else {
             print("Day has not changed.")

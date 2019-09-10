@@ -20,8 +20,15 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
     var habitTableView: UITableView
     var journalTableView: JournalTableView
     
+    override init () {
+        self.dateView = UICollectionView()
+        self.journalTableView = JournalTableView()
+        self.habitTableView = UITableView()
+        super.init()
+    }
+    
     init(dateCollectionView: UICollectionView, journalTableView: JournalTableView, habitTableView: UITableView) {
-        dateView = dateCollectionView
+        self.dateView = dateCollectionView
         self.journalTableView = journalTableView
         self.habitTableView = habitTableView
         super.init()
@@ -110,6 +117,7 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
         //        print("reloading...")
         //        self.habitTableView.reloadData()
         // testing ...
+//        print("updating dateView...")
         self.journalTableView.updateDate(date: dateSelected)
         self.habitTableView.reloadData()
         //        updateDaysArray(date: dateSelected)
@@ -118,6 +126,7 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
     
     // custom : updateDaysArray (init daysArray)
     func updateDaysArray(date: Date) {
+        print("updating days array...")
         daysArray = []
         var day = Calendar.current.date(byAdding: .day, value: -3, to: date)
         var count = -3
@@ -127,6 +136,7 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
             day = Calendar.current.date(byAdding: .day, value: 1, to: day ?? date)
             count += 1
         }
+        print("updated days array.")
     }
 	
 	// custom : updateTableView
