@@ -57,8 +57,8 @@ class Journal {
         return (count)
     }
     
-    // custom : updateDateStreak
-    func updateDateStreak(row: Int, inc: Int, date: Date, habitString: String) {
+    // custom : updateStreak
+    func updateStreak(row: Int, inc: Int, date: Date, habitString: String) {
         var count = 0
         var firstId = 0
         do {
@@ -69,39 +69,8 @@ class Journal {
                 }
                 if (count == row) {
                     let habit = self.habitsTable.filter(self.id == count+firstId)
-                    print("date: \(date)")
                     entries.markCompleted(habit: habitString, date: date, val: inc)
                     let currentStreak = entries.countStreak(habit: habitString, date: date)
-                    let updateHabit = habit.update(self.streak <- currentStreak)
-                    do {
-                        try self.database.run(updateHabit)
-                        return
-                    } catch {
-                        print(error)
-                    }
-                } else {
-                    count += 1
-                }
-            }
-        } catch {
-            print (error)
-        }
-    }
-    
-    // custom : updateStreak
-    func updateStreak(row: Int, inc: Int, habitString: String) {
-        var count = 0
-        var firstId = 0
-        do {
-            let habits = try self.database.prepare(self.habitsTable)
-            for habit in habits {
-                if (count == 0) {
-                    firstId = habit[self.id]
-                }
-                if (count == row) {
-                    let habit = self.habitsTable.filter(self.id == count+firstId)
-                    entries.markCompleted(habit: habitString, date: Date(), val: inc)
-                    let currentStreak = entries.countStreak(habit: habitString, date: Date())
                     let updateHabit = habit.update(self.streak <- currentStreak)
                     do {
                         try self.database.run(updateHabit)
