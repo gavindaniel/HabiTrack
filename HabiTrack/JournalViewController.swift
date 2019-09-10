@@ -204,6 +204,8 @@ class JournalViewController: UIViewController {
             journalDateView?.updateDaysArray(date: date)
             
             // testing
+			self.journalTableView.updateTableView(habitTableView: habitTableView)
+			self.journalDateView.updateTableView(dateCollectionView: dateCollectionView)
             self.habitTableView.reloadData()
             self.dateCollectionView.reloadData()
             

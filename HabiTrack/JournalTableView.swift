@@ -133,8 +133,13 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    // custom : updateTableView
-    func update(date: Date) {
+    // custom : updateDate
+    func updateDate(date: Date) {
         dateSelected = date
     }
+	
+	// custom : updateTableView
+	func updateTableView(habitTableView: UITableView) {
+		tableView = habitTableView
+	}
 }

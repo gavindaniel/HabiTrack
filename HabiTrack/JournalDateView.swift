@@ -110,7 +110,7 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
         //        print("reloading...")
         //        self.habitTableView.reloadData()
         // testing ...
-        self.journalTableView.update(date: dateSelected)
+        self.journalTableView.updateDate(date: dateSelected)
         self.habitTableView.reloadData()
         //        updateDaysArray(date: dateSelected)
         //        self.dateCollectionView.reloadData()
@@ -128,10 +128,9 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
             count += 1
         }
     }
-    
-    // custom : updateTableView
-    func update(date: Date) {
-        //        tableView = habitTableView
-        dateSelected = date
-    }
+	
+	// custom : updateTableView
+	func updateDateView(dateCollectionView: UICollectionView) {
+		dateView = dateCollectionView
+	}
 }
