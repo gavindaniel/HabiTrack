@@ -122,10 +122,7 @@ class JournalViewController: UIViewController {
             do {
                 try self.journal.database.run(addHabit)
                 print("Habit Added -> habit: \(habit), time: \(time)")
-                
-//                self.journal.entries.addDay(habit: habit, date: Date())
                 self.journal.entries.addDay(habit: habit, date: Date())
-                
                 self.habitTableView.reloadData()
             } catch {
                 print (error)
