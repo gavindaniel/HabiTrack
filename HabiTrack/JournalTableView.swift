@@ -13,15 +13,18 @@ import Foundation
 class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
     
     var dateSelected = Date()
+    
     var journal: Journal
     var tableView: UITableView
+//    var journal: Journal!
+//    var tableView: UITableView!
     
-    override init () {
-        self.journal = Journal()
-        self.tableView = UITableView()
-        super.init()
-    }
-    
+//    override init () {
+//        self.journal = Journal()
+//        self.tableView = UITableView()
+//        super.init()
+//    }
+
     init(journal: Journal, habitTableView: UITableView) {
         self.journal = journal
         self.tableView = habitTableView
@@ -146,6 +149,8 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
 	
 	// custom : updateTableView
 	func updateTableView(habitTableView: UITableView) {
+        print("\t\t\tupdating table view...")
 		tableView = habitTableView
+        print("\t\t\tupdated table view.")
 	}
 }

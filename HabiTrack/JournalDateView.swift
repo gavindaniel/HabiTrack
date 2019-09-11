@@ -15,18 +15,22 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
     var daysArray: Array<Date> = []
     var lastSelectedItem = -1
     var dateSelected = Date()
-    var dateView: UICollectionView
     
+    var dateView: UICollectionView
     var habitTableView: UITableView
     var journalTableView: JournalTableView
     
-    override init () {
-        self.dateView = UICollectionView()
-        self.journalTableView = JournalTableView()
-        self.habitTableView = UITableView()
-        super.init()
-    }
+//    var dateView: UICollectionView!
+//    var habitTableView: UITableView!
+//    var journalTableView: JournalTableView!
     
+//    override init () {
+//        self.dateView = UICollectionView()
+//        self.journalTableView = JournalTableView()
+//        self.habitTableView = UITableView()
+//        super.init()
+//    }
+
     init(dateCollectionView: UICollectionView, journalTableView: JournalTableView, habitTableView: UITableView) {
         self.dateView = dateCollectionView
         self.journalTableView = journalTableView
@@ -117,7 +121,7 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
         //        print("reloading...")
         //        self.habitTableView.reloadData()
         // testing ...
-//        print("updating dateView...")
+        print("updating dateView...")
         self.journalTableView.updateDate(date: dateSelected)
         self.habitTableView.reloadData()
         //        updateDaysArray(date: dateSelected)
@@ -126,7 +130,7 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
     
     // custom : updateDaysArray (init daysArray)
     func updateDaysArray(date: Date) {
-        print("updating days array...")
+        print("\t\t\tupdating days array...")
         daysArray = []
         var day = Calendar.current.date(byAdding: .day, value: -3, to: date)
         var count = -3
@@ -136,11 +140,13 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
             day = Calendar.current.date(byAdding: .day, value: 1, to: day ?? date)
             count += 1
         }
-        print("updated days array.")
+        print("\t\t\tupdated days array.")
     }
 	
 	// custom : updateTableView
 	func updateDateView(dateCollectionView: UICollectionView) {
+        print("\t\t\tupdating date view...")
 		dateView = dateCollectionView
+        print("\t\t\tupdated date.")
 	}
 }

@@ -32,18 +32,16 @@ class JournalViewController: UIViewController {
     var journal = Journal()
     
     // testing
-//    var journalTableView: JournalTableView?
-//    var journalDateView: JournalDateView?
+    var journalTableView: JournalTableView?
+    var journalDateView: JournalDateView?
     
-//    var journalTableView = JournalTableView()
-//    var journalDateView = JournalDateView()
-    
-    var journalTableView: JournalTableView!
-    var journalDateView: JournalDateView!
+//    var journalTableView: JournalTableView!
+//    var journalDateView: JournalDateView!
     
     
     // load : viewDidAppear
     override func viewDidAppear(_ animated: Bool) {
+        print("\tviewDidAppear...")
         super.viewDidAppear(animated)
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(applicationWillEnterForeground),
@@ -59,10 +57,11 @@ class JournalViewController: UIViewController {
 //        journalDateView?.updateDaysArray(date: date)
         
         // testing
-//        journalTableView?.updateTableView(habitTableView: habitTableView)
-//        journalDateView?.updateDateView(dateCollectionView: dateCollectionView)
-        self.journalTableView.updateTableView(habitTableView: habitTableView)
-        self.journalDateView.updateDateView(dateCollectionView: dateCollectionView)
+        print("\t\ttrying to update views...")
+        journalTableView?.updateTableView(habitTableView: habitTableView)
+        journalDateView?.updateDateView(dateCollectionView: dateCollectionView)
+//        self.journalTableView.updateTableView(habitTableView: habitTableView)
+//        self.journalDateView.updateDateView(dateCollectionView: dateCollectionView)
         self.habitTableView?.reloadData()
         self.dateCollectionView?.reloadData()
     }
@@ -71,7 +70,7 @@ class JournalViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-            
+        print("\tviewDidLoad...")
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(applicationWillEnterForeground),
                                                name: UIApplication.willEnterForegroundNotification,
@@ -84,15 +83,30 @@ class JournalViewController: UIViewController {
             self.journal.entries.database = database
             
             // testing
-            journalTableView = JournalTableView(journal: journal, habitTableView: habitTableView)
-            //        journalDateView = JournalDateView(dateCollectionView: dateCollectionView, journalTableView: journalTableView!, habitTableView: habitTableView)
-            journalDateView = JournalDateView(dateCollectionView: dateCollectionView, journalTableView: journalTableView, habitTableView: habitTableView)
+            self.journalTableView = JournalTableView(journal: journal, habitTableView: habitTableView)
             
-            habitTableView.dataSource = journalTableView
-            habitTableView.delegate = journalTableView
+            self.journalTableView?.journal = journal
+            self.journalTableView?.tableView = habitTableView
+//            self.journalTableView.journal = journal
+//            self.journalTableView.tableView = habitTableView
             
-            dateCollectionView.dataSource = journalDateView
-            dateCollectionView.delegate = journalDateView
+//            self.journalDateView = JournalDateView(dateCollectionView: dateCollectionView, journalTableView: journalTableView, habitTableView: habitTableView)
+            self.journalDateView = JournalDateView(dateCollectionView: dateCollectionView, journalTableView: journalTableView!, habitTableView: habitTableView)
+
+            self.journalDateView?.dateView = dateCollectionView
+            self.journalDateView?.journalTableView = journalTableView!
+            self.journalDateView?.habitTableView = habitTableView
+//            self.journalDateView.dateView = dateCollectionView
+//            self.journalDateView.journalTableView = journalTableView
+//            self.journalDateView.habitTableView = habitTableView
+            
+            
+            
+            self.habitTableView.dataSource = journalTableView
+            self.habitTableView.delegate = journalTableView
+            
+            self.dateCollectionView.dataSource = journalDateView
+            self.dateCollectionView.delegate = journalDateView
 
         } catch {
             print(error)
@@ -101,13 +115,16 @@ class JournalViewController: UIViewController {
     
     // load : viewWillAppear
     override func viewWillAppear(_ animated: Bool) {
+        print("\tviewWillAppear...")
         super.viewWillAppear(animated)
+        print("\t\ttrying to reload views...")
         self.habitTableView.reloadData()
         self.dateCollectionView.reloadData()
     }
     
     // load : applicationWillEnterForeground
     @objc func applicationWillEnterForeground() {
+        print("\tapplicationWillEnterForeground...")
         self.habitTableView.reloadData()
         self.dateCollectionView.reloadData()
     }
@@ -204,9 +221,9 @@ class JournalViewController: UIViewController {
             Calendar.current.component(.day, from: lastRun) != Calendar.current.component(.day, from: date)) {
             
             // uncomment for testing
-            //        if (1 != 0) {
-            //            let nextDay = Calendar.current.date(byAdding: .day, value: 1, to: date)
-            //            let count = self.journal.habitEntries.countDays(date1: lastRun, date2: nextDay ?? Date())
+//        if (1 != 0) {
+//            let nextDay = Calendar.current.date(byAdding: .day, value: 1, to: date)
+//            let count = self.journal.habitEntries.countDays(date1: lastRun, date2: nextDay ?? Date())
             
             print("Date has changed. Updating last run date...")
             let count = self.journal.entries.countDays(date1: lastRun, date2: date)
@@ -217,6 +234,19 @@ class JournalViewController: UIViewController {
                 let database = try Connection(fileUrl.path)
                 self.journal.database = database
                 self.journal.entries.database = database
+                
+                // testing
+//                self.journalTableView.journal = journal
+//                self.journalTableView.tableView = habitTableView
+//                self.journalDateView.dateView = dateCollectionView
+//                self.journalDateView.journalTableView = journalTableView
+//                self.journalDateView.habitTableView = habitTableView
+                
+                self.journalTableView?.updateTableView(habitTableView: habitTableView)
+                self.journalDateView?.updateDateView(dateCollectionView: dateCollectionView)
+//                self.journalTableView.updateTableView(habitTableView: habitTableView)
+//                self.journalDateView.updateDateView(dateCollectionView: dateCollectionView)
+                
             } catch {
                 print(error)
             }
@@ -228,18 +258,18 @@ class JournalViewController: UIViewController {
             self.dateCollectionView?.reloadData()
             
             print("trying to updateDaysArray...")
-//            self.journalDateView?.updateDaysArray(date: date)
             self.journalDateView?.updateDaysArray(date: date)
+//            self.journalDateView.updateDaysArray(date: date)
             
             // testing
             print("trying to update views...")
-//            self.journalTableView?.updateTableView(habitTableView: habitTableView)
-//            self.journalDateView?.updateDateView(dateCollectionView: dateCollectionView)
             self.journalTableView?.updateTableView(habitTableView: habitTableView)
             self.journalDateView?.updateDateView(dateCollectionView: dateCollectionView)
+//            self.journalTableView.updateTableView(habitTableView: habitTableView)
+//            self.journalDateView.updateDateView(dateCollectionView: dateCollectionView)
             print("trying to reload data...")
-            self.habitTableView?.reloadData()
-            self.dateCollectionView?.reloadData()
+            self.habitTableView.reloadData()
+            self.dateCollectionView.reloadData()
             
         } else {
             print("Day has not changed.")
