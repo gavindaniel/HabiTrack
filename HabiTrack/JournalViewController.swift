@@ -327,54 +327,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
-    
-    // UIButton : addEntry (add an entry)
-    @IBAction func addEntry(_ sender: Any) {
-        // create table if there isn't one
-        journal.createTable()
-        // create alert controller
-        let alert = UIAlertController(title: "Add Habit", message: nil, preferredStyle: .alert)
-        // add text fields
-        alert.addTextField { (tf) in
-            tf.placeholder = "Habit"
-        }
-        alert.addTextField { (tf) in
-            tf.placeholder = "Time"
-        }
-        // create action event "Submit"
-        let submit = UIAlertAction(title: "Submit", style: .default) { (_) in
-            // get habit string from text field
-            guard let habit = alert.textFields?.first?.text,
-                // get time string from text field
-                let time = alert.textFields?.last?.text
-                else {
-                    return
-            }
-            // insert new habit into journal
-            let addHabit = self.journal.habitsTable.insert(self.journal.habit <- habit,
-                                                           self.journal.time <- time,
-                                                           self.journal.streak <- 0,
-                                                           self.journal.currentDay <- 1)
-            // attempt to add habit to database
-            do {
-                try self.journal.database.run(addHabit)
-                print("Habit Added -> habit: \(habit), time: \(time)")
-                
-//                self.journal.entries.addDay(habit: habit, date: Date())
-                self.journal.entries.addDay(habit: habit, date: Date())
-                
-                self.habitTableView.reloadData()
-            } catch {
-                print (error)
-            }
-        }
-        alert.addAction(submit)
-        // create "Cancel" action
-        let cancel = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil)
-        alert.addAction(cancel)
-        present(alert, animated: true, completion: nil)
-    }
-    
     // UIButton : updateTable (edit an entry)
     @IBAction func updateTable(_ sender: Any) {
         print("Updating table...")

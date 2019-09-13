@@ -74,13 +74,15 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
         
 //        self.activeTextField = textField
 //        let id = textField.restorationIdentifier
-        print("didEndEditing")
         
-        if (lastActiveTextField == "timeTextField") {
-            timeLabel.textColor = UIColor.gray
-            timeUnderLabel.textColor = UIColor.gray
+        
+        if (lastActiveTextField == "titleTextField") {
+//            print("didEndEditing: titleTextField")
+            titleLabel.textColor = UIColor.gray
+            titleUnderLabel.textColor = UIColor.gray
         }
         if (lastActiveTextField == "timeTextField") {
+//            print("didEndEditing: timeTextField")
             timeLabel.textColor = UIColor.gray
             timeUnderLabel.textColor = UIColor.gray
         }
