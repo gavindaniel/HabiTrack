@@ -129,7 +129,9 @@ class Journal {
                 for habit in habits {
                     // do something...
                     let tempString = habit[self.habit]
-                    entries.addDay(habit: tempString, date: nextDay ?? Date())
+                    if (entries.checkDayExists(habit: tempString, date: nextDay ?? Date()) == false) {
+                        entries.addDay(habit: tempString, date: nextDay ?? Date())
+                    }
                 }
             } catch {
                 print(error)

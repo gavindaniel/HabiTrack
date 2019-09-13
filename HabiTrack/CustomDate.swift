@@ -8,10 +8,18 @@
 
 import Foundation
 
+// custom : isKeyPresentInUserDefaults
+func isKeyPresentInUserDefaults(key: String) -> Bool {
+    return UserDefaults.standard.object(forKey: key) != nil
+}
+
 // custom : setDefaults
 func setDefaults() {
-    let defaults = UserDefaults.standard
-    defaults.set(Date(), forKey: "lastRun")
+//    let defaults = UserDefaults.standard
+    if (isKeyPresentInUserDefaults(key: "lastRun") == false) {
+        let defaults = UserDefaults.standard
+        defaults.set(Date(), forKey: "lastRun")
+    }
 }
 
 // custom : getDay

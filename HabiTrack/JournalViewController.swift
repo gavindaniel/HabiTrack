@@ -37,18 +37,31 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     // load : viewDidAppear
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        print()
+        print("viewDidAppear...")
+        print()
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(applicationWillEnterForeground),
                                                name: UIApplication.willEnterForegroundNotification,
                                                object: nil)
         self.dateCollectionView.selectItem(at: IndexPath(row: 3, section: 0), animated: false, scrollPosition: [])
         self.dateCollectionView.delegate?.collectionView!(self.dateCollectionView, didSelectItemAt: IndexPath(item: 3, section: 0))
+        
+        
+        // testing...
+        update()
     }
     
     // load : viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        print()
+        print("viewDidLoad...")
+        print()
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(applicationWillEnterForeground),
                                                name: UIApplication.willEnterForegroundNotification,
@@ -59,7 +72,10 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             let database = try Connection(fileUrl.path)
             self.journal.database = database
             self.journal.entries.database = database
-
+            
+            // testing...
+//            update()
+            
         } catch {
             print(error)
         }
@@ -68,14 +84,31 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     // load : viewWillAppear
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print()
+        print("viewWillAppear...")
+        print()
         self.habitTableView.reloadData()
         self.dateCollectionView.reloadData()
     }
     
+    
+    
     // load : applicationWillEnterForeground
     @objc func applicationWillEnterForeground() {
-        self.habitTableView.reloadData()
-        self.dateCollectionView.reloadData()
+        print()
+        print("applicationWillEnterForeground...")
+        print()
+//        self.habitTableView.reloadData()
+//        self.dateCollectionView.reloadData()
+        
+        update()
+        
+        // testing
+//        self.dateCollectionView.selectItem(at: IndexPath(row: 3, section: 0), animated: false, scrollPosition: [])
+//        self.dateCollectionView.delegate?.collectionView!(self.dateCollectionView, didSelectItemAt: IndexPath(item: 3, section: 0))
+        
+//        self.habitTableView.reloadData()
+//        self.dateCollectionView.reloadData()
     }
     
     // collectionView : numberOfItemsInSection
@@ -98,9 +131,27 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         cell.monthUILabel?.textColor = UIColor.gray
         cell.dayUILabel?.textColor = UIColor.gray
         cell.layer.borderWidth = 1.0
-        let tempDay = Calendar.current.component(.day, from: Date())
+        
+        var tempDate = Date()
+        
+//        let defaults = UserDefaults.standard
+//        let lastRun = defaults.object(forKey: "lastRun") as! Date
+        
+        if (lastSelectedItem != -1) {
+//            let month = Calendar.current.component(.month, from: Date())
+//            let day = Calendar.current.component(.day, from: Date())
+            let month = Calendar.current.component(.month, from: dateSelected)
+            let day = Calendar.current.component(.day, from: dateSelected)
+//            let month = Calendar.current.component(.month, from: lastRun)
+//            let day = Calendar.current.component(.day, from: lastRun)
+            tempDate = getDate(month: month, day: day)
+        }
+
+        let tempDay = Calendar.current.component(.day, from: tempDate)
+        
         // check if today, mark blue, else mark gray
         if (tempDay == getDayAsInt(date: daysArray[indexPath.row])) {
+            print("tempDay: \(tempDay) == daysArray: \(getDayAsInt(date: daysArray[indexPath.row]))")
             cell.layer.borderColor = UIColor.blue.cgColor
             cell.monthUILabel?.textColor = UIColor.blue
             cell.dayUILabel?.textColor = UIColor.blue
@@ -132,14 +183,15 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         // get the cell from the tableView
         if let cell: DateCollectionViewCell = (collectionView.cellForItem(at: indexPath) as? DateCollectionViewCell) {
             // if the selected item is different from the last, deselect the last item
-            if (lastSelectedItem != indexPath.row) {
+            print("lastSelectedItem: \(lastSelectedItem) != indexPath.row: \(indexPath.row)")
+//            if (lastSelectedItem != indexPath.row) {
                 lastSelectedItem = indexPath.row
                 
                 let month = cell.monthUILabel?.text ?? String(Calendar.current.component(.month, from: Date()))
                 let day = cell.dayUILabel?.text ?? String(Calendar.current.component(.day, from: Date()))
                 let date = getDate(month: getMonthAsInt(month: month), day: Int(day) ?? Calendar.current.component(.day, from: Date()))
                 dateSelected = date
-                
+                print("dateSelected: \(dateSelected)")
                 // FIXME: replace 'days' with a calculation for number of days in the month
                 // loop through cells and deselect
                 var tempIndex = 0
@@ -150,7 +202,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                     // increment index
                     tempIndex += 1
                 }
-            }
+//            }
             // change the border fo the selected item
             cell.layer.borderWidth = 1.0
             cell.layer.borderColor = UIColor.blue.cgColor
@@ -275,6 +327,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
+    
     // UIButton : addEntry (add an entry)
     @IBAction func addEntry(_ sender: Any) {
         // create table if there isn't one
@@ -363,16 +416,20 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         var day = Calendar.current.date(byAdding: .day, value: -3, to: date)
         var count = -3
         while count <= 3 {
+//            print("count: \(count)\tday: \(Calendar.current.component(.day, from: day ?? date))")
             daysArray.append(day ?? Date())
             // increment day count
             day = Calendar.current.date(byAdding: .day, value: 1, to: day ?? date)
             count += 1
         }
+        self.habitTableView?.reloadData()
     }
     
     // custom : update
     func update() {
+        print()
         print("Updating View Controller...")
+        print()
         let date = Date()
         let defaults = UserDefaults.standard
         let lastRun = defaults.object(forKey: "lastRun") as! Date
@@ -406,7 +463,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             // testing
             self.habitTableView.reloadData()
             self.dateCollectionView.reloadData()
-            
+
         } else {
             print("Day has not changed.")
         }

@@ -152,6 +152,28 @@ class Entries {
         return(count)
     }
     
+    func checkDayExists(habit: String, date: Date) -> Bool {
+        var flag = false
+
+        let table = Table(habit)
+        
+        do {
+            let entries = try self.database.prepare(table)
+            
+            for entry in entries {
+                if (Calendar.current.component(.year, from: date) == entry[self.year] &&
+                    Calendar.current.component(.month, from: date) == entry[self.month] &&
+                        Calendar.current.component(.day, from: date) == entry[self.day]) {
+                            flag = true
+                }
+            }
+        } catch {
+            print(error)
+        }
+        
+        return flag
+    }
+    
     // custom : addDay(add a day to habit completed table)
     func addDay(habit: String, date: Date) {
         createTable(habitString: habit)
