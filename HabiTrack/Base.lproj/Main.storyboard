@@ -191,16 +191,14 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="34"/>
                                 <state key="normal" title="+"/>
                                 <connections>
-                                    <segue destination="wIU-Me-2Is" kind="popoverPresentation" popoverAnchorView="Vbe-UX-DXt" id="Qnd-Nr-r34">
-                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                    </segue>
+                                    <segue destination="wIU-Me-2Is" kind="push" id="ppa-EL-Lup"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Journal" image="first" id="fj1-yx-SMq"/>
+                    <navigationItem key="navigationItem" id="i3t-5I-fxR"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="dateCollectionView" destination="V6s-eF-jjI" id="K57-2H-g5Y"/>
@@ -209,7 +207,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="747.82608695652175" y="-319.56521739130437"/>
+            <point key="canvasLocation" x="1655.072463768116" y="-319.56521739130437"/>
         </scene>
         <!--Habit-->
         <scene sceneID="lGp-ZO-F53">
@@ -273,7 +271,7 @@
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="16"/>
                                 <state key="normal" title="Cancel"/>
                                 <connections>
-                                    <segue destination="9pv-A4-QxB" kind="show" id="CZc-Hb-6BX"/>
+                                    <segue destination="9pv-A4-QxB" kind="push" id="X5M-Lb-fny"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Entry" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5nP-IB-e1i">
@@ -296,6 +294,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="n70-Ye-RtY"/>
                     </view>
+                    <navigationItem key="navigationItem" id="ACJ-P4-4C0"/>
                     <connections>
                         <outlet property="habitTextField" destination="ogG-dV-8ET" id="5ws-cn-lOw"/>
                         <outlet property="timeLabel" destination="uZs-cD-u1c" id="ZfG-7n-m6W"/>
@@ -307,7 +306,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c5z-Ls-2WU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1466.6666666666667" y="-318.75"/>
+            <point key="canvasLocation" x="2373.913043478261" y="-318.75"/>
         </scene>
         <!--Development-->
         <scene sceneID="OcH-4T-Sll">
@@ -415,7 +414,7 @@
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBar>
                     <connections>
-                        <segue destination="9pv-A4-QxB" kind="relationship" relationship="viewControllers" id="u7Y-xg-7CH"/>
+                        <segue destination="PWf-Rg-XJa" kind="relationship" relationship="viewControllers" id="u7Y-xg-7CH"/>
                         <segue destination="8rJ-Kc-sve" kind="relationship" relationship="viewControllers" id="lzU-1b-eKA"/>
                         <segue destination="bON-YL-e4d" kind="relationship" relationship="viewControllers" id="6tL-Lg-fIn"/>
                     </connections>
@@ -424,12 +423,30 @@
             </objects>
             <point key="canvasLocation" x="0.0" y="0.0"/>
         </scene>
+        <!--Journal-->
+        <scene sceneID="UrT-dh-l4K">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="PWf-Rg-XJa" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Journal" image="first" id="fj1-yx-SMq"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="wvH-dS-Rr8">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="9pv-A4-QxB" kind="relationship" relationship="rootViewController" id="7oX-IA-MfE"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7tw-nV-8Dc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="747.82608695652175" y="-319.56521739130437"/>
+        </scene>
     </scenes>
     <resources>
         <image name="first" width="30" height="30"/>
         <image name="second" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="CZc-Hb-6BX"/>
+        <segue reference="X5M-Lb-fny"/>
     </inferredMetricsTieBreakers>
 </document>

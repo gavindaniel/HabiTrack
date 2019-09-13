@@ -87,6 +87,9 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         print()
         print("viewWillAppear...")
         print()
+        
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        
         self.habitTableView.reloadData()
         self.dateCollectionView.reloadData()
     }
