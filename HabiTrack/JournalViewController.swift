@@ -257,7 +257,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     // tableView : didSelectRowAt
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        print("Selected row: \(indexPath.row)")
         // get the cell from the tableView
         if let cell: HabitTableViewCell = (tableView.cellForRow(at: indexPath) as? HabitTableViewCell) {
             // get the habit string from the cell
@@ -267,14 +266,12 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                 cell.accessoryType = .none
 //                cell.checkBox?.on = false
                 cell.checkBox?.setOn(false, animated: true)
-//                journal.updateDateStreak(row: indexPath.row, inc: 0, date: dateSelected, habitString: tempString ?? "none")
                 journal.updateStreak(row: indexPath.row, inc: 0, date: dateSelected, habitString: tempString ?? "none")
             }
             else {
                 cell.accessoryType = .checkmark
 //                cell.checkBox?.on = true
                 cell.checkBox?.setOn(true, animated: true)
-//                journal.updateDateStreak(row: indexPath.row, inc: 1, date: dateSelected, habitString: tempString ?? "none")
                 journal.updateStreak(row: indexPath.row, inc: 1, date: dateSelected, habitString: tempString ?? "none")
             }
         }

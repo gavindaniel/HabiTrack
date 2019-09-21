@@ -53,10 +53,6 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
             let database = try Connection(fileUrl.path)
             self.journal.database = database
             self.journal.entries.database = database
-            
-            // testing...
-            //            update()
-            
         } catch {
             print(error)
         }
@@ -80,8 +76,6 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
         else if (id == "timeTextField") {
             repeatUnderlineLabel.textColor = UIColor.systemBlue
         }
-        
-//        print("didBeginEditing, id: \(id ?? "Time")")
     }
     
     // Assign the newly active text field to your activeTextField variable
@@ -121,7 +115,6 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
                 }
             }
         }
-//        print("didBeginEditing, id: \(id ?? "Time")")
     }
     
     
@@ -131,7 +124,7 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
         journal.createTable()
         // create alert controller
         
-            // insert new habit into journal
+        // insert new habit into journal
         let habit = nameTextField.text
         let time = repeatTextField.text
         
@@ -165,7 +158,6 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
                 // testing
                 let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
                 let nextViewController = storyBoard.instantiateViewController(withIdentifier: "journalViewController") as! JournalViewController
-//                self.present(nextViewController, animated:true, completion:nil)
                 self.navigationController?.pushViewController(nextViewController, animated: true)
                 
             } catch {
