@@ -75,10 +75,10 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
         let id = textField.restorationIdentifier
         
         if (id == "titleTextField") {
-            nameUnderlineLabel.textColor = UIColor.blue
+            nameUnderlineLabel.textColor = UIColor.systemBlue
         }
         else if (id == "timeTextField") {
-            repeatUnderlineLabel.textColor = UIColor.blue
+            repeatUnderlineLabel.textColor = UIColor.systemBlue
         }
         
 //        print("didBeginEditing, id: \(id ?? "Time")")
@@ -89,16 +89,36 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
     
         if (textField.restorationIdentifier == "titleTextField") {
             if (textField.text != "") {
-                nameUnderlineLabel.textColor = UIColor.black
+                if #available(iOS 13.0, *) {
+                    nameUnderlineLabel.textColor = UIColor.systemBlue
+                } else {
+                    // Fallback on earlier versions
+                    nameUnderlineLabel.textColor = UIColor.systemBlue
+                }
             } else {
-                nameUnderlineLabel.textColor = UIColor.gray
+                if #available(iOS 13.0, *) {
+                    nameUnderlineLabel.textColor = UIColor.systemGray
+                } else {
+                    // Fallback on earlier versions
+                    nameUnderlineLabel.textColor = UIColor.systemGray
+                }
             }
         }
         if (textField.restorationIdentifier == "timeTextField") {
             if (textField.text != "") {
-                repeatUnderlineLabel.textColor = UIColor.black
+                if #available(iOS 13.0, *) {
+                    repeatUnderlineLabel.textColor = UIColor.systemBlue
+                } else {
+                    // Fallback on earlier versions
+                    repeatUnderlineLabel.textColor = UIColor.systemBlue
+                }
             } else {
-                repeatUnderlineLabel.textColor = UIColor.gray
+                if #available(iOS 13.0, *) {
+                    repeatUnderlineLabel.textColor = UIColor.systemGray
+                } else {
+                    // Fallback on earlier versions
+                    repeatUnderlineLabel.textColor = UIColor.systemGray
+                }
             }
         }
 //        print("didBeginEditing, id: \(id ?? "Time")")

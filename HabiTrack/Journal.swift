@@ -56,9 +56,9 @@ class Journal {
         }
         return (count)
     }
-    
-    // custom : updateDateStreak
-    func updateDateStreak(row: Int, inc: Int, date: Date, habitString: String) {
+
+    func updateStreak(row: Int, inc: Int, date: Date, habitString: String) {
+        print("updateStreak...")
         var count = 0
         var firstId = 0
         do {
@@ -88,41 +88,10 @@ class Journal {
         }
     }
     
-    // custom : updateStreak
-    func updateStreak(row: Int, inc: Int, habitString: String) {
-        var count = 0
-        var firstId = 0
-        do {
-            let habits = try self.database.prepare(self.habitsTable)
-            for habit in habits {
-                if (count == 0) {
-                    firstId = habit[self.id]
-                }
-                if (count == row) {
-                    let habit = self.habitsTable.filter(self.id == count+firstId)
-                    entries.markCompleted(habit: habitString, date: Date(), val: inc)
-                    let currentStreak = entries.countStreak(habit: habitString, date: Date())
-                    let updateHabit = habit.update(self.streak <- currentStreak)
-                    do {
-                        try self.database.run(updateHabit)
-                        return
-                    } catch {
-                        print(error)
-                    }
-                } else {
-                    count += 1
-                }
-            }
-        } catch {
-            print (error)
-        }
-    }
-    
     // custom : addDays
     func addDays(numDays: Int, startDate: Date) {
         var temp = 0
         var nextDay = Calendar.current.date(byAdding: .day, value: 1, to: startDate)
-//        print("nextDay: \(nextDay)")
         while temp < numDays {
             do {
                 let habits = try self.database.prepare(self.habitsTable)
@@ -149,7 +118,6 @@ class Journal {
             for habit in habits {
                 // do something...
                 let tempString = habit[self.habit]
-                //                    entries.addDay(habit: tempString, date: nextDay ?? Date())
                 entries.deleteDay(habit: tempString, date: date)
             }
         } catch {

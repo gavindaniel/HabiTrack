@@ -50,7 +50,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.dateCollectionView.selectItem(at: IndexPath(row: 3, section: 0), animated: false, scrollPosition: [])
         self.dateCollectionView.delegate?.collectionView!(self.dateCollectionView, didSelectItemAt: IndexPath(item: 3, section: 0))
         
-        
         // testing...
         update()
     }
@@ -75,10 +74,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             let database = try Connection(fileUrl.path)
             self.journal.database = database
             self.journal.entries.database = database
-            
-            // testing...
-//            update()
-            
         } catch {
             print(error)
         }
@@ -104,17 +99,8 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         print()
         print("applicationWillEnterForeground...")
         print()
-//        self.habitTableView.reloadData()
-//        self.dateCollectionView.reloadData()
         
         update()
-        
-        // testing
-//        self.dateCollectionView.selectItem(at: IndexPath(row: 3, section: 0), animated: false, scrollPosition: [])
-//        self.dateCollectionView.delegate?.collectionView!(self.dateCollectionView, didSelectItemAt: IndexPath(item: 3, section: 0))
-        
-//        self.habitTableView.reloadData()
-//        self.dateCollectionView.reloadData()
     }
     
     // collectionView : numberOfItemsInSection
@@ -140,16 +126,9 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         var tempDate = Date()
         
-//        let defaults = UserDefaults.standard
-//        let lastRun = defaults.object(forKey: "lastRun") as! Date
-        
         if (lastSelectedItem != -1) {
-//            let month = Calendar.current.component(.month, from: Date())
-//            let day = Calendar.current.component(.day, from: Date())
             let month = Calendar.current.component(.month, from: dateSelected)
             let day = Calendar.current.component(.day, from: dateSelected)
-//            let month = Calendar.current.component(.month, from: lastRun)
-//            let day = Calendar.current.component(.day, from: lastRun)
             tempDate = getDate(month: month, day: day)
         }
 
@@ -158,9 +137,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         // check if today, mark blue, else mark gray
         if (tempDay == getDayAsInt(date: daysArray[indexPath.row])) {
             print("tempDay: \(tempDay) == daysArray: \(getDayAsInt(date: daysArray[indexPath.row]))")
-//            cell.layer.borderColor = UIColor.blue.cgColor
-//            cell.monthUILabel?.textColor = UIColor.blue
-//            cell.dayUILabel?.textColor = UIColor.blue
             cell.layer.borderColor = UIColor.systemBlue.cgColor
             cell.monthUILabel?.textColor = UIColor.systemBlue
             cell.dayUILabel?.textColor = UIColor.systemBlue
@@ -291,13 +267,15 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                 cell.accessoryType = .none
 //                cell.checkBox?.on = false
                 cell.checkBox?.setOn(false, animated: true)
-                journal.updateDateStreak(row: indexPath.row, inc: 0, date: dateSelected, habitString: tempString ?? "none")
+//                journal.updateDateStreak(row: indexPath.row, inc: 0, date: dateSelected, habitString: tempString ?? "none")
+                journal.updateStreak(row: indexPath.row, inc: 0, date: dateSelected, habitString: tempString ?? "none")
             }
             else {
                 cell.accessoryType = .checkmark
 //                cell.checkBox?.on = true
                 cell.checkBox?.setOn(true, animated: true)
-                journal.updateDateStreak(row: indexPath.row, inc: 1, date: dateSelected, habitString: tempString ?? "none")
+//                journal.updateDateStreak(row: indexPath.row, inc: 1, date: dateSelected, habitString: tempString ?? "none")
+                journal.updateStreak(row: indexPath.row, inc: 1, date: dateSelected, habitString: tempString ?? "none")
             }
         }
         self.habitTableView.reloadData()
@@ -392,7 +370,6 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         var day = Calendar.current.date(byAdding: .day, value: count, to: date)
         
         while count <= max_count {
-//            print("count: \(count)\tday: \(Calendar.current.component(.day, from: day ?? date))")
             daysArray.append(day ?? Date())
             // increment day count
             day = Calendar.current.date(byAdding: .day, value: 1, to: day ?? date)
