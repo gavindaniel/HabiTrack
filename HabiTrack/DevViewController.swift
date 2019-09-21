@@ -11,7 +11,7 @@ import SQLite
 
 class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    var list = ["Print Table", "Delete Table", "Add Day", "Delete Day"]
+    var list = ["Print Table", "Delete Table", "Add Day", "Delete Day", "Delete Habit"]
     
     var database: Connection!
     let journal = Journal()
@@ -31,6 +31,72 @@ class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         } catch {
             print(error)
         }
+    }
+    
+    // tableView : numberOfRowsInSection
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return (list.count)
+    }
+    
+    // tableView : cellForRowAt -> cell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "devCell")
+        cell.textLabel?.text = list[indexPath.row]
+        
+        return (cell)
+    }
+    
+    // tableView : didSelectRowAt
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //        print("Selected row: \(indexPath.row)")
+        if (list[indexPath.row] == "Print Table") {
+            printTable()
+        }
+        else if (list[indexPath.row] == "Delete Table") {
+            deleteTable()
+        }
+        else if (list[indexPath.row] == "Add Day") {
+            addDays()
+        }
+        else if (list[indexPath.row] == "Delete Day") {
+            deleteDays()
+        }
+        else if (list[indexPath.row] == "Delete Habit") {
+            deleteHabitTableEntry()
+        }
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func deleteHabitTableEntry() {
+        print("deleting habit from table...")
+        // create alert controller
+        let alert = UIAlertController(title: "Delete Habit", message: nil, preferredStyle: .alert)
+        // add text fields
+        alert.addTextField { (tf) in
+            tf.placeholder = "Habit ID" }
+        // create 'Submit' action
+        let submit = UIAlertAction(title: "Submit", style: .default) { (_) in
+            // get strings from text fields
+            guard let habitIdString = alert.textFields?.first?.text, let habitId = Int(habitIdString)
+                else { return }
+            // find the correct in the table
+            let habit = self.journal.habitsTable.filter(self.journal.id == habitId)
+            // udpate the habit
+            let deleteHabit = habit.delete()
+            
+            // attempt to update the database
+            do {
+                try self.journal.database.run(deleteHabit)
+                print("deleted habit.")
+            } catch {
+                print(error)
+            }
+        }
+        alert.addAction(submit)
+        // create 'Cancel' alert action
+        let cancel = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil)
+        alert.addAction(cancel)
+        present(alert, animated: true, completion: nil)
     }
     
     // custom : getTableSize (size of database table)
@@ -173,40 +239,5 @@ class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             print(error)
         }
     }
-    
-    // tableView : numberOfRowsInSection
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (list.count)
-    }
-    
-    // tableView : cellForRowAt -> cell
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "devCell")
-        cell.textLabel?.text = list[indexPath.row]
-        
-        return (cell)
-    }
-    
-    // tableView : didSelectRowAt
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        print("Selected row: \(indexPath.row)")
-        if (list[indexPath.row] == "Print Table") {
-            printTable()
-        }
-        else if (list[indexPath.row] == "Delete Table") {
-            deleteTable()
-        }
-        else if (list[indexPath.row] == "Add Day") {
-//            addDay()
-            addDays()
-        }
-        else if (list[indexPath.row] == "Delete Day") {
-            //            addDay()
-            deleteDays()
-        }
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
-    
 }
 

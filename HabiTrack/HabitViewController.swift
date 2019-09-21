@@ -13,13 +13,16 @@ import SQLite
 
 class HabitViewController: UIViewController, UITextFieldDelegate {
     
-    @IBOutlet weak var habitTextField: UITextField!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var titleUnderLabel: UILabel!
-    @IBOutlet weak var timeTextField: UITextField!
-    @IBOutlet weak var timeUnderLabel: UILabel!
-    @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet weak var nameUnderlineLabel: UILabel!
+    @IBOutlet weak var nameRequiredLabel: UILabel!
+
+    @IBOutlet weak var repeatTextField: UITextField!
+    @IBOutlet weak var repeatUnderlineLabel: UILabel!
+    @IBOutlet weak var repeatRequiredLabel: UILabel!
     
+    
+    @IBOutlet var addHabitView: UIView!
     
     var activeTextField = UITextField()
     var lastActiveTextField: String!
@@ -33,6 +36,16 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
         print()
         print("viewDidLoad...")
         print()
+        
+        // testing
+        //Looks for single or multiple taps.
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+        
+        //Uncomment the line below if you want the tap not not interfere and cancel other interactions.
+        //tap.cancelsTouchesInView = false
+        
+        addHabitView.addGestureRecognizer(tap)
+        
         
         do {
             let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
@@ -49,6 +62,12 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    //Calls this function when the tap is recognized.
+    @objc func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        addHabitView.endEditing(true)
+    }
+    
     // Assign the newly active text field to your activeTextField variable
     func textFieldDidBeginEditing(_ textField: UITextField) {
         
@@ -56,50 +75,33 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
         let id = textField.restorationIdentifier
         
         if (id == "titleTextField") {
-            titleLabel.textColor = UIColor.blue
-            titleUnderLabel.textColor = UIColor.blue
-            lastActiveTextField = id ?? "titleTextField"
+            nameUnderlineLabel.textColor = UIColor.blue
         }
         else if (id == "timeTextField") {
-            timeLabel.textColor = UIColor.blue
-            timeUnderLabel.textColor = UIColor.blue
-            lastActiveTextField = id ?? "timeTextField"
-        }
-        
-        print("didBeginEditing, id: \(id ?? "Time")")
-    }
-    
-    // Assign the newly active text field to your activeTextField variable
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        
-//        self.activeTextField = textField
-//        let id = textField.restorationIdentifier
-        
-        
-        if (lastActiveTextField == "titleTextField") {
-//            print("didEndEditing: titleTextField")
-            titleLabel.textColor = UIColor.gray
-            titleUnderLabel.textColor = UIColor.gray
-        }
-        if (lastActiveTextField == "timeTextField") {
-//            print("didEndEditing: timeTextField")
-            timeLabel.textColor = UIColor.gray
-            timeUnderLabel.textColor = UIColor.gray
+            repeatUnderlineLabel.textColor = UIColor.blue
         }
         
 //        print("didBeginEditing, id: \(id ?? "Time")")
     }
     
-    // Call activeTextField whenever you need to
-    func anotherMethod() {
-        
-        // self.activeTextField.text is an optional, we safely unwrap it here
-        if let activeTextFieldText = self.activeTextField.text {
-            print("Active text field's text: \(activeTextFieldText)")
-            return;
+    // Assign the newly active text field to your activeTextField variable
+    func textFieldDidEndEditing(_ textField: UITextField) {
+    
+        if (textField.restorationIdentifier == "titleTextField") {
+            if (textField.text != "") {
+                nameUnderlineLabel.textColor = UIColor.black
+            } else {
+                nameUnderlineLabel.textColor = UIColor.gray
+            }
         }
-        
-        print("Active text field is empty")
+        if (textField.restorationIdentifier == "timeTextField") {
+            if (textField.text != "") {
+                repeatUnderlineLabel.textColor = UIColor.black
+            } else {
+                repeatUnderlineLabel.textColor = UIColor.gray
+            }
+        }
+//        print("didBeginEditing, id: \(id ?? "Time")")
     }
     
     
@@ -110,8 +112,24 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
         // create alert controller
         
             // insert new habit into journal
-        let habit = habitTextField.text
-        let time = timeTextField.text
+        let habit = nameTextField.text
+        let time = repeatTextField.text
+        
+        // testing
+        if (habit == "" || time == "") {
+            if (habit == "") {
+                print("Name blank, displaying required...")
+                nameUnderlineLabel.textColor = UIColor.red
+                nameRequiredLabel.isHidden = false
+            }
+            if (time == "") {
+                print("Time blank, displaying required...")
+                repeatUnderlineLabel.textColor = UIColor.red
+                repeatRequiredLabel.isHidden = false
+            }
+        } else {
+            nameRequiredLabel.isHidden = true
+            repeatRequiredLabel.isHidden = true
             let addHabit = self.journal.habitsTable.insert(self.journal.habit <- habit ?? "error",
                                                            self.journal.time <- time ?? "daily",
                                                            self.journal.streak <- 0,
@@ -120,17 +138,19 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
             do {
                 try self.journal.database.run(addHabit)
                 print("Habit Added -> habit: \(habit ?? "error"), time: \(time ?? "daily")")
-                
-                //                self.journal.entries.addDay(habit: habit, date: Date())
                 self.journal.entries.addDay(habit: habit ?? "error", date: Date())
+                nameTextField.text = ""
+                repeatTextField.text = ""
                 
-                habitTextField.text = ""
-                timeTextField.text = ""
+                // testing
+                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+                let nextViewController = storyBoard.instantiateViewController(withIdentifier: "journalViewController") as! JournalViewController
+//                self.present(nextViewController, animated:true, completion:nil)
+                self.navigationController?.pushViewController(nextViewController, animated: true)
                 
-//                self.habitTableView.reloadData()
             } catch {
                 print (error)
             }
+        }
     }
-
 }

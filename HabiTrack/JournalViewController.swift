@@ -20,6 +20,7 @@ class HabitTableViewCell: UITableViewCell {
     @IBOutlet weak var habitUILabel: UILabel!
     @IBOutlet weak var timeUILabel: UILabel!
     @IBOutlet weak var streakUILabel: UILabel!
+    @IBOutlet var checkBox: BEMCheckBox!
 }
 
 // class: JournalViewController
@@ -61,6 +62,8 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         print()
         print("viewDidLoad...")
         print()
+        
+        
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(applicationWillEnterForeground),
@@ -155,9 +158,12 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         // check if today, mark blue, else mark gray
         if (tempDay == getDayAsInt(date: daysArray[indexPath.row])) {
             print("tempDay: \(tempDay) == daysArray: \(getDayAsInt(date: daysArray[indexPath.row]))")
-            cell.layer.borderColor = UIColor.blue.cgColor
-            cell.monthUILabel?.textColor = UIColor.blue
-            cell.dayUILabel?.textColor = UIColor.blue
+//            cell.layer.borderColor = UIColor.blue.cgColor
+//            cell.monthUILabel?.textColor = UIColor.blue
+//            cell.dayUILabel?.textColor = UIColor.blue
+            cell.layer.borderColor = UIColor.systemBlue.cgColor
+            cell.monthUILabel?.textColor = UIColor.systemBlue
+            cell.dayUILabel?.textColor = UIColor.systemBlue
         } else {
             cell.layer.borderColor = UIColor.lightGray.cgColor
             cell.monthUILabel?.textColor = UIColor.gray
@@ -249,9 +255,18 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                     // check if today has already been completed
                     if (self.journal.entries.checkCompleted(habit: habitString, date: dateSelected)) {
                         cell.accessoryType = .checkmark
+//                        cell.checkBox?.setOn(true, animated: false)
+//                        cell.checkBox?.on = true
                     } else {
                         cell.accessoryType = .none
+//                        cell.checkBox?.on = false
+//                        cell.checkBox?.setOn(false, animated: false)
                     }
+                    
+                    //testing
+                    cell.checkBox?.onAnimationType = BEMAnimationType.bounce
+                    cell.checkBox?.offAnimationType = BEMAnimationType.bounce
+                    
                     return (cell)
                 } else {
                     count += 1
@@ -274,10 +289,14 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             // check if the cell has been completed
             if cell.accessoryType == UITableViewCell.AccessoryType.checkmark {
                 cell.accessoryType = .none
+//                cell.checkBox?.on = false
+                cell.checkBox?.setOn(false, animated: true)
                 journal.updateDateStreak(row: indexPath.row, inc: 0, date: dateSelected, habitString: tempString ?? "none")
             }
             else {
                 cell.accessoryType = .checkmark
+//                cell.checkBox?.on = true
+                cell.checkBox?.setOn(true, animated: true)
                 journal.updateDateStreak(row: indexPath.row, inc: 1, date: dateSelected, habitString: tempString ?? "none")
             }
         }
@@ -368,9 +387,11 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     // custom : updateDaysArray (init daysArray)
     func updateDaysArray(date: Date) {
         daysArray = []
-        var day = Calendar.current.date(byAdding: .day, value: -3, to: date)
         var count = -3
-        while count <= 3 {
+        let max_count = 3
+        var day = Calendar.current.date(byAdding: .day, value: count, to: date)
+        
+        while count <= max_count {
 //            print("count: \(count)\tday: \(Calendar.current.component(.day, from: day ?? date))")
             daysArray.append(day ?? Date())
             // increment day count

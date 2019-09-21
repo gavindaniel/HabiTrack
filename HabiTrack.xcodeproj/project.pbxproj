@@ -20,6 +20,7 @@
 		4C89B81D231C44E400AE45F4 /* Entries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C89B81C231C44E400AE45F4 /* Entries.swift */; };
 		4C89B81F231CE2A600AE45F4 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C89B81E231CE2A600AE45F4 /* SettingsViewController.swift */; };
 		4CAAAC82232B5CD5000C9AD8 /* HabitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAAAC81232B5CD5000C9AD8 /* HabitViewController.swift */; };
+		4CAAAC90232C3E84000C9AD8 /* Classes in Resources */ = {isa = PBXBuildFile; fileRef = 4CAAAC8F232C3E84000C9AD8 /* Classes */; };
 		4CB004C82311A59400417248 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB004BA2311A56E00417248 /* SQLite.framework */; };
 		4CB004C92311A59400417248 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB004BA2311A56E00417248 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -131,6 +132,8 @@
 		4C89B81C231C44E400AE45F4 /* Entries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entries.swift; sourceTree = "<group>"; };
 		4C89B81E231CE2A600AE45F4 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		4CAAAC81232B5CD5000C9AD8 /* HabitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitViewController.swift; sourceTree = "<group>"; };
+		4CAAAC8E232C3DE1000C9AD8 /* HabiTrackBridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HabiTrackBridgingHeader.h; sourceTree = "<group>"; };
+		4CAAAC8F232C3E84000C9AD8 /* Classes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Classes; sourceTree = "<group>"; };
 		4CB004AF2311A56D00417248 /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = "../SQLite.swift-master/SQLite.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -192,6 +195,7 @@
 		4C4FF7AD230F620B00DAC450 /* HabiTrack */ = {
 			isa = PBXGroup;
 			children = (
+				4CAAAC8F232C3E84000C9AD8 /* Classes */,
 				4C4FF7AE230F620B00DAC450 /* AppDelegate.swift */,
 				4C6A16192320BA4000274316 /* CustomDate.swift */,
 				4C89B814231B62D500AE45F4 /* Journal.swift */,
@@ -204,6 +208,7 @@
 				4C4FF7B9230F620D00DAC450 /* LaunchScreen.storyboard */,
 				4C4FF7B7230F620D00DAC450 /* Assets.xcassets */,
 				4C4FF7BC230F620D00DAC450 /* Info.plist */,
+				4CAAAC8E232C3DE1000C9AD8 /* HabiTrackBridgingHeader.h */,
 			);
 			path = HabiTrack;
 			sourceTree = "<group>";
@@ -405,6 +410,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4C4FF7BB230F620D00DAC450 /* LaunchScreen.storyboard in Resources */,
+				4CAAAC90232C3E84000C9AD8 /* Classes in Resources */,
 				4C4FF7B8230F620D00DAC450 /* Assets.xcassets in Resources */,
 				4C4FF7B6230F620B00DAC450 /* Main.storyboard in Resources */,
 			);
@@ -628,6 +634,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = gavindaniel.HabiTrack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = HabiTrack/HabiTrackBridgingHeader.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -647,6 +654,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = gavindaniel.HabiTrack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = HabiTrack/HabiTrackBridgingHeader.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
