@@ -170,6 +170,35 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4C225B84233E6CE10062E195 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				4C4FF7AE230F620B00DAC450 /* AppDelegate.swift */,
+				4CAAAC81232B5CD5000C9AD8 /* HabitViewController.swift */,
+				4C4FF7B0230F620B00DAC450 /* JournalViewController.swift */,
+				4C4FF7B2230F620B00DAC450 /* DevViewController.swift */,
+				4C89B81E231CE2A600AE45F4 /* SettingsViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		4C225B85233E6CEA0062E195 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		4C225B86233E6CEF0062E195 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4C6A16192320BA4000274316 /* CustomDate.swift */,
+				4C89B814231B62D500AE45F4 /* Journal.swift */,
+				4C89B81C231C44E400AE45F4 /* Entries.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		4C4FF7A2230F620B00DAC450 = {
 			isa = PBXGroup;
 			children = (
@@ -195,15 +224,10 @@
 		4C4FF7AD230F620B00DAC450 /* HabiTrack */ = {
 			isa = PBXGroup;
 			children = (
+				4C225B86233E6CEF0062E195 /* Model */,
+				4C225B85233E6CEA0062E195 /* View */,
+				4C225B84233E6CE10062E195 /* Controller */,
 				4CAAAC8F232C3E84000C9AD8 /* Classes */,
-				4C4FF7AE230F620B00DAC450 /* AppDelegate.swift */,
-				4C6A16192320BA4000274316 /* CustomDate.swift */,
-				4C89B814231B62D500AE45F4 /* Journal.swift */,
-				4C89B81C231C44E400AE45F4 /* Entries.swift */,
-				4CAAAC81232B5CD5000C9AD8 /* HabitViewController.swift */,
-				4C4FF7B0230F620B00DAC450 /* JournalViewController.swift */,
-				4C4FF7B2230F620B00DAC450 /* DevViewController.swift */,
-				4C89B81E231CE2A600AE45F4 /* SettingsViewController.swift */,
 				4C4FF7B4230F620B00DAC450 /* Main.storyboard */,
 				4C4FF7B9230F620D00DAC450 /* LaunchScreen.storyboard */,
 				4C4FF7B7230F620D00DAC450 /* Assets.xcassets */,

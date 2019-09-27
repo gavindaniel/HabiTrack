@@ -26,7 +26,7 @@ class Journal {
     
     // custom : createTable (create SQL table)
     func createTable() {
-        print("Creating Table...")
+//        print("Creating Table...")
         let createTable = self.habitsTable.create { (table) in
             table.column(self.id, primaryKey: true)
             table.column(self.habit)
@@ -36,7 +36,7 @@ class Journal {
         }
         do {
             try self.database.run(createTable)
-            print("Created Table")
+//            print("Created Table")
         } catch {
             print (error)
         }
@@ -58,7 +58,7 @@ class Journal {
     }
 
     func updateStreak(row: Int, inc: Int, date: Date, habitString: String) {
-        print("updateStreak...")
+//        print("updateStreak...")
         var count = 0
         var firstId = 0
         do {

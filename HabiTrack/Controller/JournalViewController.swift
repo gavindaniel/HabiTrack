@@ -114,15 +114,16 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     // collectionView : cellForItemAt
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        print("cellForItemAt... indexPath: \(indexPath.row)")
         // create collectionView item
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "dateCell", for: indexPath)
             as! DateCollectionViewCell
         // add labels
         cell.monthUILabel?.text = getMonthAsString(date: daysArray[indexPath.row])
         cell.dayUILabel?.text = String(getDayAsInt(date: daysArray[indexPath.row]))
-        cell.monthUILabel?.textColor = UIColor.gray
-        cell.dayUILabel?.textColor = UIColor.gray
-        cell.layer.borderWidth = 1.0
+//        cell.monthUILabel?.textColor = UIColor.gray
+//        cell.dayUILabel?.textColor = UIColor.gray
+//        cell.layer.borderWidth = 1.0
         
         var tempDate = Date()
         
@@ -134,18 +135,40 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
 
         let tempDay = Calendar.current.component(.day, from: tempDate)
         
-        // check if today, mark blue, else mark gray
+        // check if day selected, mark blue, else mark gray
         if (tempDay == getDayAsInt(date: daysArray[indexPath.row])) {
-            print("tempDay: \(tempDay) == daysArray: \(getDayAsInt(date: daysArray[indexPath.row]))")
+//            print("tempDay: \(tempDay) == daysArray: \(getDayAsInt(date: daysArray[indexPath.row]))")
             cell.layer.borderColor = UIColor.systemBlue.cgColor
             cell.monthUILabel?.textColor = UIColor.systemBlue
             cell.dayUILabel?.textColor = UIColor.systemBlue
         } else {
-            cell.layer.borderColor = UIColor.lightGray.cgColor
-            cell.monthUILabel?.textColor = UIColor.gray
-            cell.dayUILabel?.textColor = UIColor.gray
+            // testing if today, mark black so people know which day is today
+            if (Calendar.current.component(.day, from: Date()) == getDayAsInt(date: daysArray[indexPath.row])) {
+                if #available(iOS 13.0, *) {
+                    cell.layer.borderColor = UIColor.systemGray.cgColor
+                    cell.monthUILabel?.textColor = UIColor.systemGray
+                    cell.dayUILabel?.textColor = UIColor.systemGray
+                } else {
+                    // Fallback on earlier versions
+                    cell.layer.borderColor = UIColor.darkGray.cgColor
+                    cell.monthUILabel?.textColor = UIColor.darkGray
+                    cell.dayUILabel?.textColor = UIColor.darkGray
+                }
+            } else {
+                if #available(iOS 13.0, *) {
+                    cell.layer.borderColor = UIColor.systemGray2.cgColor
+                    cell.monthUILabel?.textColor = UIColor.systemGray2
+                    cell.dayUILabel?.textColor = UIColor.systemGray2
+                } else {
+                    // Fallback on earlier versions
+                    cell.layer.borderColor = UIColor.lightGray.cgColor
+                    cell.monthUILabel?.textColor = UIColor.lightGray
+                    cell.dayUILabel?.textColor = UIColor.lightGray
+                }
+            }
         }
-        cell.layer.cornerRadius = 10.0;
+        cell.layer.cornerRadius = 10.0
+        cell.layer.borderWidth = 1.0
         // return initialized item
         return (cell)
     }
@@ -154,11 +177,37 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         if let cell: DateCollectionViewCell = (collectionView.cellForItem(at: indexPath) as? DateCollectionViewCell) {
             // clear the selection
-            cell.layer.borderWidth = 1.0
-            cell.layer.borderColor = UIColor.lightGray.cgColor
-            cell.layer.cornerRadius = 10.0;
-            cell.monthUILabel?.textColor = UIColor.gray
-            cell.dayUILabel?.textColor = UIColor.gray
+            
+//            cell.layer.cornerRadius = 10.0
+//            cell.layer.borderWidth = 1.0
+            
+            // testing
+            let tempDay = Calendar.current.component(.day, from: Date())
+            
+            // check if today, mark blue, else mark gray
+            if (tempDay == getDayAsInt(date: daysArray[indexPath.row])) {
+                if #available(iOS 13.0, *) {
+                    cell.layer.borderColor = UIColor.systemGray.cgColor
+                    cell.monthUILabel?.textColor = UIColor.systemGray
+                    cell.dayUILabel?.textColor = UIColor.systemGray
+                } else {
+                    // Fallback on earlier versions
+                    cell.layer.borderColor = UIColor.darkGray.cgColor
+                    cell.monthUILabel?.textColor = UIColor.darkGray
+                    cell.dayUILabel?.textColor = UIColor.darkGray
+                }
+            } else {
+                if #available(iOS 13.0, *) {
+                    cell.layer.borderColor = UIColor.systemGray2.cgColor
+                    cell.monthUILabel?.textColor = UIColor.systemGray2
+                    cell.dayUILabel?.textColor = UIColor.systemGray2
+                } else {
+                    // Fallback on earlier versions
+                    cell.layer.borderColor = UIColor.lightGray.cgColor
+                    cell.monthUILabel?.textColor = UIColor.lightGray
+                    cell.dayUILabel?.textColor = UIColor.lightGray
+                }
+            }
         }
     }
     
@@ -168,7 +217,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
         // get the cell from the tableView
         if let cell: DateCollectionViewCell = (collectionView.cellForItem(at: indexPath) as? DateCollectionViewCell) {
             // if the selected item is different from the last, deselect the last item
-            print("lastSelectedItem: \(lastSelectedItem) != indexPath.row: \(indexPath.row)")
+//            print("lastSelectedItem: \(lastSelectedItem) != indexPath.row: \(indexPath.row)")
 //            if (lastSelectedItem != indexPath.row) {
                 lastSelectedItem = indexPath.row
                 
@@ -189,9 +238,7 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                 }
 //            }
             // change the border fo the selected item
-            cell.layer.borderWidth = 1.0
             cell.layer.borderColor = UIColor.blue.cgColor
-            cell.layer.cornerRadius = 10.0;
             cell.monthUILabel?.textColor = UIColor.blue
             cell.dayUILabel?.textColor = UIColor.blue
         }
@@ -240,8 +287,8 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
                     }
                     
                     //testing
-                    cell.checkBox?.onAnimationType = BEMAnimationType.bounce
-                    cell.checkBox?.offAnimationType = BEMAnimationType.bounce
+//                    cell.checkBox?.onAnimationType = BEMAnimationType.bounce
+//                    cell.checkBox?.offAnimationType = BEMAnimationType.bounce
                     
                     return (cell)
                 } else {
@@ -265,13 +312,13 @@ class JournalViewController: UIViewController, UITableViewDelegate, UITableViewD
             if cell.accessoryType == UITableViewCell.AccessoryType.checkmark {
                 cell.accessoryType = .none
 //                cell.checkBox?.on = false
-                cell.checkBox?.setOn(false, animated: true)
+//                cell.checkBox?.setOn(false, animated: true)
                 journal.updateStreak(row: indexPath.row, inc: 0, date: dateSelected, habitString: tempString ?? "none")
             }
             else {
                 cell.accessoryType = .checkmark
 //                cell.checkBox?.on = true
-                cell.checkBox?.setOn(true, animated: true)
+//                cell.checkBox?.setOn(true, animated: true)
                 journal.updateStreak(row: indexPath.row, inc: 1, date: dateSelected, habitString: tempString ?? "none")
             }
         }
