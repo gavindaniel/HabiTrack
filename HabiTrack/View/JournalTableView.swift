@@ -148,8 +148,8 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
     
     // custom : updateTableView
     func updateTableView(habitView: UITableView) {
-        print("\t\t\tupdating table view...")
+        print("\tupdating table view...")
         habitTableView = habitView
-        print("\t\t\tupdated table view.")
+        print("\t\tupdated table view.")
     }
 }

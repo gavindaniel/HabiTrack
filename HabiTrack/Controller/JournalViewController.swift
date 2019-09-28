@@ -120,8 +120,6 @@ class JournalViewController: UIViewController {
         self.dateCollectionView.reloadData()
     }
     
-    
-    
     // load : applicationWillEnterForeground
     @objc func applicationWillEnterForeground() {
         print()
@@ -129,41 +127,6 @@ class JournalViewController: UIViewController {
         print()
         
         update()
-    }
-    
-    // UIButton : updateTable (edit an entry)
-    @IBAction func updateTable(_ sender: Any) {
-        print("Updating table...")
-        // create alert controller
-        let alert = UIAlertController(title: "Update Habit", message: nil, preferredStyle: .alert)
-        // add text fields
-        alert.addTextField { (tf) in
-            tf.placeholder = "Habit ID" }
-        alert.addTextField {(tf) in tf.placeholder = "Habit" }
-        // create 'Submit' action
-        let submit = UIAlertAction(title: "Submit", style: .default) { (_) in
-            // get strings from text fields
-            guard let habitIdString = alert.textFields?.first?.text, let habitId = Int(habitIdString), let habitString = alert.textFields?.last?.text
-                else { return }
-            // find the correct in the table
-            let habit = self.journal.habitsTable.filter(self.journal.id == habitId)
-            // udpate the habit
-            let updateHabit = habit.update(self.journal.habit <- habitString)
-            
-            // attempt to update the database
-            do {
-                try self.journal.database.run(updateHabit)
-                print("Updated table.")
-                self.habitTableView.reloadData()
-            } catch {
-                print(error)
-            }
-        }
-        alert.addAction(submit)
-        // create 'Cancel' alert action
-        let cancel = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil)
-        alert.addAction(cancel)
-        present(alert, animated: true, completion: nil)
     }
     
     // custom : update

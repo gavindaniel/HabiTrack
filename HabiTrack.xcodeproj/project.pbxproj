@@ -205,6 +205,15 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		4C225B8C233FC6F00062E195 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				4C4FF7B4230F620B00DAC450 /* Main.storyboard */,
+				4C4FF7B9230F620D00DAC450 /* LaunchScreen.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
 		4C4FF7A2230F620B00DAC450 = {
 			isa = PBXGroup;
 			children = (
@@ -235,8 +244,7 @@
 				4C225B86233E6CEF0062E195 /* Model */,
 				4C225B85233E6CEA0062E195 /* View */,
 				4C225B84233E6CE10062E195 /* Controller */,
-				4C4FF7B4230F620B00DAC450 /* Main.storyboard */,
-				4C4FF7B9230F620D00DAC450 /* LaunchScreen.storyboard */,
+				4C225B8C233FC6F00062E195 /* Storyboard */,
 				4C4FF7B7230F620D00DAC450 /* Assets.xcassets */,
 				4C4FF7BC230F620D00DAC450 /* Info.plist */,
 			);
