@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4C05F55923272BB000186B3D /* JournalTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C05F55823272BB000186B3D /* JournalTableView.swift */; };
+		4C225B88233E6EDD0062E195 /* JournalTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C225B87233E6EDD0062E195 /* JournalTableView.swift */; };
+		4C225B8A233E6EEC0062E195 /* JournalDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C225B89233E6EEC0062E195 /* JournalDateView.swift */; };
 		4C4FF7AF230F620B00DAC450 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4FF7AE230F620B00DAC450 /* AppDelegate.swift */; };
 		4C4FF7B1230F620B00DAC450 /* JournalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4FF7B0230F620B00DAC450 /* JournalViewController.swift */; };
 		4C4FF7B3230F620B00DAC450 /* DevViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4FF7B2230F620B00DAC450 /* DevViewController.swift */; };
@@ -20,9 +21,10 @@
 		4C89B815231B62D500AE45F4 /* Journal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C89B814231B62D500AE45F4 /* Journal.swift */; };
 		4C89B81D231C44E400AE45F4 /* Entries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C89B81C231C44E400AE45F4 /* Entries.swift */; };
 		4C89B81F231CE2A600AE45F4 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C89B81E231CE2A600AE45F4 /* SettingsViewController.swift */; };
-		4CC43B0E23275C6700FAC8B1 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB004BA2311A56E00417248 /* SQLite.framework */; };
-		4CC43B0F23275C6700FAC8B1 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB004BA2311A56E00417248 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		4CC43B142327665600FAC8B1 /* JournalDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CC43B132327665600FAC8B1 /* JournalDateView.swift */; };
+		4CAAAC82232B5CD5000C9AD8 /* HabitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAAAC81232B5CD5000C9AD8 /* HabitViewController.swift */; };
+		4CAAAC90232C3E84000C9AD8 /* Classes in Resources */ = {isa = PBXBuildFile; fileRef = 4CAAAC8F232C3E84000C9AD8 /* Classes */; };
+		4CB004C82311A59400417248 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB004BA2311A56E00417248 /* SQLite.framework */; };
+		4CB004C92311A59400417248 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB004BA2311A56E00417248 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,7 +91,7 @@
 			remoteGlobalIDString = A121AC451CA35C79005A31D1;
 			remoteInfo = "SQLite watchOS";
 		};
-		4CC43B1023275C6700FAC8B1 /* PBXContainerItemProxy */ = {
+		4CB004CA2311A59400417248 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4CB004AF2311A56D00417248 /* SQLite.xcodeproj */;
 			proxyType = 1;
@@ -99,13 +101,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		4CC43B1223275C6700FAC8B1 /* Embed Frameworks */ = {
+		4C1E45D02310A6A8004A3B7C /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				4CC43B0F23275C6700FAC8B1 /* SQLite.framework in Embed Frameworks */,
+				4CB004C92311A59400417248 /* SQLite.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -113,7 +115,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4C05F55823272BB000186B3D /* JournalTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalTableView.swift; sourceTree = "<group>"; };
+		4C225B87233E6EDD0062E195 /* JournalTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalTableView.swift; sourceTree = "<group>"; };
+		4C225B89233E6EEC0062E195 /* JournalDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalDateView.swift; sourceTree = "<group>"; };
+		4C225B8B233E768B0062E195 /* HabiTrackBridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HabiTrackBridgingHeader.h; sourceTree = "<group>"; };
 		4C4FF7AB230F620B00DAC450 /* HabiTrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HabiTrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C4FF7AE230F620B00DAC450 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4C4FF7B0230F620B00DAC450 /* JournalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalViewController.swift; sourceTree = "<group>"; };
@@ -132,8 +136,9 @@
 		4C89B814231B62D500AE45F4 /* Journal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Journal.swift; sourceTree = "<group>"; };
 		4C89B81C231C44E400AE45F4 /* Entries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entries.swift; sourceTree = "<group>"; };
 		4C89B81E231CE2A600AE45F4 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		4CAAAC81232B5CD5000C9AD8 /* HabitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitViewController.swift; sourceTree = "<group>"; };
+		4CAAAC8F232C3E84000C9AD8 /* Classes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Classes; sourceTree = "<group>"; };
 		4CB004AF2311A56D00417248 /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = "../SQLite.swift-master/SQLite.xcodeproj"; sourceTree = "<group>"; };
-		4CC43B132327665600FAC8B1 /* JournalDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalDateView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,7 +146,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4CC43B0E23275C6700FAC8B1 /* SQLite.framework in Frameworks */,
+				4CB004C82311A59400417248 /* SQLite.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,6 +174,46 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4C225B84233E6CE10062E195 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				4C4FF7AE230F620B00DAC450 /* AppDelegate.swift */,
+				4CAAAC81232B5CD5000C9AD8 /* HabitViewController.swift */,
+				4C4FF7B0230F620B00DAC450 /* JournalViewController.swift */,
+				4C4FF7B2230F620B00DAC450 /* DevViewController.swift */,
+				4C89B81E231CE2A600AE45F4 /* SettingsViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		4C225B85233E6CEA0062E195 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4C225B89233E6EEC0062E195 /* JournalDateView.swift */,
+				4C225B87233E6EDD0062E195 /* JournalTableView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		4C225B86233E6CEF0062E195 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4C6A16192320BA4000274316 /* CustomDate.swift */,
+				4C89B814231B62D500AE45F4 /* Journal.swift */,
+				4C89B81C231C44E400AE45F4 /* Entries.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		4C225B8C233FC6F00062E195 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				4C4FF7B4230F620B00DAC450 /* Main.storyboard */,
+				4C4FF7B9230F620D00DAC450 /* LaunchScreen.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
 		4C4FF7A2230F620B00DAC450 = {
 			isa = PBXGroup;
 			children = (
@@ -194,17 +239,12 @@
 		4C4FF7AD230F620B00DAC450 /* HabiTrack */ = {
 			isa = PBXGroup;
 			children = (
-				4C4FF7AE230F620B00DAC450 /* AppDelegate.swift */,
-				4C6A16192320BA4000274316 /* CustomDate.swift */,
-				4C89B814231B62D500AE45F4 /* Journal.swift */,
-				4C89B81C231C44E400AE45F4 /* Entries.swift */,
-				4CC43B132327665600FAC8B1 /* JournalDateView.swift */,
-				4C05F55823272BB000186B3D /* JournalTableView.swift */,
-				4C4FF7B0230F620B00DAC450 /* JournalViewController.swift */,
-				4C4FF7B2230F620B00DAC450 /* DevViewController.swift */,
-				4C89B81E231CE2A600AE45F4 /* SettingsViewController.swift */,
-				4C4FF7B4230F620B00DAC450 /* Main.storyboard */,
-				4C4FF7B9230F620D00DAC450 /* LaunchScreen.storyboard */,
+				4C225B8B233E768B0062E195 /* HabiTrackBridgingHeader.h */,
+				4CAAAC8F232C3E84000C9AD8 /* Classes */,
+				4C225B86233E6CEF0062E195 /* Model */,
+				4C225B85233E6CEA0062E195 /* View */,
+				4C225B84233E6CE10062E195 /* Controller */,
+				4C225B8C233FC6F00062E195 /* Storyboard */,
 				4C4FF7B7230F620D00DAC450 /* Assets.xcassets */,
 				4C4FF7BC230F620D00DAC450 /* Info.plist */,
 			);
@@ -253,12 +293,12 @@
 				4C4FF7A7230F620B00DAC450 /* Sources */,
 				4C4FF7A8230F620B00DAC450 /* Frameworks */,
 				4C4FF7A9230F620B00DAC450 /* Resources */,
-				4CC43B1223275C6700FAC8B1 /* Embed Frameworks */,
+				4C1E45D02310A6A8004A3B7C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				4CC43B1123275C6700FAC8B1 /* PBXTargetDependency */,
+				4CB004CB2311A59400417248 /* PBXTargetDependency */,
 			);
 			name = HabiTrack;
 			productName = HabiTrack;
@@ -408,6 +448,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4C4FF7BB230F620D00DAC450 /* LaunchScreen.storyboard in Resources */,
+				4CAAAC90232C3E84000C9AD8 /* Classes in Resources */,
 				4C4FF7B8230F620D00DAC450 /* Assets.xcassets in Resources */,
 				4C4FF7B6230F620B00DAC450 /* Main.storyboard in Resources */,
 			);
@@ -435,14 +476,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				4C4FF7B3230F620B00DAC450 /* DevViewController.swift in Sources */,
+				4C225B88233E6EDD0062E195 /* JournalTableView.swift in Sources */,
 				4C89B81D231C44E400AE45F4 /* Entries.swift in Sources */,
 				4C4FF7AF230F620B00DAC450 /* AppDelegate.swift in Sources */,
+				4C225B8A233E6EEC0062E195 /* JournalDateView.swift in Sources */,
+				4CAAAC82232B5CD5000C9AD8 /* HabitViewController.swift in Sources */,
 				4C4FF7B1230F620B00DAC450 /* JournalViewController.swift in Sources */,
-				4CC43B142327665600FAC8B1 /* JournalDateView.swift in Sources */,
 				4C6A161A2320BA4000274316 /* CustomDate.swift in Sources */,
 				4C89B815231B62D500AE45F4 /* Journal.swift in Sources */,
 				4C89B81F231CE2A600AE45F4 /* SettingsViewController.swift in Sources */,
-				4C05F55923272BB000186B3D /* JournalTableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -475,10 +517,10 @@
 			target = 4C4FF7AA230F620B00DAC450 /* HabiTrack */;
 			targetProxy = 4C4FF7CD230F620D00DAC450 /* PBXContainerItemProxy */;
 		};
-		4CC43B1123275C6700FAC8B1 /* PBXTargetDependency */ = {
+		4CB004CB2311A59400417248 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "SQLite iOS";
-			targetProxy = 4CC43B1023275C6700FAC8B1 /* PBXContainerItemProxy */;
+			targetProxy = 4CB004CA2311A59400417248 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -632,6 +674,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = gavindaniel.HabiTrack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = HabiTrack/HabiTrackBridgingHeader.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -651,6 +694,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = gavindaniel.HabiTrack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = HabiTrack/HabiTrackBridgingHeader.h;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

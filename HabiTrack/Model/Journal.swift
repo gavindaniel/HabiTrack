@@ -26,7 +26,7 @@ class Journal {
     
     // custom : createTable (create SQL table)
     func createTable() {
-        print("Creating Table...")
+//        print("Creating Table...")
         let createTable = self.habitsTable.create { (table) in
             table.column(self.id, primaryKey: true)
             table.column(self.habit)
@@ -36,7 +36,7 @@ class Journal {
         }
         do {
             try self.database.run(createTable)
-            print("Created Table")
+//            print("Created Table")
         } catch {
             print (error)
         }
@@ -56,9 +56,9 @@ class Journal {
         }
         return (count)
     }
-    
-    // custom : updateStreak
+
     func updateStreak(row: Int, inc: Int, date: Date, habitString: String) {
+//        print("updateStreak...")
         var count = 0
         var firstId = 0
         do {
@@ -69,6 +69,7 @@ class Journal {
                 }
                 if (count == row) {
                     let habit = self.habitsTable.filter(self.id == count+firstId)
+                    print("date: \(date)")
                     entries.markCompleted(habit: habitString, date: date, val: inc)
                     let currentStreak = entries.countStreak(habit: habitString, date: date)
                     let updateHabit = habit.update(self.streak <- currentStreak)
@@ -91,14 +92,15 @@ class Journal {
     func addDays(numDays: Int, startDate: Date) {
         var temp = 0
         var nextDay = Calendar.current.date(byAdding: .day, value: 1, to: startDate)
-//        print("nextDay: \(nextDay)")
         while temp < numDays {
             do {
                 let habits = try self.database.prepare(self.habitsTable)
                 for habit in habits {
                     // do something...
                     let tempString = habit[self.habit]
-                    entries.addDay(habit: tempString, date: nextDay ?? Date())
+                    if (entries.checkDayExists(habit: tempString, date: nextDay ?? Date()) == false) {
+                        entries.addDay(habit: tempString, date: nextDay ?? Date())
+                    }
                 }
             } catch {
                 print(error)
@@ -116,7 +118,6 @@ class Journal {
             for habit in habits {
                 // do something...
                 let tempString = habit[self.habit]
-                //                    entries.addDay(habit: tempString, date: nextDay ?? Date())
                 entries.deleteDay(habit: tempString, date: date)
             }
         } catch {

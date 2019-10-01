@@ -2,32 +2,24 @@
 //  JournalTableView.swift
 //  HabiTrack
 //
-//  Created by Gavin Daniel on 9/9/19.
+//  Created by Gavin Daniel on 9/27/19.
 //  Copyright © 2019 Gavin Daniel. All rights reserved.
 //
 
-import UIKit
+import Foundation
 import SQLite
 import Foundation
 
 class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
-    
-    var dateSelected = Date()
-    
-    var journal: Journal
-    var tableView: UITableView
-//    var journal: Journal!
-//    var tableView: UITableView!
-    
-//    override init () {
-//        self.journal = Journal()
-//        self.tableView = UITableView()
-//        super.init()
-//    }
 
-    init(journal: Journal, habitTableView: UITableView) {
+    var journal: Journal
+    var habitTableView: UITableView
+    var dateSelected: Date
+    
+    init(journal: Journal, habitTableView: UITableView, date: Date) {
         self.journal = journal
-        self.tableView = habitTableView
+        self.habitTableView = habitTableView
+        self.dateSelected = date
         super.init()
     }
     
@@ -61,9 +53,18 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
                     // check if today has already been completed
                     if (self.journal.entries.checkCompleted(habit: habitString, date: dateSelected)) {
                         cell.accessoryType = .checkmark
+//                        cell.checkBox?.setOn(true, animated: false)
+//                        cell.checkBox?.on = true
                     } else {
                         cell.accessoryType = .none
+//                        cell.checkBox?.on = false
+//                        cell.checkBox?.setOn(false, animated: false)
                     }
+                    
+                    //testing
+//                    cell.checkBox?.onAnimationType = BEMAnimationType.bounce
+//                    cell.checkBox?.offAnimationType = BEMAnimationType.bounce
+                    
                     return (cell)
                 } else {
                     count += 1
@@ -72,13 +73,12 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
         } catch {
             print (error)
         }
-        self.tableView.reloadData()
+        self.habitTableView.reloadData()
         return (cell)
     }
     
     // tableView : didSelectRowAt
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //        print("Selected row: \(indexPath.row)")
         // get the cell from the tableView
         if let cell: HabitTableViewCell = (tableView.cellForRow(at: indexPath) as? HabitTableViewCell) {
             // get the habit string from the cell
@@ -86,16 +86,20 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
             // check if the cell has been completed
             if cell.accessoryType == UITableViewCell.AccessoryType.checkmark {
                 cell.accessoryType = .none
+//                cell.checkBox?.on = false
+//                cell.checkBox?.setOn(false, animated: true)
                 journal.updateStreak(row: indexPath.row, inc: 0, date: dateSelected, habitString: tempString ?? "none")
             }
             else {
                 cell.accessoryType = .checkmark
+//                cell.checkBox?.on = true
+//                cell.checkBox?.setOn(true, animated: true)
                 journal.updateStreak(row: indexPath.row, inc: 1, date: dateSelected, habitString: tempString ?? "none")
             }
         }
-        self.tableView.reloadData()
+        self.habitTableView.reloadData()
     }
-    
+
     // tableView : editingStyle
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath)
     {
@@ -121,13 +125,13 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
                     }
                     if (count == indexPath.row) {
                         // get the habit whose id matches the count + first ID in the tableView
-                        let tempHabit = self.journal.habitsTable.where(self.journal.id == (count+firstId))
+                        let habit = self.journal.habitsTable.filter(self.journal.id == (count+firstId))
                         // delete the habit
-                        let deleteHabit = tempHabit.delete()
+                        let deleteHabit = habit.delete()
                         do {
                             try self.journal.database.run(deleteHabit)
                             print("Deleted habit")
-                            tableView.reloadData()
+                            habitTableView.reloadData()
                             return
                         } catch {
                             print(error)
@@ -142,15 +146,10 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    // custom : updateDate
-    func updateDate(date: Date) {
-        dateSelected = date
+    // custom : updateTableView
+    func updateTableView(habitView: UITableView) {
+        print("\tupdating table view...")
+        habitTableView = habitView
+        print("\t\tupdated table view.")
     }
-	
-	// custom : updateTableView
-	func updateTableView(habitTableView: UITableView) {
-        print("\t\t\tupdating table view...")
-		tableView = habitTableView
-        print("\t\t\tupdated table view.")
-	}
 }
