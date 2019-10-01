@@ -26,14 +26,12 @@ class HabitTableViewCell: UITableViewCell {
 // class: JournalViewController
 class JournalViewController: UIViewController {
     
-
     // variables
-//    var daysArray: Array<Date> = []
     var lastSelectedItem = -1
     var dateSelected = Date()
     var journal = Journal()
     
-    // testing
+    // customViews
     var journalTableView: JournalTableView?
     var journalDateView: JournalDateView?
 
@@ -43,23 +41,21 @@ class JournalViewController: UIViewController {
     // load : viewDidAppear
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         print()
         print("viewDidAppear...")
         print()
-        
-        // testing
+        // update views
         journalTableView?.updateTableView(habitView: habitTableView)
         journalDateView?.updateDateView(dateView: dateCollectionView)
-        
+        // set observer
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(applicationWillEnterForeground),
                                                name: UIApplication.willEnterForegroundNotification,
                                                object: nil)
+        // select today
         self.dateCollectionView.selectItem(at: IndexPath(row: 3, section: 0), animated: false, scrollPosition: [])
         self.dateCollectionView.delegate?.collectionView!(self.dateCollectionView, didSelectItemAt: IndexPath(item: 3, section: 0))
-        
-        // testing...
+        // check for day change
         update()
     }
     
@@ -71,34 +67,37 @@ class JournalViewController: UIViewController {
         print("viewDidLoad...")
         print()
         
-        
-        // testing
+        // initialize journalTableView
         self.journalTableView = JournalTableView(journal: journal, habitTableView: habitTableView, date: Date())
         self.journalTableView?.journal = journal
         self.journalTableView?.habitTableView = habitTableView
         
-        // testing
+        // initialize journalDateView
         self.journalDateView = JournalDateView(dateCollectionView: dateCollectionView, journalTableView: journalTableView!, habitTableView: habitTableView)
         self.journalDateView?.dateCollectionView = dateCollectionView
         self.journalDateView?.journalTableView = journalTableView!
         self.journalDateView?.habitTableView = habitTableView
         
-        
-        
+        // set observer
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(applicationWillEnterForeground),
                                                name: UIApplication.willEnterForegroundNotification,
                                                object: nil)
+        
+        // set the databases, dataSources and delegates
         do {
+            // set the databases
             let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
             let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
             let database = try Connection(fileUrl.path)
             self.journal.database = database
             self.journal.entries.database = database
             
+            // set the dataSource and delegate
             self.habitTableView.dataSource = journalTableView
             self.habitTableView.delegate = journalTableView
             
+            // set the dataSource and delegate
             self.dateCollectionView.dataSource = journalDateView
             self.dateCollectionView.delegate = journalDateView
             
@@ -113,9 +112,7 @@ class JournalViewController: UIViewController {
         print()
         print("viewWillAppear...")
         print()
-        
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
-        
+        // reload the views
         self.habitTableView.reloadData()
         self.dateCollectionView.reloadData()
     }
@@ -125,8 +122,22 @@ class JournalViewController: UIViewController {
         print()
         print("applicationWillEnterForeground...")
         print()
-        
+        // check for day change
         update()
+    }
+    
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        print()
+        print("traitCollectionDidChange")
+        print()
+        // check if change from light/dark mode
+        if #available(iOS 13, *), traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            // handle theme change here.
+            self.habitTableView.reloadData()
+            self.dateCollectionView.reloadData()
+        }
     }
     
     // custom : update
@@ -134,58 +145,56 @@ class JournalViewController: UIViewController {
         print()
         print("Updating View Controller...")
         print()
+        
         let date = Date()
         let defaults = UserDefaults.standard
         let lastRun = defaults.object(forKey: "lastRun") as! Date
-
-        // comment for testing
+        
+        // check if last run date is different from current date
         if (Calendar.current.component(.year, from: lastRun) != Calendar.current.component(.year, from: date) ||
             Calendar.current.component(.month, from: lastRun) != Calendar.current.component(.month, from: date) ||
             Calendar.current.component(.day, from: lastRun) != Calendar.current.component(.day, from: date)) {
             
-            // uncomment for testing
-//        if (1 != 0) {
-//            let nextDay = Calendar.current.date(byAdding: .day, value: 1, to: date)
-//            let count = self.journal.habitEntries.countDays(date1: lastRun, date2: nextDay ?? Date())
-            
             print("Date has changed. Updating last run date...")
+            
+            // count number of days since last run
             let count = self.journal.entries.countDays(date1: lastRun, date2: date)
             
+            // update the databases and views
             do {
+                // update the database
                 let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
                 let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
                 let database = try Connection(fileUrl.path)
                 self.journal.database = database
                 self.journal.entries.database = database
-                
+                // update the views
                 self.journalTableView?.updateTableView(habitView: habitTableView)
                 self.journalDateView?.updateDateView(dateView: dateCollectionView)
-                
             } catch {
                 print(error)
             }
-            self.journal.addDays(numDays: count, startDate: lastRun)
-            UserDefaults.standard.set(date, forKey: "lastRun")
-//            updateDaysArray(date: date)
             
-            // testing
+            // add number of days since last run date
+            self.journal.addDays(numDays: count, startDate: lastRun)
+            
+            // set the last run date to the current date
+            UserDefaults.standard.set(date, forKey: "lastRun")
+            
+            // reload the views
             self.habitTableView.reloadData()
             self.dateCollectionView.reloadData()
             
-            // testing
-            print("trying to updateDaysArray...")
+            // update days array and views
             self.journalDateView?.updateDaysArray(date: date)
-                        
-            // testing
-            print("trying to update views...")
             self.journalTableView?.updateTableView(habitView: habitTableView)
             self.journalDateView?.updateDateView(dateView: dateCollectionView)
             
-            
-            // testing
+            // reload the views
             self.habitTableView.reloadData()
             self.dateCollectionView.reloadData()
-
+            
+        // day has not changed since last run
         } else {
             print("Day has not changed.")
         }
