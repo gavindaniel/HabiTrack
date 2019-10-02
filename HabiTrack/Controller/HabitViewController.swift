@@ -29,6 +29,23 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
     
     var journal = Journal()
     
+    // customViews
+//    var journalTableView: JournalTableView?
+//    @IBOutlet weak var habitTableView: UITableView!
+    
+    
+    // load : viewDidDisappear
+    override func viewDidDisappear(_ animated: Bool) {
+        print()
+        print("viewDidDisappear...")
+        print()
+        // testing
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        let journalViewController = storyBoard.instantiateViewController(withIdentifier: "journalViewController") as! JournalViewController
+//        self.navigationController?.pushViewController(nextViewController, animated: true)
+        journalViewController.habitTableView?.reloadData()
+    }
+    
     // load : viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +55,8 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
         print()
         
         // testing
+//        self.journalTableView = JournalTableView(journal: journal, habitTableView: habitTableView, date: Date())
+        
         //Looks for single or multiple taps.
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
         
@@ -117,52 +136,53 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    @IBAction func cancelAddHabit(_ sender: AnyObject) {
+        dismiss(animated: true, completion: nil)
+    }
     
-    @IBAction func submitEntry(_ sender: Any) {
-        
-        // create table if there isn't one
-        journal.createTable()
-        // create alert controller
-        
-        // insert new habit into journal
-        let habit = nameTextField.text
-        let time = repeatTextField.text
-        
-        // testing
-        if (habit == "" || time == "") {
-            if (habit == "") {
-                print("Name blank, displaying required...")
-                nameUnderlineLabel.textColor = UIColor.red
-                nameRequiredLabel.isHidden = false
-            }
-            if (time == "") {
-                print("Time blank, displaying required...")
-                repeatUnderlineLabel.textColor = UIColor.red
-                repeatRequiredLabel.isHidden = false
-            }
-        } else {
-            nameRequiredLabel.isHidden = true
-            repeatRequiredLabel.isHidden = true
-            let addHabit = self.journal.habitsTable.insert(self.journal.habit <- habit ?? "error",
-                                                           self.journal.time <- time ?? "daily",
-                                                           self.journal.streak <- 0,
-                                                           self.journal.currentDay <- 1)
-            // attempt to add habit to database
-            do {
-                try self.journal.database.run(addHabit)
-                print("Habit Added -> habit: \(habit ?? "error"), time: \(time ?? "daily")")
-                self.journal.entries.addDay(habit: habit ?? "error", date: Date())
-                nameTextField.text = ""
-                repeatTextField.text = ""
+    @IBAction func addHabit(_ sender: AnyObject) {
+
+                // create table if there isn't one
+                journal.createTable()
+                // create alert controller
+                
+                // insert new habit into journal
+                let habit = nameTextField.text
+                let time = repeatTextField.text
                 
                 // testing
-                let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-                let nextViewController = storyBoard.instantiateViewController(withIdentifier: "journalViewController") as! JournalViewController
-                self.navigationController?.pushViewController(nextViewController, animated: true)
-                
-            } catch {
-                print (error)
-            }
-        }
+                if (habit == "" || time == "") {
+                    if (habit == "") {
+                        print("Name blank, displaying required...")
+                        nameUnderlineLabel.textColor = UIColor.red
+                        nameRequiredLabel.isHidden = false
+                    }
+                    if (time == "") {
+                        print("Time blank, displaying required...")
+                        repeatUnderlineLabel.textColor = UIColor.red
+                        repeatRequiredLabel.isHidden = false
+                    }
+                } else {
+                    nameRequiredLabel.isHidden = true
+                    repeatRequiredLabel.isHidden = true
+                    let addHabit = self.journal.habitsTable.insert(self.journal.habit <- habit ?? "error",
+                                                                   self.journal.time <- time ?? "daily",
+                                                                   self.journal.streak <- 0,
+                                                                   self.journal.currentDay <- 1)
+                    // attempt to add habit to database
+                    do {
+                        try self.journal.database.run(addHabit)
+                        print("Habit Added -> habit: \(habit ?? "error"), time: \(time ?? "daily")")
+                        self.journal.entries.addDay(habit: habit ?? "error", date: Date())
+                        nameTextField.text = ""
+                        repeatTextField.text = ""
+                        
+                        // return to journal view controller
+                        dismiss(animated: true, completion: nil)
+                        
+                    } catch {
+                        print (error)
+                    }
+                }
     }
 }

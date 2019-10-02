@@ -47,7 +47,7 @@ class JournalViewController: UIViewController {
         // update views
         journalTableView?.updateTableView(habitView: habitTableView)
         journalDateView?.updateDateView(dateView: dateCollectionView)
-        // set observer
+        // set observer of application entering foreground
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(applicationWillEnterForeground),
                                                name: UIApplication.willEnterForegroundNotification,
@@ -69,16 +69,16 @@ class JournalViewController: UIViewController {
         
         // initialize journalTableView
         self.journalTableView = JournalTableView(journal: journal, habitTableView: habitTableView, date: Date())
-        self.journalTableView?.journal = journal
-        self.journalTableView?.habitTableView = habitTableView
+//        self.journalTableView?.journal = journal
+//        self.journalTableView?.habitTableView = habitTableView
         
         // initialize journalDateView
         self.journalDateView = JournalDateView(dateCollectionView: dateCollectionView, journalTableView: journalTableView!, habitTableView: habitTableView)
-        self.journalDateView?.dateCollectionView = dateCollectionView
-        self.journalDateView?.journalTableView = journalTableView!
-        self.journalDateView?.habitTableView = habitTableView
+//        self.journalDateView?.dateCollectionView = dateCollectionView
+//        self.journalDateView?.journalTableView = journalTableView!
+//        self.journalDateView?.habitTableView = habitTableView
         
-        // set observer
+        // set observer of application entering foreground
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(applicationWillEnterForeground),
                                                name: UIApplication.willEnterForegroundNotification,
