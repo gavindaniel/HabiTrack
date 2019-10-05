@@ -97,6 +97,15 @@ class JournalViewController: UIViewController {
             self.habitTableView.dataSource = journalTableView
             self.habitTableView.delegate = journalTableView
             
+            // testing drag and drop delegate
+//            self.habitTableView.dragDelegate = self as? UITableViewDragDelegate
+//            self.habitTableView.dragDelegate = self as? UITableViewDragDelegate
+            self.habitTableView.dragInteractionEnabled = true
+            self.habitTableView.dragDelegate = journalTableView
+            self.habitTableView.dragDelegate = journalTableView
+//            self.journalTableView.dragDelegate = self as? UITableViewDragDelegate
+//            self.journalTableView.dragDelegate = self as? UITableViewDragDelegate
+            
             // set the dataSource and delegate
             self.dateCollectionView.dataSource = journalDateView
             self.dateCollectionView.delegate = journalDateView
@@ -198,5 +207,5 @@ class JournalViewController: UIViewController {
         } else {
             print("Day has not changed.")
         }
-    }
+    } // end of update func.
 }

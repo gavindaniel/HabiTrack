@@ -21,6 +21,7 @@ class Journal {
     let streak = Expression<Int>("streak")
     let currentDay = Expression<Int>("currentDay")
     // individual habit journal entry table columns
+    var localHabbits = [String]()
     
     
     
@@ -100,6 +101,8 @@ class Journal {
                     let tempString = habit[self.habit]
                     if (entries.checkDayExists(habit: tempString, date: nextDay ?? Date()) == false) {
                         entries.addDay(habit: tempString, date: nextDay ?? Date())
+                        // add day to local array
+                        localHabbits.append(tempString)
                     }
                 }
             } catch {
@@ -124,4 +127,40 @@ class Journal {
             print(error)
         }
     }
+    
+    
+    /// The traditional method for rearranging rows in a table view.
+    func moveItem(at sourceIndex: Int, to destinationIndex: Int) {
+        print("moveItem")
+        guard sourceIndex != destinationIndex else { return }
+        
+        let defaults = UserDefaults.standard
+        var localHabits = defaults.object(forKey: "localHabits") as! [String]
+//        let habitString = localHabbits[sourceIndex]
+        let habitString = localHabits[sourceIndex]
+        localHabits.remove(at: sourceIndex)
+        localHabits.insert(habitString, at: destinationIndex)
+//        localHabbits.remove(at: sourceIndex)
+//        localHabbits.insert(habitString, at: destinationIndex)
+    }
+    
+    /// The method for adding a new item to the table view's data model.
+    func addItem(_ habitString: String, at index: Int) {
+        print("addItem")
+        localHabbits.insert(habitString, at: index)
+    }
+    
+    
+//    func updateLocalHabits() {
+//        print("updateLocalHabits...")
+//        do {
+//            let habits = try self.database.prepare(self.habitsTable)
+//            self.localHabbits = [String]()
+//            for habit in habits {
+//                self.localHabbits.append(habit[self.habit])
+//            }
+//        } catch {
+//            print(error)
+//        }
+//    }
 }

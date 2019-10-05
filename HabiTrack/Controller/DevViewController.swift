@@ -11,7 +11,14 @@ import SQLite
 
 class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    var list = ["Print Table", "Delete Table", "Add Day", "Delete Day", "Delete Habit"]
+    var list = ["Print Table (Script)",
+                "Delete Journal Table (Script)",
+                "Force Add Day (Script)",
+                "Force Delete Day (Script)",
+                "Delete Habit (Pop-up)",
+                "Force Update Local Habit Table (script)",
+                "Print Local Table (Script)",
+                "Update Habit IDs (Script)"]
     
     var database: Connection!
     let journal = Journal()
@@ -49,54 +56,32 @@ class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     // tableView : didSelectRowAt
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //        print("Selected row: \(indexPath.row)")
-        if (list[indexPath.row] == "Print Table") {
+        if (list[indexPath.row] == "Print Table (Script)") {
             printTable()
         }
-        else if (list[indexPath.row] == "Delete Table") {
+        else if (list[indexPath.row] == "Delete Journal Table (Script)") {
             deleteTable()
         }
-        else if (list[indexPath.row] == "Add Day") {
+        else if (list[indexPath.row] == "Force Add Day (Script)") {
             addDays()
         }
-        else if (list[indexPath.row] == "Delete Day") {
+        else if (list[indexPath.row] == "Force Delete Day (Script)") {
             deleteDays()
         }
-        else if (list[indexPath.row] == "Delete Habit") {
-            deleteHabitTableEntry()
+        else if (list[indexPath.row] == "Delete Habit (Pop-up)") {
+            deleteHabitById()
+        }
+        else if (list[indexPath.row] == "Force Update Local Habit Table (script)") {
+//            self.journal.updateLocalHabits()
+            updateLocalHabits()
+        }
+        else if (list[indexPath.row] == "Print Local Table (Script)") {
+            printLocalTable()
+        }
+        else if (list[indexPath.row] == "Update Habit IDs (Script)") {
+            updateHabitIDs()
         }
         tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
-    func deleteHabitTableEntry() {
-        print("deleting habit from table...")
-        // create alert controller
-        let alert = UIAlertController(title: "Delete Habit", message: nil, preferredStyle: .alert)
-        // add text fields
-        alert.addTextField { (tf) in
-            tf.placeholder = "Habit ID" }
-        // create 'Submit' action
-        let submit = UIAlertAction(title: "Submit", style: .default) { (_) in
-            // get strings from text fields
-            guard let habitIdString = alert.textFields?.first?.text, let habitId = Int(habitIdString)
-                else { return }
-            // find the correct in the table
-            let habit = self.journal.habitsTable.filter(self.journal.id == habitId)
-            // udpate the habit
-            let deleteHabit = habit.delete()
-            
-            // attempt to update the database
-            do {
-                try self.journal.database.run(deleteHabit)
-                print("deleted habit.")
-            } catch {
-                print(error)
-            }
-        }
-        alert.addAction(submit)
-        // create 'Cancel' alert action
-        let cancel = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil)
-        alert.addAction(cancel)
-        present(alert, animated: true, completion: nil)
     }
     
     // custom : getTableSize (size of database table)
@@ -226,14 +211,127 @@ class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     // custom : deleteDays
     func deleteDays() {
         let table = Table("habits")
+        let numDays = 1
         do {
             let habits = try self.database.prepare(table)
             for habit in habits {
                 // do something...
                 let tempString = habit[self.journal.habit]
                 //                    entries.addDay(habit: tempString, date: nextDay ?? Date())
-                let day = Calendar.current.date(byAdding: .day, value: 1, to: Date())
+                let day = Calendar.current.date(byAdding: .day, value: numDays, to: Date())
                 deleteDay(habit: tempString, date: day ?? Date())
+            }
+        } catch {
+            print(error)
+        }
+    }
+    
+    func deleteHabitById() {
+        print("deleting habit from table...")
+        // create alert controller
+        let alert = UIAlertController(title: "Delete Habit", message: nil, preferredStyle: .alert)
+        // add text fields
+        alert.addTextField { (tf) in
+            tf.placeholder = "Habit ID" }
+        // create 'Submit' action
+        let submit = UIAlertAction(title: "Submit", style: .default) { (_) in
+            // get strings from text fields
+            guard let habitIdString = alert.textFields?.first?.text, let habitId = Int(habitIdString)
+                else { return }
+            // find the correct in the table
+            let habit = self.journal.habitsTable.filter(self.journal.id == habitId)
+            // udpate the habit
+            let deleteHabit = habit.delete()
+            
+            // attempt to update the database
+            do {
+                try self.journal.database.run(deleteHabit)
+                print("deleted habit.")
+            } catch {
+                print(error)
+            }
+        }
+        alert.addAction(submit)
+        // create 'Cancel' alert action
+        let cancel = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil)
+        alert.addAction(cancel)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func updateLocalHabits() {
+        print("updateLocalHabits...")
+        
+        if (isKeyPresentInUserDefaults(key: "localHabits") == false) {
+            let defaults = UserDefaults.standard
+            defaults.set([String](), forKey: "localHabits")
+        }
+        do {
+            let table = Table("habits")
+            let habits = try self.database.prepare(table)
+//            self.journal.localHabbits = [String]()
+            let defaults = UserDefaults.standard
+            var localHabits = defaults.object(forKey: "localHabits") as! [String]
+            
+//            let localHabits = [String]()
+            localHabits = [String]()
+            
+            for habit in habits {
+//                self.journal.localHabbits.append(habit[self.journal.habit])
+                localHabits.append(habit[self.journal.habit])
+            }
+//            let defaults = UserDefaults.standard
+//            defaults.set(self.journal.localHabbits, forKey: "localHabits")
+            defaults.set(localHabits, forKey: "localHabits")
+        } catch {
+            print(error)
+        }
+    }
+    
+    // custom : printTable (select row in table)
+    func printLocalTable() {
+        print()
+        print("Printing local table...")
+        print()
+//        let habits = self.journal.localHabbits
+        let defaults = UserDefaults.standard
+        let habits = defaults.object(forKey: "localHabits") as! [String]
+        var count = 1
+//            print("# entries: \(getTableSize(habit: "habits"))")
+        for habit in habits {
+            print()
+            print("id: \(count), habit: \(habit)")
+//                    printHabitTable(habit[self.journal.habit])
+            count += 1
+            
+        }
+    }
+    
+    func updateHabitIDs() {
+        print("updateHabitIDs...")
+        do {
+            let table = Table("habits")
+            let habits = try self.database.prepare(table)
+            var count = 1
+            var diff = 0
+            for habit in habits {
+                if (count == 1) {
+                    diff = habit[self.journal.id] - count
+                    count = habit[self.journal.id]
+                }
+                let tempHabit = self.journal.habitsTable.filter(self.journal.id == count)
+                
+                let newId = count - diff
+                let updateHabit = tempHabit.update(self.journal.id <- newId)
+                
+                // attempt to update the database
+                do {
+                    try self.journal.database.run(updateHabit)
+                    print("updated habit ID.")
+                } catch {
+                    print(error)
+                }
+                
+                count += 1
             }
         } catch {
             print(error)

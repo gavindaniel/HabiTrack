@@ -8,9 +8,9 @@
 
 import Foundation
 import SQLite
-import Foundation
+import MobileCoreServices
 
-class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
+class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UITableViewDragDelegate {
 
     var journal: Journal
     var habitTableView: UITableView
@@ -152,4 +152,149 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
         habitTableView = habitView
         print("\t\tupdated table view.")
     }
+    
+    
+    
+     // testing ...
+    
+    /**
+         A helper function that serves as an interface to the data model,
+         called by the implementation of the `tableView(_ canHandle:)` method.
+    */
+    func canHandle(_ session: UIDropSession) -> Bool {
+        print("canHandle")
+        return session.canLoadObjects(ofClass: NSString.self)
+    }
+    
+    /**
+         A helper function that serves as an interface to the data mode, called
+         by the `tableView(_:itemsForBeginning:at:)` method.
+    */
+    func dragItems(for indexPath: IndexPath) -> [UIDragItem] {
+        print("dragItems... indexPath \(indexPath.row)")
+        let defaults = UserDefaults.standard
+        let localHabits = defaults.object(forKey: "localHabits") as! [String]
+        print("localHabits empty: \(localHabits.isEmpty)")
+//        print("localHabbits empty: \(self.journal.localHabbits.isEmpty)")
+        let habitString = localHabits[indexPath.row]
+//        let habitString = self.journal.localHabbits[indexPath.row]
+
+        let data = habitString.data(using: .utf8)
+        let itemProvider = NSItemProvider()
+        
+        itemProvider.registerDataRepresentation(forTypeIdentifier: kUTTypePlainText as String, visibility: .all) { completion in
+            completion(data, nil)
+            return nil
+        }
+
+        return [
+            UIDragItem(itemProvider: itemProvider)
+        ]
+    }
+    
+     // testing drag extension ...
+        /**
+             The `tableView(_:itemsForBeginning:at:)` method is the essential method
+             to implement for allowing dragging from a table.
+        */
+        func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+            
+            print("itemsForBegging at indexPath: \(indexPath.row)")
+            return ( dragItems(for: indexPath) )
+        }
+        
+        // testing drop extension ...
+        /**
+             Ensure that the drop session contains a drag item with a data representation
+             that the view can consume.
+        */
+        func tableView(_ tableView: UITableView, canHandle session: UIDropSession) -> Bool {
+    //        return model.canHandle(session)
+            return ( canHandle(session) )
+        }
+        
+        /**
+             A drop proposal from a table view includes two items: a drop operation,
+             typically .move or .copy; and an intent, which declares the action the
+             table view will take upon receiving the items. (A drop proposal from a
+             custom view does includes only a drop operation, not an intent.)
+        */
+        func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
+            // The .move operation is available only for dragging within a single app.
+            print("dropSessionDidUpdate... desinationIndexPath \(destinationIndexPath?.row ?? -1)")
+            
+            if tableView.hasActiveDrag {
+                if session.items.count > 1 {
+                    return UITableViewDropProposal(operation: .cancel)
+                } else {
+                    return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+                }
+            } else {
+                return UITableViewDropProposal(operation: .copy, intent: .insertAtDestinationIndexPath)
+            }
+        }
+        /**
+             This delegate method is the only opportunity for accessing and loading
+             the data representations offered in the drag item. The drop coordinator
+             supports accessing the dropped items, updating the table view, and specifying
+             optional animations. Local drags with one item go through the existing
+             `tableView(_:moveRowAt:to:)` method on the data source.
+        */
+        func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
+            let destinationIndexPath: IndexPath
+            
+            if let indexPath = coordinator.destinationIndexPath {
+                destinationIndexPath = indexPath
+            } else {
+                // Get last index path of table view.
+                let section = tableView.numberOfSections - 1
+                let row = tableView.numberOfRows(inSection: section)
+                destinationIndexPath = IndexPath(row: row, section: section)
+            }
+            
+            coordinator.session.loadObjects(ofClass: NSString.self) { items in
+                // Consume drag items.
+                let stringItems = items as! [String]
+                
+                var indexPaths = [IndexPath]()
+                for (index, item) in stringItems.enumerated() {
+                    let indexPath = IndexPath(row: destinationIndexPath.row + index, section: destinationIndexPath.section)
+                    self.journal.addItem(item, at: indexPath.row)
+                    indexPaths.append(indexPath)
+                }
+
+                tableView.insertRows(at: indexPaths, with: .automatic)
+            }
+        }
+        
+        // testing data extension ....
+//        override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//            return model.placeNames.count
+//        }
+
+//        override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+//            cell.textLabel?.text = model.placeNames[indexPath.row]
+//            return cell
+//        }
+        
+        // MARK: - UITableViewDelegate
+
+//        override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+//            print("canMoveRowAt... indexPath \(indexPath.row)")
+//            return true
+//        }
+        func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+            print("canMoveRowAt... indexPath \(indexPath.row)")
+            return true
+        }
+        
+//        override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+//            print("moveRowAt... sourceIndexPath \(sourceIndexPath.row) ... destinationIndexPath \(destinationIndexPath.row)")
+//            model.moveItem(at: sourceIndexPath.row, to: destinationIndexPath.row)
+//        }
+        func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+            print("moveRowAt... sourceIndexPath \(sourceIndexPath.row) ... destinationIndexPath \(destinationIndexPath.row)")
+            self.journal.moveItem(at: sourceIndexPath.row, to: destinationIndexPath.row)
+        }
 }
