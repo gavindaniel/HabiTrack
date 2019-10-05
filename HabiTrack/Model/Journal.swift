@@ -20,6 +20,7 @@ class Journal {
     let time = Expression<String>("time")
     let streak = Expression<Int>("streak")
     let currentDay = Expression<Int>("currentDay")
+    
     // individual habit journal entry table columns
     var localHabbits = [String]()
     
@@ -69,11 +70,11 @@ class Journal {
                     firstId = habit[self.id]
                 }
                 if (count == row) {
-                    let habit = self.habitsTable.filter(self.id == count+firstId)
+                    let tempHabit = self.habitsTable.filter(self.id == count+firstId)
                     print("date: \(date)")
                     entries.markCompleted(habit: habitString, date: date, val: inc)
                     let currentStreak = entries.countStreak(habit: habitString, date: date)
-                    let updateHabit = habit.update(self.streak <- currentStreak)
+                    let updateHabit = tempHabit.update(self.streak <- currentStreak)
                     do {
                         try self.database.run(updateHabit)
                         return
@@ -142,12 +143,21 @@ class Journal {
         localHabits.insert(habitString, at: destinationIndex)
 //        localHabbits.remove(at: sourceIndex)
 //        localHabbits.insert(habitString, at: destinationIndex)
+        
+//        updateHabitIDs(oldId: sourceIndex, newId: -1)
+        
+        updateHabitIDs(oldId: sourceIndex + 1, newId: destinationIndex + 1)
+        
+//        updateHabitIDs(oldId: -1, newId: sourceIndex)
     }
     
     /// The method for adding a new item to the table view's data model.
     func addItem(_ habitString: String, at index: Int) {
         print("addItem")
-        localHabbits.insert(habitString, at: index)
+//        localHabbits.insert(habitString, at: index)
+        let defaults = UserDefaults.standard
+        var localHabits = defaults.object(forKey: "localHabits") as! [String]
+        localHabits.insert(habitString, at: index)
     }
     
     
@@ -163,4 +173,115 @@ class Journal {
 //            print(error)
 //        }
 //    }
+    
+    func updateHabitIDs(oldId: Int, newId: Int) {
+        print("updateHabitIDs... oldId: \(oldId), newId: \(newId)")
+        
+        var flag1 = false
+        var flag2 = false
+        
+        do {
+            let habits = try self.database.prepare(self.habitsTable)
+            let oldHabit = self.habitsTable.filter(self.id == oldId)
+            let newHabit = self.habitsTable.filter(self.id == newId)
+            for habit in habits {
+                print("id: \(habit[self.id])")
+                if (habit[self.id] == oldId) {
+                    print("\(habit[self.id]) == \(oldId)")
+//                    let oldHabit = self.habitsTable.filter(self.id == oldId)
+                    print("OLD HABIT: id: \(habit[self.id]), habit: \(habit[self.habit]), time: \(habit[self.time])")
+//                    let tempString = habit[self.habit]
+                    flag1 = true
+                    
+                } else if (habit[self.id] == newId) {
+                    print("\(habit[self.id]) == \(newId)")
+//                    let newHabit = self.habitsTable.filter(self.id == newId)
+                    print("OLD HABIT: id: \(habit[self.id]), habit: \(habit[self.habit]), time: \(habit[self.time])")
+                    flag2 = true
+                }
+                
+                if (flag1 == true && flag2 == true) {
+                    let updateOldHabitIdTemp = oldHabit.update(self.id <- 998)
+            // attempt to update the database
+                    do {
+                        try self.database.run(updateOldHabitIdTemp)
+            //            try self.database.run(updateOldHabitString)
+            //            try self.database.run(updateOldHabitTime)
+            //            try self.database.run(updateOldHabitStreak)
+            //            try self.database.run(updateOldHabitCurrentDay)
+            //            try self.database.run(updateNewHabitId)
+            //            try self.database.run(updateNewHabitString)
+            //            try self.database.run(updateNewHabitTime)
+            //            try self.database.run(updateNewHabitStreak)
+            //            try self.database.run(updateNewHabitCurrentDay)
+                        print("updated old habit ID temporarily.")
+            //            printTable()
+                    } catch {
+                        print(error)
+                    }
+                    let updateNewHabitId = newHabit.update(self.id <- oldId)
+                    do {
+                                try self.database.run(updateNewHabitId)
+                    //            try self.database.run(updateOldHabitString)
+                    //            try self.database.run(updateOldHabitTime)
+                    //            try self.database.run(updateOldHabitStreak)
+                    //            try self.database.run(updateOldHabitCurrentDay)
+                    //            try self.database.run(updateNewHabitId)
+                    //            try self.database.run(updateNewHabitString)
+                    //            try self.database.run(updateNewHabitTime)
+                    //            try self.database.run(updateNewHabitStreak)
+                    //            try self.database.run(updateNewHabitCurrentDay)
+                                print("updated new habit ID.")
+                    //            printTable()
+                    } catch {
+                        print(error)
+                    }
+                    let tempHabit = self.habitsTable.filter(self.id == 998)
+                    let updateOldHabitId = tempHabit.update(self.id <- newId)
+                    do {
+                        try self.database.run(updateOldHabitId)
+                    //            try self.database.run(updateOldHabitString)
+                    //            try self.database.run(updateOldHabitTime)
+                    //            try self.database.run(updateOldHabitStreak)
+                    //            try self.database.run(updateOldHabitCurrentDay)
+                    //            try self.database.run(updateNewHabitId)
+                    //            try self.database.run(updateNewHabitString)
+                    //            try self.database.run(updateNewHabitTime)
+                    //            try self.database.run(updateNewHabitStreak)
+                    //            try self.database.run(updateNewHabitCurrentDay)
+                        print("updated old habit ID.")
+                    //            printTable()
+                    } catch {
+                        print(error)
+                    }
+                    // exit the loop
+                    return
+                    
+                } // end if statement
+            } // end for loop
+        } catch {
+            print(error)
+        }
+    }
+    
+    
+    
+    // custom : printTable (select row in table)
+        func printTable() {
+            print()
+            print("Printing table...")
+    //        print()
+            do {
+                let habits = try self.database.prepare(self.habitsTable)
+                
+    //            print("# entries: \(getTableSize(habit: "habits"))")
+                for habit in habits {
+                    print()
+                    print("id: \(habit[self.id]), habit: \(habit[self.habit]), time: \(habit[self.time])")
+//                    printHabitTable(habit[self.habit])
+                }
+            } catch {
+                print(error)
+            }
+        }
 }

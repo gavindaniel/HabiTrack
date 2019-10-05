@@ -18,7 +18,8 @@ class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                 "Delete Habit (Pop-up)",
                 "Force Update Local Habit Table (script)",
                 "Print Local Table (Script)",
-                "Update Habit IDs (Script)"]
+                "Update Habit IDs (Script)",
+                "Force Update Habit ID (Script)"]
     
     var database: Connection!
     let journal = Journal()
@@ -80,6 +81,9 @@ class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         }
         else if (list[indexPath.row] == "Update Habit IDs (Script)") {
             updateHabitIDs()
+        }
+        else if (list[indexPath.row] == "Force Update Habit ID (Script)") {
+            updateID()
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -333,6 +337,21 @@ class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                 
                 count += 1
             }
+        } catch {
+            print(error)
+        }
+    }
+    
+    func updateID() {
+        let oldId = 998
+        let newId = 4
+        let tempHabit = self.journal.habitsTable.filter(self.journal.id == oldId)
+        let updateHabit = tempHabit.update(self.journal.id <- newId)
+        
+        // attempt to update the database
+        do {
+            try self.journal.database.run(updateHabit)
+            print("updated habit ID.")
         } catch {
             print(error)
         }

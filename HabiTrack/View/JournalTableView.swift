@@ -43,6 +43,10 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
             // loop through the list of habits
             for habit in habits {
                 if (count == indexPath.row) {
+                    // check if count equals the habits id
+                    if (count == habit[self.journal.id]) {
+                        // do something
+                    }
                     cell.habitUILabel?.text = habit[self.journal.habit]
                     cell.timeUILabel?.text = habit[self.journal.time]
                     // get the name of habit and size of habit entries table
@@ -268,22 +272,9 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
         }
         
         // testing data extension ....
-//        override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//            return model.placeNames.count
-//        }
-
-//        override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-//            cell.textLabel?.text = model.placeNames[indexPath.row]
-//            return cell
-//        }
         
         // MARK: - UITableViewDelegate
 
-//        override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-//            print("canMoveRowAt... indexPath \(indexPath.row)")
-//            return true
-//        }
         func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
             print("canMoveRowAt... indexPath \(indexPath.row)")
             return true
@@ -296,5 +287,8 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
         func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
             print("moveRowAt... sourceIndexPath \(sourceIndexPath.row) ... destinationIndexPath \(destinationIndexPath.row)")
             self.journal.moveItem(at: sourceIndexPath.row, to: destinationIndexPath.row)
-        }
+            
+            // testing
+            self.journal.printTable()
+    }
 }
