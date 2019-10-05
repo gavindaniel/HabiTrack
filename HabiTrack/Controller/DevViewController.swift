@@ -343,7 +343,7 @@ class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataS
     }
     
     func updateID() {
-        let oldId = 998
+        let oldId = 999
         let newId = 4
         let tempHabit = self.journal.habitsTable.filter(self.journal.id == oldId)
         let updateHabit = tempHabit.update(self.journal.id <- newId)

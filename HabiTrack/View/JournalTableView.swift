@@ -179,9 +179,7 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
         let defaults = UserDefaults.standard
         let localHabits = defaults.object(forKey: "localHabits") as! [String]
         print("localHabits empty: \(localHabits.isEmpty)")
-//        print("localHabbits empty: \(self.journal.localHabbits.isEmpty)")
         let habitString = localHabits[indexPath.row]
-//        let habitString = self.journal.localHabbits[indexPath.row]
 
         let data = habitString.data(using: .utf8)
         let itemProvider = NSItemProvider()
@@ -213,7 +211,6 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
              that the view can consume.
         */
         func tableView(_ tableView: UITableView, canHandle session: UIDropSession) -> Bool {
-    //        return model.canHandle(session)
             return ( canHandle(session) )
         }
         
@@ -276,19 +273,12 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
         // MARK: - UITableViewDelegate
 
         func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-            print("canMoveRowAt... indexPath \(indexPath.row)")
+//            print("canMoveRowAt... indexPath \(indexPath.row)")
             return true
         }
         
-//        override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-//            print("moveRowAt... sourceIndexPath \(sourceIndexPath.row) ... destinationIndexPath \(destinationIndexPath.row)")
-//            model.moveItem(at: sourceIndexPath.row, to: destinationIndexPath.row)
-//        }
         func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-            print("moveRowAt... sourceIndexPath \(sourceIndexPath.row) ... destinationIndexPath \(destinationIndexPath.row)")
+//            print("moveRowAt... sourceIndexPath \(sourceIndexPath.row) ... destinationIndexPath \(destinationIndexPath.row)")
             self.journal.moveItem(at: sourceIndexPath.row, to: destinationIndexPath.row)
-            
-            // testing
-            self.journal.printTable()
     }
 }
