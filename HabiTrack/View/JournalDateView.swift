@@ -78,7 +78,9 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
             cell.monthUILabel?.font = UIFont.systemFont(ofSize: 16.0)
             cell.dayUILabel?.font = UIFont.systemFont(ofSize: 16.0)
             // testing if today, make a different shade of gray so people know which day is today if not selected.
-            if (Calendar.current.component(.day, from: Date()) == getDayAsInt(date: daysArray[indexPath.row])) {
+            if (Calendar.current.component(.day, from: Date()) == Calendar.current.component(.day, from: daysArray[indexPath.row]) &&
+                Calendar.current.component(.month, from: Date()) == Calendar.current.component(.month, from: daysArray[indexPath.row]) &&
+                Calendar.current.component(.year, from: Date()) == Calendar.current.component(.year, from: daysArray[indexPath.row])) {
                 cell.layer.borderWidth = 2.0
                 if #available(iOS 13.0, *) {
                     cell.layer.borderColor = UIColor.systemGray.cgColor
@@ -147,19 +149,14 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
             lastSelectedItem = indexPath.row
 //            let month = cell.monthUILabel?.text ?? String(Calendar.current.component(.month, from: Date()))
             let month = getMonthAsString(date: daysArray[indexPath.row], length: "short")
-            print(month)
             let day = cell.dayUILabel?.text ?? String(Calendar.current.component(.day, from: Date()))
-            print("getMonthAsInt: \(getMonthAsInt(month: month))")
-            print("day: \(Int(day))")
-            print("?? \(Calendar.current.component(.day, from: Date()))")
             let date = getDate(month: getMonthAsInt(month: month), day: Int(day) ?? Calendar.current.component(.day, from: Date()))
-            print("date: \(date)")
+//            print("date: \(date)")
             self.dateSelected = date
-            print("dateSelected: \(dateSelected)")
-            
-            
+//            print("dateSelected: \(dateSelected)")
             
             // FIXME: replace 'days' with a calculation for number of days in the month
+            
             // loop through cells and deselect
             var tempIndex = 0
             // check to deselect cells not selected
@@ -206,8 +203,8 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
     
     // custom : updateTableView
     func updateDateView(dateView: UICollectionView) {
-        print("\tupdating date view...")
+//        print("\tupdating date view...")
         dateCollectionView = dateView
-        print("\t\tupdated date.")
+//        print("\t\tupdated date.")
     }
 }

@@ -154,7 +154,7 @@ func getDayTh(date: Date) -> String {
 
 // getDate (from inputs)
 func getDate(month: Int, day: Int) -> Date {
-    print("month: \(month) day: \(day)")
+//    print("month: \(month) day: \(day)")
     let components = DateComponents(year: 2019, month: month, day: day, hour: 0, minute: 0, second: 0)
     let date = Calendar.current.date(from: components) ?? Date()
     return date
@@ -162,12 +162,9 @@ func getDate(month: Int, day: Int) -> Date {
 
 // custom : getDayOfWeek
 func getDayOfWeek(date: Date, length: String) -> String {
-//    let weekDay = Calendar.current.component(.weekday, from: Date())
-//    let weekDayToday = Calendar.current.component(.weekday, from: Date())
-    print("date: \(date)")
+//    print("date: \(date)")
     let weekDaySelected = Calendar.current.component(.weekday, from: date)
-//    print("weekDay: \(weekDay)")
-    print("weekDaySelected: \(weekDaySelected)")
+//    print("weekDaySelected: \(weekDaySelected)")
     // check if requesting full spelling
     if (length == "long") {
         switch(weekDaySelected) {

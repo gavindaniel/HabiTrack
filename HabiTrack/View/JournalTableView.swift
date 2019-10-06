@@ -158,9 +158,9 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
     
     // custom : updateTableView
     func updateTableView(habitView: UITableView) {
-        print("\tupdating table view...")
+//        print("\tupdating table view...")
         habitTableView = habitView
-        print("\t\tupdated table view.")
+//        print("\t\tupdated table view.")
     }
     
     
@@ -273,12 +273,10 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
         // MARK: - UITableViewDelegate
 
         func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-//            print("canMoveRowAt... indexPath \(indexPath.row)")
             return true
         }
         
         func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-//            print("moveRowAt... sourceIndexPath \(sourceIndexPath.row) ... destinationIndexPath \(destinationIndexPath.row)")
             self.journal.moveItem(at: sourceIndexPath.row, to: destinationIndexPath.row)
     }
 }

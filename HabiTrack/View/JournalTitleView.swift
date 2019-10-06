@@ -39,8 +39,8 @@ class JournalTitleView: NSObject, UITableViewDataSource, UITableViewDelegate {
     
     // custom : updateTableView
     func updateTitleView(titleView: UITableView) {
-        print("\tupdating title view...")
+//        print("\tupdating title view...")
         titleTableView = titleView
-        print("\t\tupdated title view.")
+//        print("\t\tupdated title view.")
     }
 }
