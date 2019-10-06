@@ -51,15 +51,27 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
                     cell.timeUILabel?.text = habit[self.journal.time]
                     // get the name of habit and size of habit entries table
                     let habitString = habit[self.journal.habit]
-                    let habitStreak = self.journal.entries.countStreak(habit: habitString, date: dateSelected)
+                    let currentStreak = self.journal.entries.countStreak(habit: habitString, date: dateSelected)
                     let longestStreak = self.journal.entries.countLongestStreak(habit: habitString, date: dateSelected)
                     // set the streak
 //                    cell.streakUILabel?.text = getStreakAsString(streak: habitStreak)
-                    cell.streakUILabel?.text = String(habitStreak)
+                    cell.streakUILabel?.text = String(currentStreak)
                     
-                    cell.longestStreakUILabel?.text = "longest (\( String(longestStreak)))"
+                    // check if the current streak is equal or greater than the longest
+                    if (currentStreak >= longestStreak && longestStreak > 0) {
+                        cell.longestStreakUILabel?.text = "current longest streak!"
+                        cell.longestStreakUILabel?.textColor = UIColor.systemBlue
+                    } else { // else return the the longest streak
+                        cell.longestStreakUILabel?.text = "longest streak (\( String(longestStreak)))"
+                        if #available(iOS 13.0, *) {
+                            cell.longestStreakUILabel?.textColor = UIColor.systemGray
+                        } else {
+                            // Fallback on earlier versions
+                            cell.longestStreakUILabel?.textColor = UIColor.darkGray
+                        }
+                    }
                     
-                    if (habitStreak == 1) {
+                    if (currentStreak == 1) {
                         cell.streakDayUILabel?.text = "day"
                     } else {
                         cell.streakDayUILabel?.text = "days"

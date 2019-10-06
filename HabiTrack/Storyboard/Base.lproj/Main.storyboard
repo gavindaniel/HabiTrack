@@ -425,7 +425,9 @@
         <scene sceneID="UrT-dh-l4K">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="PWf-Rg-XJa" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Journal" image="list.bullet" catalog="system" id="fj1-yx-SMq"/>
+                    <tabBarItem key="tabBarItem" title="Journal" image="list.bullet" catalog="system" id="fj1-yx-SMq">
+                        <inset key="imageInsets" minX="0.0" minY="10" maxX="0.0" maxY="0.0"/>
+                    </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="wvH-dS-Rr8">
                         <autoresizingMask key="autoresizingMask"/>

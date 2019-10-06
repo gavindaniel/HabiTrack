@@ -211,17 +211,9 @@ class Entries {
         }
     }
     
-//    func countDays(date1: Date, date2: Date) -> Int {
-//        let calendar = Calendar.current
-//        let d1 = calendar.startOfDay(for: date1)
-//        let d2 = calendar.startOfDay(for: date2)
-//        let components = calendar.dateComponents([.day], from: d1, to: d2).day ?? 0
-//        return(components)
-//    }
-    
     // custom : countLongestStreak
     func countLongestStreak(habit: String, date: Date) -> Int {
-        var index = 1
+//        var index = 1
         var count = 0
         var longestStreak = 0
         do {
@@ -231,26 +223,44 @@ class Entries {
             var flag = false
             
             for day in days {
+                // check if day in array is equal to date we're calculating streak up to
                 if (day[self.year] == Calendar.current.component(.year, from: date) &&
                     day[self.month] == Calendar.current.component(.month, from: date) &&
                     day[self.day] == Calendar.current.component(.day, from: date)) {
+                    // set flag true
                     flag = true
+                    // check if day is completed
                     if (day[self.completed] == 1) {
+                        // increment count
                         count += 1
-                    }
-                    break
-                } else {
-                    if (day[self.completed] == 1) {
-                        count += 1
-                    } else {
                         if (count > 0 && count > longestStreak) {
                             longestStreak = count
-                        } 
+                        }
+                    }
+                    break
+                // else the day in the array is not the date we're calculating streak up until
+                } else {
+                    // check if day completed
+                    if (day[self.completed] == 1) {
+                        // increment count
+                        count += 1
+                        if (count > 0 && count > longestStreak) {
+                            longestStreak = count
+                        }
+                    // else day is not completed
+                    } else {
+                        // check if count has been incremented AND if longer than current longest streak
+                        if (count > 0 && count > longestStreak) {
+                            // update longest streak
+                            longestStreak = count
+                        }
+                        // reset count
                         count = 0
                     }
                 }
-                index += 1
-            }
+//                index += 1
+            } // end for loop
+            // check if the flag has not been set true
             if (!flag) {
                 count = 0
             }
