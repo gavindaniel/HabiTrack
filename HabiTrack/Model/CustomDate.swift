@@ -29,35 +29,68 @@ func getDayAsInt(date: Date) -> Int {
 }
 
 // custom : getMonth (return String)
-func getMonthAsString(date: Date) -> String {
+func getMonthAsString(date: Date, length: String) -> String {
     let month = Calendar.current.component(.month, from: date)
-    switch (month) {
-    case 1:
-        return ("Jan")
-    case 2:
-        return ("Feb")
-    case 3:
-        return ("Mar")
-    case 4:
-        return ("Apr")
-    case 5:
-        return ("May")
-    case 6:
-        return ("Jun")
-    case 7:
-        return ("Jul")
-    case 8:
-        return ("Aug")
-    case 9:
-        return ("Sep")
-    case 10:
-        return ("Oct")
-    case 11:
-        return ("Nov")
-    case 12:
-        return ("Dec")
-    default:
-        return ("Jan")
+    if (length == "short") {
+        switch (month) {
+        case 1:
+            return ("Jan")
+        case 2:
+            return ("Feb")
+        case 3:
+            return ("Mar")
+        case 4:
+            return ("Apr")
+        case 5:
+            return ("May")
+        case 6:
+            return ("Jun")
+        case 7:
+            return ("Jul")
+        case 8:
+            return ("Aug")
+        case 9:
+            return ("Sep")
+        case 10:
+            return ("Oct")
+        case 11:
+            return ("Nov")
+        case 12:
+            return ("Dec")
+        default:
+            return ("")
+        }
+    }
+    // else return full spelling
+    else {
+        switch (month) {
+        case 1:
+            return ("January")
+        case 2:
+            return ("February")
+        case 3:
+            return ("March")
+        case 4:
+            return ("April")
+        case 5:
+            return ("May")
+        case 6:
+            return ("June")
+        case 7:
+            return ("July")
+        case 8:
+            return ("August")
+        case 9:
+            return ("September")
+        case 10:
+            return ("October")
+        case 11:
+            return ("November")
+        case 12:
+            return ("December")
+        default:
+            return ("")
+        }
     }
 }
 
@@ -93,8 +126,35 @@ func getMonthAsInt(month: String) -> Int {
     }
 }
 
+// get day as a string of 1st, 2nd, 3rd, 4th, exc.
+func getDayTh(date: Date) -> String {
+    
+    let day = Calendar.current.component(.day, from: date)
+    
+    // 1st, 21st, 31st
+    if (day == 1 || day == 21 || day == 31) {
+        let dayString = "\(day)st"
+//        return("\(day)st")
+        return(dayString)
+    // 2nd , 22nd
+    } else if (day == 2 || day == 22) {
+        let dayString = "\(day)nd"
+        return(dayString)
+    // 3rd, 23rd
+    } else if (day == 3 || day == 23) {
+        let dayString = "\(day)rd"
+        return(dayString)
+    // else th
+    } else {
+        let dayString = "\(day)th"
+        return(dayString)
+    }
+    
+}
+
 // getDate (from inputs)
 func getDate(month: Int, day: Int) -> Date {
+    print("month: \(month) day: \(day)")
     let components = DateComponents(year: 2019, month: month, day: day, hour: 0, minute: 0, second: 0)
     let date = Calendar.current.date(from: components) ?? Date()
     return date
@@ -103,7 +163,7 @@ func getDate(month: Int, day: Int) -> Date {
 // custom : getDayOfWeek
 func getDayOfWeek(date: Date, length: String) -> String {
 //    let weekDay = Calendar.current.component(.weekday, from: Date())
-    let weekDayToday = Calendar.current.component(.weekday, from: Date())
+//    let weekDayToday = Calendar.current.component(.weekday, from: Date())
     print("date: \(date)")
     let weekDaySelected = Calendar.current.component(.weekday, from: date)
 //    print("weekDay: \(weekDay)")
@@ -158,5 +218,26 @@ func countDays(date1: Date, date2: Date) -> Int {
     let d2 = calendar.startOfDay(for: date2)
     let components = calendar.dateComponents([.day], from: d1, to: d2).day ?? 0
     return(components)
+}
+
+// get date as string format 'Month Day'
+func getDateAsString(date: Date, length: String) -> String {
+//    if today, return 'Today'
+    if (countDays(date1: Date(), date2: date) == 0) {
+        return "Today"
+    }
+    // 'Tomorrow'
+    else if (countDays(date1: Date(), date2: date) == 1) {
+        return "Tomorrow"
+    }
+    // 'Yesterday'
+    else if (countDays(date1: Date(), date2: date) == -1) {
+        return "Yesterday"
+    }
+    // return abbreviated length
+    else {
+        let tempString = "\(getMonthAsString(date: date, length: length)) \(getDayTh(date: date))"
+        return tempString
+    }
 }
 

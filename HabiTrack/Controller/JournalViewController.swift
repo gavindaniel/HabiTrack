@@ -44,8 +44,7 @@ class JournalViewController: UIViewController {
     @IBOutlet weak var habitTableView: UITableView!
     @IBOutlet weak var dateCollectionView: UICollectionView!
     @IBOutlet weak var titleTableView: UITableView!
-    //    @IBOutlet weak var weekDayLabel: UILabel!
-    
+
     // load : viewDidAppear
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -82,18 +81,10 @@ class JournalViewController: UIViewController {
         
         // initialize journalTableView
         self.journalTableView = JournalTableView(journal: journal, habitTableView: habitTableView, date: Date())
-//        self.journalTableView?.journal = journal
-//        self.journalTableView?.habitTableView = habitTableView
         
         // initialize journalDateView
         self.journalDateView = JournalDateView(dateCollectionView: dateCollectionView, journalTableView: journalTableView!, habitTableView: habitTableView, journalTitleView: journalTitleView!,
             titleTableView: titleTableView)
-        
-        
-        
-//        self.journalDateView?.dateCollectionView = dateCollectionView
-//        self.journalDateView?.journalTableView = journalTableView!
-//        self.journalDateView?.habitTableView = habitTableView
         
         // set observer of application entering foreground
         NotificationCenter.default.addObserver(self,
@@ -119,13 +110,9 @@ class JournalViewController: UIViewController {
             self.habitTableView.delegate = journalTableView
             
             // testing drag and drop delegate
-//            self.habitTableView.dragDelegate = self as? UITableViewDragDelegate
-//            self.habitTableView.dragDelegate = self as? UITableViewDragDelegate
             self.habitTableView.dragInteractionEnabled = true
             self.habitTableView.dragDelegate = journalTableView
             self.habitTableView.dragDelegate = journalTableView
-//            self.journalTableView.dragDelegate = self as? UITableViewDragDelegate
-//            self.journalTableView.dragDelegate = self as? UITableViewDragDelegate
             
             // set the dataSource and delegate
             self.dateCollectionView.dataSource = journalDateView
@@ -189,7 +176,6 @@ class JournalViewController: UIViewController {
             print("Date has changed. Updating last run date...")
             
             // count number of days since last run
-//            let count = self.journal.entries.countDays(date1: lastRun, date2: date)
             let count = countDays(date1: lastRun, date2: dateToday)
             
             // update the databases and views
@@ -233,14 +219,5 @@ class JournalViewController: UIViewController {
         } else {
             print("Day has not changed.")
         }
-        
-//        let weekDay = Calendar.current.component(.weekday, from: Date())
-//        print("weekDay: \(weekDay)")
-     
-        
-//        print(getDayOfWeek(date: self.dateSelected, length: "long"))
-//        print(getDayOfWeek(date: self.dateSelected, length: "short"))
-//        weekDayLabel?.text = getDayOfWeek(date: self.dateSelected, length: "long")
-        
     } // end of update func.
 }

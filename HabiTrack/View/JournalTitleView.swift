@@ -29,7 +29,9 @@ class JournalTitleView: NSObject, UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "title", for: indexPath)
         as! JournalTitleTableViewCell
         
-        cell.weekDayLabel?.text = getDayOfWeek(date: self.dateSelected, length: "long")
+//        cell.weekDayLabel?.text = getDayOfWeek(date: self.dateSelected, length: "long")
+        cell.weekDayLabel?.text = getDateAsString(date: self.dateSelected, length: "long")
+        
             
 //        self.titleTableView.reloadData()
         return (cell)

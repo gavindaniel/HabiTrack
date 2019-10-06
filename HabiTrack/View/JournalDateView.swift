@@ -49,7 +49,8 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "dateCell", for: indexPath)
             as! DateCollectionViewCell
         // add labels and style
-        cell.monthUILabel?.text = getMonthAsString(date: daysArray[indexPath.row])
+//        cell.monthUILabel?.text = getMonthAsString(date: daysArray[indexPath.row])
+        cell.monthUILabel?.text = getDayOfWeek(date: daysArray[indexPath.row], length: "short")
         cell.dayUILabel?.text = String(getDayAsInt(date: daysArray[indexPath.row]))
         cell.layer.cornerRadius = 10.0
         cell.layer.borderWidth = 1.0
@@ -144,10 +145,16 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
         if let cell: DateCollectionViewCell = (collectionView.cellForItem(at: indexPath) as? DateCollectionViewCell) {
             // if the selected item is different from the last, deselect the last item
             lastSelectedItem = indexPath.row
-            let month = cell.monthUILabel?.text ?? String(Calendar.current.component(.month, from: Date()))
+//            let month = cell.monthUILabel?.text ?? String(Calendar.current.component(.month, from: Date()))
+            let month = getMonthAsString(date: daysArray[indexPath.row], length: "short")
+            print(month)
             let day = cell.dayUILabel?.text ?? String(Calendar.current.component(.day, from: Date()))
+            print("getMonthAsInt: \(getMonthAsInt(month: month))")
+            print("day: \(Int(day))")
+            print("?? \(Calendar.current.component(.day, from: Date()))")
             let date = getDate(month: getMonthAsInt(month: month), day: Int(day) ?? Calendar.current.component(.day, from: Date()))
-            dateSelected = date
+            print("date: \(date)")
+            self.dateSelected = date
             print("dateSelected: \(dateSelected)")
             
             
