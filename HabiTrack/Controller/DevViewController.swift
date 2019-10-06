@@ -16,7 +16,7 @@ class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                 "Force Add Day (Script)",
                 "Force Delete Day (Script)",
                 "Delete Habit (Pop-up)",
-                "Force Update Local Habit Table (script)",
+                "Force Update Local Habit Table (Script)",
                 "Print Local Table (Script)",
                 "Update Habit IDs (Script)",
                 "Force Update Habit ID (Script)"]
@@ -72,7 +72,7 @@ class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         else if (list[indexPath.row] == "Delete Habit (Pop-up)") {
             deleteHabitById()
         }
-        else if (list[indexPath.row] == "Force Update Local Habit Table (script)") {
+        else if (list[indexPath.row] == "Force Update Local Habit Table (Script)") {
 //            self.journal.updateLocalHabits()
             updateLocalHabits()
         }
