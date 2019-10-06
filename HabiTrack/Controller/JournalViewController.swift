@@ -21,6 +21,7 @@ class HabitTableViewCell: UITableViewCell {
     @IBOutlet weak var timeUILabel: UILabel!
     @IBOutlet weak var streakUILabel: UILabel!
     @IBOutlet weak var streakDayUILabel: UILabel!
+    @IBOutlet weak var longestStreakUILabel: UILabel!
     @IBOutlet var checkBox: BEMCheckBox!
 }
 

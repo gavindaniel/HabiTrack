@@ -52,9 +52,13 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
                     // get the name of habit and size of habit entries table
                     let habitString = habit[self.journal.habit]
                     let habitStreak = self.journal.entries.countStreak(habit: habitString, date: dateSelected)
+                    let longestStreak = self.journal.entries.countLongestStreak(habit: habitString, date: dateSelected)
                     // set the streak
 //                    cell.streakUILabel?.text = getStreakAsString(streak: habitStreak)
                     cell.streakUILabel?.text = String(habitStreak)
+                    
+                    cell.longestStreakUILabel?.text = "longest (\( String(longestStreak)))"
+                    
                     if (habitStreak == 1) {
                         cell.streakDayUILabel?.text = "day"
                     } else {

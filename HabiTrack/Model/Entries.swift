@@ -218,4 +218,45 @@ class Entries {
 //        let components = calendar.dateComponents([.day], from: d1, to: d2).day ?? 0
 //        return(components)
 //    }
+    
+    // custom : countLongestStreak
+    func countLongestStreak(habit: String, date: Date) -> Int {
+        var index = 1
+        var count = 0
+        var longestStreak = 0
+        do {
+            let table = Table(habit)
+            let days = try self.database.prepare(table)
+            
+            var flag = false
+            
+            for day in days {
+                if (day[self.year] == Calendar.current.component(.year, from: date) &&
+                    day[self.month] == Calendar.current.component(.month, from: date) &&
+                    day[self.day] == Calendar.current.component(.day, from: date)) {
+                    flag = true
+                    if (day[self.completed] == 1) {
+                        count += 1
+                    }
+                    break
+                } else {
+                    if (day[self.completed] == 1) {
+                        count += 1
+                    } else {
+                        if (count > 0 && count > longestStreak) {
+                            longestStreak = count
+                        } 
+                        count = 0
+                    }
+                }
+                index += 1
+            }
+            if (!flag) {
+                count = 0
+            }
+        } catch {
+            print(error)
+        }
+        return(longestStreak)
+    }
 }
