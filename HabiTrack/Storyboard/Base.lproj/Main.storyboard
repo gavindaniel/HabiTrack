@@ -344,7 +344,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="HUL-Vz-mKb"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Development" image="second" id="ajb-4v-upo"/>
+                    <tabBarItem key="tabBarItem" title="Development" image="chevron.left.slash.chevron.right" catalog="system" id="ajb-4v-upo"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="devTableView" destination="6su-xx-3SB" id="hBI-MA-zcQ"/>
@@ -392,7 +392,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="O1u-W8-tvY"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Settings" image="second" id="mcM-o9-fVz"/>
+                    <tabBarItem key="tabBarItem" title="Settings" image="gear" catalog="system" id="mcM-o9-fVz"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="settingsTableView" destination="QuZ-2L-jUx" id="3EK-a3-4Rr"/>
@@ -425,7 +425,7 @@
         <scene sceneID="UrT-dh-l4K">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="PWf-Rg-XJa" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Journal" image="first" id="fj1-yx-SMq"/>
+                    <tabBarItem key="tabBarItem" title="Journal" image="list.bullet" catalog="system" id="fj1-yx-SMq"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="wvH-dS-Rr8">
                         <autoresizingMask key="autoresizingMask"/>
@@ -441,7 +441,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="first" width="30" height="30"/>
-        <image name="second" width="30" height="30"/>
+        <image name="chevron.left.slash.chevron.right" catalog="system" width="64" height="48"/>
+        <image name="gear" catalog="system" width="64" height="60"/>
+        <image name="list.bullet" catalog="system" width="64" height="44"/>
     </resources>
 </document>
