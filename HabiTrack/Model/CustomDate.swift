@@ -241,3 +241,56 @@ func getDateAsString(date: Date, length: String) -> String {
     }
 }
 
+// get streak as string
+func getStreakAsString(streak: Int) -> String {
+    
+    var numDays = streak
+    var numWeeks = 0
+    var numMonths = 0
+    var numYears = 0
+    
+    var dateString = ""
+    
+    if (streak / 365 > 0) {
+        numYears = streak / 365
+        if (numYears > 1) {
+            dateString += "\(numYears) years "
+        } else {
+            dateString += "\(numYears) year "
+        }
+        if (streak % 365 == 0) {
+            dateString += "0 months 0 weeks 0 days"
+        } else if (streak % 7 == 1) {
+            dateString += "1 day"
+        } else  {
+            dateString += "\(streak % 7) days"
+        }
+    }
+    if (streak / 7 > 0) {
+        numWeeks = streak / 7
+        if (numWeeks > 1) {
+            dateString += "\(numWeeks) weeks "
+        } else {
+            dateString += "\(numWeeks) week "
+        }
+        if (streak % 7 == 0) {
+            dateString += "0 days"
+        } else if (streak % 7 == 1) {
+            dateString += "1 day"
+        } else  {
+            dateString += "\(streak % 7) days"
+        }
+    }
+    if (streak < 7) {
+        if (streak == 0) {
+            dateString += "0 days"
+        } else if (streak == 1) {
+            dateString += "1 day"
+        } else {
+            dateString += "\(streak) days"
+        }
+    }
+    
+    return dateString
+}
+

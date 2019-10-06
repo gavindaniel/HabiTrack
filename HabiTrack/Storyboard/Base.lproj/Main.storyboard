@@ -83,8 +83,17 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KJo-Sv-jMQ">
-                                                    <rect key="frame" x="216" y="36" width="13" height="28"/>
+                                                    <rect key="frame" x="273" y="36" width="13" height="28"/>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Days" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cSx-4N-Bf9">
+                                                    <rect key="frame" x="305" y="36" width="32" height="28"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="32" id="sW5-Ev-b6N"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -93,19 +102,23 @@
                                                 <constraint firstItem="rHN-kh-VBh" firstAttribute="leading" secondItem="VAy-mG-wGZ" secondAttribute="leadingMargin" id="2If-zi-iKC"/>
                                                 <constraint firstItem="rHN-kh-VBh" firstAttribute="top" secondItem="sFh-Be-gNb" secondAttribute="bottom" constant="10" id="4hr-Jw-pON"/>
                                                 <constraint firstItem="rHN-kh-VBh" firstAttribute="leading" secondItem="VAy-mG-wGZ" secondAttribute="leadingMargin" id="5bt-sD-6k7"/>
+                                                <constraint firstItem="cSx-4N-Bf9" firstAttribute="leading" secondItem="sFh-Be-gNb" secondAttribute="trailing" constant="14" id="Azr-md-kgF"/>
                                                 <constraint firstItem="KJo-Sv-jMQ" firstAttribute="top" secondItem="VAy-mG-wGZ" secondAttribute="topMargin" constant="25" id="DGe-vY-p0T"/>
                                                 <constraint firstItem="sFh-Be-gNb" firstAttribute="leading" secondItem="VAy-mG-wGZ" secondAttribute="leadingMargin" id="TWM-bJ-rhU"/>
                                                 <constraint firstItem="sFh-Be-gNb" firstAttribute="top" secondItem="VAy-mG-wGZ" secondAttribute="topMargin" constant="10" id="VFe-YZ-vgd"/>
                                                 <constraint firstItem="rHN-kh-VBh" firstAttribute="leading" secondItem="VAy-mG-wGZ" secondAttribute="leadingMargin" id="g7g-ku-eiZ"/>
                                                 <constraint firstItem="sFh-Be-gNb" firstAttribute="leading" secondItem="VAy-mG-wGZ" secondAttribute="leadingMargin" id="hti-T0-Ua7"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="KJo-Sv-jMQ" secondAttribute="bottom" constant="25" id="i2o-UQ-xCl"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="cSx-4N-Bf9" secondAttribute="bottom" constant="25" id="jNl-kk-CHt"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="rHN-kh-VBh" secondAttribute="bottom" constant="10" id="jY7-Lh-oiA"/>
+                                                <constraint firstAttribute="leadingMargin" secondItem="KJo-Sv-jMQ" secondAttribute="trailing" constant="-270" id="loF-HQ-P5o"/>
                                                 <constraint firstItem="sFh-Be-gNb" firstAttribute="leading" secondItem="VAy-mG-wGZ" secondAttribute="leadingMargin" id="qeI-X6-0Xs"/>
-                                                <constraint firstItem="KJo-Sv-jMQ" firstAttribute="leading" secondItem="VAy-mG-wGZ" secondAttribute="leadingMargin" constant="200" id="uyr-T8-T6E"/>
+                                                <constraint firstItem="cSx-4N-Bf9" firstAttribute="top" secondItem="VAy-mG-wGZ" secondAttribute="topMargin" constant="25" id="uB3-nd-ewk"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="habitUILabel" destination="sFh-Be-gNb" id="P4Y-E2-i7Y"/>
+                                            <outlet property="streakDayUILabel" destination="cSx-4N-Bf9" id="vll-bY-YE7"/>
                                             <outlet property="streakUILabel" destination="KJo-Sv-jMQ" id="HPK-U2-FSK"/>
                                             <outlet property="timeUILabel" destination="rHN-kh-VBh" id="bof-u8-KQe"/>
                                         </connections>

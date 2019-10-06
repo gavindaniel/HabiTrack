@@ -53,7 +53,13 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
                     let habitString = habit[self.journal.habit]
                     let habitStreak = self.journal.entries.countStreak(habit: habitString, date: dateSelected)
                     // set the streak
+//                    cell.streakUILabel?.text = getStreakAsString(streak: habitStreak)
                     cell.streakUILabel?.text = String(habitStreak)
+                    if (habitStreak == 1) {
+                        cell.streakDayUILabel?.text = "day"
+                    } else {
+                        cell.streakDayUILabel?.text = "days"
+                    }
                     // check if today has already been completed
                     if (self.journal.entries.checkCompleted(habit: habitString, date: dateSelected)) {
                         cell.accessoryType = .checkmark
