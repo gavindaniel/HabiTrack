@@ -14,17 +14,23 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
     // view objects
     var dateCollectionView: UICollectionView
     var habitTableView: UITableView
+    var titleTableView: UITableView
     var journalTableView: JournalTableView?
+    var journalTitleView: JournalTitleView?
     // variables unique to this view
     var daysArray: Array<Date> = []
     var lastSelectedItem = -1
     var dateSelected = Date()
     
     // initializer
-    init(dateCollectionView: UICollectionView, journalTableView: JournalTableView, habitTableView: UITableView) {
+    init(dateCollectionView: UICollectionView, journalTableView: JournalTableView, habitTableView: UITableView, journalTitleView: JournalTitleView,
+         titleTableView: UITableView) {
         self.dateCollectionView = dateCollectionView
         self.journalTableView = journalTableView
         self.habitTableView = habitTableView
+        self.journalTitleView = journalTitleView
+        self.titleTableView = titleTableView
+        
         super.init()
     }
     
@@ -72,11 +78,11 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
             cell.dayUILabel?.font = UIFont.systemFont(ofSize: 16.0)
             // testing if today, make a different shade of gray so people know which day is today if not selected.
             if (Calendar.current.component(.day, from: Date()) == getDayAsInt(date: daysArray[indexPath.row])) {
+                cell.layer.borderWidth = 2.0
                 if #available(iOS 13.0, *) {
                     cell.layer.borderColor = UIColor.systemGray.cgColor
                     cell.monthUILabel?.textColor = UIColor.systemGray
                     cell.dayUILabel?.textColor = UIColor.systemGray
-                    cell.layer.borderWidth = 2.0
                 } else {
                     // Fallback on earlier versions
                     cell.layer.borderColor = UIColor.darkGray.cgColor
@@ -143,9 +149,13 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
             let date = getDate(month: getMonthAsInt(month: month), day: Int(day) ?? Calendar.current.component(.day, from: Date()))
             dateSelected = date
             print("dateSelected: \(dateSelected)")
+            
+            
+            
             // FIXME: replace 'days' with a calculation for number of days in the month
             // loop through cells and deselect
             var tempIndex = 0
+            // check to deselect cells not selected
             while tempIndex < daysArray.count {
                 if (tempIndex != lastSelectedItem) {
                     self.dateCollectionView.deselectItem(at: IndexPath(row: tempIndex, section: 0), animated: false)
@@ -159,8 +169,16 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
             cell.dayUILabel?.textColor = UIColor.blue
         }
         self.journalTableView?.dateSelected = dateSelected
+        // testing
+        self.journalTitleView?.dateSelected = dateSelected
         updateDaysArray(date: dateSelected)
         self.dateCollectionView.reloadData()
+        // testing
+        self.titleTableView.reloadData()
+        
+        
+        
+        
     }
     
     // custom : updateDaysArray (init daysArray)

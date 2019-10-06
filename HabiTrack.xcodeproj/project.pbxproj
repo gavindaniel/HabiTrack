@@ -25,6 +25,7 @@
 		4CAAAC90232C3E84000C9AD8 /* Classes in Resources */ = {isa = PBXBuildFile; fileRef = 4CAAAC8F232C3E84000C9AD8 /* Classes */; };
 		4CB004C82311A59400417248 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB004BA2311A56E00417248 /* SQLite.framework */; };
 		4CB004C92311A59400417248 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB004BA2311A56E00417248 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4CFFD4D8234991BE0004B45E /* JournalTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFFD4D7234991BE0004B45E /* JournalTitleView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -139,6 +140,7 @@
 		4CAAAC81232B5CD5000C9AD8 /* HabitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitViewController.swift; sourceTree = "<group>"; };
 		4CAAAC8F232C3E84000C9AD8 /* Classes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Classes; sourceTree = "<group>"; };
 		4CB004AF2311A56D00417248 /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = "../SQLite.swift-master/SQLite.xcodeproj"; sourceTree = "<group>"; };
+		4CFFD4D7234991BE0004B45E /* JournalTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalTitleView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -191,6 +193,7 @@
 			children = (
 				4C225B89233E6EEC0062E195 /* JournalDateView.swift */,
 				4C225B87233E6EDD0062E195 /* JournalTableView.swift */,
+				4CFFD4D7234991BE0004B45E /* JournalTitleView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -482,6 +485,7 @@
 				4C225B8A233E6EEC0062E195 /* JournalDateView.swift in Sources */,
 				4CAAAC82232B5CD5000C9AD8 /* HabitViewController.swift in Sources */,
 				4C4FF7B1230F620B00DAC450 /* JournalViewController.swift in Sources */,
+				4CFFD4D8234991BE0004B45E /* JournalTitleView.swift in Sources */,
 				4C6A161A2320BA4000274316 /* CustomDate.swift in Sources */,
 				4C89B815231B62D500AE45F4 /* Journal.swift in Sources */,
 				4C89B81F231CE2A600AE45F4 /* SettingsViewController.swift in Sources */,

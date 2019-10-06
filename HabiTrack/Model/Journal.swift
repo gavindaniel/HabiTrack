@@ -132,7 +132,9 @@ class Journal {
     
     /// The traditional method for rearranging rows in a table view.
     func moveItem(at sourceIndex: Int, to destinationIndex: Int) {
+        print()
         print("moveItem")
+        print()
         guard sourceIndex != destinationIndex else { return }
         
         let defaults = UserDefaults.standard
@@ -161,7 +163,6 @@ class Journal {
             let oldHabit = self.habitsTable.filter(self.id == oldId)
             let newHabit = self.habitsTable.filter(self.id == newId)
             for habit in habits {
-                print("id: \(habit[self.id])")
                 if (habit[self.id] == oldId) {
                     flag1 = true
                     

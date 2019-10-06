@@ -100,4 +100,63 @@ func getDate(month: Int, day: Int) -> Date {
     return date
 }
 
+// custom : getDayOfWeek
+func getDayOfWeek(date: Date, length: String) -> String {
+//    let weekDay = Calendar.current.component(.weekday, from: Date())
+    let weekDayToday = Calendar.current.component(.weekday, from: Date())
+    print("date: \(date)")
+    let weekDaySelected = Calendar.current.component(.weekday, from: date)
+//    print("weekDay: \(weekDay)")
+    print("weekDaySelected: \(weekDaySelected)")
+    // check if requesting full spelling
+    if (length == "long") {
+        switch(weekDaySelected) {
+        case (1):
+            return ("Sunday")
+        case (2):
+            return ("Monday")
+        case (3):
+            return ("Tuesday")
+        case (4):
+            return ("Wednesday")
+        case (5):
+            return ("Thursday")
+        case (6):
+            return ("Friday")
+        case (7):
+            return ("Saturday")
+        default:
+            return("")
+        }
+    // else return short spelling
+    } else {
+        switch(weekDaySelected) {
+        case (1):
+            return ("Sun")
+        case (2):
+            return ("Mon")
+        case (3):
+            return ("Tue")
+        case (4):
+            return ("Wed")
+        case (5):
+            return ("Thu")
+        case (6):
+            return ("Fri")
+        case (7):
+            return ("Sat")
+        default:
+            return("")
+        }
+    }
+}
+
+// count number of days in between dates
+func countDays(date1: Date, date2: Date) -> Int {
+    let calendar = Calendar.current
+    let d1 = calendar.startOfDay(for: date1)
+    let d2 = calendar.startOfDay(for: date2)
+    let components = calendar.dateComponents([.day], from: d1, to: d2).day ?? 0
+    return(components)
+}
 

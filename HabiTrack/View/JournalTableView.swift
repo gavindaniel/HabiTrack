@@ -77,7 +77,7 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
         } catch {
             print (error)
         }
-        self.habitTableView.reloadData()
+//        self.habitTableView.reloadData()
         return (cell)
     }
     
@@ -166,7 +166,6 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
          called by the implementation of the `tableView(_ canHandle:)` method.
     */
     func canHandle(_ session: UIDropSession) -> Bool {
-        print("canHandle")
         return session.canLoadObjects(ofClass: NSString.self)
     }
     
@@ -175,10 +174,8 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
          by the `tableView(_:itemsForBeginning:at:)` method.
     */
     func dragItems(for indexPath: IndexPath) -> [UIDragItem] {
-        print("dragItems... indexPath \(indexPath.row)")
         let defaults = UserDefaults.standard
         let localHabits = defaults.object(forKey: "localHabits") as! [String]
-        print("localHabits empty: \(localHabits.isEmpty)")
         let habitString = localHabits[indexPath.row]
 
         let data = habitString.data(using: .utf8)
@@ -200,8 +197,6 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
              to implement for allowing dragging from a table.
         */
         func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
-            
-            print("itemsForBegging at indexPath: \(indexPath.row)")
             return ( dragItems(for: indexPath) )
         }
         
@@ -222,7 +217,6 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
         */
         func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
             // The .move operation is available only for dragging within a single app.
-            print("dropSessionDidUpdate... desinationIndexPath \(destinationIndexPath?.row ?? -1)")
             
             if tableView.hasActiveDrag {
                 if session.items.count > 1 {

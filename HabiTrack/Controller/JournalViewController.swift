@@ -23,6 +23,11 @@ class HabitTableViewCell: UITableViewCell {
     @IBOutlet var checkBox: BEMCheckBox!
 }
 
+class JournalTitleTableViewCell: UITableViewCell {
+    @IBOutlet weak var journalTitleLabel: UILabel!
+    @IBOutlet weak var weekDayLabel: UILabel!
+}
+
 // class: JournalViewController
 class JournalViewController: UIViewController {
     
@@ -34,9 +39,12 @@ class JournalViewController: UIViewController {
     // customViews
     var journalTableView: JournalTableView?
     var journalDateView: JournalDateView?
+    var journalTitleView: JournalTitleView?
 
     @IBOutlet weak var habitTableView: UITableView!
     @IBOutlet weak var dateCollectionView: UICollectionView!
+    @IBOutlet weak var titleTableView: UITableView!
+    //    @IBOutlet weak var weekDayLabel: UILabel!
     
     // load : viewDidAppear
     override func viewDidAppear(_ animated: Bool) {
@@ -47,6 +55,8 @@ class JournalViewController: UIViewController {
         // update views
         journalTableView?.updateTableView(habitView: habitTableView)
         journalDateView?.updateDateView(dateView: dateCollectionView)
+        journalTitleView?.updateTitleView(titleView: titleTableView)
+        
         // set observer of application entering foreground
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(applicationWillEnterForeground),
@@ -67,13 +77,20 @@ class JournalViewController: UIViewController {
         print("viewDidLoad...")
         print()
         
+        // initialize journalTitleTableView
+        self.journalTitleView = JournalTitleView(titleTableView: titleTableView, date: Date())
+        
         // initialize journalTableView
         self.journalTableView = JournalTableView(journal: journal, habitTableView: habitTableView, date: Date())
 //        self.journalTableView?.journal = journal
 //        self.journalTableView?.habitTableView = habitTableView
         
         // initialize journalDateView
-        self.journalDateView = JournalDateView(dateCollectionView: dateCollectionView, journalTableView: journalTableView!, habitTableView: habitTableView)
+        self.journalDateView = JournalDateView(dateCollectionView: dateCollectionView, journalTableView: journalTableView!, habitTableView: habitTableView, journalTitleView: journalTitleView!,
+            titleTableView: titleTableView)
+        
+        
+        
 //        self.journalDateView?.dateCollectionView = dateCollectionView
 //        self.journalDateView?.journalTableView = journalTableView!
 //        self.journalDateView?.habitTableView = habitTableView
@@ -92,6 +109,10 @@ class JournalViewController: UIViewController {
             let database = try Connection(fileUrl.path)
             self.journal.database = database
             self.journal.entries.database = database
+            
+            // set the dataSource and delegate
+            self.titleTableView.dataSource = journalTitleView
+            self.titleTableView.delegate = journalTitleView
             
             // set the dataSource and delegate
             self.habitTableView.dataSource = journalTableView
@@ -122,6 +143,7 @@ class JournalViewController: UIViewController {
         print("viewWillAppear...")
         print()
         // reload the views
+        self.titleTableView.reloadData()
         self.habitTableView.reloadData()
         self.dateCollectionView.reloadData()
     }
@@ -155,19 +177,20 @@ class JournalViewController: UIViewController {
         print("Updating View Controller...")
         print()
         
-        let date = Date()
+        let dateToday = Date()
         let defaults = UserDefaults.standard
         let lastRun = defaults.object(forKey: "lastRun") as! Date
         
         // check if last run date is different from current date
-        if (Calendar.current.component(.year, from: lastRun) != Calendar.current.component(.year, from: date) ||
-            Calendar.current.component(.month, from: lastRun) != Calendar.current.component(.month, from: date) ||
-            Calendar.current.component(.day, from: lastRun) != Calendar.current.component(.day, from: date)) {
+        if (Calendar.current.component(.year, from: lastRun) != Calendar.current.component(.year, from: dateToday) ||
+            Calendar.current.component(.month, from: lastRun) != Calendar.current.component(.month, from: dateToday) ||
+            Calendar.current.component(.day, from: lastRun) != Calendar.current.component(.day, from: dateToday)) {
             
             print("Date has changed. Updating last run date...")
             
             // count number of days since last run
-            let count = self.journal.entries.countDays(date1: lastRun, date2: date)
+//            let count = self.journal.entries.countDays(date1: lastRun, date2: date)
+            let count = countDays(date1: lastRun, date2: dateToday)
             
             // update the databases and views
             do {
@@ -178,6 +201,7 @@ class JournalViewController: UIViewController {
                 self.journal.database = database
                 self.journal.entries.database = database
                 // update the views
+                self.journalTitleView?.updateTitleView(titleView: titleTableView)
                 self.journalTableView?.updateTableView(habitView: habitTableView)
                 self.journalDateView?.updateDateView(dateView: dateCollectionView)
             } catch {
@@ -188,18 +212,20 @@ class JournalViewController: UIViewController {
             self.journal.addDays(numDays: count, startDate: lastRun)
             
             // set the last run date to the current date
-            UserDefaults.standard.set(date, forKey: "lastRun")
+            UserDefaults.standard.set(dateToday, forKey: "lastRun")
             
             // reload the views
+            self.titleTableView.reloadData()
             self.habitTableView.reloadData()
             self.dateCollectionView.reloadData()
             
             // update days array and views
-            self.journalDateView?.updateDaysArray(date: date)
+            self.journalDateView?.updateDaysArray(date: dateToday)
             self.journalTableView?.updateTableView(habitView: habitTableView)
             self.journalDateView?.updateDateView(dateView: dateCollectionView)
             
             // reload the views
+            self.titleTableView.reloadData()
             self.habitTableView.reloadData()
             self.dateCollectionView.reloadData()
             
@@ -207,5 +233,14 @@ class JournalViewController: UIViewController {
         } else {
             print("Day has not changed.")
         }
+        
+//        let weekDay = Calendar.current.component(.weekday, from: Date())
+//        print("weekDay: \(weekDay)")
+     
+        
+//        print(getDayOfWeek(date: self.dateSelected, length: "long"))
+//        print(getDayOfWeek(date: self.dateSelected, length: "short"))
+//        weekDayLabel?.text = getDayOfWeek(date: self.dateSelected, length: "long")
+        
     } // end of update func.
 }

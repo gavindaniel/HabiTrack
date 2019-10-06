@@ -211,11 +211,11 @@ class Entries {
         }
     }
     
-    func countDays(date1: Date, date2: Date) -> Int {
-        let calendar = Calendar.current
-        let d1 = calendar.startOfDay(for: date1)
-        let d2 = calendar.startOfDay(for: date2)
-        let components = calendar.dateComponents([.day], from: d1, to: d2).day ?? 0
-        return(components)
-    }
+//    func countDays(date1: Date, date2: Date) -> Int {
+//        let calendar = Calendar.current
+//        let d1 = calendar.startOfDay(for: date1)
+//        let d2 = calendar.startOfDay(for: date2)
+//        let components = calendar.dateComponents([.day], from: d1, to: d2).day ?? 0
+//        return(components)
+//    }
 }
