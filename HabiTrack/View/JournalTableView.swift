@@ -162,9 +162,7 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
     
     // custom : updateTableView
     func updateTableView(habitView: UITableView) {
-//        print("\tupdating table view...")
         habitTableView = habitView
-//        print("\t\tupdated table view.")
     }
     
     

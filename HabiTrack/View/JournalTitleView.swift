@@ -13,34 +13,36 @@ class JournalTitleView: NSObject, UITableViewDataSource, UITableViewDelegate {
     var titleTableView: UITableView
     var dateSelected: Date
     
+    // initializer
     init(titleTableView: UITableView, date: Date) {
         self.titleTableView = titleTableView
         self.dateSelected = date
         super.init()
     }
     
-    
+    // tableView: numberOfRowsInSection
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
     
+    // tableView : cellForRowAt
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // do something
+        // get the title cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "title", for: indexPath)
         as! JournalTitleTableViewCell
         
+        // comment/uncomment for Day of Week in weekDayLabel
 //        cell.weekDayLabel?.text = getDayOfWeek(date: self.dateSelected, length: "long")
+        
+        // comment/uncomment for Date in weekDayLabel
         cell.weekDayLabel?.text = getDateAsString(date: self.dateSelected, length: "long")
         
-            
-//        self.titleTableView.reloadData()
+        // return the title cell
         return (cell)
     }
     
     // custom : updateTableView
     func updateTitleView(titleView: UITableView) {
-//        print("\tupdating title view...")
         titleTableView = titleView
-//        print("\t\tupdated title view.")
     }
 }

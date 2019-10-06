@@ -42,7 +42,7 @@ class JournalViewController: UIViewController {
     var journalTableView: JournalTableView?
     var journalDateView: JournalDateView?
     var journalTitleView: JournalTitleView?
-
+    
     @IBOutlet weak var habitTableView: UITableView!
     @IBOutlet weak var dateCollectionView: UICollectionView!
     @IBOutlet weak var titleTableView: UITableView!

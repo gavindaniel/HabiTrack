@@ -241,9 +241,9 @@ func getDateAsString(date: Date, length: String) -> String {
 // get streak as string
 func getStreakAsString(streak: Int) -> String {
     
-    var numDays = streak
+//    var numDays = streak
     var numWeeks = 0
-    var numMonths = 0
+//    var numMonths = 0
     var numYears = 0
     
     var dateString = ""

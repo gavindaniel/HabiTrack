@@ -49,7 +49,10 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "dateCell", for: indexPath)
             as! DateCollectionViewCell
         // add labels and style
-//        cell.monthUILabel?.text = getMonthAsString(date: daysArray[indexPath.row])
+        
+        // comment/uncomment for month 'Oct' in date collection view
+//        cell.monthUILabel?.text = getMonthAsString(date: daysArray[indexPath.row], length: "short")
+        // comment/uncomment for day of week 'Fri' in date collection view
         cell.monthUILabel?.text = getDayOfWeek(date: daysArray[indexPath.row], length: "short")
         cell.dayUILabel?.text = String(getDayAsInt(date: daysArray[indexPath.row]))
         cell.layer.cornerRadius = 10.0
@@ -203,8 +206,6 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
     
     // custom : updateTableView
     func updateDateView(dateView: UICollectionView) {
-//        print("\tupdating date view...")
         dateCollectionView = dateView
-//        print("\t\tupdated date.")
     }
 }
