@@ -71,7 +71,7 @@ class Journal {
                 }
                 if (count == row) {
                     let tempHabit = self.habitsTable.filter(self.id == count+firstId)
-                    print("date: \(date)")
+//                    print("date: \(date)")
                     entries.markCompleted(habit: habitString, date: date, val: inc)
                     let currentStreak = entries.countStreak(habit: habitString, date: date)
                     let updateHabit = tempHabit.update(self.streak <- currentStreak)

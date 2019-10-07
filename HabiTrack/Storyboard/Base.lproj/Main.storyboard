@@ -143,7 +143,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Days" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cSx-4N-Bf9">
-                                                    <rect key="frame" x="351" y="35" width="32" height="17"/>
+                                                    <rect key="frame" x="356" y="35" width="32" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -169,7 +169,7 @@
                                                 <constraint firstItem="cSx-4N-Bf9" firstAttribute="top" secondItem="VAy-mG-wGZ" secondAttribute="topMargin" constant="24" id="HpA-83-FAS"/>
                                                 <constraint firstItem="MvY-cp-Yjr" firstAttribute="top" secondItem="sFh-Be-gNb" secondAttribute="bottom" constant="10" id="QxU-zb-zeB"/>
                                                 <constraint firstItem="sFh-Be-gNb" firstAttribute="top" secondItem="VAy-mG-wGZ" secondAttribute="topMargin" constant="15" id="VFe-YZ-vgd"/>
-                                                <constraint firstItem="cSx-4N-Bf9" firstAttribute="leading" secondItem="KJo-Sv-jMQ" secondAttribute="trailing" constant="5" id="Xbw-5Q-5Ly"/>
+                                                <constraint firstItem="cSx-4N-Bf9" firstAttribute="leading" secondItem="KJo-Sv-jMQ" secondAttribute="trailing" constant="10" id="Xbw-5Q-5Ly"/>
                                                 <constraint firstAttribute="leadingMargin" secondItem="MvY-cp-Yjr" secondAttribute="trailing" constant="-365" id="cfs-R5-brO"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="rHN-kh-VBh" secondAttribute="bottom" constant="10" id="jY7-Lh-oiA"/>
                                             </constraints>
