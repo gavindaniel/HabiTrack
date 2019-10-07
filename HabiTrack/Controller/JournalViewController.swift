@@ -22,7 +22,9 @@ class HabitTableViewCell: UITableViewCell {
     @IBOutlet weak var streakUILabel: UILabel!
     @IBOutlet weak var streakDayUILabel: UILabel!
     @IBOutlet weak var longestStreakUILabel: UILabel!
-    @IBOutlet var checkBox: BEMCheckBox!
+    @IBOutlet weak var checkImageView: UIImageView!
+    
+//    @IBOutlet var checkBox: BEMCheckBox!
 }
 
 class JournalTitleTableViewCell: UITableViewCell {

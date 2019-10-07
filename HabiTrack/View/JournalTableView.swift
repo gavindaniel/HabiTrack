@@ -78,11 +78,23 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
                     }
                     // check if today has already been completed
                     if (self.journal.entries.checkCompleted(habit: habitString, date: dateSelected)) {
-                        cell.accessoryType = .checkmark
+                        if #available(iOS 13.0, *) {
+                            cell.checkImageView?.image = UIImage(systemName: "checkmark.circle.fill")
+                            cell.checkImageView?.tintColor = UIColor.systemBlue
+                        } else {
+                            // Fallback on earlier versions
+                            cell.accessoryType = .checkmark
+                        }
 //                        cell.checkBox?.setOn(true, animated: false)
 //                        cell.checkBox?.on = true
                     } else {
-                        cell.accessoryType = .none
+                        if #available(iOS 13.0, *) {
+                            cell.checkImageView?.image = UIImage(systemName: "circle")
+                            cell.checkImageView?.tintColor = UIColor.systemGray
+                        } else {
+                            // Fallback on earlier versions
+                            cell.accessoryType = .none
+                        }
 //                        cell.checkBox?.on = false
 //                        cell.checkBox?.setOn(false, animated: false)
                     }
@@ -110,17 +122,29 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
             // get the habit string from the cell
             let tempString = cell.habitUILabel?.text
             // check if the cell has been completed
-            if cell.accessoryType == UITableViewCell.AccessoryType.checkmark {
-                cell.accessoryType = .none
+            if #available(iOS 13.0, *) {
+                if cell.checkImageView?.image == UIImage(systemName: "checkmark.circle.fill") {
+                    cell.checkImageView?.image = UIImage(systemName: "circle")
+                    cell.checkImageView?.tintColor = UIColor.systemGray
+    //                cell.checkBox?.on = false
+    //                cell.checkBox?.setOn(false, animated: true)
+                    journal.updateStreak(row: indexPath.row, inc: 0, date: dateSelected, habitString: tempString ?? "none")
+                } else {
+                    cell.checkImageView?.image = UIImage(systemName: "checkmark.circle.fill")
+                    cell.checkImageView?.tintColor = UIColor.systemBlue
+                    journal.updateStreak(row: indexPath.row, inc: 1, date: dateSelected, habitString: tempString ?? "none")
+                }
+            } else {
+                // Fallback on earlier versions
+                if cell.accessoryType == UITableViewCell.AccessoryType.checkmark {
+                    cell.accessoryType = .none
 //                cell.checkBox?.on = false
-//                cell.checkBox?.setOn(false, animated: true)
-                journal.updateStreak(row: indexPath.row, inc: 0, date: dateSelected, habitString: tempString ?? "none")
-            }
-            else {
-                cell.accessoryType = .checkmark
-//                cell.checkBox?.on = true
-//                cell.checkBox?.setOn(true, animated: true)
-                journal.updateStreak(row: indexPath.row, inc: 1, date: dateSelected, habitString: tempString ?? "none")
+  //                cell.checkBox?.setOn(false, animated: true)
+                    journal.updateStreak(row: indexPath.row, inc: 0, date: dateSelected, habitString: tempString ?? "none")
+                } else {
+                    cell.accessoryType = .checkmark
+                    journal.updateStreak(row: indexPath.row, inc: 1, date: dateSelected, habitString: tempString ?? "none")
+                }
             }
         }
         self.habitTableView.reloadData()
