@@ -51,8 +51,9 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
                     cell.timeUILabel?.text = habit[self.journal.time]
                     // get the name of habit and size of habit entries table
                     let habitString = habit[self.journal.habit]
-                    let currentStreak = self.journal.entries.countStreak(habit: habitString, date: dateSelected)
-                    let longestStreak = self.journal.entries.countLongestStreak(habit: habitString, date: dateSelected)
+                    let habitRepeatString = habit[self.journal.time]
+                    let currentStreak = self.journal.entries.countStreak(habit: habitString, date: dateSelected, habitRepeat: habitRepeatString)
+                    let longestStreak = self.journal.entries.countLongestStreak(habit: habitString, date: dateSelected, habitRepeat: habitRepeatString)
                     // set the streak
 //                    cell.streakUILabel?.text = getStreakAsString(streak: habitStreak)
                     cell.streakUILabel?.text = String(currentStreak)
@@ -72,9 +73,17 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
                     }
                     
                     if (currentStreak == 1) {
-                        cell.streakDayUILabel?.text = "day"
+                        if (cell.timeUILabel?.text == "weekly") {
+                            cell.streakDayUILabel?.text = "week"
+                        } else {
+                            cell.streakDayUILabel?.text = "day"
+                        }
                     } else {
-                        cell.streakDayUILabel?.text = "days"
+                        if (cell.timeUILabel?.text == "weekly") {
+                            cell.streakDayUILabel?.text = "weeks"
+                        } else {
+                            cell.streakDayUILabel?.text = "days"
+                        }
                     }
                     // check if today has already been completed
                     if (self.journal.entries.checkCompleted(habit: habitString, date: dateSelected)) {

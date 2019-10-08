@@ -17,7 +17,7 @@ class Journal {
     // habits table columns
     let id = Expression<Int>("id")
     let habit = Expression<String>("habit")
-    let time = Expression<String>("time")
+    let time = Expression<String>("time") // repeat
     let streak = Expression<Int>("streak")
     let currentDay = Expression<Int>("currentDay")
     
@@ -72,8 +72,10 @@ class Journal {
                 if (count == row) {
                     let tempHabit = self.habitsTable.filter(self.id == count+firstId)
 //                    print("date: \(date)")
+                    // testing
+                    let repeatString = habit[self.time]
                     entries.markCompleted(habit: habitString, date: date, val: inc)
-                    let currentStreak = entries.countStreak(habit: habitString, date: date)
+                    let currentStreak = entries.countStreak(habit: habitString, date: date, habitRepeat: repeatString)
                     let updateHabit = tempHabit.update(self.streak <- currentStreak)
                     do {
                         try self.database.run(updateHabit)

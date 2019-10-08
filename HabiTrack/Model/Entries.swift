@@ -116,7 +116,7 @@ class Entries {
     }
     
     // custom : countDateStreak
-    func countStreak(habit: String, date: Date) -> Int {
+    func countStreak(habit: String, date: Date, habitRepeat: String) -> Int {
         var index = 1
         var count = 0
         do {
@@ -125,20 +125,103 @@ class Entries {
             
             var flag = false
             
+            var startDate = Date()
+            var startDateDay = ""
+            var tempDate = Date()
+            var tempDateDay = ""
+            
+            var flagNewWeek = true
+            
             for day in days {
+                if (index == 1) {
+                    // get day of week the day the habit was created
+                    var components = DateComponents()
+                    components.year = day[self.year]
+                    components.month = day[self.month]
+                    components.day = day[self.day]
+                    startDate = Calendar.current.date(from: components) ?? Date()
+                    startDateDay = getDayOfWeek(date: startDate, length: "long")
+                }
                 if (day[self.year] == Calendar.current.component(.year, from: date) &&
                     day[self.month] == Calendar.current.component(.month, from: date) &&
                     day[self.day] == Calendar.current.component(.day, from: date)) {
                     flag = true
                     if (day[self.completed] == 1) {
-                        count += 1
+                        if (habitRepeat == "daily") {
+                            count += 1
+                        }
+                        else if (habitRepeat == "weekly") {
+                            print("habitRepeat = weekly")
+                            var components = DateComponents()
+                            components.year = day[self.year]
+                            components.month = day[self.month]
+                            components.day = day[self.day]
+                            tempDate = Calendar.current.date(from: components) ?? Date()
+                            tempDateDay = getDayOfWeek(date: tempDate, length: "long")
+                            // check if same day of week as date specified (day habit started)
+                            print("startDateDay: \(startDateDay) = tempDateDay: \(tempDateDay)")
+                            if (startDateDay == tempDateDay) {
+                                flagNewWeek = true
+                            }
+//                            else {
+//                                flagNewWeek = false
+//                            }
+                            print("flagNewWeek: \(flagNewWeek)")
+                            if (flagNewWeek == true) {
+                                count += 1
+                                flagNewWeek = false
+                                print("count: \(count)")
+                            }
+                        }
                     }
                     break
                 } else {
                     if (day[self.completed] == 1) {
-                        count += 1
+                        if (habitRepeat == "daily") {
+                            count += 1
+                        }
+                        else if (habitRepeat == "weekly") {
+                            var components = DateComponents()
+                            components.year = day[self.year]
+                            components.month = day[self.month]
+                            components.day = day[self.day]
+                            tempDate = Calendar.current.date(from: components) ?? Date()
+                            tempDateDay = getDayOfWeek(date: tempDate, length: "long")
+                            // check if same day of week as date specified (day habit started)
+//                            if (startDateDay == tempDateDay) {
+//                                count += 1
+//                            }
+                            // check if same day of week as date specified (day habit started)
+                            print("startDateDay: \(startDateDay) = tempDateDay: \(tempDateDay)")
+                            if (startDateDay == tempDateDay) {
+                                flagNewWeek = true
+                            }
+//                            else {
+//                                flagNewWeek = false
+//                            }
+                            print("flagNewWeek: \(flagNewWeek)")
+                            if (flagNewWeek == true) {
+                                count += 1
+                                flagNewWeek = false
+                                print("count: \(count)")
+                            }
+                        }
                     } else {
-                        count = 0
+                        if (habitRepeat == "daily") {
+                            count = 0
+                        }
+                        else if (habitRepeat == "weekly") {
+                            var components = DateComponents()
+                            components.year = day[self.year]
+                            components.month = day[self.month]
+                            components.day = day[self.day]
+                            tempDate = Calendar.current.date(from: components) ?? Date()
+                            let tempDateDay = getDayOfWeek(date: tempDate, length: "long")
+                            // check if same day of week as date specified (day habit started)
+                            if (startDateDay == tempDateDay) {
+                                count = 0
+                            }
+                        }
                     }
                 }
                 index += 1
@@ -212,8 +295,8 @@ class Entries {
     }
     
     // custom : countLongestStreak
-    func countLongestStreak(habit: String, date: Date) -> Int {
-//        var index = 1
+    func countLongestStreak(habit: String, date: Date, habitRepeat: String) -> Int {
+        var index = 1
         var count = 0
         var longestStreak = 0
         do {
@@ -222,7 +305,23 @@ class Entries {
             
             var flag = false
             
+            var startDate = Date()
+            var startDateDay = ""
+            var tempDate = Date()
+            var tempDateDay = ""
+            
+            var flagNewWeek = true
+            
             for day in days {
+                if (index == 1) {
+                    // get day of week the day the habit was created
+                    var components = DateComponents()
+                    components.year = day[self.year]
+                    components.month = day[self.month]
+                    components.day = day[self.day]
+                    startDate = Calendar.current.date(from: components) ?? Date()
+                    startDateDay = getDayOfWeek(date: startDate, length: "long")
+                }
                 // check if day in array is equal to date we're calculating streak up to
                 if (day[self.year] == Calendar.current.component(.year, from: date) &&
                     day[self.month] == Calendar.current.component(.month, from: date) &&
@@ -232,7 +331,33 @@ class Entries {
                     // check if day is completed
                     if (day[self.completed] == 1) {
                         // increment count
-                        count += 1
+                        if (habitRepeat == "daily") {
+                            count += 1
+                        }
+                        else if (habitRepeat == "weekly") {
+                            var components = DateComponents()
+                            components.year = day[self.year]
+                            components.month = day[self.month]
+                            components.day = day[self.day]
+                            tempDate = Calendar.current.date(from: components) ?? Date()
+                            tempDateDay = getDayOfWeek(date: tempDate, length: "long")
+                            // check if same day of week as date specified (day habit started)
+//                            if (startDateDay == tempDateDay) {
+//                                count += 1
+//                            }
+                            if (startDateDay == tempDateDay) {
+                                flagNewWeek = true
+                            }
+//                            else {
+//                                flagNewWeek = false
+//                            }
+                            print("flagNewWeek: \(flagNewWeek)")
+                            if (flagNewWeek == true) {
+                                count += 1
+                                flagNewWeek = false
+                                print("count: \(count)")
+                            }
+                        }
                         if (count > 0 && count > longestStreak) {
                             longestStreak = count
                         }
@@ -243,22 +368,63 @@ class Entries {
                     // check if day completed
                     if (day[self.completed] == 1) {
                         // increment count
-                        count += 1
+                        if (habitRepeat == "daily") {
+                            count += 1
+                        }
+                        else if (habitRepeat == "weekly") {
+                            var components = DateComponents()
+                            components.year = day[self.year]
+                            components.month = day[self.month]
+                            components.day = day[self.day]
+                            tempDate = Calendar.current.date(from: components) ?? Date()
+                            tempDateDay = getDayOfWeek(date: tempDate, length: "long")
+                            // check if same day of week as date specified (day habit started)
+//                            if (startDateDay == tempDateDay) {
+//                                count += 1
+//                            }
+                            if (startDateDay == tempDateDay) {
+                                flagNewWeek = true
+                            }
+//                            else {
+//                                flagNewWeek = false
+//                            }
+                            print("flagNewWeek: \(flagNewWeek)")
+                            if (flagNewWeek == true) {
+                                count += 1
+                                flagNewWeek = false
+                                print("count: \(count)")
+                            }
+                        }
                         if (count > 0 && count > longestStreak) {
                             longestStreak = count
                         }
                     // else day is not completed
                     } else {
+                        if (habitRepeat == "daily") {
+                            count = 0
+                        }
+                        else if (habitRepeat == "weekly") {
+                            var components = DateComponents()
+                            components.year = day[self.year]
+                            components.month = day[self.month]
+                            components.day = day[self.day]
+                            tempDate = Calendar.current.date(from: components) ?? Date()
+                            let tempDateDay = getDayOfWeek(date: tempDate, length: "long")
+                            // check if same day of week as date specified (day habit started)
+                            if (startDateDay == tempDateDay) {
+                                count = 0
+                            }
+                        }
                         // check if count has been incremented AND if longer than current longest streak
                         if (count > 0 && count > longestStreak) {
                             // update longest streak
                             longestStreak = count
                         }
                         // reset count
-                        count = 0
+//                        count = 0
                     }
                 }
-//                index += 1
+                index += 1
             } // end for loop
             // check if the flag has not been set true
             if (!flag) {

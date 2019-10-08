@@ -12,10 +12,11 @@ import SQLite
 class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     var list = ["Print Table (Script)",
+                "Update Habit Repeat (Pop-up)",
+                "Delete Habit (Pop-up)",
                 "Delete Journal Table (Script)",
                 "Force Add Day (Script)",
                 "Force Delete Day (Script)",
-                "Delete Habit (Pop-up)",
                 "Force Update Local Habit Table (Script)",
                 "Print Local Table (Script)",
                 "Update Habit IDs (Script)",
@@ -59,31 +60,24 @@ class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         //        print("Selected row: \(indexPath.row)")
         if (list[indexPath.row] == "Print Table (Script)") {
             printTable()
-        }
-        else if (list[indexPath.row] == "Delete Journal Table (Script)") {
+        } else if (list[indexPath.row] == "Delete Journal Table (Script)") {
             deleteTable()
-        }
-        else if (list[indexPath.row] == "Force Add Day (Script)") {
+        } else if (list[indexPath.row] == "Force Add Day (Script)") {
             addDays()
-        }
-        else if (list[indexPath.row] == "Force Delete Day (Script)") {
+        } else if (list[indexPath.row] == "Force Delete Day (Script)") {
             deleteDays()
-        }
-        else if (list[indexPath.row] == "Delete Habit (Pop-up)") {
+        } else if (list[indexPath.row] == "Delete Habit (Pop-up)") {
             deleteHabitById()
-        }
-        else if (list[indexPath.row] == "Force Update Local Habit Table (Script)") {
-//            self.journal.updateLocalHabits()
+        } else if (list[indexPath.row] == "Force Update Local Habit Table (Script)") {
             updateLocalHabits()
-        }
-        else if (list[indexPath.row] == "Print Local Table (Script)") {
+        } else if (list[indexPath.row] == "Print Local Table (Script)") {
             printLocalTable()
-        }
-        else if (list[indexPath.row] == "Update Habit IDs (Script)") {
+        } else if (list[indexPath.row] == "Update Habit IDs (Script)") {
             updateHabitIDs()
-        }
-        else if (list[indexPath.row] == "Force Update Habit ID (Script)") {
+        } else if (list[indexPath.row] == "Force Update Habit ID (Script)") {
             updateID()
+        } else if (list[indexPath.row] == "Update Habit Repeat (Pop-up)") {
+            updateRepeatById()
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -355,6 +349,40 @@ class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataS
         } catch {
             print(error)
         }
+    }
+    
+    func updateRepeatById() {
+        print("updating repeat for habit...")
+        // create alert controller
+        let alert = UIAlertController(title: "Update Repeat", message: nil, preferredStyle: .alert)
+        // add text fields
+        alert.addTextField { (tf) in
+            tf.placeholder = "Habit ID" }
+        alert.addTextField { (tf) in
+            tf.placeholder = "Repeat" }
+        // create 'Submit' action
+        let submit = UIAlertAction(title: "Submit", style: .default) { (_) in
+            // get strings from text fields
+            guard let habitIdString = alert.textFields?.first?.text, let habitId = Int(habitIdString), let habitRepeat = alert.textFields?.last?.text
+                else { return }
+            // find the correct in the table
+            let habit = self.journal.habitsTable.filter(self.journal.id == habitId)
+            // udpate the habit
+            let updateHabit = habit.update(self.journal.time <- habitRepeat)
+            
+            // attempt to update the database
+            do {
+                try self.journal.database.run(updateHabit)
+                print("updated habit repeat.")
+            } catch {
+                print(error)
+            }
+        }
+        alert.addAction(submit)
+        // create 'Cancel' alert action
+        let cancel = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil)
+        alert.addAction(cancel)
+        present(alert, animated: true, completion: nil)
     }
 }
 
