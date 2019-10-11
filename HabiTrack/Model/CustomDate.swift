@@ -15,7 +15,6 @@ func isKeyPresentInUserDefaults(key: String) -> Bool {
 
 // custom : setDefaults
 func setDefaults() {
-//    let defaults = UserDefaults.standard
     if (isKeyPresentInUserDefaults(key: "lastRun") == false) {
         let defaults = UserDefaults.standard
         defaults.set(Date(), forKey: "lastRun")

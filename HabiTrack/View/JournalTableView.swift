@@ -55,7 +55,6 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
                     let currentStreak = self.journal.entries.countStreak(habit: habitString, date: dateSelected, habitRepeat: habitRepeatString)
                     let longestStreak = self.journal.entries.countLongestStreak(habit: habitString, date: dateSelected, habitRepeat: habitRepeatString)
                     // set the streak
-//                    cell.streakUILabel?.text = getStreakAsString(streak: habitStreak)
                     cell.streakUILabel?.text = String(currentStreak)
                     
                     // check if the current streak is equal or greater than the longest
