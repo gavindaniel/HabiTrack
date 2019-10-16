@@ -20,7 +20,8 @@ class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataS
                 "Force Update Local Habit Table (Script)",
                 "Print Local Table (Script)",
                 "Update Habit IDs (Script)",
-                "Force Update Habit ID (Script)"]
+                "Force Update Habit ID (Script)",
+                "Update Habit Day (Pop-up)"]
     
     var database: Connection!
     let journal = Journal()
@@ -78,6 +79,8 @@ class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             updateID()
         } else if (list[indexPath.row] == "Update Habit Repeat (Pop-up)") {
             updateRepeatById()
+        } else if (list[indexPath.row] == "Update Habit Day (Pop-up)") {
+            updateDayOfWeek()
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -108,7 +111,8 @@ class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataS
 //            print("# entries: \(getTableSize(habit: "habits"))")
             for habit in habits {
                 print()
-                print("id: \(habit[self.journal.id]), habit: \(habit[self.journal.habit]), time: \(habit[self.journal.time])")
+//                print("id: \(habit[self.journal.id]), habit: \(habit[self.journal.habit]), time: \(habit[self.journal.time])")
+                print("id: \(habit[self.journal.id]), habit: \(habit[self.journal.habit]), time: \(habit[self.journal.time]), current day: \(habit[self.journal.dayOfWeek])")
                 printHabitTable(habit[self.journal.habit])
             }
         } catch {
@@ -369,6 +373,40 @@ class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataS
             let habit = self.journal.habitsTable.filter(self.journal.id == habitId)
             // udpate the habit
             let updateHabit = habit.update(self.journal.time <- habitRepeat)
+            
+            // attempt to update the database
+            do {
+                try self.journal.database.run(updateHabit)
+                print("updated habit repeat.")
+            } catch {
+                print(error)
+            }
+        }
+        alert.addAction(submit)
+        // create 'Cancel' alert action
+        let cancel = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil)
+        alert.addAction(cancel)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func updateDayOfWeek() {
+        print("updating day of week for journal entry...")
+        // create alert controller
+        let alert = UIAlertController(title: "Update Week Day", message: nil, preferredStyle: .alert)
+        // add text fields
+        alert.addTextField { (tf) in
+            tf.placeholder = "Habit ID" }
+        alert.addTextField { (tf) in
+            tf.placeholder = "Day Of Week" }
+        // create 'Submit' action
+        let submit = UIAlertAction(title: "Submit", style: .default) { (_) in
+            // get strings from text fields
+            guard let habitIdString = alert.textFields?.first?.text, let habitId = Int(habitIdString), let habitDayString = alert.textFields?.last?.text, let habitDayOfWeek = Int(habitDayString)
+                else { return }
+            // find the correct in the table
+            let habit = self.journal.habitsTable.filter(self.journal.id == habitId)
+            // udpate the habit
+            let updateHabit = habit.update(self.journal.dayOfWeek <- habitDayOfWeek)
             
             // attempt to update the database
             do {

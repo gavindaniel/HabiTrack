@@ -166,9 +166,9 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
                     nameRequiredLabel.isHidden = true
                     repeatRequiredLabel.isHidden = true
                     let addHabit = self.journal.habitsTable.insert(self.journal.habit <- habit ?? "error",
-                                                                   self.journal.time <- time ?? "daily",
+                                                                   self.journal.time <- time ?? "error",
                                                                    self.journal.streak <- 0,
-                                                                   self.journal.currentDay <- 1)
+                                                                   self.journal.dayOfWeek <- 0)
                     // attempt to add habit to database
                     do {
                         try self.journal.database.run(addHabit)

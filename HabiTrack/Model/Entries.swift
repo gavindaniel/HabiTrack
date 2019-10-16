@@ -139,7 +139,7 @@ class Entries {
     }
     
     // custom : countDateStreak
-    func countStreak(habit: String, date: Date, habitRepeat: String) -> Int {
+    func countStreak(habit: String, date: Date, habitRepeat: Int) -> Int { //habitRepeat: String
         // get the table for the habit
         let table = Table(habit)
         // count has to be defined outside to not be binding
@@ -149,8 +149,9 @@ class Entries {
             let days = try self.database.prepare(table)
             // define necessary variables if no issues get the table of entries
             var index = 1   // index in array
-            var startDate = Date()  // day the habit was started; first day in array
-            var startDateDay = ""   // string representation of start day
+//            var startDate = Date()  // day the habit was started; first day in array
+//            var startDateDay = ""   // string representation of start day
+            let startDateDay = getDayOfWeekString(dayOfWeek: habitRepeat, length: "long")   // string representation of start day
             var tempDate = Date()   // current day in array
             var tempDateDay = ""    // string representation of current day in array
             var flag = false        // FIXME: Unneccsary flag???
@@ -160,12 +161,12 @@ class Entries {
                 // check for first day in entries
                 if (index == 1) {
                     // get day of week the day the habit was created
-                    var components = DateComponents()
-                    components.year = day[self.year]
-                    components.month = day[self.month]
-                    components.day = day[self.day]
-                    startDate = Calendar.current.date(from: components) ?? Date()
-                    startDateDay = getDayOfWeek(date: startDate, length: "long")
+//                    var components = DateComponents()
+//                    components.year = day[self.year]
+//                    components.month = day[self.month]
+//                    components.day = day[self.day]
+//                    startDate = Calendar.current.date(from: components) ?? Date()
+//                    startDateDay = getDayOfWeek(date: startDate, length: "long")
                 }
                 // check if we're at date specified (selected in dateView) in the array
                 if (day[self.year] == Calendar.current.component(.year, from: date) &&
@@ -176,11 +177,11 @@ class Entries {
                     // check if current day in the array has been completed, if so increment counter
                     if (day[self.completed] == 1) {
                         // check if the habit is repeated every day
-                        if (habitRepeat == "daily") {
+                        if (habitRepeat == 0) {     // "daily"
                             count += 1
                         }
                         // check if the habit is repeated weekly
-                        else if (habitRepeat == "weekly") {
+                        else if (habitRepeat > 0) {     // "weekly"
                             print("habitRepeat = weekly")
                             // get the day of the week the habit is repeated/reset
                             var components = DateComponents()
@@ -214,11 +215,11 @@ class Entries {
                     // check if the current day in the array has been completed, if so increment counter
                     if (day[self.completed] == 1) {
                         // check if the habit is repeated every day
-                        if (habitRepeat == "daily") {
+                        if (habitRepeat == 0) {     // "daily"
                             count += 1
                         }
                         // check if the habit is repeated weekly
-                        else if (habitRepeat == "weekly") {
+                        else if (habitRepeat > 0) {     // "weekly"
                             // create a date variable from the date components for the current entry
                             var components = DateComponents()
                             components.year = day[self.year]
@@ -241,11 +242,11 @@ class Entries {
                     // else if the current day has NOT been completed, reset the counter
                     } else {
                         // check if the habit is repeated every day, if so reset the counter
-                        if (habitRepeat == "daily") {
+                        if (habitRepeat == 0) {     // "daily"
                             count = 0
                         }
                         // check if the habit is repeated every week
-                        else if (habitRepeat == "weekly") {
+                        else if (habitRepeat > 0) {     // "weekly"
                             // get the day of the week the habit is repeated
                             var components = DateComponents()
                             components.year = day[self.year]
@@ -343,7 +344,7 @@ class Entries {
     }
     
     // custom : countLongestStreak
-    func countLongestStreak(habit: String, date: Date, habitRepeat: String) -> Int {
+    func countLongestStreak(habit: String, date: Date, habitRepeat: Int) -> Int {   // String
         // defining return variables so they're non-binding
         var count = 0           // count of current streak
         var longestStreak = 0   // longest streak in the entries
@@ -353,8 +354,9 @@ class Entries {
             // try to get the entries for the habit specified
             let entries = try self.database.prepare(table)
             // if no issues with getting the entries, define necessary variables
-            var startDate = Date()  // date of first entry
-            var startDateDay = ""   // string form of first entry
+//            var startDate = Date()  // date of first entry
+//            var startDateDay = ""   // string form of first entry
+            let startDateDay = getDayOfWeekString(dayOfWeek: habitRepeat, length: "long")   // string form of first entry
             var tempDate = Date()   // temporary date of current entry
             var tempDateDay = ""    // temporary string form of current entry
             var flag = false        // FIXME: Unneccessary flag???
@@ -363,12 +365,12 @@ class Entries {
             for entry in entries {
                 if (index == 1) {
                     // get day of week the day the habit was created
-                    var components = DateComponents()
-                    components.year = entry[self.year]
-                    components.month = entry[self.month]
-                    components.day = entry[self.day]
-                    startDate = Calendar.current.date(from: components) ?? Date()
-                    startDateDay = getDayOfWeek(date: startDate, length: "long")
+//                    var components = DateComponents()
+//                    components.year = entry[self.year]
+//                    components.month = entry[self.month]
+//                    components.day = entry[self.day]
+//                    startDate = Calendar.current.date(from: components) ?? Date()
+//                    startDateDay = getDayOfWeek(date: startDate, length: "long")
                 }
                 // check if day in array is equal to date we're calculating streak up to
                 if (entry[self.year] == Calendar.current.component(.year, from: date) &&
@@ -379,11 +381,11 @@ class Entries {
                     // check if day is completed
                     if (entry[self.completed] == 1) {
                         // check if the habit is repeated every day
-                        if (habitRepeat == "daily") {
+                        if (habitRepeat == 0) {     // "daily"
                             count += 1  // increment streak count
                         }
                         // check if the habit is repeated every week
-                        else if (habitRepeat == "weekly") {
+                        else if (habitRepeat > 0) {     // "weekly"
                             // get the date of the current entry from its components
                             var components = DateComponents()
                             components.year = entry[self.year]
@@ -415,11 +417,11 @@ class Entries {
                     // check if entry has been completed
                     if (entry[self.completed] == 1) {
                         // check if the habit is repeated every day
-                        if (habitRepeat == "daily") {
+                        if (habitRepeat == 0) {     // "daily"
                             count += 1      // increment streak count
                         }
                         // check if the habit is repeated every week
-                        else if (habitRepeat == "weekly") {
+                        else if (habitRepeat > 0) {     // "weekly"
                             // get the date for the current entry from its date components
                             var components = DateComponents()
                             components.year = entry[self.year]
@@ -446,11 +448,11 @@ class Entries {
                     // else entry is not completed
                     } else {
                         // check if the habit is repeated every day
-                        if (habitRepeat == "daily") {
+                        if (habitRepeat == 0) {     // "daily"
                             count = 0   // reset the streak count
                         }
                         // check if the habit is repeated every week
-                        else if (habitRepeat == "weekly") {
+                        else if (habitRepeat > 0) {     // "weekly"
                             // get the date of the current entry from its date components
                             var components = DateComponents()
                             components.year = entry[self.year]

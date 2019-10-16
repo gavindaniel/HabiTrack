@@ -48,12 +48,22 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
                         // do something
                     }
                     cell.habitUILabel?.text = habit[self.journal.habit]
-                    cell.timeUILabel?.text = habit[self.journal.time]
+//                    cell.timeUILabel?.text = habit[self.journal.time]
+                    
+                    //testing ...
+                    var repeatString = habit[self.journal.time]
+                    if (repeatString == "weekly") {
+                        let dayOfWeekString = getDayOfWeekString(dayOfWeek: habit[self.journal.dayOfWeek], length: "long")
+                        repeatString += " (\(dayOfWeekString)s)"
+                    }
+                    cell.timeUILabel?.text = repeatString
+                    
                     // get the name of habit and size of habit entries table
                     let habitString = habit[self.journal.habit]
-                    let habitRepeatString = habit[self.journal.time]
-                    let currentStreak = self.journal.entries.countStreak(habit: habitString, date: dateSelected, habitRepeat: habitRepeatString)
-                    let longestStreak = self.journal.entries.countLongestStreak(habit: habitString, date: dateSelected, habitRepeat: habitRepeatString)
+//                    let habitRepeatString = habit[self.journal.time]
+                    let habitDayOfWeek = habit[self.journal.dayOfWeek]
+                    let currentStreak = self.journal.entries.countStreak(habit: habitString, date: dateSelected, habitRepeat: habitDayOfWeek) // habitRepeatString
+                    let longestStreak = self.journal.entries.countLongestStreak(habit: habitString, date: dateSelected, habitRepeat: habitDayOfWeek) // habitRepeatString
                     // set the streak
                     cell.streakUILabel?.text = String(currentStreak)
                     

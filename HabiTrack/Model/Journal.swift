@@ -19,7 +19,7 @@ class Journal {
     let habit = Expression<String>("habit")
     let time = Expression<String>("time") // repeat
     let streak = Expression<Int>("streak")
-    let currentDay = Expression<Int>("currentDay")
+    let dayOfWeek = Expression<Int>("currentDay") // day of week, weekly streaks reset
     
     
     // custom : createTable (create SQL table)
@@ -30,7 +30,7 @@ class Journal {
             table.column(self.habit)
             table.column(self.time)
             table.column(self.streak)
-            table.column(self.currentDay)
+            table.column(self.dayOfWeek)
         }
         do {
             // try to create the table in the database
@@ -76,11 +76,12 @@ class Journal {
                     // get the habit whose ID matches the index + the first ID incase it doesn't start at 1
                     let tempHabit = self.habitsTable.filter(self.id == index + firstId)
                     // get the string of how often the habit is repeated
-                    let repeatString = habit[self.time]
+//                    let repeatString = habit[self.time]
+                    let dayOfWeek = habit[self.dayOfWeek]
                     // mark the entry completed for the date specified and the value specified for the completed column
                     entries.markCompleted(habit: habitString, date: date, val: inc)
                     // count the current streak for the habit and date specified
-                    let currentStreak = entries.countStreak(habit: habitString, date: date, habitRepeat: repeatString)
+                    let currentStreak = entries.countStreak(habit: habitString, date: date, habitRepeat: dayOfWeek) // repeatString
                     // update the habit with the current streak
                     let updateHabit = tempHabit.update(self.streak <- currentStreak)
                     do {
