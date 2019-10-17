@@ -6,23 +6,34 @@
 //  Copyright © 2019 Gavin Daniel. All rights reserved.
 //
 
-import Foundation
 import UIKit
 import SQLite
 
+// class: HabitTableViewCell
+class HabitTableViewCell: UITableViewCell {
+    @IBOutlet weak var dayUILabel: UILabel!
+}
 
 class HabitViewController: UIViewController, UITextFieldDelegate {
     
+//    @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var nameTextField: UITextField!
+//    @IBOutlet weak var nameUnderlineLabel: UILabel!
     @IBOutlet weak var nameUnderlineLabel: UILabel!
+//    @IBOutlet weak var nameRequiredLabel: UILabel!
     @IBOutlet weak var nameRequiredLabel: UILabel!
-
-    @IBOutlet weak var repeatTextField: UITextField!
-    @IBOutlet weak var repeatUnderlineLabel: UILabel!
-    @IBOutlet weak var repeatRequiredLabel: UILabel!
+    
+//    @IBOutlet weak var repeatTextField: UITextField!
+//    @IBOutlet weak var repeatUnderlineLabel: UILabel!
+//    @IBOutlet weak var repeatRequiredLabel: UILabel!
     
     
-    @IBOutlet var addHabitView: UIView!
+//    @IBOutlet var addHabitView: UIView!
+    @IBOutlet weak var addHabitView: UIView!
+    
+    var habitTableView: HabitTableView?
+    @IBOutlet weak var habitUITableView: UITableView!
+    //    @IBOutlet weak var habitUITableView: UITableView!
     
     var activeTextField = UITextField()
     var lastActiveTextField: String!
@@ -33,6 +44,21 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
 //    var journalTableView: JournalTableView?
 //    @IBOutlet weak var habitTableView: UITableView!
     
+    // load : viewDidAppear
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print()
+        print("viewDidAppear...")
+        print()
+        // update views
+        habitTableView?.updateTableView(habitDayView: habitUITableView)
+        
+        // set observer of application entering foreground
+//        NotificationCenter.default.addObserver(self,
+//                                               selector: #selector(applicationWillEnterForeground),
+//                                               name: UIApplication.willEnterForegroundNotification,
+//                                               object: nil)
+    }
     
     // load : viewDidDisappear
     override func viewDidDisappear(_ animated: Bool) {
@@ -43,7 +69,7 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         let journalViewController = storyBoard.instantiateViewController(withIdentifier: "journalViewController") as! JournalViewController
 //        self.navigationController?.pushViewController(nextViewController, animated: true)
-        journalViewController.habitTableView?.reloadData()
+        journalViewController.journalUITableView?.reloadData()
     }
     
     // load : viewDidLoad
@@ -55,7 +81,7 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
         print()
         
         // testing
-//        self.journalTableView = JournalTableView(journal: journal, habitTableView: habitTableView, date: Date())
+        self.habitTableView = HabitTableView(habitTableView: habitUITableView)
         
         //Looks for single or multiple taps.
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
@@ -66,20 +92,39 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
         addHabitView.addGestureRecognizer(tap)
         
         
+        
         do {
             let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
             let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
             let database = try Connection(fileUrl.path)
             self.journal.database = database
             self.journal.entries.database = database
+            
+            // set the dataSource and delegate
+            self.habitUITableView.dataSource = habitTableView
+            self.habitUITableView.delegate = habitTableView
+            
         } catch {
             print(error)
         }
     }
     
+    // load : viewWillAppear
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print()
+        print("viewWillAppear...")
+        print()
+        // reload the views
+        self.habitUITableView.reloadData()
+    }
+    
     //Calls this function when the tap is recognized.
     @objc func dismissKeyboard() {
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        print()
+        print("dismissKeyboard...")
+        print()
         addHabitView.endEditing(true)
     }
     
@@ -92,9 +137,9 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
         if (id == "titleTextField") {
             nameUnderlineLabel.textColor = UIColor.systemBlue
         }
-        else if (id == "timeTextField") {
-            repeatUnderlineLabel.textColor = UIColor.systemBlue
-        }
+//        else if (id == "timeTextField") {
+//            repeatUnderlineLabel.textColor = UIColor.systemBlue
+//        }
     }
     
     // Assign the newly active text field to your activeTextField variable
@@ -117,23 +162,23 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
                 }
             }
         }
-        if (textField.restorationIdentifier == "timeTextField") {
-            if (textField.text != "") {
-                if #available(iOS 13.0, *) {
-                    repeatUnderlineLabel.textColor = UIColor.systemBlue
-                } else {
-                    // Fallback on earlier versions
-                    repeatUnderlineLabel.textColor = UIColor.systemBlue
-                }
-            } else {
-                if #available(iOS 13.0, *) {
-                    repeatUnderlineLabel.textColor = UIColor.systemGray
-                } else {
-                    // Fallback on earlier versions
-                    repeatUnderlineLabel.textColor = UIColor.systemGray
-                }
-            }
-        }
+//        if (textField.restorationIdentifier == "timeTextField") {
+//            if (textField.text != "") {
+//                if #available(iOS 13.0, *) {
+//                    repeatUnderlineLabel.textColor = UIColor.systemBlue
+//                } else {
+//                    // Fallback on earlier versions
+//                    repeatUnderlineLabel.textColor = UIColor.systemBlue
+//                }
+//            } else {
+//                if #available(iOS 13.0, *) {
+//                    repeatUnderlineLabel.textColor = UIColor.systemGray
+//                } else {
+//                    // Fallback on earlier versions
+//                    repeatUnderlineLabel.textColor = UIColor.systemGray
+//                }
+//            }
+//        }
     }
     
     @IBAction func cancelAddHabit(_ sender: AnyObject) {
@@ -148,34 +193,39 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
                 
                 // insert new habit into journal
                 let habit = nameTextField.text
-                let time = repeatTextField.text
+//                let time = repeatTextField.text
                 
                 // testing
-                if (habit == "" || time == "") {
+//                if (habit == "" || time == "") {
+                if (habit == "") {
                     if (habit == "") {
                         print("Name blank, displaying required...")
                         nameUnderlineLabel.textColor = UIColor.red
                         nameRequiredLabel.isHidden = false
                     }
-                    if (time == "") {
-                        print("Time blank, displaying required...")
-                        repeatUnderlineLabel.textColor = UIColor.red
-                        repeatRequiredLabel.isHidden = false
-                    }
+//                    if (time == "") {
+//                        print("Time blank, displaying required...")
+//                        repeatUnderlineLabel.textColor = UIColor.red
+//                        repeatRequiredLabel.isHidden = false
+//                    }
                 } else {
                     nameRequiredLabel.isHidden = true
-                    repeatRequiredLabel.isHidden = true
+//                    repeatRequiredLabel.isHidden = true
+//                    let addHabit = self.journal.habitsTable.insert(self.journal.habit <- habit ?? "error",
+//                                                                   self.journal.time <- time ?? "error",
+//                                                                   self.journal.streak <- 0,
+//                                                                   self.journal.dayOfWeek <- 0)
                     let addHabit = self.journal.habitsTable.insert(self.journal.habit <- habit ?? "error",
-                                                                   self.journal.time <- time ?? "error",
-                                                                   self.journal.streak <- 0,
-                                                                   self.journal.dayOfWeek <- 0)
+                    self.journal.time <- "daily",
+                    self.journal.streak <- 0,
+                    self.journal.dayOfWeek <- 0)
                     // attempt to add habit to database
                     do {
                         try self.journal.database.run(addHabit)
-                        print("Habit Added -> habit: \(habit ?? "error"), time: \(time ?? "daily")")
+                        print("Habit Added -> habit: \(habit ?? "error"), time: \("daily")")
                         self.journal.entries.addDay(habit: habit ?? "error", date: Date())
                         nameTextField.text = ""
-                        repeatTextField.text = ""
+//                        repeatTextField.text = ""
                         
                         // return to journal view controller
                         dismiss(animated: true, completion: nil)

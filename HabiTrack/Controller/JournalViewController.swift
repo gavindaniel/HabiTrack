@@ -16,7 +16,7 @@ class DateCollectionViewCell: UICollectionViewCell {
 }
 
 // class: HabitTableViewCell
-class HabitTableViewCell: UITableViewCell {
+class JournalTableViewCell: UITableViewCell {
     @IBOutlet weak var habitUILabel: UILabel!
     @IBOutlet weak var timeUILabel: UILabel!
     @IBOutlet weak var streakUILabel: UILabel!
@@ -45,9 +45,12 @@ class JournalViewController: UIViewController {
     var journalDateView: JournalDateView?
     var journalTitleView: JournalTitleView?
     
-    @IBOutlet weak var habitTableView: UITableView!
-    @IBOutlet weak var dateCollectionView: UICollectionView!
-    @IBOutlet weak var titleTableView: UITableView!
+    @IBOutlet weak var journalUITableView: UITableView!
+    //    @IBOutlet weak var journalUITableView: UITableView!
+    @IBOutlet weak var dateUICollectionView: UICollectionView!
+    //    @IBOutlet weak var dateUICollectionView: UICollectionView!
+    @IBOutlet weak var titleUITableView: UITableView!
+    //    @IBOutlet weak var titleUITableView: UITableView!
 
     // load : viewDidAppear
     override func viewDidAppear(_ animated: Bool) {
@@ -56,9 +59,9 @@ class JournalViewController: UIViewController {
         print("viewDidAppear...")
         print()
         // update views
-        journalTableView?.updateTableView(habitView: habitTableView)
-        journalDateView?.updateDateView(dateView: dateCollectionView)
-        journalTitleView?.updateTitleView(titleView: titleTableView)
+        journalTableView?.updateTableView(habitView: journalUITableView)
+        journalDateView?.updateDateView(dateView: dateUICollectionView)
+        journalTitleView?.updateTitleView(titleView: titleUITableView)
         
         // set observer of application entering foreground
         NotificationCenter.default.addObserver(self,
@@ -66,8 +69,8 @@ class JournalViewController: UIViewController {
                                                name: UIApplication.willEnterForegroundNotification,
                                                object: nil)
         // select today
-        self.dateCollectionView.selectItem(at: IndexPath(row: 3, section: 0), animated: false, scrollPosition: [])
-        self.dateCollectionView.delegate?.collectionView!(self.dateCollectionView, didSelectItemAt: IndexPath(item: 3, section: 0))
+        self.dateUICollectionView.selectItem(at: IndexPath(row: 3, section: 0), animated: false, scrollPosition: [])
+        self.dateUICollectionView.delegate?.collectionView!(self.dateUICollectionView, didSelectItemAt: IndexPath(item: 3, section: 0))
         // check for day change
         update()
     }
@@ -81,14 +84,14 @@ class JournalViewController: UIViewController {
         print()
         
         // initialize journalTitleTableView
-        self.journalTitleView = JournalTitleView(titleTableView: titleTableView, date: Date())
+        self.journalTitleView = JournalTitleView(titleTableView: titleUITableView, date: Date())
         
         // initialize journalTableView
-        self.journalTableView = JournalTableView(journal: journal, habitTableView: habitTableView, date: Date())
+        self.journalTableView = JournalTableView(journal: journal, habitTableView: journalUITableView, date: Date())
         
         // initialize journalDateView
-        self.journalDateView = JournalDateView(dateCollectionView: dateCollectionView, journalTableView: journalTableView!, habitTableView: habitTableView, journalTitleView: journalTitleView!,
-            titleTableView: titleTableView)
+        self.journalDateView = JournalDateView(dateCollectionView: dateUICollectionView, journalTableView: journalTableView!, habitTableView: journalUITableView, journalTitleView: journalTitleView!,
+            titleTableView: titleUITableView)
         
         // set observer of application entering foreground
         NotificationCenter.default.addObserver(self,
@@ -106,21 +109,21 @@ class JournalViewController: UIViewController {
             self.journal.entries.database = database
             
             // set the dataSource and delegate
-            self.titleTableView.dataSource = journalTitleView
-            self.titleTableView.delegate = journalTitleView
+            self.titleUITableView.dataSource = journalTitleView
+            self.titleUITableView.delegate = journalTitleView
             
             // set the dataSource and delegate
-            self.habitTableView.dataSource = journalTableView
-            self.habitTableView.delegate = journalTableView
+            self.journalUITableView.dataSource = journalTableView
+            self.journalUITableView.delegate = journalTableView
             
             // testing drag and drop delegate
-            self.habitTableView.dragInteractionEnabled = true
-            self.habitTableView.dragDelegate = journalTableView
-            self.habitTableView.dragDelegate = journalTableView
+            self.journalUITableView.dragInteractionEnabled = true
+            self.journalUITableView.dragDelegate = journalTableView
+            self.journalUITableView.dragDelegate = journalTableView
             
             // set the dataSource and delegate
-            self.dateCollectionView.dataSource = journalDateView
-            self.dateCollectionView.delegate = journalDateView
+            self.dateUICollectionView.dataSource = journalDateView
+            self.dateUICollectionView.delegate = journalDateView
             
         } catch {
             print(error)
@@ -134,9 +137,9 @@ class JournalViewController: UIViewController {
         print("viewWillAppear...")
         print()
         // reload the views
-        self.titleTableView.reloadData()
-        self.habitTableView.reloadData()
-        self.dateCollectionView.reloadData()
+        self.titleUITableView.reloadData()
+        self.journalUITableView.reloadData()
+        self.dateUICollectionView.reloadData()
     }
     
     // load : applicationWillEnterForeground
@@ -157,8 +160,8 @@ class JournalViewController: UIViewController {
         // check if change from light/dark mode
         if #available(iOS 13, *), traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
             // handle theme change here.
-            self.habitTableView.reloadData()
-            self.dateCollectionView.reloadData()
+            self.journalUITableView.reloadData()
+            self.dateUICollectionView.reloadData()
         }
     }
     
@@ -191,9 +194,9 @@ class JournalViewController: UIViewController {
                 self.journal.database = database
                 self.journal.entries.database = database
                 // update the views
-                self.journalTitleView?.updateTitleView(titleView: titleTableView)
-                self.journalTableView?.updateTableView(habitView: habitTableView)
-                self.journalDateView?.updateDateView(dateView: dateCollectionView)
+                self.journalTitleView?.updateTitleView(titleView: titleUITableView)
+                self.journalTableView?.updateTableView(habitView: journalUITableView)
+                self.journalDateView?.updateDateView(dateView: dateUICollectionView)
             } catch {
                 print(error)
             }
@@ -205,19 +208,19 @@ class JournalViewController: UIViewController {
             UserDefaults.standard.set(dateToday, forKey: "lastRun")
             
             // reload the views
-            self.titleTableView.reloadData()
-            self.habitTableView.reloadData()
-            self.dateCollectionView.reloadData()
+            self.titleUITableView.reloadData()
+            self.journalUITableView.reloadData()
+            self.dateUICollectionView.reloadData()
             
             // update days array and views
             self.journalDateView?.updateDaysArray(date: dateToday)
-            self.journalTableView?.updateTableView(habitView: habitTableView)
-            self.journalDateView?.updateDateView(dateView: dateCollectionView)
+            self.journalTableView?.updateTableView(habitView: journalUITableView)
+            self.journalDateView?.updateDateView(dateView: dateUICollectionView)
             
             // reload the views
-            self.titleTableView.reloadData()
-            self.habitTableView.reloadData()
-            self.dateCollectionView.reloadData()
+            self.titleUITableView.reloadData()
+            self.journalUITableView.reloadData()
+            self.dateUICollectionView.reloadData()
             
         // day has not changed since last run
         } else {

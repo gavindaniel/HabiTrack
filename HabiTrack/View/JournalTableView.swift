@@ -33,7 +33,7 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // create tableView cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-            as! HabitTableViewCell
+            as! JournalTableViewCell
         // since the database only increments from the last ID,
         // this for loop fixes issues with gaps in the database.
         var count = 0
@@ -136,7 +136,8 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
     // tableView : didSelectRowAt
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // get the cell from the tableView
-        if let cell: HabitTableViewCell = (tableView.cellForRow(at: indexPath) as? HabitTableViewCell) {
+        print("didSelectRowAt...")
+        if let cell: JournalTableViewCell = (tableView.cellForRow(at: indexPath) as? JournalTableViewCell) {
             // get the habit string from the cell
             let tempString = cell.habitUILabel?.text
             // check if the cell has been completed
@@ -177,7 +178,7 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
             var firstId = 0
             var habitString = ""
             // get the habit string from the tableview cell
-            if let cell: HabitTableViewCell = (tableView.cellForRow(at: indexPath) as? HabitTableViewCell) {
+            if let cell: JournalTableViewCell = (tableView.cellForRow(at: indexPath) as? JournalTableViewCell) {
                 habitString = cell.habitUILabel?.text ?? "error"
             }
             // delete the habit from the table
