@@ -187,52 +187,77 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func addHabit(_ sender: AnyObject) {
 
-                // create table if there isn't one
-                journal.createTable()
-                // create alert controller
-                
-                // insert new habit into journal
-                let habit = nameTextField.text
-//                let time = repeatTextField.text
-                
-                // testing
+        // create table if there isn't one
+        journal.createTable()
+        // create alert controller
+        
+        // insert new habit into journal
+        let habit = nameTextField.text
+        // testing
+        let selectedDays = habitTableView?.selectedList
+//        let time = repeatTextField.text
+        var i = 0, count = 0, repeatInt = ""
+        var repeatString = "weekly"
+        while (i < selectedDays!.count) {
+            if (selectedDays![i] == 1) {
+//                if (i != 6 && repeatString != "") {
+//                    repeatString += ", "
+//                }
+//                repeatString += "\(getDayOfWeekString(dayOfWeek: i+1, length: "long"))s"
+                    repeatInt += "\(i+1)"
+                count += 1
+            }
+            i += 1
+        }
+        print("repeatInt: \(repeatInt)")
+        if (count >= 7) {
+            repeatString = "daily"
+        }
+        // testing
 //                if (habit == "" || time == "") {
-                if (habit == "") {
-                    if (habit == "") {
-                        print("Name blank, displaying required...")
-                        nameUnderlineLabel.textColor = UIColor.red
-                        nameRequiredLabel.isHidden = false
-                    }
-//                    if (time == "") {
-//                        print("Time blank, displaying required...")
-//                        repeatUnderlineLabel.textColor = UIColor.red
-//                        repeatRequiredLabel.isHidden = false
-//                    }
-                } else {
-                    nameRequiredLabel.isHidden = true
+        if (habit == "" || count == 0) {
+            if (habit == "") {
+                print("Name blank, displaying required...")
+                nameUnderlineLabel.textColor = UIColor.red
+                nameRequiredLabel.isHidden = false
+            }
+            if (count == 0) {
+                print("No days selected, displaying required...")
+//                repeatUnderlineLabel.textColor = UIColor.red
+//                repeatRequiredLabel.isHidden = false
+            }
+        } else {
+            nameRequiredLabel.isHidden = true
 //                    repeatRequiredLabel.isHidden = true
 //                    let addHabit = self.journal.habitsTable.insert(self.journal.habit <- habit ?? "error",
 //                                                                   self.journal.time <- time ?? "error",
 //                                                                   self.journal.streak <- 0,
 //                                                                   self.journal.dayOfWeek <- 0)
-                    let addHabit = self.journal.habitsTable.insert(self.journal.habit <- habit ?? "error",
-                    self.journal.time <- "daily",
-                    self.journal.streak <- 0,
-                    self.journal.dayOfWeek <- 0)
-                    // attempt to add habit to database
-                    do {
-                        try self.journal.database.run(addHabit)
-                        print("Habit Added -> habit: \(habit ?? "error"), time: \("daily")")
-                        self.journal.entries.addDay(habit: habit ?? "error", date: Date())
-                        nameTextField.text = ""
+            let addHabit = self.journal.habitsTable.insert(self.journal.habit <- habit ?? "error",
+            self.journal.time <- repeatString,
+            self.journal.streak <- 0,
+            self.journal.dayOfWeek <- Int(repeatInt) ?? 1)
+
+//            if (count < 7) {
+//                addHabit = self.journal.habitsTable.insert(self.journal.habit <- habit ?? "error",
+//                self.journal.time <- repeatString,
+//                self.journal.streak <- 0,
+//                self.journal.dayOfWeek <- 0)
+//            }
+            // attempt to add habit to database
+            do {
+                try self.journal.database.run(addHabit)
+                print("Habit Added -> habit: \(habit ?? "error"), time: \("daily")")
+                self.journal.entries.addDay(habit: habit ?? "error", date: Date())
+                nameTextField.text = ""
 //                        repeatTextField.text = ""
-                        
-                        // return to journal view controller
-                        dismiss(animated: true, completion: nil)
-                        
-                    } catch {
-                        print (error)
-                    }
-                }
+                
+                // return to journal view controller
+                dismiss(animated: true, completion: nil)
+                
+            } catch {
+                print (error)
+            }
+        }
     }
 }

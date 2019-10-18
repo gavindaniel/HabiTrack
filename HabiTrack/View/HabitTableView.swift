@@ -15,13 +15,14 @@ class HabitTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
 //    var journal: Journal
     var habitTableView: UITableView
 //    var dateSelected: Date
-    var list = ["Monday",
-                "Tuesday",
-                "Wednesday",
-                "Thursday",
-                "Friday",
-                "Saturday",
-                "Sunday"]
+    var dayList = ["Sunday",
+                   "Monday",
+                   "Tuesday",
+                   "Wednesday",
+                   "Thursday",
+                   "Friday",
+                   "Saturday"]
+    var selectedList = [0,0,0,0,0,0,0] // 0 = false, 1 = true
     
 //    init(journal: Journal, habitTableView: UITableView, date: Date) {
     init(habitTableView: UITableView) {
@@ -34,7 +35,7 @@ class HabitTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
     // tableView : numberOfRowsInSection
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // get the number of days in the week list
-        return (list.count)
+        return (dayList.count)
     }
     
     // tableView : cellForRowAt
@@ -43,7 +44,7 @@ class HabitTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "day_cell", for: indexPath)
             as! HabitTableViewCell
         
-        cell.dayUILabel?.text = list[indexPath.row]
+        cell.dayUILabel?.text = dayList[indexPath.row]
         
         return (cell)
     }
@@ -51,12 +52,14 @@ class HabitTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
     // tableView : didSelectRowAt
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // get the cell from the tableView
-        print("\tdidSelectRowAt...")
+        print("\tdidSelectRowAt...\(indexPath.row)")
         if let cell: HabitTableViewCell = (tableView.cellForRow(at: indexPath) as? HabitTableViewCell) {
             if cell.accessoryType == UITableViewCell.AccessoryType.checkmark {
                 cell.accessoryType = .none
+                selectedList[indexPath.row] = 0
             } else {
                 cell.accessoryType = .checkmark
+                selectedList[indexPath.row] = 1
             }
         }
         self.habitTableView.reloadData()

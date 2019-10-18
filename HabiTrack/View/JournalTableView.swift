@@ -15,6 +15,7 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
     var journal: Journal
     var habitTableView: UITableView
     var dateSelected: Date
+    var buffer = 0
     
     init(journal: Journal, habitTableView: UITableView, date: Date) {
         self.journal = journal
@@ -26,102 +27,154 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
     // tableView : numberOfRowsInSection
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // get the number of habits in the journal
-        return (journal.getTableSize())
+//        return (journal.getTableSize())
+        buffer = 0
+        var count = 0
+        do {
+            // get the table
+            let habits = try self.journal.database.prepare(self.journal.habitsTable)
+            // testing
+            let currentDayOfWeek = Calendar.current.component(.weekday, from: dateSelected)
+            // loop through the list of habits
+            for habit in habits {
+                if(checkDayOfWeek(dayInt: habit[self.journal.dayOfWeek], dayOfWeek: currentDayOfWeek)) {
+                    count += 1
+                }
+            }
+        } catch {
+            print(error)
+        }
+        print()
+        print("\t\tnumberOfRowsInSection: \(count)")
+        print()
+        return (count)
     }
     
     // tableView : cellForRowAt
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print()
+        print("cellForRowAt...\(indexPath.row)")
+        print()
+        // testing
+//        buffer = 0
         // create tableView cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
             as! JournalTableViewCell
         // since the database only increments from the last ID,
         // this for loop fixes issues with gaps in the database.
         var count = 0
+//        var buffer = 0
         do {
             // get the table
             let habits = try self.journal.database.prepare(self.journal.habitsTable)
+            // testing
+            let currentDayOfWeek = Calendar.current.component(.weekday, from: dateSelected)
             // loop through the list of habits
             for habit in habits {
-                if (count == indexPath.row) {
+                print("id: \(habit[self.journal.id])")
+                print("count-buffer: \(count) - \(buffer) == \(indexPath.row)")
+                if ((count - buffer) == indexPath.row) {
+//                if (checkDayOfWeek(dayInt: habit[self.journal.dayOfWeek], dayOfWeek: currentDayOfWeek)) {
+//                if (count == habit[self.journal.id]) {
+                    // testing
+//                    print("dayOfWeek: \(habit[self.journal.dayOfWeek])")
+//                    let tempDayOfWeek = getDayOfWeekString(dayOfWeek: habit[self.journal.dayOfWeek], length: "short")
+//                    print("currentDayOfWeek: \(currentDayOfWeek) == tempDayOfWeek: \(tempDayOfWeek)")
                     // check if count equals the habits id
-                    if (count == habit[self.journal.id]) {
-                        // do something
-                    }
-                    cell.habitUILabel?.text = habit[self.journal.habit]
-//                    cell.timeUILabel?.text = habit[self.journal.time]
-                    
-                    //testing ...
-                    var repeatString = habit[self.journal.time]
-                    if (repeatString == "weekly") {
-                        let dayOfWeekString = getDayOfWeekString(dayOfWeek: habit[self.journal.dayOfWeek], length: "long")
-                        repeatString += " (\(dayOfWeekString)s)"
-                    }
-                    cell.timeUILabel?.text = repeatString
-                    
-                    // get the name of habit and size of habit entries table
-                    let habitString = habit[self.journal.habit]
-//                    let habitRepeatString = habit[self.journal.time]
-                    let habitDayOfWeek = habit[self.journal.dayOfWeek]
-                    let currentStreak = self.journal.entries.countStreak(habit: habitString, date: dateSelected, habitRepeat: habitDayOfWeek) // habitRepeatString
-                    let longestStreak = self.journal.entries.countLongestStreak(habit: habitString, date: dateSelected, habitRepeat: habitDayOfWeek) // habitRepeatString
-                    // set the streak
-                    cell.streakUILabel?.text = String(currentStreak)
-                    
-                    // check if the current streak is equal or greater than the longest
-                    if (currentStreak >= longestStreak && longestStreak > 0) {
-                        cell.longestStreakUILabel?.text = "current longest streak!"
-                        cell.longestStreakUILabel?.textColor = UIColor.systemBlue
-                    } else { // else return the the longest streak
-                        cell.longestStreakUILabel?.text = "longest streak (\( String(longestStreak)))"
-                        if #available(iOS 13.0, *) {
-                            cell.longestStreakUILabel?.textColor = UIColor.systemGray
-                        } else {
-                            // Fallback on earlier versions
-                            cell.longestStreakUILabel?.textColor = UIColor.darkGray
+//                    if (currentDayOfWeek == tempDayOfWeek) {
+                    print("\tid: \(habit[self.journal.id])")
+                    print()
+                    print("comparing...")
+                    print()
+                    print("\(habit[self.journal.dayOfWeek]) ? \(currentDayOfWeek)")
+                    if (checkDayOfWeek(dayInt: habit[self.journal.dayOfWeek], dayOfWeek: currentDayOfWeek)) {
+//                    if (count == indexPath.row) {
+                        cell.habitUILabel?.text = habit[self.journal.habit]
+    //                    cell.timeUILabel?.text = habit[self.journal.time]
+                        
+                        //testing ...
+                        var repeatString = habit[self.journal.time]
+                        if (repeatString == "weekly") {
+//                            let dayOfWeekString = getDayOfWeekString(dayOfWeek: habit[self.journal.dayOfWeek], length: "long")
+//                            repeatString += " (\(dayOfWeekString)s)"
                         }
-                    }
-                    
-                    if (currentStreak == 1) {
-                        if (cell.timeUILabel?.text == "weekly") {
-                            cell.streakDayUILabel?.text = "week"
-                        } else {
-                            cell.streakDayUILabel?.text = "day"
+                        cell.timeUILabel?.text = repeatString
+                        
+                        // get the name of habit and size of habit entries table
+                        let habitString = habit[self.journal.habit]
+    //                    let habitRepeatString = habit[self.journal.time]
+                        let habitDayOfWeek = habit[self.journal.dayOfWeek]
+                        print("calling countStreak...")
+                        let currentStreak = self.journal.entries.countStreak(habit: habitString, date: dateSelected, habitRepeat: habitDayOfWeek) // habitRepeatString
+                        print("calling countLongestStreak...")
+                        let longestStreak = self.journal.entries.countLongestStreak(habit: habitString, date: dateSelected, habitRepeat: habitDayOfWeek) // habitRepeatString
+                        // set the streak
+                        cell.streakUILabel?.text = String(currentStreak)
+                        
+                        // check if the current streak is equal or greater than the longest
+                        if (currentStreak >= longestStreak && longestStreak > 0) {
+                            cell.longestStreakUILabel?.text = "current longest streak!"
+                            cell.longestStreakUILabel?.textColor = UIColor.systemBlue
+                        } else { // else return the the longest streak
+                            cell.longestStreakUILabel?.text = "longest streak (\( String(longestStreak)))"
+                            if #available(iOS 13.0, *) {
+                                cell.longestStreakUILabel?.textColor = UIColor.systemGray
+                            } else {
+                                // Fallback on earlier versions
+                                cell.longestStreakUILabel?.textColor = UIColor.darkGray
+                            }
                         }
+                        
+                        if (currentStreak == 1) {
+//                            if (cell.timeUILabel?.text == "weekly") {
+                            if (habit[self.journal.time] == "weekly") {
+                                cell.streakDayUILabel?.text = "week"
+                            } else {
+                                cell.streakDayUILabel?.text = "day"
+                            }
+                        } else {
+//                            if (cell.timeUILabel?.text == "weekly") {
+                            if (habit[self.journal.time] == "weekly") {
+                                cell.streakDayUILabel?.text = "weeks"
+                            } else {
+                                cell.streakDayUILabel?.text = "days"
+                            }
+                        }
+                        // check if today has already been completed
+                        if (self.journal.entries.checkCompleted(habit: habitString, date: dateSelected)) {
+                            if #available(iOS 13.0, *) {
+                                cell.checkImageView?.image = UIImage(systemName: "checkmark.circle.fill")
+                                cell.checkImageView?.tintColor = UIColor.systemBlue
+                            } else {
+                                // Fallback on earlier versions
+                                cell.accessoryType = .checkmark
+                            }
+    //                        cell.checkBox?.setOn(true, animated: false)
+    //                        cell.checkBox?.on = true
+                        } else {
+                            if #available(iOS 13.0, *) {
+                                cell.checkImageView?.image = UIImage(systemName: "circle")
+                                cell.checkImageView?.tintColor = UIColor.systemGray
+                            } else {
+                                // Fallback on earlier versions
+                                cell.accessoryType = .none
+                            }
+    //                        cell.checkBox?.on = false
+    //                        cell.checkBox?.setOn(false, animated: false)
+                        }
+//                        buffer += 1
+                        return (cell)
                     } else {
-                        if (cell.timeUILabel?.text == "weekly") {
-                            cell.streakDayUILabel?.text = "weeks"
-                        } else {
-                            cell.streakDayUILabel?.text = "days"
-                        }
-                    }
-                    // check if today has already been completed
-                    if (self.journal.entries.checkCompleted(habit: habitString, date: dateSelected)) {
-                        if #available(iOS 13.0, *) {
-                            cell.checkImageView?.image = UIImage(systemName: "checkmark.circle.fill")
-                            cell.checkImageView?.tintColor = UIColor.systemBlue
-                        } else {
-                            // Fallback on earlier versions
-                            cell.accessoryType = .checkmark
-                        }
-//                        cell.checkBox?.setOn(true, animated: false)
-//                        cell.checkBox?.on = true
-                    } else {
-                        if #available(iOS 13.0, *) {
-                            cell.checkImageView?.image = UIImage(systemName: "circle")
-                            cell.checkImageView?.tintColor = UIColor.systemGray
-                        } else {
-                            // Fallback on earlier versions
-                            cell.accessoryType = .none
-                        }
-//                        cell.checkBox?.on = false
-//                        cell.checkBox?.setOn(false, animated: false)
+                        print("\tincrementing buffer...")
+                        buffer += 1
+                        count += 1
                     }
                     
                     //testing
 //                    cell.checkBox?.onAnimationType = BEMAnimationType.bounce
 //                    cell.checkBox?.offAnimationType = BEMAnimationType.bounce
                     
-                    return (cell)
+//                    return (cell)
                 } else {
                     count += 1
                 }
@@ -192,9 +245,15 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
                     if (count == 0) {
                         firstId = habit[self.journal.id]
                     }
-                    if (count == indexPath.row) {
+//                    print("firstId: \(firstId)")
+//                    print("count: \(count)")
+//                    print("count: \(count) == indexPath.row: \(indexPath.row)")
+                    print("habit: \(habit[self.journal.habit]) == habitString: \(habitString)")
+//                    if (count == indexPath.row) {
+                    if (habit[self.journal.habit] == habitString) {
+                        print("\tid: \(habit[self.journal.id]) == firstId+count: \(firstId+count)")
                         // get the habit whose id matches the count + first ID in the tableView
-                        let habit = self.journal.habitsTable.filter(self.journal.id == (count+firstId))
+                        let habit = self.journal.habitsTable.filter(self.journal.id == (firstId+count))
                         // delete the habit
                         let deleteHabit = habit.delete()
                         do {

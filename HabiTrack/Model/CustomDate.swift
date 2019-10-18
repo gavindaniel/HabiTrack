@@ -295,3 +295,31 @@ func getStreakAsString(streak: Int) -> String {
     return dateString
 }
 
+
+// since arrays aren't supported with sqlite
+func checkDayOfWeek(dayInt: Int, dayOfWeek: Int) -> Bool {
+    let dayString = String(dayInt)
+    if (dayString.contains(String(dayOfWeek))) {
+        print("\(dayInt) contains a \(dayOfWeek)")
+        return true
+    } else {
+        return false
+    }
+//    if (dayString.contains("1")) {
+//        print("\(dayInt) contains a 1")
+//        return true
+//    }
+//    else if (dayString.contains("2")) {
+//        print("\(dayInt) contains a 2")
+//    } else if (dayString.contains("3")) {
+//        print("\(dayInt) contains a 3")
+//    } else if (dayString.contains("4")) {
+//        print("\(dayInt) contains a 4")
+//    } else if (dayString.contains("5")) {
+//        print("\(dayInt) contains a 5")
+//    } else if (dayString.contains("6")) {
+//        print("\(dayInt) contains a 6")
+//    } else if (dayString.contains("7")) {
+//        print("\(dayInt) contains a 7")
+//    }
+}

@@ -149,11 +149,9 @@ class Entries {
             let days = try self.database.prepare(table)
             // define necessary variables if no issues get the table of entries
             var index = 1   // index in array
-//            var startDate = Date()  // day the habit was started; first day in array
-//            var startDateDay = ""   // string representation of start day
-            let startDateDay = getDayOfWeekString(dayOfWeek: habitRepeat, length: "long")   // string representation of start day
+//            let startDateDay = getDayOfWeekString(dayOfWeek: habitRepeat, length: "long")   // string representation of start day
             var tempDate = Date()   // current day in array
-            var tempDateDay = ""    // string representation of current day in array
+//            var tempDateDay = ""    // string representation of current day in array
             var flag = false        // FIXME: Unneccsary flag???
             var flagNewWeek = true  // flag for finding the start of a new week
             // loop through the entries
@@ -177,11 +175,13 @@ class Entries {
                     // check if current day in the array has been completed, if so increment counter
                     if (day[self.completed] == 1) {
                         // check if the habit is repeated every day
-                        if (habitRepeat == 0) {     // "daily"
+                        print("habitRepeat == 1234567")
+                        if (habitRepeat == 1234567) {     // "daily"
+                            print("\thabitRepeat = 1234567")
                             count += 1
                         }
                         // check if the habit is repeated weekly
-                        else if (habitRepeat > 0) {     // "weekly"
+                        else if (habitRepeat != 1234567) {     // "weekly"
                             print("habitRepeat = weekly")
                             // get the day of the week the habit is repeated/reset
                             var components = DateComponents()
@@ -189,10 +189,10 @@ class Entries {
                             components.month = day[self.month]
                             components.day = day[self.day]
                             tempDate = Calendar.current.date(from: components) ?? Date()
-                            tempDateDay = getDayOfWeek(date: tempDate, length: "long")
+                            let tempDateDay = Calendar.current.component(.weekday, from: tempDate)
                             // check if same day of week as date specified (day habit started)
-                            if (startDateDay == tempDateDay) {
-                                print("startDateDay: \(startDateDay) == tempDateDay: \(tempDateDay)")
+                            if (checkDayOfWeek(dayInt: habitRepeat, dayOfWeek: tempDateDay)) {
+//                                print("startDateDay: \(startDateDay) == tempDateDay: \(tempDateDay)")
                                 // set our flag true because it is the start
                                 flagNewWeek = true
                             }
@@ -215,21 +215,22 @@ class Entries {
                     // check if the current day in the array has been completed, if so increment counter
                     if (day[self.completed] == 1) {
                         // check if the habit is repeated every day
-                        if (habitRepeat == 0) {     // "daily"
+                        if (habitRepeat == 1234567) {     // "daily"
                             count += 1
                         }
                         // check if the habit is repeated weekly
-                        else if (habitRepeat > 0) {     // "weekly"
+                        else if (habitRepeat != 1234567) {     // "weekly"
                             // create a date variable from the date components for the current entry
                             var components = DateComponents()
                             components.year = day[self.year]
                             components.month = day[self.month]
                             components.day = day[self.day]
                             tempDate = Calendar.current.date(from: components) ?? Date()
-                            tempDateDay = getDayOfWeek(date: tempDate, length: "long")
+                            let tempDateDay = Calendar.current.component(.weekday, from: tempDate)
                             // check if same day of week as date specified (day habit started)
-                            if (startDateDay == tempDateDay) {
-                                print("startDateDay: \(startDateDay) = tempDateDay: \(tempDateDay)")
+                            print("\telse weekly checkDayOfWeek...")
+                            if (checkDayOfWeek(dayInt: habitRepeat, dayOfWeek: tempDateDay)) {
+//                                print("startDateDay: \(startDateDay) = tempDateDay: \(tempDateDay)")
                                 flagNewWeek = true
                             }
                             // check if a new week has been started
@@ -242,20 +243,22 @@ class Entries {
                     // else if the current day has NOT been completed, reset the counter
                     } else {
                         // check if the habit is repeated every day, if so reset the counter
-                        if (habitRepeat == 0) {     // "daily"
+                        if (habitRepeat == 1234567) {     // "daily"
                             count = 0
                         }
                         // check if the habit is repeated every week
-                        else if (habitRepeat > 0) {     // "weekly"
+                        else if (habitRepeat != 1234567) {     // "weekly"
                             // get the day of the week the habit is repeated
                             var components = DateComponents()
                             components.year = day[self.year]
                             components.month = day[self.month]
                             components.day = day[self.day]
                             tempDate = Calendar.current.date(from: components) ?? Date()
-                            let tempDateDay = getDayOfWeek(date: tempDate, length: "long")
+//                            let tempDateDay = getDayOfWeek(date: tempDate, length: "long")
+                            let tempDateDay = Calendar.current.component(.weekday, from: tempDate)
                             // check if same day of week as date specified (day habit started), if so reset counter
-                            if (startDateDay == tempDateDay) {
+                            print("\ttesting...")
+                            if (checkDayOfWeek(dayInt: habitRepeat, dayOfWeek: tempDateDay)) {
                                 count = 0
                             }
                         }
@@ -356,9 +359,9 @@ class Entries {
             // if no issues with getting the entries, define necessary variables
 //            var startDate = Date()  // date of first entry
 //            var startDateDay = ""   // string form of first entry
-            let startDateDay = getDayOfWeekString(dayOfWeek: habitRepeat, length: "long")   // string form of first entry
+//            let startDateDay = getDayOfWeekString(dayOfWeek: habitRepeat, length: "long")   // string form of first entry
             var tempDate = Date()   // temporary date of current entry
-            var tempDateDay = ""    // temporary string form of current entry
+//            var tempDateDay = ""    // temporary string form of current entry
             var flag = false        // FIXME: Unneccessary flag???
             var flagNewWeek = true  // flag for finding the start of a new week
             var index = 1           // index for finding first entry
@@ -392,9 +395,11 @@ class Entries {
                             components.month = entry[self.month]
                             components.day = entry[self.day]
                             tempDate = Calendar.current.date(from: components) ?? Date()
-                            tempDateDay = getDayOfWeek(date: tempDate, length: "long")
+//                            tempDateDay = getDayOfWeek(date: tempDate, length: "long")
+                            let tempDateDay = Calendar.current.component(.weekday, from: date)
                             // check if same day of week as date specified (day habit started)
-                            if (startDateDay == tempDateDay) {
+//                            if (startDateDay == tempDateDay) {
+                            if (checkDayOfWeek(dayInt: tempDateDay, dayOfWeek: tempDateDay)) {
                                 flagNewWeek = true  // set flag to true, start of new week
                             }
                             // check if a new week has started
@@ -417,20 +422,20 @@ class Entries {
                     // check if entry has been completed
                     if (entry[self.completed] == 1) {
                         // check if the habit is repeated every day
-                        if (habitRepeat == 0) {     // "daily"
+                        if (habitRepeat == 1234567) {     // "daily"
                             count += 1      // increment streak count
                         }
                         // check if the habit is repeated every week
-                        else if (habitRepeat > 0) {     // "weekly"
+                        else if (habitRepeat != 1234567) {     // "weekly"
                             // get the date for the current entry from its date components
                             var components = DateComponents()
                             components.year = entry[self.year]
                             components.month = entry[self.month]
                             components.day = entry[self.day]
                             tempDate = Calendar.current.date(from: components) ?? Date()
-                            tempDateDay = getDayOfWeek(date: tempDate, length: "long")
+                            let tempDateDay = Calendar.current.component(.weekday, from: date)
                             // check if same day of week as date specified (day habit started)
-                            if (startDateDay == tempDateDay) {
+                            if (checkDayOfWeek(dayInt: habitRepeat, dayOfWeek: tempDateDay)) {
                                 flagNewWeek = true      // set flag to true, start of a new week
                             }
                             // check if a new week has started
@@ -448,20 +453,20 @@ class Entries {
                     // else entry is not completed
                     } else {
                         // check if the habit is repeated every day
-                        if (habitRepeat == 0) {     // "daily"
+                        if (habitRepeat == 1234567) {     // "daily"
                             count = 0   // reset the streak count
                         }
                         // check if the habit is repeated every week
-                        else if (habitRepeat > 0) {     // "weekly"
+                        else if (habitRepeat != 1234567) {     // "weekly"
                             // get the date of the current entry from its date components
                             var components = DateComponents()
                             components.year = entry[self.year]
                             components.month = entry[self.month]
                             components.day = entry[self.day]
                             tempDate = Calendar.current.date(from: components) ?? Date()
-                            let tempDateDay = getDayOfWeek(date: tempDate, length: "long")
+                            let tempDateDay = Calendar.current.component(.weekday, from: date)
                             // check if same day of week as date specified (day habit started)
-                            if (startDateDay == tempDateDay) {
+                            if (checkDayOfWeek(dayInt: habitRepeat, dayOfWeek: tempDateDay)) {
                                 count = 0   // reset streak count
                             }
                         }
