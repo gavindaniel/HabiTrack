@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		4C225B88233E6EDD0062E195 /* JournalTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C225B87233E6EDD0062E195 /* JournalTableView.swift */; };
 		4C225B8A233E6EEC0062E195 /* JournalDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C225B89233E6EEC0062E195 /* JournalDateView.swift */; };
+		4C2D42D6235A7D1800D5C628 /* ManageJournalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2D42D5235A7D1800D5C628 /* ManageJournalVC.swift */; };
+		4C2D42DE235A9A2700D5C628 /* ManageTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2D42DD235A9A2700D5C628 /* ManageTableView.swift */; };
 		4C36235F2357E94F005A12C2 /* HabitTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C36235E2357E94F005A12C2 /* HabitTableView.swift */; };
 		4C4FF7AF230F620B00DAC450 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4FF7AE230F620B00DAC450 /* AppDelegate.swift */; };
 		4C4FF7B1230F620B00DAC450 /* JournalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4FF7B0230F620B00DAC450 /* JournalViewController.swift */; };
@@ -120,6 +122,8 @@
 		4C225B87233E6EDD0062E195 /* JournalTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalTableView.swift; sourceTree = "<group>"; };
 		4C225B89233E6EEC0062E195 /* JournalDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalDateView.swift; sourceTree = "<group>"; };
 		4C225B8B233E768B0062E195 /* HabiTrackBridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HabiTrackBridgingHeader.h; sourceTree = "<group>"; };
+		4C2D42D5235A7D1800D5C628 /* ManageJournalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageJournalVC.swift; sourceTree = "<group>"; };
+		4C2D42DD235A9A2700D5C628 /* ManageTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageTableView.swift; sourceTree = "<group>"; };
 		4C36235E2357E94F005A12C2 /* HabitTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitTableView.swift; sourceTree = "<group>"; };
 		4C4FF7AB230F620B00DAC450 /* HabiTrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HabiTrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C4FF7AE230F620B00DAC450 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -186,6 +190,7 @@
 				4C4FF7B0230F620B00DAC450 /* JournalViewController.swift */,
 				4C4FF7B2230F620B00DAC450 /* DevViewController.swift */,
 				4C89B81E231CE2A600AE45F4 /* SettingsViewController.swift */,
+				4C2D42D5235A7D1800D5C628 /* ManageJournalVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -197,6 +202,7 @@
 				4C225B89233E6EEC0062E195 /* JournalDateView.swift */,
 				4C225B87233E6EDD0062E195 /* JournalTableView.swift */,
 				4CFFD4D7234991BE0004B45E /* JournalTitleView.swift */,
+				4C2D42DD235A9A2700D5C628 /* ManageTableView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -491,8 +497,10 @@
 				4CFFD4D8234991BE0004B45E /* JournalTitleView.swift in Sources */,
 				4C6A161A2320BA4000274316 /* CustomDate.swift in Sources */,
 				4C89B815231B62D500AE45F4 /* Journal.swift in Sources */,
+				4C2D42DE235A9A2700D5C628 /* ManageTableView.swift in Sources */,
 				4C36235F2357E94F005A12C2 /* HabitTableView.swift in Sources */,
 				4C89B81F231CE2A600AE45F4 /* SettingsViewController.swift in Sources */,
+				4C2D42D6235A7D1800D5C628 /* ManageJournalVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

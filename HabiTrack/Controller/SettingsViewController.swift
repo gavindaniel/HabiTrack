@@ -50,6 +50,18 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         print("Selected row: \(indexPath.row)")
         if (list[indexPath.row] == "Manage Habits") {
             // do something..
+            print("\tManage Habits...")
+            
+            let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+            
+//            let manageJournalVC = storyboard.instantiateViewController(withIdentifier: "manageJournalVC") as! ManageJournalVC
+//            manageJournalVC.journal = journal
+//            navigationController?.pushViewController(manageJournalVC, animated: true)
+            
+            let manageJournalVC = storyBoard.instantiateViewController(withIdentifier: "manageJournalVC") as! ManageJournalVC
+//            let manageJournalVC = ManageJournalVC()
+            manageJournalVC.journal = journal
+            self.present(manageJournalVC, animated: true, completion: nil)
         }
         else if (list[indexPath.row] == "Dark Mode") {
             // do something..

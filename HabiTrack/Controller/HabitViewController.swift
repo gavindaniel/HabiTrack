@@ -66,7 +66,7 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
         print("viewDidDisappear...")
         print()
         // testing
-        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        let storyBoard = UIStoryboard(name: "Main", bundle:nil)
         let journalViewController = storyBoard.instantiateViewController(withIdentifier: "journalViewController") as! JournalViewController
 //        self.navigationController?.pushViewController(nextViewController, animated: true)
         journalViewController.journalUITableView?.reloadData()
@@ -117,6 +117,18 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
         print()
         // reload the views
         self.habitUITableView.reloadData()
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        print()
+        print("traitCollectionDidChange")
+        print()
+        // check if change from light/dark mode
+        if #available(iOS 13, *), traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            // handle theme change here.
+            self.habitUITableView.reloadData()
+        }
     }
     
     //Calls this function when the tap is recognized.
