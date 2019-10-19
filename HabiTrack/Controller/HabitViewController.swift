@@ -23,7 +23,9 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
 //    @IBOutlet weak var nameRequiredLabel: UILabel!
     @IBOutlet weak var nameRequiredLabel: UILabel!
     
-//    @IBOutlet weak var repeatTextField: UITextField!
+    @IBOutlet weak var addUIButton: UIButton!
+    @IBOutlet weak var cancelUIButton: UIButton!
+    //    @IBOutlet weak var repeatTextField: UITextField!
 //    @IBOutlet weak var repeatUnderlineLabel: UILabel!
 //    @IBOutlet weak var repeatRequiredLabel: UILabel!
     
@@ -115,6 +117,10 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
         print()
         print("viewWillAppear...")
         print()
+        // testing
+        let defaultColor = getSystemColor()
+        addUIButton?.tintColor = defaultColor
+        cancelUIButton?.tintColor = defaultColor
         // reload the views
         self.habitUITableView.reloadData()
     }

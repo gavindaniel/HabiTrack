@@ -30,6 +30,7 @@ class JournalTableViewCell: UITableViewCell {
 class JournalTitleTableViewCell: UITableViewCell {
     @IBOutlet weak var journalTitleLabel: UILabel!
     @IBOutlet weak var weekDayLabel: UILabel!
+    @IBOutlet weak var newEntryUIButton: UIButton!
 }
 
 // class: JournalViewController

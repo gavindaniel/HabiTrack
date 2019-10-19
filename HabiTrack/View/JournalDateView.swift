@@ -69,9 +69,14 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
         let tempDay = Calendar.current.component(.day, from: tempDate)
         // check if day selected, mark blue, else mark gray
         if (tempDay == getDayAsInt(date: daysArray[indexPath.row])) {
-            cell.layer.borderColor = UIColor.systemBlue.cgColor
-            cell.monthUILabel?.textColor = UIColor.systemBlue
-            cell.dayUILabel?.textColor = UIColor.systemBlue
+//            cell.layer.borderColor = UIColor.systemBlue.cgColor
+//            cell.monthUILabel?.textColor = UIColor.systemBlue
+//            cell.dayUILabel?.textColor = UIColor.systemBlue
+//            let defaultColor = UserDefaults.standard.object(forKey: "defaultColor") as! UIColor
+            let defaultColor = getSystemColor()
+            cell.layer.borderColor = defaultColor.cgColor
+            cell.monthUILabel?.textColor = defaultColor
+            cell.dayUILabel?.textColor = defaultColor
             // testing
             cell.layer.borderWidth = 2.0
             cell.monthUILabel?.font = UIFont.boldSystemFont(ofSize: 16.0)
@@ -171,9 +176,14 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
                 tempIndex += 1
             }
             // change the border fo the selected item
-            cell.layer.borderColor = UIColor.blue.cgColor
-            cell.monthUILabel?.textColor = UIColor.blue
-            cell.dayUILabel?.textColor = UIColor.blue
+//            cell.layer.borderColor = UIColor.blue.cgColor
+//            cell.monthUILabel?.textColor = UIColor.blue
+//            cell.dayUILabel?.textColor = UIColor.blue
+//            let defaultColor = UserDefaults.standard.object(forKey: "defaultColor") as! UIColor
+            let defaultColor = getSystemColor()
+            cell.layer.borderColor = defaultColor.cgColor
+            cell.monthUILabel?.textColor = defaultColor
+            cell.dayUILabel?.textColor = defaultColor
         }
         self.journalTableView?.dateSelected = dateSelected
         // testing

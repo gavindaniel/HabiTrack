@@ -37,6 +37,10 @@ class JournalTitleView: NSObject, UITableViewDataSource, UITableViewDelegate {
         // comment/uncomment for Date in weekDayLabel
         cell.weekDayLabel?.text = getDateAsString(date: self.dateSelected, length: "long")
         
+        let defaultColor = getSystemColor()
+        cell.weekDayLabel?.textColor = defaultColor
+        cell.newEntryUIButton?.tintColor = defaultColor
+        
         // return the title cell
         return (cell)
     }

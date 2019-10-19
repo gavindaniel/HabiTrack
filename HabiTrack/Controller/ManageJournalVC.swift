@@ -11,6 +11,7 @@ import SQLite
 
 class ManageTableViewCell: UITableViewCell {
     @IBOutlet weak var habitNameUILabel: UILabel!
+    @IBOutlet weak var habitRepeatUILabel: UILabel!
 }
 
 class ManageJournalVC: UIViewController {
@@ -20,6 +21,8 @@ class ManageJournalVC: UIViewController {
     
     var manageTableView: ManageTableView?
     @IBOutlet weak var manageUITableView: UITableView!
+    @IBOutlet weak var closeUIButton: UIButton!
+    @IBOutlet weak var colorUIButton: UIButton!
     
     // load : viewDidAppear
     override func viewDidAppear(_ animated: Bool) {
@@ -67,6 +70,10 @@ class ManageJournalVC: UIViewController {
         print()
         print("viewWillAppear...")
         print()
+        // testing
+        let defaultColor = getSystemColor()
+        closeUIButton?.tintColor = defaultColor
+        colorUIButton?.tintColor = defaultColor
         // reload the views
         self.manageUITableView.reloadData()
     }
@@ -80,6 +87,32 @@ class ManageJournalVC: UIViewController {
         if #available(iOS 13, *), traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
             // handle theme change here.
             self.manageUITableView.reloadData()
+        }
+    }
+    
+    @IBAction func closeManageView(_ sender: AnyObject) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func changeColor(_ sender: Any) {
+        changeAccentColor()
+//        self.manageUITableView.reloadData()
+    }
+    
+    func changeAccentColor() {
+        let defaults = UserDefaults.standard
+        let currentColor = defaults.object(forKey: "defaultColor") as! String
+        switch currentColor {
+        case "blue":
+            UserDefaults.standard.set("red", forKey: "defaultColor")
+        case "red":
+            UserDefaults.standard.set("green", forKey: "defaultColor")
+        case "green":
+            UserDefaults.standard.set("yellow", forKey: "defaultColor")
+        case "yellow":
+            UserDefaults.standard.set("blue", forKey: "defaultColor")
+        default:
+            UserDefaults.standard.set("blue", forKey: "defaultColor")
         }
     }
 }

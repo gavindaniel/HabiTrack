@@ -93,7 +93,7 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
     //                    cell.timeUILabel?.text = habit[self.journal.time]
                         
                         //testing ...
-                        var repeatString = habit[self.journal.time]
+                        let repeatString = habit[self.journal.time]
                         if (repeatString == "weekly") {
 //                            let dayOfWeekString = getDayOfWeekString(dayOfWeek: habit[self.journal.dayOfWeek], length: "long")
 //                            repeatString += " (\(dayOfWeekString)s)"
@@ -114,7 +114,10 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
                         // check if the current streak is equal or greater than the longest
                         if (currentStreak >= longestStreak && longestStreak > 0) {
                             cell.longestStreakUILabel?.text = "current longest streak!"
-                            cell.longestStreakUILabel?.textColor = UIColor.systemBlue
+//                            cell.longestStreakUILabel?.textColor = UIColor.systemBlue
+                            let defaultColor = getSystemColor()
+                            cell.longestStreakUILabel?.textColor = defaultColor
+                            
                         } else { // else return the the longest streak
                             cell.longestStreakUILabel?.text = "longest streak (\( String(longestStreak)))"
                             if #available(iOS 13.0, *) {
@@ -144,7 +147,10 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
                         if (self.journal.entries.checkCompleted(habit: habitString, date: dateSelected)) {
                             if #available(iOS 13.0, *) {
                                 cell.checkImageView?.image = UIImage(systemName: "checkmark.circle.fill")
-                                cell.checkImageView?.tintColor = UIColor.systemBlue
+                                let defaultColor = getSystemColor()
+                                cell.checkImageView?.tintColor = defaultColor
+//                                cell.checkImageView?.tintColor = UIColor.systemBlue
+                                
                             } else {
                                 // Fallback on earlier versions
                                 cell.accessoryType = .checkmark
@@ -203,7 +209,9 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
                     journal.updateStreak(row: indexPath.row, inc: 0, date: dateSelected, habitString: tempString ?? "none")
                 } else {
                     cell.checkImageView?.image = UIImage(systemName: "checkmark.circle.fill")
-                    cell.checkImageView?.tintColor = UIColor.systemBlue
+//                    cell.checkImageView?.tintColor = UIColor.systemBlue
+                    let defaultColor = getSystemColor()
+                    cell.checkImageView?.tintColor = defaultColor
                     journal.updateStreak(row: indexPath.row, inc: 1, date: dateSelected, habitString: tempString ?? "none")
                 }
             } else {
@@ -220,58 +228,6 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
             }
         }
         self.habitTableView.reloadData()
-    }
-
-    // tableView : editingStyle
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath)
-    {
-        // check if the editingStyle is delete
-        if (editingStyle == UITableViewCell.EditingStyle.delete) {
-            var count = 0
-            var firstId = 0
-            var habitString = ""
-            // get the habit string from the tableview cell
-            if let cell: JournalTableViewCell = (tableView.cellForRow(at: indexPath) as? JournalTableViewCell) {
-                habitString = cell.habitUILabel?.text ?? "error"
-            }
-            // delete the habit from the table
-            journal.entries.deleteTable(habit: habitString)
-            do {
-                // get the habits table
-                let habits = try self.journal.database.prepare(self.journal.habitsTable)
-                // loop through the table
-                for habit in habits {
-                    // get the id of the first habit
-                    if (count == 0) {
-                        firstId = habit[self.journal.id]
-                    }
-//                    print("firstId: \(firstId)")
-//                    print("count: \(count)")
-//                    print("count: \(count) == indexPath.row: \(indexPath.row)")
-                    print("habit: \(habit[self.journal.habit]) == habitString: \(habitString)")
-//                    if (count == indexPath.row) {
-                    if (habit[self.journal.habit] == habitString) {
-                        print("\tid: \(habit[self.journal.id]) == firstId+count: \(firstId+count)")
-                        // get the habit whose id matches the count + first ID in the tableView
-                        let habit = self.journal.habitsTable.filter(self.journal.id == (firstId+count))
-                        // delete the habit
-                        let deleteHabit = habit.delete()
-                        do {
-                            try self.journal.database.run(deleteHabit)
-                            print("Deleted habit")
-                            habitTableView.reloadData()
-                            return
-                        } catch {
-                            print(error)
-                        }
-                    } else {
-                        count += 1
-                    }
-                }
-            } catch {
-                print (error)
-            }
-        }
     }
     
     // custom : updateTableView
