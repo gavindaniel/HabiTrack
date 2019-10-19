@@ -5,6 +5,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -426,7 +427,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Qra-5e-y19">
-                                <rect key="frame" x="0.0" y="128" width="414" height="553"/>
+                                <rect key="frame" x="0.0" y="138" width="414" height="543"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <color key="sectionIndexBackgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -488,22 +489,50 @@
                                     <action selector="closeManageView:" destination="yBQ-RU-HmR" eventType="touchUpInside" id="kBM-DH-lL6"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4lI-lc-VvE">
-                                <rect key="frame" x="262" y="35" width="37" height="30"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Xaf-7C-f2U">
+                                <rect key="frame" x="20" y="78" width="374" height="54"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Color"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="5A6-Kv-TQv">
+                                    <size key="itemSize" width="40" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="colorCell" id="qtg-NG-dMi" customClass="ColorCollectionViewCell" customModule="HabiTrack" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="40" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="R0j-5z-9SA">
+                                            <rect key="frame" x="0.0" y="0.0" width="40" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="NVc-Oz-miK">
+                                                    <rect key="frame" x="8" y="14" width="24" height="24"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
+                                            </subviews>
+                                        </collectionViewCellContentView>
+                                        <size key="customSize" width="40" height="50"/>
+                                        <connections>
+                                            <outlet property="colorUIImageView" destination="NVc-Oz-miK" id="VhA-N7-tqN"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
                                 <connections>
-                                    <action selector="changeColor:" destination="yBQ-RU-HmR" eventType="touchUpInside" id="7I7-8O-VoQ"/>
+                                    <outlet property="dataSource" destination="yBQ-RU-HmR" id="800-Ft-aMe"/>
+                                    <outlet property="delegate" destination="yBQ-RU-HmR" id="a07-8r-hPQ"/>
                                 </connections>
-                            </button>
+                            </collectionView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="WVH-jy-VwY"/>
                     </view>
                     <connections>
                         <outlet property="closeUIButton" destination="WHp-Af-jUm" id="qiK-UA-6q2"/>
-                        <outlet property="colorUIButton" destination="4lI-lc-VvE" id="fjv-lD-iYV"/>
+                        <outlet property="colorUICollectionView" destination="Xaf-7C-f2U" id="QIz-UB-zpE"/>
                         <outlet property="manageUITableView" destination="Qra-5e-y19" id="hcW-5v-0IN"/>
+                        <outlet property="manageUIView" destination="NVb-3C-bys" id="bG5-M3-Yj4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fMk-jA-lvg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -553,6 +582,7 @@
     <resources>
         <image name="chevron.left.slash.chevron.right" catalog="system" width="64" height="48"/>
         <image name="circle" catalog="system" width="64" height="60"/>
+        <image name="circle.fill" catalog="system" width="64" height="60"/>
         <image name="gear" catalog="system" width="64" height="58"/>
         <image name="list.bullet" catalog="system" width="64" height="44"/>
         <image name="square.and.pencil" catalog="system" width="64" height="58"/>

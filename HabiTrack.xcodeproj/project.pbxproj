@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		4C225B88233E6EDD0062E195 /* JournalTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C225B87233E6EDD0062E195 /* JournalTableView.swift */; };
 		4C225B8A233E6EEC0062E195 /* JournalDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C225B89233E6EEC0062E195 /* JournalDateView.swift */; };
+		4C28331A235B7A4100A10642 /* ManageColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C283319235B7A4100A10642 /* ManageColorView.swift */; };
+		4C283322235B86FE00A10642 /* CustomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C283321235B86FE00A10642 /* CustomColor.swift */; };
 		4C2D42D6235A7D1800D5C628 /* ManageJournalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2D42D5235A7D1800D5C628 /* ManageJournalVC.swift */; };
 		4C2D42DE235A9A2700D5C628 /* ManageTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2D42DD235A9A2700D5C628 /* ManageTableView.swift */; };
 		4C36235F2357E94F005A12C2 /* HabitTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C36235E2357E94F005A12C2 /* HabitTableView.swift */; };
@@ -122,6 +124,8 @@
 		4C225B87233E6EDD0062E195 /* JournalTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalTableView.swift; sourceTree = "<group>"; };
 		4C225B89233E6EEC0062E195 /* JournalDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalDateView.swift; sourceTree = "<group>"; };
 		4C225B8B233E768B0062E195 /* HabiTrackBridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HabiTrackBridgingHeader.h; sourceTree = "<group>"; };
+		4C283319235B7A4100A10642 /* ManageColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageColorView.swift; sourceTree = "<group>"; };
+		4C283321235B86FE00A10642 /* CustomColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColor.swift; sourceTree = "<group>"; };
 		4C2D42D5235A7D1800D5C628 /* ManageJournalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageJournalVC.swift; sourceTree = "<group>"; };
 		4C2D42DD235A9A2700D5C628 /* ManageTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageTableView.swift; sourceTree = "<group>"; };
 		4C36235E2357E94F005A12C2 /* HabitTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitTableView.swift; sourceTree = "<group>"; };
@@ -202,6 +206,7 @@
 				4C225B89233E6EEC0062E195 /* JournalDateView.swift */,
 				4C225B87233E6EDD0062E195 /* JournalTableView.swift */,
 				4CFFD4D7234991BE0004B45E /* JournalTitleView.swift */,
+				4C283319235B7A4100A10642 /* ManageColorView.swift */,
 				4C2D42DD235A9A2700D5C628 /* ManageTableView.swift */,
 			);
 			path = View;
@@ -210,6 +215,7 @@
 		4C225B86233E6CEF0062E195 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				4C283321235B86FE00A10642 /* CustomColor.swift */,
 				4C6A16192320BA4000274316 /* CustomDate.swift */,
 				4C89B814231B62D500AE45F4 /* Journal.swift */,
 				4C89B81C231C44E400AE45F4 /* Entries.swift */,
@@ -493,11 +499,13 @@
 				4C4FF7AF230F620B00DAC450 /* AppDelegate.swift in Sources */,
 				4C225B8A233E6EEC0062E195 /* JournalDateView.swift in Sources */,
 				4CAAAC82232B5CD5000C9AD8 /* HabitViewController.swift in Sources */,
+				4C283322235B86FE00A10642 /* CustomColor.swift in Sources */,
 				4C4FF7B1230F620B00DAC450 /* JournalViewController.swift in Sources */,
 				4CFFD4D8234991BE0004B45E /* JournalTitleView.swift in Sources */,
 				4C6A161A2320BA4000274316 /* CustomDate.swift in Sources */,
 				4C89B815231B62D500AE45F4 /* Journal.swift in Sources */,
 				4C2D42DE235A9A2700D5C628 /* ManageTableView.swift in Sources */,
+				4C28331A235B7A4100A10642 /* ManageColorView.swift in Sources */,
 				4C36235F2357E94F005A12C2 /* HabitTableView.swift in Sources */,
 				4C89B81F231CE2A600AE45F4 /* SettingsViewController.swift in Sources */,
 				4C2D42D6235A7D1800D5C628 /* ManageJournalVC.swift in Sources */,

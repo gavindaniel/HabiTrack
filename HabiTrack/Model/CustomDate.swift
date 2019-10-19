@@ -14,42 +14,12 @@ func isKeyPresentInUserDefaults(key: String) -> Bool {
 }
 
 // custom : setDefaults
-func setDefaults() {
+func setDateDefaults() {
     if (isKeyPresentInUserDefaults(key: "lastRun") == false) {
         let defaults = UserDefaults.standard
         defaults.set(Date(), forKey: "lastRun")
     }
-    if (isKeyPresentInUserDefaults(key: "defaultColor") == false) {
-        let defaults = UserDefaults.standard
-//        let defaultColor = UIColor.systemBlue
-        let colorString = "blue"
-        defaults.set(colorString, forKey: "defaultColor")
-    }
 }
-
-func getSystemColor() -> UIColor {
-    let colorString = UserDefaults.standard.object(forKey: "defaultColor") as! String
-    switch colorString {
-    case "blue":
-        return UIColor.systemBlue
-    case "red":
-        return UIColor.systemRed
-    case "green":
-        return UIColor.systemGreen
-    case "yellow":
-        return UIColor.systemYellow
-    default:
-        return UIColor.systemRed
-    }
-}
-
-//// custom : setDefaultAccentColor
-//func setDefaultColor() {
-//    if (isKeyPresentInUserDefaults(key: "defaultColor") == false) {
-//        let defaults = UserDefaults.standard
-//        defaults.set(UIColor.systemBlue, forKey: "defaultColor")
-//    }
-//}
 
 // custom : getDay
 func getDayAsInt(date: Date) -> Int {

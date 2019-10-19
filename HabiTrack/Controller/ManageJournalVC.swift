@@ -9,6 +9,10 @@
 import Foundation
 import SQLite
 
+class ColorCollectionViewCell: UICollectionViewCell {
+    @IBOutlet weak var colorUIImageView: UIImageView!
+}
+
 class ManageTableViewCell: UITableViewCell {
     @IBOutlet weak var habitNameUILabel: UILabel!
     @IBOutlet weak var habitRepeatUILabel: UILabel!
@@ -19,10 +23,13 @@ class ManageJournalVC: UIViewController {
     
     var journal = Journal()
     
+    var colorCollectionView: ManageColorView?
     var manageTableView: ManageTableView?
+    @IBOutlet weak var manageUIView: UIView!
+    @IBOutlet weak var colorUICollectionView: UICollectionView!
     @IBOutlet weak var manageUITableView: UITableView!
     @IBOutlet weak var closeUIButton: UIButton!
-    @IBOutlet weak var colorUIButton: UIButton!
+//    @IBOutlet weak var colorUIButton: UIButton!
     
     // load : viewDidAppear
     override func viewDidAppear(_ animated: Bool) {
@@ -32,6 +39,7 @@ class ManageJournalVC: UIViewController {
         print()
         // update views
         manageTableView?.updateTableView(tableView: manageUITableView)
+        colorCollectionView?.updateColorView(colorUICollectionView: colorUICollectionView)
     }
 
     // load : viewDidLoad
@@ -42,8 +50,9 @@ class ManageJournalVC: UIViewController {
         print("viewDidLoad...")
         print()
         
-        // initialize journalTitleTableView
+        // initialize views
         self.manageTableView = ManageTableView(journal: journal, manageTableView: manageUITableView)
+        self.colorCollectionView = ManageColorView(colorUICollectionView: colorUICollectionView)
         
         // set the databases, dataSources and delegates
         do {
@@ -57,6 +66,10 @@ class ManageJournalVC: UIViewController {
             // set the dataSource and delegate
             self.manageUITableView.dataSource = manageTableView
             self.manageUITableView.delegate = manageTableView
+            
+            // set the dataSource and delegate
+            self.colorUICollectionView.dataSource = colorCollectionView
+            self.colorUICollectionView.delegate = colorCollectionView
             
             
         } catch {
@@ -73,9 +86,10 @@ class ManageJournalVC: UIViewController {
         // testing
         let defaultColor = getSystemColor()
         closeUIButton?.tintColor = defaultColor
-        colorUIButton?.tintColor = defaultColor
+//        colorUIButton?.tintColor = defaultColor
         // reload the views
         self.manageUITableView.reloadData()
+        self.colorUICollectionView.reloadData()
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -87,6 +101,7 @@ class ManageJournalVC: UIViewController {
         if #available(iOS 13, *), traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
             // handle theme change here.
             self.manageUITableView.reloadData()
+            self.colorUICollectionView.reloadData()
         }
     }
     
@@ -94,25 +109,29 @@ class ManageJournalVC: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func changeColor(_ sender: Any) {
-        changeAccentColor()
-//        self.manageUITableView.reloadData()
-    }
-    
-    func changeAccentColor() {
-        let defaults = UserDefaults.standard
-        let currentColor = defaults.object(forKey: "defaultColor") as! String
-        switch currentColor {
-        case "blue":
-            UserDefaults.standard.set("red", forKey: "defaultColor")
-        case "red":
-            UserDefaults.standard.set("green", forKey: "defaultColor")
-        case "green":
-            UserDefaults.standard.set("yellow", forKey: "defaultColor")
-        case "yellow":
-            UserDefaults.standard.set("blue", forKey: "defaultColor")
-        default:
-            UserDefaults.standard.set("blue", forKey: "defaultColor")
-        }
-    }
+//    @IBAction func changeColor(_ sender: Any) {
+//        changeAccentColor()
+//        let defaultColor = getSystemColor()
+//        self.closeUIButton.tintColor = defaultColor
+//        self.colorUIButton.tintColor = defaultColor
+//        self.colorUIButton.setNeedsDisplay()
+//        self.closeUIButton.setNeedsDisplay()
+//    }
+//
+//    func changeAccentColor() {
+//        let defaults = UserDefaults.standard
+//        let currentColor = defaults.object(forKey: "defaultColor") as! String
+//        switch currentColor {
+//        case "blue":
+//            UserDefaults.standard.set("red", forKey: "defaultColor")
+//        case "red":
+//            UserDefaults.standard.set("green", forKey: "defaultColor")
+//        case "green":
+//            UserDefaults.standard.set("yellow", forKey: "defaultColor")
+//        case "yellow":
+//            UserDefaults.standard.set("blue", forKey: "defaultColor")
+//        default:
+//            UserDefaults.standard.set("blue", forKey: "defaultColor")
+//        }
+//    }
 }
