@@ -100,6 +100,7 @@ class ManageColorView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
                 UserDefaults.standard.set(colorString, forKey: "defaultColor")
                 self.colorCollectionView.reloadData()
 //                self.closeUIButton.setNeedsDisplay()
+//                UITabBar.appearance().tintColor = getSystemColor()
             }
         }
     }

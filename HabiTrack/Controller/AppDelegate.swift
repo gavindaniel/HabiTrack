@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         setDateDefaults()
         setColorDefaults()
+        UITabBar.appearance().tintColor = getSystemColor()
         journalViewController = JournalViewController()
         return true
     }
