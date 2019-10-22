@@ -34,7 +34,7 @@ class JournalTitleTableViewCell: UITableViewCell {
 }
 
 // class: JournalViewController
-class JournalViewController: UIViewController {
+class JournalVC: UIViewController {
     
     // variables
     var lastSelectedItem = -1

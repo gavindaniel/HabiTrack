@@ -12,7 +12,7 @@
         <!--Journal-->
         <scene sceneID="hNz-n2-bh7">
             <objects>
-                <viewController storyboardIdentifier="journalViewController" id="9pv-A4-QxB" userLabel="Journal" customClass="JournalViewController" customModule="HabiTrack" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="journalVC" id="9pv-A4-QxB" userLabel="Journal" customClass="JournalVC" customModule="HabiTrack" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tsR-hK-woN">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -197,6 +197,9 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Journal" image="list.bullet" catalog="system" id="jYE-Qy-XGj">
+                        <inset key="imageInsets" minX="0.0" minY="10" maxX="0.0" maxY="0.0"/>
+                    </tabBarItem>
                     <navigationItem key="navigationItem" title="Title" id="fid-Se-Xzd"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
@@ -207,12 +210,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1655.072463768116" y="-319.56521739130437"/>
+            <point key="canvasLocation" x="748" y="-319"/>
         </scene>
         <!--Habit-->
         <scene sceneID="lGp-ZO-F53">
             <objects>
-                <viewController id="wIU-Me-2Is" userLabel="Habit" customClass="HabitViewController" customModule="HabiTrack" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="wIU-Me-2Is" userLabel="Habit" customClass="HabitVC" customModule="HabiTrack" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="IkD-IG-m8W">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -319,12 +322,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c5z-Ls-2WU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2373.913043478261" y="-318.75"/>
+            <point key="canvasLocation" x="1655" y="-319"/>
         </scene>
         <!--Development-->
         <scene sceneID="OcH-4T-Sll">
             <objects>
-                <viewController id="bON-YL-e4d" userLabel="Development" customClass="DevViewController" customModule="HabiTrack" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="bON-YL-e4d" userLabel="Development" customClass="DevelopmentVC" customModule="HabiTrack" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="oxn-mN-jkf">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -372,7 +375,7 @@
         <!--Settings-->
         <scene sceneID="wg7-f3-ORb">
             <objects>
-                <viewController id="8rJ-Kc-sve" userLabel="Settings" customClass="SettingsViewController" customModule="HabiTrack" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="8rJ-Kc-sve" userLabel="Settings" customClass="SettingsVC" customModule="HabiTrack" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="QS5-Rx-YEW">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -539,44 +542,24 @@
             </objects>
             <point key="canvasLocation" x="1655.072463768116" y="398.64130434782612"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Tab BarVC-->
         <scene sceneID="yl2-sM-qoP">
             <objects>
-                <tabBarController id="49e-Tb-3d3" sceneMemberID="viewController">
+                <tabBarController id="49e-Tb-3d3" customClass="TabBarVC" customModule="HabiTrack" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" id="W28-zg-YXA">
                         <rect key="frame" x="0.0" y="975" width="768" height="49"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBar>
                     <connections>
-                        <segue destination="PWf-Rg-XJa" kind="relationship" relationship="viewControllers" id="u7Y-xg-7CH"/>
-                        <segue destination="8rJ-Kc-sve" kind="relationship" relationship="viewControllers" id="lzU-1b-eKA"/>
-                        <segue destination="bON-YL-e4d" kind="relationship" relationship="viewControllers" id="6tL-Lg-fIn"/>
+                        <segue destination="9pv-A4-QxB" kind="relationship" relationship="viewControllers" id="QB9-3e-4l7"/>
+                        <segue destination="8rJ-Kc-sve" kind="relationship" relationship="viewControllers" id="Ton-Fn-bsg"/>
+                        <segue destination="bON-YL-e4d" kind="relationship" relationship="viewControllers" id="Zm9-oy-6d9"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="0.0" y="0.0"/>
-        </scene>
-        <!--Journal-->
-        <scene sceneID="UrT-dh-l4K">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="PWf-Rg-XJa" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Journal" image="list.bullet" catalog="system" id="fj1-yx-SMq">
-                        <inset key="imageInsets" minX="0.0" minY="10" maxX="0.0" maxY="0.0"/>
-                    </tabBarItem>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="wvH-dS-Rr8">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="9pv-A4-QxB" kind="relationship" relationship="rootViewController" id="7oX-IA-MfE"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7tw-nV-8Dc" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="747.82608695652175" y="-319.56521739130437"/>
         </scene>
     </scenes>
     <resources>

@@ -14,7 +14,7 @@ class HabitTableViewCell: UITableViewCell {
     @IBOutlet weak var dayUILabel: UILabel!
 }
 
-class HabitViewController: UIViewController, UITextFieldDelegate {
+class HabitVC: UIViewController, UITextFieldDelegate {
     
 //    @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var nameTextField: UITextField!
@@ -69,9 +69,9 @@ class HabitViewController: UIViewController, UITextFieldDelegate {
         print()
         // testing
         let storyBoard = UIStoryboard(name: "Main", bundle:nil)
-        let journalViewController = storyBoard.instantiateViewController(withIdentifier: "journalViewController") as! JournalViewController
+        let journalVC = storyBoard.instantiateViewController(withIdentifier: "journalVC") as! JournalVC
 //        self.navigationController?.pushViewController(nextViewController, animated: true)
-        journalViewController.journalUITableView?.reloadData()
+        journalVC.journalUITableView?.reloadData()
     }
     
     // load : viewDidLoad

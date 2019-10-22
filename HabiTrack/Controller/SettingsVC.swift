@@ -9,7 +9,7 @@
 import UIKit
 import SQLite
 
-class SettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var list = ["Manage Habits", "Dark Mode"]
     

@@ -9,7 +9,7 @@
 import UIKit
 import SQLite
 
-class DevViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     var list = ["Print Table (Script)",
                 "Update Habit Repeat (Pop-up)",

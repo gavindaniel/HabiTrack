@@ -13,14 +13,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
-    var journalViewController: JournalViewController!
+    var journalVC: JournalVC!
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         setDateDefaults()
         setColorDefaults()
         UITabBar.appearance().tintColor = getSystemColor()
-        journalViewController = JournalViewController()
+        journalVC = JournalVC()
         return true
     }
 
