@@ -10,7 +10,7 @@ import Foundation
 import SQLite
 import MobileCoreServices
 
-class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UITableViewDragDelegate {
+class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
 
     var journal: Journal
     var habitTableView: UITableView
@@ -74,12 +74,6 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
                 print("id: \(habit[self.journal.id])")
                 print("count-buffer: \(count) - \(buffer) == \(indexPath.row)")
                 if ((count - buffer) == indexPath.row) {
-//                if (checkDayOfWeek(dayInt: habit[self.journal.dayOfWeek], dayOfWeek: currentDayOfWeek)) {
-//                if (count == habit[self.journal.id]) {
-                    // testing
-//                    print("dayOfWeek: \(habit[self.journal.dayOfWeek])")
-//                    let tempDayOfWeek = getDayOfWeekString(dayOfWeek: habit[self.journal.dayOfWeek], length: "short")
-//                    print("currentDayOfWeek: \(currentDayOfWeek) == tempDayOfWeek: \(tempDayOfWeek)")
                     // check if count equals the habits id
 //                    if (currentDayOfWeek == tempDayOfWeek) {
                     print("\tid: \(habit[self.journal.id])")
@@ -185,7 +179,6 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
         } catch {
             print (error)
         }
-//        self.habitTableView.reloadData()
         return (cell)
     }
     
@@ -229,121 +222,5 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
     func updateTableView(habitView: UITableView) {
         habitTableView = habitView
     }
-    
-    
-    
-     // testing ...
-    
-    /**
-         A helper function that serves as an interface to the data model,
-         called by the implementation of the `tableView(_ canHandle:)` method.
-    */
-    func canHandle(_ session: UIDropSession) -> Bool {
-        return session.canLoadObjects(ofClass: NSString.self)
-    }
-    
-    /**
-         A helper function that serves as an interface to the data mode, called
-         by the `tableView(_:itemsForBeginning:at:)` method.
-    */
-    func dragItems(for indexPath: IndexPath) -> [UIDragItem] {
-        let defaults = UserDefaults.standard
-        let localHabits = defaults.object(forKey: "localHabits") as! [String]
-        let habitString = localHabits[indexPath.row]
 
-        let data = habitString.data(using: .utf8)
-        let itemProvider = NSItemProvider()
-        
-        itemProvider.registerDataRepresentation(forTypeIdentifier: kUTTypePlainText as String, visibility: .all) { completion in
-            completion(data, nil)
-            return nil
-        }
-
-        return [
-            UIDragItem(itemProvider: itemProvider)
-        ]
-    }
-    
-     // testing drag extension ...
-        /**
-             The `tableView(_:itemsForBeginning:at:)` method is the essential method
-             to implement for allowing dragging from a table.
-        */
-        func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
-            return ( dragItems(for: indexPath) )
-        }
-        
-        // testing drop extension ...
-        /**
-             Ensure that the drop session contains a drag item with a data representation
-             that the view can consume.
-        */
-        func tableView(_ tableView: UITableView, canHandle session: UIDropSession) -> Bool {
-            return ( canHandle(session) )
-        }
-        
-        /**
-             A drop proposal from a table view includes two items: a drop operation,
-             typically .move or .copy; and an intent, which declares the action the
-             table view will take upon receiving the items. (A drop proposal from a
-             custom view does includes only a drop operation, not an intent.)
-        */
-        func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
-            // The .move operation is available only for dragging within a single app.
-            
-            if tableView.hasActiveDrag {
-                if session.items.count > 1 {
-                    return UITableViewDropProposal(operation: .cancel)
-                } else {
-                    return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
-                }
-            } else {
-                return UITableViewDropProposal(operation: .copy, intent: .insertAtDestinationIndexPath)
-            }
-        }
-        /**
-             This delegate method is the only opportunity for accessing and loading
-             the data representations offered in the drag item. The drop coordinator
-             supports accessing the dropped items, updating the table view, and specifying
-             optional animations. Local drags with one item go through the existing
-             `tableView(_:moveRowAt:to:)` method on the data source.
-        */
-        func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
-            let destinationIndexPath: IndexPath
-            
-            if let indexPath = coordinator.destinationIndexPath {
-                destinationIndexPath = indexPath
-            } else {
-                // Get last index path of table view.
-                let section = tableView.numberOfSections - 1
-                let row = tableView.numberOfRows(inSection: section)
-                destinationIndexPath = IndexPath(row: row, section: section)
-            }
-            
-            coordinator.session.loadObjects(ofClass: NSString.self) { items in
-                // Consume drag items.
-                let stringItems = items as! [String]
-                
-                var indexPaths = [IndexPath]()
-                for (index, item) in stringItems.enumerated() {
-                    let indexPath = IndexPath(row: destinationIndexPath.row + index, section: destinationIndexPath.section)
-                    self.journal.addItem(item, at: indexPath.row)
-                    indexPaths.append(indexPath)
-                }
-
-                tableView.insertRows(at: indexPaths, with: .automatic)
-            }
-        }
-        
-        // testing data extension ....
-        
-        // MARK: - UITableViewDelegate
-
-        func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-            return true
-        }
-        
-        func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-            self.journal.moveItem(at: sourceIndexPath.row, to: destinationIndexPath.row)
-    }
 }

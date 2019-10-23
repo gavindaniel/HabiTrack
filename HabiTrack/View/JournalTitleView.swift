@@ -17,8 +17,6 @@ class JournalTitleView: NSObject, UICollectionViewDataSource, UICollectionViewDe
     init(titleTableView: UICollectionView, date: Date) {
         self.titleTableView = titleTableView
         self.dateSelected = date
-//        self.titleTableView.tableHeaderView = nil
-//        self.titleTableView.tableFooterView = nil
         super.init()
     }
     
@@ -50,7 +48,5 @@ class JournalTitleView: NSObject, UICollectionViewDataSource, UICollectionViewDe
     // custom : updateTableView
     func updateTitleView(titleView: UICollectionView) {
         self.titleTableView = titleView
-//        self.titleTableView.tableHeaderView = nil
-//        self.titleTableView.tableFooterView = nil
     }
 }

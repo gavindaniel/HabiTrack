@@ -117,11 +117,6 @@ class JournalVC: UIViewController {
             self.journalUITableView.dataSource = journalTableView
             self.journalUITableView.delegate = journalTableView
             
-            // testing drag and drop delegate
-            self.journalUITableView.dragInteractionEnabled = true
-            self.journalUITableView.dragDelegate = journalTableView
-            self.journalUITableView.dragDelegate = journalTableView
-            
             // set the dataSource and delegate
             self.dateUICollectionView.dataSource = journalDateView
             self.dateUICollectionView.delegate = journalDateView
