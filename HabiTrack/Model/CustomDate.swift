@@ -180,8 +180,8 @@ func getDayOfWeekString(dayOfWeek: Int, length: String) -> String {
         default:
             return("")
         }
-    // else return short spelling
-    } else {
+    // else if short spelling
+    } else if (length == "short") {
         switch(dayOfWeek) {
         case (1):
             return ("Sun")
@@ -197,6 +197,26 @@ func getDayOfWeekString(dayOfWeek: Int, length: String) -> String {
             return ("Fri")
         case (7):
             return ("Sat")
+        default:
+            return("")
+        }
+        // else return single letter spelling "S"
+    } else {
+        switch(dayOfWeek) {
+        case (1):
+            return ("S")
+        case (2):
+            return ("M")
+        case (3):
+            return ("T")
+        case (4):
+            return ("W")
+        case (5):
+            return ("Th")
+        case (6):
+            return ("F")
+        case (7):
+            return ("S")
         default:
             return("")
         }
@@ -305,21 +325,28 @@ func checkDayOfWeek(dayInt: Int, dayOfWeek: Int) -> Bool {
     } else {
         return false
     }
-//    if (dayString.contains("1")) {
-//        print("\(dayInt) contains a 1")
-//        return true
-//    }
-//    else if (dayString.contains("2")) {
-//        print("\(dayInt) contains a 2")
-//    } else if (dayString.contains("3")) {
-//        print("\(dayInt) contains a 3")
-//    } else if (dayString.contains("4")) {
-//        print("\(dayInt) contains a 4")
-//    } else if (dayString.contains("5")) {
-//        print("\(dayInt) contains a 5")
-//    } else if (dayString.contains("6")) {
-//        print("\(dayInt) contains a 6")
-//    } else if (dayString.contains("7")) {
-//        print("\(dayInt) contains a 7")
-//    }
+}
+
+
+// get Days of Week Habit repeats
+func getRepeatDaysString(dayInt: Int) -> String {
+    var repeatString = ""
+    var dayOfWeek = 1, count = 1
+    while (dayOfWeek <= 7) {
+        print("dayInt: \(dayInt), dayOfWeek: \(dayOfWeek)")
+        if (checkDayOfWeek(dayInt: dayInt, dayOfWeek: dayOfWeek)) {
+            print("yay true")
+            if (count != 1) {
+                repeatString += ", "
+            } else {
+                repeatString += "Repeats: "
+            }
+            repeatString += getDayOfWeekString(dayOfWeek: dayOfWeek, length: "short")
+            print("repeatString: \(repeatString)")
+            count += 1
+        }
+        dayOfWeek += 1
+    }
+    print("return repeatString: \(repeatString)")
+    return repeatString
 }

@@ -14,7 +14,7 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
     // view objects
     var dateCollectionView: UICollectionView
     var habitTableView: UITableView
-    var titleTableView: UITableView
+    var titleCollectionView: UICollectionView
     var journalTableView: JournalTableView?
     var journalTitleView: JournalTitleView?
     // variables unique to this view
@@ -24,12 +24,12 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
     
     // initializer
     init(dateCollectionView: UICollectionView, journalTableView: JournalTableView, habitTableView: UITableView, journalTitleView: JournalTitleView,
-         titleTableView: UITableView) {
+         titleCollectionView: UICollectionView) {
         self.dateCollectionView = dateCollectionView
         self.journalTableView = journalTableView
         self.habitTableView = habitTableView
         self.journalTitleView = journalTitleView
-        self.titleTableView = titleTableView
+        self.titleCollectionView = titleCollectionView
         
         super.init()
     }
@@ -191,7 +191,7 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
         updateDaysArray(date: dateSelected)
         self.dateCollectionView.reloadData()
         // testing
-        self.titleTableView.reloadData()
+        self.titleCollectionView.reloadData()
         
         
         

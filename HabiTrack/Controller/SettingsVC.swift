@@ -9,6 +9,10 @@
 import UIKit
 import SQLite
 
+class SettingTableViewCell: UITableViewCell {
+    @IBOutlet weak var settingUILabel: UILabel!
+}
+
 class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var list = ["Manage Habits", "Dark Mode"]
@@ -17,6 +21,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     let journal = Journal()
     
     @IBOutlet weak var settingsTableView: UITableView!
+
     
     // viewDidLoad
     override func viewDidLoad() {
@@ -39,8 +44,11 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     // tableView : cellForRowAt -> cell
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "settingCell")
-        cell.textLabel?.text = list[indexPath.row]
+//        let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "settingCell")
+        let cell = tableView.dequeueReusableCell(withIdentifier: "settingCell", for: indexPath)
+        as! SettingTableViewCell
+//        cell.textLabel?.text = list[indexPath.row]
+        cell.settingUILabel.text = list[indexPath.row]
         
         return (cell)
     }

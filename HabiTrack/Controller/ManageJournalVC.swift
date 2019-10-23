@@ -71,6 +71,11 @@ class ManageJournalVC: UIViewController {
             self.colorUICollectionView.dataSource = colorCollectionView
             self.colorUICollectionView.delegate = colorCollectionView
             
+            // testing drag and drop delegate
+            self.manageUITableView.dragInteractionEnabled = true
+            self.manageUITableView.dragDelegate = manageTableView
+            self.manageUITableView.dragDelegate = manageTableView
+            
             
         } catch {
             print(error)
@@ -83,10 +88,7 @@ class ManageJournalVC: UIViewController {
         print()
         print("viewWillAppear...")
         print()
-        // testing
-        let defaultColor = getSystemColor()
-        closeUIButton?.tintColor = defaultColor
-//        colorUIButton?.tintColor = defaultColor
+        closeUIButton?.tintColor = getSystemColor()
         // reload the views
         self.manageUITableView.reloadData()
         self.colorUICollectionView.reloadData()
@@ -106,32 +108,7 @@ class ManageJournalVC: UIViewController {
     }
     
     @IBAction func closeManageView(_ sender: AnyObject) {
+        UITabBar.appearance().tintColor = getSystemColor()
         dismiss(animated: true, completion: nil)
     }
-    
-//    @IBAction func changeColor(_ sender: Any) {
-//        changeAccentColor()
-//        let defaultColor = getSystemColor()
-//        self.closeUIButton.tintColor = defaultColor
-//        self.colorUIButton.tintColor = defaultColor
-//        self.colorUIButton.setNeedsDisplay()
-//        self.closeUIButton.setNeedsDisplay()
-//    }
-//
-//    func changeAccentColor() {
-//        let defaults = UserDefaults.standard
-//        let currentColor = defaults.object(forKey: "defaultColor") as! String
-//        switch currentColor {
-//        case "blue":
-//            UserDefaults.standard.set("red", forKey: "defaultColor")
-//        case "red":
-//            UserDefaults.standard.set("green", forKey: "defaultColor")
-//        case "green":
-//            UserDefaults.standard.set("yellow", forKey: "defaultColor")
-//        case "yellow":
-//            UserDefaults.standard.set("blue", forKey: "defaultColor")
-//        default:
-//            UserDefaults.standard.set("blue", forKey: "defaultColor")
-//        }
-//    }
 }

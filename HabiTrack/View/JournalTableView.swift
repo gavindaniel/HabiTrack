@@ -114,10 +114,7 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
                         // check if the current streak is equal or greater than the longest
                         if (currentStreak >= longestStreak && longestStreak > 0) {
                             cell.longestStreakUILabel?.text = "current longest streak!"
-//                            cell.longestStreakUILabel?.textColor = UIColor.systemBlue
-                            let defaultColor = getSystemColor()
-                            cell.longestStreakUILabel?.textColor = defaultColor
-                            
+                            cell.longestStreakUILabel?.textColor = getSystemColor()
                         } else { // else return the the longest streak
                             cell.longestStreakUILabel?.text = "longest streak (\( String(longestStreak)))"
                             if #available(iOS 13.0, *) {
@@ -209,9 +206,7 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UI
                     journal.updateStreak(row: indexPath.row, inc: 0, date: dateSelected, habitString: tempString ?? "none")
                 } else {
                     cell.checkImageView?.image = UIImage(systemName: "checkmark.circle.fill")
-//                    cell.checkImageView?.tintColor = UIColor.systemBlue
-                    let defaultColor = getSystemColor()
-                    cell.checkImageView?.tintColor = defaultColor
+                    cell.checkImageView?.tintColor = getSystemColor()
                     journal.updateStreak(row: indexPath.row, inc: 1, date: dateSelected, habitString: tempString ?? "none")
                 }
             } else {

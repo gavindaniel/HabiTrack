@@ -39,6 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
 //        JournalViewController().update()
 //        journalViewController.update()
+//        UITabBar.appearance().tintColor = getSystemColor()
         
     }
 

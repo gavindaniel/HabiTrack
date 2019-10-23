@@ -22,6 +22,7 @@ class HabitVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var nameUnderlineLabel: UILabel!
 //    @IBOutlet weak var nameRequiredLabel: UILabel!
     @IBOutlet weak var nameRequiredLabel: UILabel!
+    @IBOutlet weak var habitUILabel: UILabel!
     
     @IBOutlet weak var addUIButton: UIButton!
     @IBOutlet weak var cancelUIButton: UIButton!
@@ -153,7 +154,11 @@ class HabitVC: UIViewController, UITextFieldDelegate {
         let id = textField.restorationIdentifier
         
         if (id == "titleTextField") {
-            nameUnderlineLabel.textColor = UIColor.systemBlue
+//            nameUnderlineLabel.textColor = UIColor.systemBlue
+            let defaultColor = getSystemColor()
+            nameUnderlineLabel.textColor = defaultColor
+            habitUILabel.textColor = defaultColor
+            
         }
 //        else if (id == "timeTextField") {
 //            repeatUnderlineLabel.textColor = UIColor.systemBlue
@@ -166,17 +171,21 @@ class HabitVC: UIViewController, UITextFieldDelegate {
         if (textField.restorationIdentifier == "titleTextField") {
             if (textField.text != "") {
                 if #available(iOS 13.0, *) {
-                    nameUnderlineLabel.textColor = UIColor.systemBlue
+                    nameUnderlineLabel.textColor = UIColor.label
+                    habitUILabel.textColor = UIColor.label
                 } else {
                     // Fallback on earlier versions
-                    nameUnderlineLabel.textColor = UIColor.systemBlue
+                    nameUnderlineLabel.textColor = UIColor.black
+                    habitUILabel.textColor = UIColor.black
                 }
             } else {
                 if #available(iOS 13.0, *) {
                     nameUnderlineLabel.textColor = UIColor.systemGray
+                    habitUILabel.textColor = UIColor.systemGray
                 } else {
                     // Fallback on earlier versions
                     nameUnderlineLabel.textColor = UIColor.systemGray
+                    habitUILabel.textColor = UIColor.systemGray
                 }
             }
         }
@@ -265,6 +274,12 @@ class HabitVC: UIViewController, UITextFieldDelegate {
             // attempt to add habit to database
             do {
                 try self.journal.database.run(addHabit)
+                // testing ...
+                let defaults = UserDefaults.standard
+                var localHabits = defaults.object(forKey: "localHabits") as! [String]
+                localHabits.append(habit!)
+                defaults.set(localHabits, forKey: "localHabits")
+                
                 print("Habit Added -> habit: \(habit ?? "error"), time: \("daily")")
                 self.journal.entries.addDay(habit: habit ?? "error", date: Date())
                 nameTextField.text = ""

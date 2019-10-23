@@ -165,6 +165,7 @@ class Journal {
         let habitString = localHabits[sourceIndex]
         localHabits.remove(at: sourceIndex)
         localHabits.insert(habitString, at: destinationIndex)
+        defaults.set(localHabits, forKey: "localHabits")
         updateHabitIDs(oldId: sourceIndex + 1, newId: destinationIndex + 1)
     }
     
@@ -174,6 +175,7 @@ class Journal {
         let defaults = UserDefaults.standard
         var localHabits = defaults.object(forKey: "localHabits") as! [String]
         localHabits.insert(habitString, at: index)
+        defaults.set(localHabits, forKey: "localHabits")
     }
     
     // custom : updateHabitIDs (for drag and drop to properly update the habits in the database)

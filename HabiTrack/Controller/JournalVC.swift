@@ -27,7 +27,7 @@ class JournalTableViewCell: UITableViewCell {
 //    @IBOutlet var checkBox: BEMCheckBox!
 }
 
-class JournalTitleTableViewCell: UITableViewCell {
+class JournalTitleCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var journalTitleLabel: UILabel!
     @IBOutlet weak var weekDayLabel: UILabel!
     @IBOutlet weak var newEntryUIButton: UIButton!
@@ -50,7 +50,7 @@ class JournalVC: UIViewController {
     //    @IBOutlet weak var journalUITableView: UITableView!
     @IBOutlet weak var dateUICollectionView: UICollectionView!
     //    @IBOutlet weak var dateUICollectionView: UICollectionView!
-    @IBOutlet weak var titleUITableView: UITableView!
+    @IBOutlet weak var titleUICollectionView: UICollectionView!
     //    @IBOutlet weak var titleUITableView: UITableView!
 
     // load : viewDidAppear
@@ -62,7 +62,7 @@ class JournalVC: UIViewController {
         // update views
         journalTableView?.updateTableView(habitView: journalUITableView)
         journalDateView?.updateDateView(dateView: dateUICollectionView)
-        journalTitleView?.updateTitleView(titleView: titleUITableView)
+        journalTitleView?.updateTitleView(titleView: titleUICollectionView)
         
         // set observer of application entering foreground
         NotificationCenter.default.addObserver(self,
@@ -85,14 +85,14 @@ class JournalVC: UIViewController {
         print()
         
         // initialize journalTitleTableView
-        self.journalTitleView = JournalTitleView(titleTableView: titleUITableView, date: Date())
+        self.journalTitleView = JournalTitleView(titleTableView: titleUICollectionView, date: Date())
         
         // initialize journalTableView
         self.journalTableView = JournalTableView(journal: journal, habitTableView: journalUITableView, date: Date())
         
         // initialize journalDateView
         self.journalDateView = JournalDateView(dateCollectionView: dateUICollectionView, journalTableView: journalTableView!, habitTableView: journalUITableView, journalTitleView: journalTitleView!,
-            titleTableView: titleUITableView)
+            titleCollectionView: titleUICollectionView)
         
         // set observer of application entering foreground
         NotificationCenter.default.addObserver(self,
@@ -110,8 +110,8 @@ class JournalVC: UIViewController {
             self.journal.entries.database = database
             
             // set the dataSource and delegate
-            self.titleUITableView.dataSource = journalTitleView
-            self.titleUITableView.delegate = journalTitleView
+            self.titleUICollectionView.dataSource = journalTitleView
+            self.titleUICollectionView.delegate = journalTitleView
             
             // set the dataSource and delegate
             self.journalUITableView.dataSource = journalTableView
@@ -138,7 +138,7 @@ class JournalVC: UIViewController {
         print("viewWillAppear...")
         print()
         // reload the views
-        self.titleUITableView.reloadData()
+        self.titleUICollectionView.reloadData()
         self.journalUITableView.reloadData()
         self.dateUICollectionView.reloadData()
     }
@@ -195,7 +195,7 @@ class JournalVC: UIViewController {
                 self.journal.database = database
                 self.journal.entries.database = database
                 // update the views
-                self.journalTitleView?.updateTitleView(titleView: titleUITableView)
+                self.journalTitleView?.updateTitleView(titleView: titleUICollectionView)
                 self.journalTableView?.updateTableView(habitView: journalUITableView)
                 self.journalDateView?.updateDateView(dateView: dateUICollectionView)
             } catch {
@@ -209,7 +209,7 @@ class JournalVC: UIViewController {
             UserDefaults.standard.set(dateToday, forKey: "lastRun")
             
             // reload the views
-            self.titleUITableView.reloadData()
+            self.titleUICollectionView.reloadData()
             self.journalUITableView.reloadData()
             self.dateUICollectionView.reloadData()
             
@@ -219,7 +219,7 @@ class JournalVC: UIViewController {
             self.journalDateView?.updateDateView(dateView: dateUICollectionView)
             
             // reload the views
-            self.titleUITableView.reloadData()
+            self.titleUICollectionView.reloadData()
             self.journalUITableView.reloadData()
             self.dateUICollectionView.reloadData()
             

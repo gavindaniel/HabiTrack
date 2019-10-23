@@ -8,28 +8,30 @@
 
 import Foundation
 
-class JournalTitleView: NSObject, UITableViewDataSource, UITableViewDelegate {
+class JournalTitleView: NSObject, UICollectionViewDataSource, UICollectionViewDelegate {
     
-    var titleTableView: UITableView
+    var titleTableView: UICollectionView
     var dateSelected: Date
     
     // initializer
-    init(titleTableView: UITableView, date: Date) {
+    init(titleTableView: UICollectionView, date: Date) {
         self.titleTableView = titleTableView
         self.dateSelected = date
+//        self.titleTableView.tableHeaderView = nil
+//        self.titleTableView.tableFooterView = nil
         super.init()
     }
     
-    // tableView: numberOfRowsInSection
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    // collectionView : numberOfItemsInSection
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 1
     }
     
-    // tableView : cellForRowAt
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    // collectionView : cellForItemAt
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         // get the title cell
-        let cell = tableView.dequeueReusableCell(withIdentifier: "title", for: indexPath)
-        as! JournalTitleTableViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "title", for: indexPath)
+        as! JournalTitleCollectionViewCell
         
         // comment/uncomment for Day of Week in weekDayLabel
 //        cell.weekDayLabel?.text = getDayOfWeek(date: self.dateSelected, length: "long")
@@ -46,7 +48,9 @@ class JournalTitleView: NSObject, UITableViewDataSource, UITableViewDelegate {
     }
     
     // custom : updateTableView
-    func updateTitleView(titleView: UITableView) {
-        titleTableView = titleView
+    func updateTitleView(titleView: UICollectionView) {
+        self.titleTableView = titleView
+//        self.titleTableView.tableHeaderView = nil
+//        self.titleTableView.tableFooterView = nil
     }
 }
