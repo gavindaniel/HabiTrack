@@ -11,11 +11,12 @@ import SQLite
 
 class SettingTableViewCell: UITableViewCell {
     @IBOutlet weak var settingUILabel: UILabel!
+    @IBOutlet weak var settingUISwitch: UISwitch!
 }
 
 class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var list = ["Manage Habits", "Dark Mode"]
+    var settingList = ["Manage Habits", "Manage Display"]
     
     var database: Connection!
     let journal = Journal()
@@ -39,7 +40,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     // tableView : numberOfRowsInSection
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (list.count)
+        return (settingList.count)
     }
     
     // tableView : cellForRowAt -> cell
@@ -47,8 +48,8 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 //        let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "settingCell")
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingCell", for: indexPath)
         as! SettingTableViewCell
-//        cell.textLabel?.text = list[indexPath.row]
-        cell.settingUILabel.text = list[indexPath.row]
+        
+        cell.settingUILabel.text = settingList[indexPath.row]
         
         return (cell)
     }
@@ -56,23 +57,21 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     // tableView : didSelectRowAt
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("Selected row: \(indexPath.row)")
-        if (list[indexPath.row] == "Manage Habits") {
+        if (settingList[indexPath.row] == "Manage Habits") {
             // do something..
             print("\tManage Habits...")
             
             let storyBoard = UIStoryboard(name: "Main", bundle:nil)
-            
-//            let manageJournalVC = storyboard.instantiateViewController(withIdentifier: "manageJournalVC") as! ManageJournalVC
-//            manageJournalVC.journal = journal
-//            navigationController?.pushViewController(manageJournalVC, animated: true)
-            
             let manageJournalVC = storyBoard.instantiateViewController(withIdentifier: "manageJournalVC") as! ManageJournalVC
-//            let manageJournalVC = ManageJournalVC()
             manageJournalVC.journal = journal
             self.present(manageJournalVC, animated: true, completion: nil)
         }
-        else if (list[indexPath.row] == "Dark Mode") {
+        else if (settingList[indexPath.row] == "Manage Display") {
             // do something..
+            print("\tManage Habits...")
+            let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+            let manageDisplayVC = storyBoard.instantiateViewController(withIdentifier: "manageDisplayVC") as! ManageDisplayVC
+            self.present(manageDisplayVC, animated: true, completion: nil)
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }

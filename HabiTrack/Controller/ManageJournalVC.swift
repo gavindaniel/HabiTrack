@@ -29,7 +29,7 @@ class ManageJournalVC: UIViewController {
     @IBOutlet weak var colorUICollectionView: UICollectionView!
     @IBOutlet weak var manageUITableView: UITableView!
     @IBOutlet weak var closeUIButton: UIButton!
-//    @IBOutlet weak var colorUIButton: UIButton!
+    
     
     // load : viewDidAppear
     override func viewDidAppear(_ animated: Bool) {

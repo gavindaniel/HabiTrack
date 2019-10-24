@@ -93,6 +93,7 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
 //                            repeatString += " (\(dayOfWeekString)s)"
                         }
                         cell.timeUILabel?.text = repeatString
+                        cell.timeUILabel?.isHidden = getShowRepeatLabel()
                         
                         // get the name of habit and size of habit entries table
                         let habitString = habit[self.journal.habit]
@@ -118,6 +119,7 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
                                 cell.longestStreakUILabel?.textColor = UIColor.darkGray
                             }
                         }
+                        cell.longestStreakUILabel?.isHidden = getShowLongestLabel()
                         
                         if (currentStreak == 1) {
 //                            if (cell.timeUILabel?.text == "weekly") {

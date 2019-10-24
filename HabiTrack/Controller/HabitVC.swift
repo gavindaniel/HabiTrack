@@ -16,12 +16,8 @@ class HabitTableViewCell: UITableViewCell {
 
 class HabitVC: UIViewController, UITextFieldDelegate {
     
-//    @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var nameTextField: UITextField!
-//    @IBOutlet weak var nameUnderlineLabel: UILabel!
     @IBOutlet weak var nameUnderlineLabel: UILabel!
-//    @IBOutlet weak var nameRequiredLabel: UILabel!
-    @IBOutlet weak var nameRequiredLabel: UILabel!
     @IBOutlet weak var habitUILabel: UILabel!
     
     @IBOutlet weak var addUIButton: UIButton!
@@ -245,8 +241,8 @@ class HabitVC: UIViewController, UITextFieldDelegate {
         if (habit == "" || count == 0) {
             if (habit == "") {
                 print("Name blank, displaying required...")
+                habitUILabel.textColor = UIColor.red
                 nameUnderlineLabel.textColor = UIColor.red
-                nameRequiredLabel.isHidden = false
             }
             if (count == 0) {
                 print("No days selected, displaying required...")
@@ -254,7 +250,7 @@ class HabitVC: UIViewController, UITextFieldDelegate {
 //                repeatRequiredLabel.isHidden = false
             }
         } else {
-            nameRequiredLabel.isHidden = true
+//            nameRequiredLabel.isHidden = true
 //                    repeatRequiredLabel.isHidden = true
 //                    let addHabit = self.journal.habitsTable.insert(self.journal.habit <- habit ?? "error",
 //                                                                   self.journal.time <- time ?? "error",

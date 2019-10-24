@@ -17,8 +17,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        setDateDefaults()
         setColorDefaults()
+        setDateDefaults()
+        setDisplayDefaults()
         UITabBar.appearance().tintColor = getSystemColor()
         journalVC = JournalVC()
         return true
