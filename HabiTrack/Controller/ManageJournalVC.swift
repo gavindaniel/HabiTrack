@@ -52,7 +52,7 @@ class ManageJournalVC: UIViewController {
         
         // initialize views
         self.manageTableView = ManageTableView(journal: journal, manageTableView: manageUITableView)
-        self.colorCollectionView = ManageColorView(colorUICollectionView: colorUICollectionView)
+        self.colorCollectionView = ManageColorView(colorUICollectionView: colorUICollectionView, habitUITableView: manageUITableView)
         
         // set the databases, dataSources and delegates
         do {

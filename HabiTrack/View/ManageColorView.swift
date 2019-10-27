@@ -11,6 +11,7 @@ import Foundation
 class ManageColorView: NSObject, UICollectionViewDelegate, UICollectionViewDataSource {
 
     // view objects
+    var habitTableView: UITableView
     var colorCollectionView: UICollectionView
 //    var closeUIButton: UIButton
     
@@ -23,8 +24,9 @@ class ManageColorView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
                      "orange"]
     
     // initializer
-    init(colorUICollectionView: UICollectionView) {
+    init(colorUICollectionView: UICollectionView, habitUITableView: UITableView) {
         self.colorCollectionView = colorUICollectionView
+        self.habitTableView = habitUITableView
 //        self.closeUIButton = closeUIButton
         super.init()
     }
@@ -65,9 +67,9 @@ class ManageColorView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
     
     // collectionView : didDeselectItemAt
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        print()
-        print("didDeselectColorItemAt..\(indexPath.row)")
-        print()
+//        print()
+//        print("didDeselectColorItemAt..\(indexPath.row)")
+//        print()
         if let cell: ColorCollectionViewCell = (collectionView.cellForItem(at: indexPath) as? ColorCollectionViewCell) {
             let defaultColor = getSystemColor()
             // selected a different color than what is currently selected
@@ -83,9 +85,9 @@ class ManageColorView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
     
     // collectionView : didSelectItemAt
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print()
-        print("didSelectColorItemAt..\(indexPath.row)")
-        print()
+//        print()
+//        print("didSelectColorItemAt..\(indexPath.row)")
+//        print()
         // get the cell from the tableView
         if let cell: ColorCollectionViewCell = (collectionView.cellForItem(at: indexPath) as? ColorCollectionViewCell) {
             let defaultColor = getSystemColor()
@@ -99,6 +101,7 @@ class ManageColorView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
                 let colorString = getColorString(color: cell.colorUIImageView!.tintColor)
                 UserDefaults.standard.set(colorString, forKey: "defaultColor")
                 self.colorCollectionView.reloadData()
+                self.habitTableView.reloadData()
 //                self.closeUIButton.setNeedsDisplay()
 //                UITabBar.appearance().tintColor = getSystemColor()
             }

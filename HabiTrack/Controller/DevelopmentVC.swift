@@ -12,15 +12,15 @@ import SQLite
 class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     var list = ["Print Table (Script)",
-                "Update Habit Repeat (Pop-up)",
                 "Delete Habit (Pop-up)",
-                "Delete Journal Table (Script)",
-                "Force Add Day (Script)",
-                "Force Delete Day (Script)",
-                "Force Update Local Habit Table (Script)",
-                "Print Local Table (Script)",
-                "Update Habit IDs (Script)",
-                "Force Update Habit ID (Script)",
+                "Update Habit Repeat (Pop-up)",
+//                "Delete Journal Table (Script)",
+//                "Force Add Day (Script)",
+//                "Force Delete Day (Script)",
+//                "Force Update Local Habit Table (Script)",
+//                "Print Local Table (Script)",
+//                "Update Habit IDs (Script)",
+//                "Force Update Habit ID (Script)",
                 "Update Habit Day (Pop-up)"]
     
     var database: Connection!

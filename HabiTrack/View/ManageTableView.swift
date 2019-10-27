@@ -31,9 +31,9 @@ class ManageTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UIT
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print()
-        print("cellForRowAt...\(indexPath.row)")
-        print()
+//        print()
+//        print("cellForRowAt...\(indexPath.row)")
+//        print()
         // testing
 //        buffer = 0
         // create tableView cell
@@ -54,9 +54,10 @@ class ManageTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UIT
                     cell.habitNameUILabel?.text = habit[self.journal.habit]
 //                    cell.habitRepeatUILabel?.text = habit[self.journal.time]
                     let tempString = getRepeatDaysString(dayInt: habit[self.journal.dayOfWeek])
-                    print("tempString: \(tempString)")
+//                    print("tempString: \(tempString)")
 //                    print("check: \(getRepeatDaysString(dayInt: habit[self.journal.dayOfWeek]))")
                     cell.habitRepeatUILabel?.text = tempString
+                    cell.habitRepeatUILabel?.textColor = getSystemColor()
                     return (cell)
                 }
             }
@@ -93,10 +94,10 @@ class ManageTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UIT
 //                    print("firstId: \(firstId)")
 //                    print("count: \(count)")
 //                    print("count: \(count) == indexPath.row: \(indexPath.row)")
-                    print("habit: \(habit[self.journal.habit]) == habitString: \(habitString)")
+//                    print("habit: \(habit[self.journal.habit]) == habitString: \(habitString)")
 //                    if (count == indexPath.row) {
                     if (habit[self.journal.habit] == habitString) {
-                        print("\tid: \(habit[self.journal.id]) == firstId+count: \(firstId+count)")
+//                        print("\tid: \(habit[self.journal.id]) == firstId+count: \(firstId+count)")
                         // get the habit whose id matches the count + first ID in the tableView
                         let habit = self.journal.habitsTable.filter(self.journal.id == (firstId+count))
                         // delete the habit

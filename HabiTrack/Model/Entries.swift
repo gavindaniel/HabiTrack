@@ -175,14 +175,14 @@ class Entries {
                     // check if current day in the array has been completed, if so increment counter
                     if (day[self.completed] == 1) {
                         // check if the habit is repeated every day
-                        print("habitRepeat == 1234567")
+//                        print("habitRepeat == 1234567")
                         if (habitRepeat == 1234567) {     // "daily"
-                            print("\thabitRepeat = 1234567")
+//                            print("\thabitRepeat = 1234567")
                             count += 1
                         }
                         // check if the habit is repeated weekly
                         else if (habitRepeat != 1234567) {     // "weekly"
-                            print("habitRepeat = weekly")
+//                            print("habitRepeat = weekly")
                             // get the day of the week the habit is repeated/reset
                             var components = DateComponents()
                             components.year = day[self.year]
@@ -199,12 +199,12 @@ class Entries {
 //                            else {
 //                                flagNewWeek = false
 //                            }
-                            print("flagNewWeek: \(flagNewWeek)")
+//                            print("flagNewWeek: \(flagNewWeek)")
                             // if it is the start of a new week, increment the streak count, reset the flag
                             if (flagNewWeek == true) {
                                 count += 1
                                 flagNewWeek = false
-                                print("count: \(count)")
+//                                print("count: \(count)")
                             }
                         }
                     }
@@ -228,7 +228,7 @@ class Entries {
                             tempDate = Calendar.current.date(from: components) ?? Date()
                             let tempDateDay = Calendar.current.component(.weekday, from: tempDate)
                             // check if same day of week as date specified (day habit started)
-                            print("\telse weekly checkDayOfWeek...")
+//                            print("\telse weekly checkDayOfWeek...")
                             if (checkDayOfWeek(dayInt: habitRepeat, dayOfWeek: tempDateDay)) {
 //                                print("startDateDay: \(startDateDay) = tempDateDay: \(tempDateDay)")
                                 flagNewWeek = true
@@ -237,7 +237,7 @@ class Entries {
                             if (flagNewWeek == true) {
                                 count += 1
                                 flagNewWeek = false
-                                print("count: \(count)")
+//                                print("count: \(count)")
                             }
                         }
                     // else if the current day has NOT been completed, reset the counter
@@ -257,7 +257,7 @@ class Entries {
 //                            let tempDateDay = getDayOfWeek(date: tempDate, length: "long")
                             let tempDateDay = Calendar.current.component(.weekday, from: tempDate)
                             // check if same day of week as date specified (day habit started), if so reset counter
-                            print("\ttesting...")
+//                            print("\ttesting...")
                             if (checkDayOfWeek(dayInt: habitRepeat, dayOfWeek: tempDateDay)) {
                                 count = 0
                             }
@@ -406,7 +406,7 @@ class Entries {
                             if (flagNewWeek == true) {
                                 count += 1              // increment streak count
                                 flagNewWeek = false     // clear the new week flag
-                                print("count: \(count)")
+//                                print("count: \(count)")
                             }
                         }
                         // check if the streak count is greater than 0 AND
@@ -442,7 +442,7 @@ class Entries {
                             if (flagNewWeek == true) {
                                 count += 1              // increment streak counter
                                 flagNewWeek = false     // reset new week flag
-                                print("count: \(count)")
+//                                print("count: \(count)")
                             }
                         }
                         // check if the current streak count is > 0 AND

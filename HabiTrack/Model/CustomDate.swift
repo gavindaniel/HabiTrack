@@ -320,7 +320,7 @@ func getStreakAsString(streak: Int) -> String {
 func checkDayOfWeek(dayInt: Int, dayOfWeek: Int) -> Bool {
     let dayString = String(dayInt)
     if (dayString.contains(String(dayOfWeek))) {
-        print("\(dayInt) contains a \(dayOfWeek)")
+//        print("\(dayInt) contains a \(dayOfWeek)")
         return true
     } else {
         return false
@@ -333,20 +333,20 @@ func getRepeatDaysString(dayInt: Int) -> String {
     var repeatString = ""
     var dayOfWeek = 1, count = 1
     while (dayOfWeek <= 7) {
-        print("dayInt: \(dayInt), dayOfWeek: \(dayOfWeek)")
+//        print("dayInt: \(dayInt), dayOfWeek: \(dayOfWeek)")
         if (checkDayOfWeek(dayInt: dayInt, dayOfWeek: dayOfWeek)) {
-            print("yay true")
+//            print("yay true")
             if (count != 1) {
                 repeatString += ", "
             } else {
                 repeatString += "Repeats: "
             }
             repeatString += getDayOfWeekString(dayOfWeek: dayOfWeek, length: "short")
-            print("repeatString: \(repeatString)")
+//            print("repeatString: \(repeatString)")
             count += 1
         }
         dayOfWeek += 1
     }
-    print("return repeatString: \(repeatString)")
+//    print("return repeatString: \(repeatString)")
     return repeatString
 }

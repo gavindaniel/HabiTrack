@@ -44,17 +44,17 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
         } catch {
             print(error)
         }
-        print()
-        print("\t\tnumberOfRowsInSection: \(count)")
-        print()
+//        print()
+//        print("\t\tnumberOfRowsInSection: \(count)")
+//        print()
         return (count)
     }
     
     // tableView : cellForRowAt
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print()
-        print("cellForRowAt...\(indexPath.row)")
-        print()
+//        print()
+//        print("cellForRowAt...\(indexPath.row)")
+//        print()
         // testing
 //        buffer = 0
         // create tableView cell
@@ -71,16 +71,16 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
             let currentDayOfWeek = Calendar.current.component(.weekday, from: dateSelected)
             // loop through the list of habits
             for habit in habits {
-                print("id: \(habit[self.journal.id])")
-                print("count-buffer: \(count) - \(buffer) == \(indexPath.row)")
+//                print("id: \(habit[self.journal.id])")
+//                print("count-buffer: \(count) - \(buffer) == \(indexPath.row)")
                 if ((count - buffer) == indexPath.row) {
                     // check if count equals the habits id
 //                    if (currentDayOfWeek == tempDayOfWeek) {
-                    print("\tid: \(habit[self.journal.id])")
-                    print()
-                    print("comparing...")
-                    print()
-                    print("\(habit[self.journal.dayOfWeek]) ? \(currentDayOfWeek)")
+//                    print("\tid: \(habit[self.journal.id])")
+//                    print()
+//                    print("comparing...")
+//                    print()
+//                    print("\(habit[self.journal.dayOfWeek]) ? \(currentDayOfWeek)")
                     if (checkDayOfWeek(dayInt: habit[self.journal.dayOfWeek], dayOfWeek: currentDayOfWeek)) {
 //                    if (count == indexPath.row) {
                         cell.habitUILabel?.text = habit[self.journal.habit]
@@ -99,9 +99,9 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
                         let habitString = habit[self.journal.habit]
     //                    let habitRepeatString = habit[self.journal.time]
                         let habitDayOfWeek = habit[self.journal.dayOfWeek]
-                        print("calling countStreak...")
+//                        print("calling countStreak...")
                         let currentStreak = self.journal.entries.countStreak(habit: habitString, date: dateSelected, habitRepeat: habitDayOfWeek) // habitRepeatString
-                        print("calling countLongestStreak...")
+//                        print("calling countLongestStreak...")
                         let longestStreak = self.journal.entries.countLongestStreak(habit: habitString, date: dateSelected, habitRepeat: habitDayOfWeek) // habitRepeatString
                         // set the streak
                         cell.streakUILabel?.text = String(currentStreak)
@@ -164,7 +164,7 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
 //                        buffer += 1
                         return (cell)
                     } else {
-                        print("\tincrementing buffer...")
+//                        print("\tincrementing buffer...")
                         buffer += 1
                         count += 1
                     }
@@ -187,7 +187,7 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
     // tableView : didSelectRowAt
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // get the cell from the tableView
-        print("didSelectRowAt...")
+//        print("didSelectRowAt...")
         if let cell: JournalTableViewCell = (tableView.cellForRow(at: indexPath) as? JournalTableViewCell) {
             // get the habit string from the cell
             let tempString = cell.habitUILabel?.text

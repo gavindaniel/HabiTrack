@@ -52,7 +52,7 @@ class HabitTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
     // tableView : didSelectRowAt
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // get the cell from the tableView
-        print("\tdidSelectRowAt...\(indexPath.row)")
+//        print("\tdidSelectRowAt...\(indexPath.row)")
         if let cell: HabitTableViewCell = (tableView.cellForRow(at: indexPath) as? HabitTableViewCell) {
             if cell.accessoryType == UITableViewCell.AccessoryType.checkmark {
                 cell.accessoryType = .none
