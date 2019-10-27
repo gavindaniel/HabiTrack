@@ -90,6 +90,8 @@ class HabitVC: UIViewController, UITextFieldDelegate {
         
         addHabitView.addGestureRecognizer(tap)
         
+        nameTextField.returnKeyType = UIReturnKeyType.done
+        
         
         
         do {
