@@ -11,8 +11,11 @@ import UIKit
 
 class ManageDisplayVC: UIViewController {
     
+    var colorCollectionView: ManageColorView?
+    @IBOutlet weak var colorUICollectionView: UICollectionView!
     
     @IBOutlet weak var closeUIButton: UIButton!
+    @IBOutlet weak var saveDispUIButton: UIButton!
     @IBOutlet weak var repeatUISwitch: UISwitch!
     @IBOutlet weak var longestUISwitch: UISwitch!
     
@@ -23,6 +26,7 @@ class ManageDisplayVC: UIViewController {
         print()
         print("viewDidAppear...")
         print()
+        colorCollectionView?.updateColorView(colorUICollectionView: colorUICollectionView)
     }
 
     // load : viewDidLoad
@@ -33,9 +37,16 @@ class ManageDisplayVC: UIViewController {
         print("viewDidLoad...")
         print()
         
+       
         // testing
         self.repeatUISwitch.isOn = getShowRepeatLabel()
         self.longestUISwitch.isOn = getShowLongestLabel()
+        
+        self.colorCollectionView = ManageColorView(colorUICollectionView: colorUICollectionView)
+               
+        // set the dataSource and delegate
+        self.colorUICollectionView.dataSource = colorCollectionView
+        self.colorUICollectionView.delegate = colorCollectionView
         
     }
     
@@ -46,7 +57,9 @@ class ManageDisplayVC: UIViewController {
         print("viewWillAppear...")
         print()
         closeUIButton?.tintColor = getSystemColor()
+        saveDispUIButton?.tintColor = getSystemColor()
         // reload the views
+        self.colorUICollectionView.reloadData()
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -58,6 +71,7 @@ class ManageDisplayVC: UIViewController {
         if #available(iOS 13, *), traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
             // handle theme change here.
         }
+        self.colorUICollectionView.reloadData()
     }
     
     @IBAction func closeManageView(_ sender: AnyObject) {

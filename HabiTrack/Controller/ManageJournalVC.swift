@@ -20,15 +20,14 @@ class ManageTableViewCell: UITableViewCell {
 
 class ManageJournalVC: UIViewController {
     
-    
     var journal = Journal()
-    
-    var colorCollectionView: ManageColorView?
     var manageTableView: ManageTableView?
+    
     @IBOutlet weak var manageUIView: UIView!
-    @IBOutlet weak var colorUICollectionView: UICollectionView!
     @IBOutlet weak var manageUITableView: UITableView!
     @IBOutlet weak var closeUIButton: UIButton!
+    @IBOutlet weak var saveHabitsUIButton: UIButton!
+    @IBOutlet weak var customDispUIButton: UIButton!
     
     
     // load : viewDidAppear
@@ -39,7 +38,6 @@ class ManageJournalVC: UIViewController {
         print()
         // update views
         manageTableView?.updateTableView(tableView: manageUITableView)
-        colorCollectionView?.updateColorView(colorUICollectionView: colorUICollectionView)
     }
 
     // load : viewDidLoad
@@ -52,7 +50,6 @@ class ManageJournalVC: UIViewController {
         
         // initialize views
         self.manageTableView = ManageTableView(journal: journal, manageTableView: manageUITableView)
-        self.colorCollectionView = ManageColorView(colorUICollectionView: colorUICollectionView, habitUITableView: manageUITableView)
         
         // set the databases, dataSources and delegates
         do {
@@ -66,10 +63,6 @@ class ManageJournalVC: UIViewController {
             // set the dataSource and delegate
             self.manageUITableView.dataSource = manageTableView
             self.manageUITableView.delegate = manageTableView
-            
-            // set the dataSource and delegate
-            self.colorUICollectionView.dataSource = colorCollectionView
-            self.colorUICollectionView.delegate = colorCollectionView
             
             // testing drag and drop delegate
             self.manageUITableView.dragInteractionEnabled = true
@@ -89,9 +82,11 @@ class ManageJournalVC: UIViewController {
         print("viewWillAppear...")
         print()
         closeUIButton?.tintColor = getSystemColor()
+        saveHabitsUIButton?.tintColor = getSystemColor()
+        customDispUIButton?.tintColor = getSystemColor()
         // reload the views
         self.manageUITableView.reloadData()
-        self.colorUICollectionView.reloadData()
+//        self.colorUICollectionView.reloadData()
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -103,7 +98,7 @@ class ManageJournalVC: UIViewController {
         if #available(iOS 13, *), traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
             // handle theme change here.
             self.manageUITableView.reloadData()
-            self.colorUICollectionView.reloadData()
+//            self.colorUICollectionView.reloadData()
         }
     }
     

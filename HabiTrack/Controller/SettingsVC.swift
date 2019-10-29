@@ -16,7 +16,7 @@ class SettingTableViewCell: UITableViewCell {
 
 class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var settingList = ["Manage Habits", "Manage Display"]
+    var settingList = ["Manage Habits", "Customize Display"]
     
     var database: Connection!
     let journal = Journal()
@@ -66,7 +66,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             manageJournalVC.journal = journal
             self.present(manageJournalVC, animated: true, completion: nil)
         }
-        else if (settingList[indexPath.row] == "Manage Display") {
+        else if (settingList[indexPath.row] == "Customize Display") {
             // do something..
             print("\tManage Habits...")
             let storyBoard = UIStoryboard(name: "Main", bundle:nil)

@@ -11,7 +11,7 @@ import Foundation
 class ManageColorView: NSObject, UICollectionViewDelegate, UICollectionViewDataSource {
 
     // view objects
-    var habitTableView: UITableView
+//    var habitTableView: UITableView
     var colorCollectionView: UICollectionView
 //    var closeUIButton: UIButton
     
@@ -24,10 +24,9 @@ class ManageColorView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
                      "orange"]
     
     // initializer
-    init(colorUICollectionView: UICollectionView, habitUITableView: UITableView) {
+    init(colorUICollectionView: UICollectionView) {
         self.colorCollectionView = colorUICollectionView
-        self.habitTableView = habitUITableView
-//        self.closeUIButton = closeUIButton
+//        self.habitTableView = habitUITableView
         super.init()
     }
         
@@ -101,9 +100,7 @@ class ManageColorView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
                 let colorString = getColorString(color: cell.colorUIImageView!.tintColor)
                 UserDefaults.standard.set(colorString, forKey: "defaultColor")
                 self.colorCollectionView.reloadData()
-                self.habitTableView.reloadData()
-//                self.closeUIButton.setNeedsDisplay()
-//                UITabBar.appearance().tintColor = getSystemColor()
+//                self.habitTableView.reloadData()
             }
         }
     }
