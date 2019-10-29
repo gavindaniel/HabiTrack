@@ -90,6 +90,7 @@ class HabitVC: UIViewController, UITextFieldDelegate {
         
         addHabitView.addGestureRecognizer(tap)
         
+        self.nameTextField.delegate = self
         nameTextField.returnKeyType = UIReturnKeyType.done
         
         
@@ -134,6 +135,11 @@ class HabitVC: UIViewController, UITextFieldDelegate {
             // handle theme change here.
             self.habitUITableView.reloadData()
         }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
     }
     
     //Calls this function when the tap is recognized.
