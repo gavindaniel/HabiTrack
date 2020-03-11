@@ -22,26 +22,16 @@ class HabitVC: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var addUIButton: UIButton!
     @IBOutlet weak var cancelUIButton: UIButton!
-    //    @IBOutlet weak var repeatTextField: UITextField!
-//    @IBOutlet weak var repeatUnderlineLabel: UILabel!
-//    @IBOutlet weak var repeatRequiredLabel: UILabel!
     
-    
-//    @IBOutlet var addHabitView: UIView!
     @IBOutlet weak var addHabitView: UIView!
     
     var habitTableView: HabitTableView?
     @IBOutlet weak var habitUITableView: UITableView!
-    //    @IBOutlet weak var habitUITableView: UITableView!
     
     var activeTextField = UITextField()
     var lastActiveTextField: String!
     
     var journal = Journal()
-    
-    // customViews
-//    var journalTableView: JournalTableView?
-//    @IBOutlet weak var habitTableView: UITableView!
     
     // load : viewDidAppear
     override func viewDidAppear(_ animated: Bool) {
@@ -158,15 +148,10 @@ class HabitVC: UIViewController, UITextFieldDelegate {
         let id = textField.restorationIdentifier
         
         if (id == "titleTextField") {
-//            nameUnderlineLabel.textColor = UIColor.systemBlue
             let defaultColor = getSystemColor()
             nameUnderlineLabel.textColor = defaultColor
             habitUILabel.textColor = defaultColor
-            
         }
-//        else if (id == "timeTextField") {
-//            repeatUnderlineLabel.textColor = UIColor.systemBlue
-//        }
     }
     
     // Assign the newly active text field to your activeTextField variable
@@ -193,23 +178,6 @@ class HabitVC: UIViewController, UITextFieldDelegate {
                 }
             }
         }
-//        if (textField.restorationIdentifier == "timeTextField") {
-//            if (textField.text != "") {
-//                if #available(iOS 13.0, *) {
-//                    repeatUnderlineLabel.textColor = UIColor.systemBlue
-//                } else {
-//                    // Fallback on earlier versions
-//                    repeatUnderlineLabel.textColor = UIColor.systemBlue
-//                }
-//            } else {
-//                if #available(iOS 13.0, *) {
-//                    repeatUnderlineLabel.textColor = UIColor.systemGray
-//                } else {
-//                    // Fallback on earlier versions
-//                    repeatUnderlineLabel.textColor = UIColor.systemGray
-//                }
-//            }
-//        }
     }
     
     @IBAction func cancelAddHabit(_ sender: AnyObject) {
@@ -226,15 +194,10 @@ class HabitVC: UIViewController, UITextFieldDelegate {
         let habit = nameTextField.text
         // testing
         let selectedDays = habitTableView?.selectedList
-//        let time = repeatTextField.text
         var i = 0, count = 0, repeatInt = ""
         var repeatString = "weekly"
         while (i < selectedDays!.count) {
             if (selectedDays![i] == 1) {
-//                if (i != 6 && repeatString != "") {
-//                    repeatString += ", "
-//                }
-//                repeatString += "\(getDayOfWeekString(dayOfWeek: i+1, length: "long"))s"
                     repeatInt += "\(i+1)"
                 count += 1
             }
@@ -244,8 +207,6 @@ class HabitVC: UIViewController, UITextFieldDelegate {
         if (count >= 7) {
             repeatString = "daily"
         }
-        // testing
-//                if (habit == "" || time == "") {
         if (habit == "" || count == 0) {
             if (habit == "") {
                 print("Name blank, displaying required...")
@@ -254,32 +215,23 @@ class HabitVC: UIViewController, UITextFieldDelegate {
             }
             if (count == 0) {
                 print("No days selected, displaying required...")
-//                repeatUnderlineLabel.textColor = UIColor.red
-//                repeatRequiredLabel.isHidden = false
             }
         } else {
-//            nameRequiredLabel.isHidden = true
-//                    repeatRequiredLabel.isHidden = true
-//                    let addHabit = self.journal.habitsTable.insert(self.journal.habit <- habit ?? "error",
-//                                                                   self.journal.time <- time ?? "error",
-//                                                                   self.journal.streak <- 0,
-//                                                                   self.journal.dayOfWeek <- 0)
             let addHabit = self.journal.habitsTable.insert(self.journal.habit <- habit ?? "error",
             self.journal.time <- repeatString,
             self.journal.streak <- 0,
             self.journal.dayOfWeek <- Int(repeatInt) ?? 1)
 
-//            if (count < 7) {
-//                addHabit = self.journal.habitsTable.insert(self.journal.habit <- habit ?? "error",
-//                self.journal.time <- repeatString,
-//                self.journal.streak <- 0,
-//                self.journal.dayOfWeek <- 0)
-//            }
             // attempt to add habit to database
             do {
                 try self.journal.database.run(addHabit)
                 // testing ...
                 let defaults = UserDefaults.standard
+                // FIXME: errror caused by LOCAL copy of database not existing, need to check if database exists and if not, create it
+                if (isKeyPresentInUserDefaults(key: "localHabits") == false) {
+                    defaults.set([String](), forKey: "localHabits")
+                }
+                // end FIXME
                 var localHabits = defaults.object(forKey: "localHabits") as! [String]
                 localHabits.append(habit!)
                 defaults.set(localHabits, forKey: "localHabits")
@@ -287,7 +239,6 @@ class HabitVC: UIViewController, UITextFieldDelegate {
                 print("Habit Added -> habit: \(habit ?? "error"), time: \("daily")")
                 self.journal.entries.addDay(habit: habit ?? "error", date: Date())
                 nameTextField.text = ""
-//                        repeatTextField.text = ""
                 
                 // return to journal view controller
                 dismiss(animated: true, completion: nil)

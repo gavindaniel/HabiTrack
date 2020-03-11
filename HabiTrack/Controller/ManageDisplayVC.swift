@@ -23,9 +23,9 @@ class ManageDisplayVC: UIViewController {
     // load : viewDidAppear
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print()
-        print("viewDidAppear...")
-        print()
+//        print()
+//        print("viewDidAppear...")
+//        print()
         colorCollectionView?.updateColorView(colorUICollectionView: colorUICollectionView)
     }
 
@@ -33,9 +33,9 @@ class ManageDisplayVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        print()
-        print("viewDidLoad...")
-        print()
+//        print()
+//        print("viewDidLoad...")
+//        print()
         
        
         // testing
@@ -53,9 +53,9 @@ class ManageDisplayVC: UIViewController {
     // load : viewWillAppear
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print()
-        print("viewWillAppear...")
-        print()
+//        print()
+//        print("viewWillAppear...")
+//        print()
         closeUIButton?.tintColor = getSystemColor()
         saveDispUIButton?.tintColor = getSystemColor()
         // reload the views
@@ -64,9 +64,9 @@ class ManageDisplayVC: UIViewController {
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        print()
-        print("traitCollectionDidChange")
-        print()
+//        print()
+//        print("traitCollectionDidChange")
+//        print()
         // check if change from light/dark mode
         if #available(iOS 13, *), traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
             // handle theme change here.

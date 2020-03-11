@@ -34,28 +34,18 @@ class ManageTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UIT
 //        print()
 //        print("cellForRowAt...\(indexPath.row)")
 //        print()
-        // testing
-//        buffer = 0
+        
         // create tableView cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "settings_cell", for: indexPath)
             as! ManageTableViewCell
-        // since the database only increments from the last ID,
-        // this for loop fixes issues with gaps in the database.
-//        var count = 0
-//        var buffer = 0
         do {
             // get the table
             let habits = try self.journal.database.prepare(self.journal.habitsTable)
-            // testing
-//            let currentDayOfWeek = Calendar.current.component(.weekday, from: dateSelected)
             // loop through the list of habits
             for habit in habits {
                 if (habit[self.journal.id] == (indexPath.row+1)) {
                     cell.habitNameUILabel?.text = habit[self.journal.habit]
-//                    cell.habitRepeatUILabel?.text = habit[self.journal.time]
                     let tempString = getRepeatDaysString(dayInt: habit[self.journal.dayOfWeek])
-//                    print("tempString: \(tempString)")
-//                    print("check: \(getRepeatDaysString(dayInt: habit[self.journal.dayOfWeek]))")
                     cell.habitRepeatUILabel?.text = tempString
                     cell.habitRepeatUILabel?.textColor = getSystemColor()
                     return (cell)
@@ -91,13 +81,7 @@ class ManageTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UIT
                     if (count == 0) {
                         firstId = habit[self.journal.id]
                     }
-//                    print("firstId: \(firstId)")
-//                    print("count: \(count)")
-//                    print("count: \(count) == indexPath.row: \(indexPath.row)")
-//                    print("habit: \(habit[self.journal.habit]) == habitString: \(habitString)")
-//                    if (count == indexPath.row) {
                     if (habit[self.journal.habit] == habitString) {
-//                        print("\tid: \(habit[self.journal.id]) == firstId+count: \(firstId+count)")
                         // get the habit whose id matches the count + first ID in the tableView
                         let habit = self.journal.habitsTable.filter(self.journal.id == (firstId+count))
                         // delete the habit

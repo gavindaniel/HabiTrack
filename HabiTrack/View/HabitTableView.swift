@@ -12,9 +12,7 @@ import SQLite
 
 class HabitTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
 
-//    var journal: Journal
     var habitTableView: UITableView
-//    var dateSelected: Date
     var dayList = ["Sunday",
                    "Monday",
                    "Tuesday",
@@ -24,11 +22,8 @@ class HabitTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
                    "Saturday"]
     var selectedList = [0,0,0,0,0,0,0] // 0 = false, 1 = true
     
-//    init(journal: Journal, habitTableView: UITableView, date: Date) {
     init(habitTableView: UITableView) {
-//        self.journal = journal
         self.habitTableView = habitTableView
-//        self.dateSelected = date
         super.init()
     }
     

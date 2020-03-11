@@ -14,14 +14,16 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     var list = ["Print Table (Script)",
                 "Delete Habit (Pop-up)",
                 "Update Habit Repeat (Pop-up)",
-//                "Delete Journal Table (Script)",
-//                "Force Add Day (Script)",
-//                "Force Delete Day (Script)",
-//                "Force Update Local Habit Table (Script)",
-//                "Print Local Table (Script)",
-//                "Update Habit IDs (Script)",
-//                "Force Update Habit ID (Script)",
-                "Update Habit Day (Pop-up)"]
+                "Delete Journal Table (Script)",
+                "Force Add Day (Script)",
+                "Force Delete Day (Script)",
+                "Force Update Local Habit Table (Script)",
+                "Print Local Table (Script)",
+                "Update Habit IDs (Script)",
+                "Force Update Habit ID (Script)",
+                "Update Habit Day (Pop-up)",
+                "Print Current Date (Script)",
+                "Print Date Selected (Script)"]
     
     var database: Connection!
     let journal = Journal()
@@ -81,6 +83,10 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             updateRepeatById()
         } else if (list[indexPath.row] == "Update Habit Day (Pop-up)") {
             updateDayOfWeek()
+        } else if (list[indexPath.row] == "Print Current Date (Script)") {
+            printDayOfWeek()
+        } else if (list[indexPath.row] == "Print Date Selected (Script)") {
+//            printDateSelected()
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -422,5 +428,10 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         alert.addAction(cancel)
         present(alert, animated: true, completion: nil)
     }
+    
+    func printDayOfWeek() {
+        print("current Date: \(Date())")
+    }
+    
 }
 

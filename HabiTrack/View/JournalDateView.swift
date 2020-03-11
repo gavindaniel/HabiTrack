@@ -61,18 +61,15 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
         var tempDate = Date()
         // check that this isn't the initial load of the program, if not get the date from last selected.
         if (lastSelectedItem != -1) {
+            let year = Calendar.current.component(.year, from: dateSelected)
             let month = Calendar.current.component(.month, from: dateSelected)
             let day = Calendar.current.component(.day, from: dateSelected)
-            tempDate = getDate(month: month, day: day)
+            tempDate = getDate(year: year, month: month, day: day)
         }
         // get the day from either today or the last selected date.
         let tempDay = Calendar.current.component(.day, from: tempDate)
         // check if day selected, mark blue, else mark gray
         if (tempDay == getDayAsInt(date: daysArray[indexPath.row])) {
-//            cell.layer.borderColor = UIColor.systemBlue.cgColor
-//            cell.monthUILabel?.textColor = UIColor.systemBlue
-//            cell.dayUILabel?.textColor = UIColor.systemBlue
-//            let defaultColor = UserDefaults.standard.object(forKey: "defaultColor") as! UIColor
             let defaultColor = getSystemColor()
             cell.layer.borderColor = defaultColor.cgColor
             cell.monthUILabel?.textColor = defaultColor
@@ -158,10 +155,10 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
 //            let month = cell.monthUILabel?.text ?? String(Calendar.current.component(.month, from: Date()))
             let month = getMonthAsString(date: daysArray[indexPath.row], length: "short")
             let day = cell.dayUILabel?.text ?? String(Calendar.current.component(.day, from: Date()))
-            let date = getDate(month: getMonthAsInt(month: month), day: Int(day) ?? Calendar.current.component(.day, from: Date()))
-//            print("date: \(date)")
+            let date = getDate(year: Calendar.current.component(.year, from: Date()), month: getMonthAsInt(month: month), day: Int(day) ?? Calendar.current.component(.day, from: Date()))
+            print("date: \(date)")
             self.dateSelected = date
-//            print("dateSelected: \(dateSelected)")
+            print("dateSelected: \(dateSelected)")
             
             // FIXME: replace 'days' with a calculation for number of days in the month
             
@@ -176,10 +173,6 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
                 tempIndex += 1
             }
             // change the border fo the selected item
-//            cell.layer.borderColor = UIColor.blue.cgColor
-//            cell.monthUILabel?.textColor = UIColor.blue
-//            cell.dayUILabel?.textColor = UIColor.blue
-//            let defaultColor = UserDefaults.standard.object(forKey: "defaultColor") as! UIColor
             let defaultColor = getSystemColor()
             cell.layer.borderColor = defaultColor.cgColor
             cell.monthUILabel?.textColor = defaultColor

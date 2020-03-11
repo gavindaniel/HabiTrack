@@ -152,9 +152,8 @@ func getDayTh(date: Date) -> String {
 }
 
 // getDate (from inputs)
-func getDate(month: Int, day: Int) -> Date {
-//    print("month: \(month) day: \(day)")
-    let components = DateComponents(year: 2019, month: month, day: day, hour: 0, minute: 0, second: 0)
+func getDate(year: Int, month: Int, day: Int) -> Date {
+    let components = DateComponents(year: year, month: month, day: day, hour: 0, minute: 0, second: 0)
     let date = Calendar.current.date(from: components) ?? Date()
     return date
 }

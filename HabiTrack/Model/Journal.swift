@@ -64,6 +64,7 @@ class Journal {
     func updateStreak(row: Int, inc: Int, date: Date, habitString: String) {
         var index = 0       // index of for loop array
         var firstId = 0     // id of first entry in table
+        print("updateStreak...\(row) \(habitString) \(inc) \(date)")
         do {
             // try to get the table of habits from the database
             let habits = try self.database.prepare(self.habitsTable)

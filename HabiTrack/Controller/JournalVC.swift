@@ -47,11 +47,8 @@ class JournalVC: UIViewController {
     var journalTitleView: JournalTitleView?
     
     @IBOutlet weak var journalUITableView: UITableView!
-    //    @IBOutlet weak var journalUITableView: UITableView!
     @IBOutlet weak var dateUICollectionView: UICollectionView!
-    //    @IBOutlet weak var dateUICollectionView: UICollectionView!
     @IBOutlet weak var titleUICollectionView: UICollectionView!
-    //    @IBOutlet weak var titleUITableView: UITableView!
 
     // load : viewDidAppear
     override func viewDidAppear(_ animated: Bool) {

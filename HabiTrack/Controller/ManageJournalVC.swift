@@ -33,9 +33,9 @@ class ManageJournalVC: UIViewController {
     // load : viewDidAppear
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print()
-        print("viewDidAppear...")
-        print()
+//        print()
+//        print("viewDidAppear...")
+//        print()
         // update views
         manageTableView?.updateTableView(tableView: manageUITableView)
     }
@@ -44,9 +44,9 @@ class ManageJournalVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        print()
-        print("viewDidLoad...")
-        print()
+//        print()
+//        print("viewDidLoad...")
+//        print()
         
         // initialize views
         self.manageTableView = ManageTableView(journal: journal, manageTableView: manageUITableView)
@@ -78,9 +78,9 @@ class ManageJournalVC: UIViewController {
     // load : viewWillAppear
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print()
-        print("viewWillAppear...")
-        print()
+//        print()
+//        print("viewWillAppear...")
+//        print()
         closeUIButton?.tintColor = getSystemColor()
         saveHabitsUIButton?.tintColor = getSystemColor()
         customDispUIButton?.tintColor = getSystemColor()
@@ -91,9 +91,9 @@ class ManageJournalVC: UIViewController {
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        print()
-        print("traitCollectionDidChange")
-        print()
+//        print()
+//        print("traitCollectionDidChange")
+//        print()
         // check if change from light/dark mode
         if #available(iOS 13, *), traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
             // handle theme change here.

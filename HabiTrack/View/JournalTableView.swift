@@ -27,7 +27,6 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
     // tableView : numberOfRowsInSection
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // get the number of habits in the journal
-//        return (journal.getTableSize())
         buffer = 0
         var count = 0
         do {
@@ -44,9 +43,6 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
         } catch {
             print(error)
         }
-//        print()
-//        print("\t\tnumberOfRowsInSection: \(count)")
-//        print()
         return (count)
     }
     
@@ -55,15 +51,13 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
 //        print()
 //        print("cellForRowAt...\(indexPath.row)")
 //        print()
-        // testing
-//        buffer = 0
+        
         // create tableView cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
             as! JournalTableViewCell
         // since the database only increments from the last ID,
         // this for loop fixes issues with gaps in the database.
         var count = 0
-//        var buffer = 0
         do {
             // get the table
             let habits = try self.journal.database.prepare(self.journal.habitsTable)
@@ -71,20 +65,9 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
             let currentDayOfWeek = Calendar.current.component(.weekday, from: dateSelected)
             // loop through the list of habits
             for habit in habits {
-//                print("id: \(habit[self.journal.id])")
-//                print("count-buffer: \(count) - \(buffer) == \(indexPath.row)")
                 if ((count - buffer) == indexPath.row) {
-                    // check if count equals the habits id
-//                    if (currentDayOfWeek == tempDayOfWeek) {
-//                    print("\tid: \(habit[self.journal.id])")
-//                    print()
-//                    print("comparing...")
-//                    print()
-//                    print("\(habit[self.journal.dayOfWeek]) ? \(currentDayOfWeek)")
                     if (checkDayOfWeek(dayInt: habit[self.journal.dayOfWeek], dayOfWeek: currentDayOfWeek)) {
-//                    if (count == indexPath.row) {
                         cell.habitUILabel?.text = habit[self.journal.habit]
-    //                    cell.timeUILabel?.text = habit[self.journal.time]
                         
                         //testing ...
                         let repeatString = habit[self.journal.time]
@@ -97,7 +80,6 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
                         
                         // get the name of habit and size of habit entries table
                         let habitString = habit[self.journal.habit]
-    //                    let habitRepeatString = habit[self.journal.time]
                         let habitDayOfWeek = habit[self.journal.dayOfWeek]
 //                        print("calling countStreak...")
                         let currentStreak = self.journal.entries.countStreak(habit: habitString, date: dateSelected, habitRepeat: habitDayOfWeek) // habitRepeatString
@@ -142,14 +124,11 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
                                 cell.checkImageView?.image = UIImage(systemName: "checkmark.circle.fill")
                                 let defaultColor = getSystemColor()
                                 cell.checkImageView?.tintColor = defaultColor
-//                                cell.checkImageView?.tintColor = UIColor.systemBlue
                                 
                             } else {
                                 // Fallback on earlier versions
                                 cell.accessoryType = .checkmark
                             }
-    //                        cell.checkBox?.setOn(true, animated: false)
-    //                        cell.checkBox?.on = true
                         } else {
                             if #available(iOS 13.0, *) {
                                 cell.checkImageView?.image = UIImage(systemName: "circle")
@@ -158,22 +137,12 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
                                 // Fallback on earlier versions
                                 cell.accessoryType = .none
                             }
-    //                        cell.checkBox?.on = false
-    //                        cell.checkBox?.setOn(false, animated: false)
                         }
-//                        buffer += 1
                         return (cell)
                     } else {
-//                        print("\tincrementing buffer...")
                         buffer += 1
                         count += 1
                     }
-                    
-                    //testing
-//                    cell.checkBox?.onAnimationType = BEMAnimationType.bounce
-//                    cell.checkBox?.offAnimationType = BEMAnimationType.bounce
-                    
-//                    return (cell)
                 } else {
                     count += 1
                 }
@@ -187,7 +156,7 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
     // tableView : didSelectRowAt
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // get the cell from the tableView
-//        print("didSelectRowAt...")
+        print("didSelectRowAt...")
         if let cell: JournalTableViewCell = (tableView.cellForRow(at: indexPath) as? JournalTableViewCell) {
             // get the habit string from the cell
             let tempString = cell.habitUILabel?.text
@@ -196,8 +165,6 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
                 if cell.checkImageView?.image == UIImage(systemName: "checkmark.circle.fill") {
                     cell.checkImageView?.image = UIImage(systemName: "circle")
                     cell.checkImageView?.tintColor = UIColor.systemGray
-    //                cell.checkBox?.on = false
-    //                cell.checkBox?.setOn(false, animated: true)
                     journal.updateStreak(row: indexPath.row, inc: 0, date: dateSelected, habitString: tempString ?? "none")
                 } else {
                     cell.checkImageView?.image = UIImage(systemName: "checkmark.circle.fill")
@@ -208,8 +175,6 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
                 // Fallback on earlier versions
                 if cell.accessoryType == UITableViewCell.AccessoryType.checkmark {
                     cell.accessoryType = .none
-//                cell.checkBox?.on = false
-  //                cell.checkBox?.setOn(false, animated: true)
                     journal.updateStreak(row: indexPath.row, inc: 0, date: dateSelected, habitString: tempString ?? "none")
                 } else {
                     cell.accessoryType = .checkmark

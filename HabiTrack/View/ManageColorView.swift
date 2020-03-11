@@ -11,9 +11,7 @@ import Foundation
 class ManageColorView: NSObject, UICollectionViewDelegate, UICollectionViewDataSource {
 
     // view objects
-//    var habitTableView: UITableView
     var colorCollectionView: UICollectionView
-//    var closeUIButton: UIButton
     
     var colorList = ["teal",
                      "blue",
@@ -26,7 +24,6 @@ class ManageColorView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
     // initializer
     init(colorUICollectionView: UICollectionView) {
         self.colorCollectionView = colorUICollectionView
-//        self.habitTableView = habitUITableView
         super.init()
     }
         
@@ -100,7 +97,6 @@ class ManageColorView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
                 let colorString = getColorString(color: cell.colorUIImageView!.tintColor)
                 UserDefaults.standard.set(colorString, forKey: "defaultColor")
                 self.colorCollectionView.reloadData()
-//                self.habitTableView.reloadData()
             }
         }
     }
