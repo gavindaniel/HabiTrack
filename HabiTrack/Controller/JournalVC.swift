@@ -54,7 +54,7 @@ class JournalVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print()
-        print("viewDidAppear...")
+        print("JournalVC : viewDidAppear...")
         print()
         // update views
         journalTableView?.updateTableView(habitView: journalUITableView)
@@ -78,7 +78,7 @@ class JournalVC: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         print()
-        print("viewDidLoad...")
+        print("JournalVC : viewDidLoad...")
         print()
         
         // initialize journalTitleTableView
@@ -127,7 +127,7 @@ class JournalVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print()
-        print("viewWillAppear...")
+        print("JournalVC : viewWillAppear...")
         print()
         // reload the views
         self.titleUICollectionView.reloadData()
@@ -138,7 +138,7 @@ class JournalVC: UIViewController {
     // load : applicationWillEnterForeground
     @objc func applicationWillEnterForeground() {
         print()
-        print("applicationWillEnterForeground...")
+        print("JournalVC : applicationWillEnterForeground...")
         print()
         // check for day change
         update()
@@ -148,7 +148,7 @@ class JournalVC: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         print()
-        print("traitCollectionDidChange")
+        print("JournalVC : traitCollectionDidChange")
         print()
         // check if change from light/dark mode
         if #available(iOS 13, *), traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
@@ -161,7 +161,7 @@ class JournalVC: UIViewController {
     // custom : update
     func update() {
         print()
-        print("Updating View Controller...")
+        print("JournalVC : Updating View Controller...")
         print()
         
         let dateToday = Date()

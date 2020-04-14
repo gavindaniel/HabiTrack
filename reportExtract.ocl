@@ -1,0 +1,348 @@
+{ Title:    reportExtract.ocl 																}
+{ Author: Tim Rich, Sr																		}
+{ Origin Date : 11/6/2009																	}
+{ Purpose     : extract report data from the tag history							}
+{ History      : modified 11/24 to add analog max / min functionality
+					modified 11/30 because of errors found							}
+
+define
+	real cnt1;		str datemin;	str dateSt;		str tempDate;
+	str tempMon;	str SiteStr;		str repDate;	str repMon;
+	str strTemp1;	str strTemp2;	real Temp3;	real reportFile;
+	str filename;	str dev1;			str dev2;			str dev3;
+	str dev4;			str dev5;			real retrn;		bool done;
+end;
+
+done := 0;
+dateSt := STR1024;
+reportFile := 0;
+FLG3 := 0;
+{ the extract function is formatted as follows:
+	extractValue("tagname",date,time,[step],[function],[interval],[function] 
+	where;	date = mm/dd/yyyy (as a string)
+				time = hh:mm:ss (as a string)
+				step = (1 for actual stored value, 0 for calculated based on slope
+					between two points)
+				function =
+				1 -  Average	2 -  Minimum	3 -  Maximum		
+				4 -  Range		5 -  Standard Deviation		6 -  Area under the curve
+				7 -  Flow		8 -  Runtime	9 -  not used	10-  starts
+				interval = Number of seconds used by the interval
+				constant = Calculation constant used by the function
+}
+{
+Site selection from DISPLAY 200 returns an integer
+The following code determines how many valid tags
+there are for the selected site, and assigns them to the columns.
+}
+dev1 := SITE_DEV_1;	dev2 := SITE_DEV_2;	dev3 := SITE_DEV_3;
+dev4 := SITE_DEV_4;	dev5 := SITE_DEV_5;
+cnt1 := 1;
+HEADER := "DATE";
+if left(SITE_DEV_1,3) = "DII" then
+	HEADER1 := "STARTS";	HEADER2 := "RUNTIME";
+else
+	HEADER1 := "MIN";	HEADER2 := "MAX";
+	if (pos("FLOW",SITE_DEV1) > 0) then HEADER2 := "TOT";
+	end;
+end;
+if left(SITE_DEV_2,3) = "DII" then
+	HEADER3 := "STARTS";	HEADER4 := "RUNTIME";
+else
+	HEADER3 := "MIN";	HEADER4 := "MAX";
+	if (pos("FLOW",SITE_DEV2) > 0) then
+		HEADER4 := "TOT";
+	end;
+end;
+if left(SITE_DEV_3,3) = "DII" then	HEADER5 := "STARTS";		HEADER6 := "RUNTIME";
+else		HEADER5 := "MIN";		HEADER6 := "MAX";
+	if (pos("FLOW",SITE_DEV3) > 0) then HEADER6 := "TOT";
+	end;
+end;
+if left(SITE_DEV_4,3) = "DII" then	HEADER7 := "STARTS";		HEADER8 := "RUNTIME";
+else		HEADER7 := "MIN";		HEADER8 := "MAX";
+	if (pos("FLOW",SITE_DEV4) > 0) then HEADER8 := "TOT";
+	end;
+end;
+if left(SITE_DEV_5,3) = "DII" then	HEADER9 := "STARTS";		HEADER10 := "RUNTIME";
+else		HEADER9 := "MIN";		HEADER10 := "MAX";
+	if (pos("FLOW",SITE_DEV5) > 0) then HEADER10 := "TOT";
+	end;
+end;
+
+{
+Select RPT_MONTH and RPT_YEAR on DISPLAY 200
+}
+tempMon := exefunction(rpath+"repMonth.ocl",RPT_MONTH);
+repDate := dateStr(parsedate(tempMon+"\01\"+RPT_YEAR));
+repMon := tempMon;  	{at the beginning of the report set the month}
+	{Compare after each iteration to insure we are still in the selected month. }
+
+{
+Derive a file name that is unique, including month, year, and site
+for the disk report file.
+}
+
+fileName := (rpath+"Report Files\"+SITE_CODE+" "+repmon+" "+ RPT_YEAR + ".csv");
+FILE_NAME := (SITE_CODE+" "+ tempMon + "-" + RPT_YEAR);
+
+{
+Format and write the file heading
+}
+reportFile := open(filename,$WRITE);
+write(reportFile,"");
+write(reportFile,",,,,"+SITE_NAME);
+write(reportFile,"MONTH,YEAR");
+write(reportFile,tempMon + "," + RPT_YEAR );
+write(reportFile,","+SITE_DEV1+",,"+SITE_DEV2+",,"+SITE_DEV3+",,"+SITE_DEV4+",,"+SITE_DEV5);
+write(reportFile,"DATE,"+HEADER1+","+HEADER2+","+HEADER3+","+HEADER4+","+HEADER5+","+HEADER6+","+HEADER7+","+HEADER8+","+HEADER9+","+HEADER10);
+{ Loop through the extractor until we reach the end of  the month   }
+{format on-screen report HEADER }
+
+while (repMon = tempMon) do
+	STR1502 := mid(repDate,4,2);
+	strTemp1 := tablevalue($STR,(1589 + cnt1*11),(STR1502));
+	{
+		Generate starts and run times for  device 1 for the month 					
+	}
+	if left(dev1,3) = "DII" then
+		STR1504 := exefunction(rpath+"DevStarts.ocl",dev1,repDate);
+		STR1942 := exefunction(rpath+"minInt.ocl",STR1942,STR1504);
+		STR1953 := exefunction(rpath+"maxInt.ocl",STR1953,STR1504);			
+		STR1964 := exefunction(rpath+"totInt.ocl",STR1964,STR1504);
+		STR1975 := exefunction(rpath+"avgInt.ocl",STR1964,cnt1);
+		strTemp1 := tablevalue($STR,(1590 + cnt1*11),(STR1504));
+			
+		STR1506 := exefunction(rpath+"DevRuntime.ocl",dev1,repDate);
+		STR1943 := exefunction(rpath+"minReal.ocl",STR1943,STR1506);
+		STR1954 := exefunction(rpath+"maxReal.ocl",STR1954,STR1506);	
+		STR1965 := exefunction(rpath+"totReal.ocl",STR1965,STR1506);	
+		STR1976 := exefunction(rpath+"avgReal.ocl",STR1965,cnt1);
+		strTemp2 := tablevalue($STR,(1591 + cnt1*11),(STR1506));
+	else
+		{
+			Generate Maximums and Minimums for device 1 for the month 					
+		}
+		if (left(SITE_DEV_1,3) = "EUR") then
+			STR1504 := exefunction(rpath+"DevMin.ocl",dev1,repDate,SITE_DEV1);
+			STR1942 := exefunction(rpath+"minReal.ocl",STR1942,STR1504);
+			strTemp1 := tablevalue($STR,(1590 + cnt1*11),(STR1504));
+			
+			if ((pos("FLOW",SITE_DEV1) > 0) & (pos("RAS",SITE_DEV1) = 0) & (pos("WAS",SITE_DEV1) = 0)) then
+				STR1506 := exefunction(rpath+"DevFlow.ocl",dev1,repDate,SITE_DEV1);
+				STR1965 := exefunction(rpath+"totReal.ocl",STR1965,STR1506);	
+			else
+				STR1506 := exefunction(rpath+"DevMax.ocl",dev1,repDate,SITE_DEV1);
+				STR1954 := exefunction(rpath+"maxReal.ocl",STR1954,STR1506);
+			end;
+			strTemp2 := tablevalue($STR,(1591 + cnt1*11),(STR1506));
+		end;
+	end;
+	
+	{
+				Generate starts and run times for device 2 for the month 					
+	}
+	if dev2 <> "" then
+		if left(dev2,3) = "DII" then
+			STR1508 := exefunction(rpath+"DevStarts.ocl",dev2,repDate);
+			STR1944 := exefunction(rpath+"minInt.ocl",STR1944,STR1508);
+			STR1955 := exefunction(rpath+"maxInt.ocl",STR1955,STR1508);
+			STR1966 := exefunction(rpath+"totInt.ocl",STR1966,STR1508);
+			STR1977 := exefunction(rpath+"avgInt.ocl",STR1966,cnt1);
+			strTemp1 := tablevalue($STR,(1592 + cnt1*11),(STR1508));
+
+			STR1510 := exefunction(rpath+"DevRuntime.ocl",dev2,repDate);
+			STR1945 := exefunction(rpath+"minReal.ocl",STR1945,STR1510);
+			STR1956 := exefunction(rpath+"maxReal.ocl",STR1956,STR1510);
+			STR1967 := exefunction(rpath+"totReal.ocl",STR1967,STR1510);
+			STR1978 := exefunction(rpath+"avgReal.ocl",STR1967,cnt1);
+			strTemp2 := tablevalue($STR,(1593 + cnt1*11),(STR1510));
+		else	
+			if (left(SITE_DEV_2,3) = "EUR") then
+				STR1508 := exefunction(rpath+"DevMin.ocl",dev2,repDate,SITE_DEV2);
+				STR1944 := exefunction(rpath+"minReal.ocl",STR1944,STR1508);
+				strTemp1 := tablevalue($STR,(1592 + cnt1*11),(STR1508));
+
+				if (pos("FLOW",SITE_DEV2) > 0) & (pos("RAS",SITE_DEV2) = 0) & (pos("WAS",SITE_DEV2) = 0) then
+					STR1510 := exefunction(rpath+"DevFlow.ocl",dev2,repDate,SITE_DEV2);
+					STR1967 := exefunction(rpath+"totReal.ocl",STR1967,STR1510);
+				else
+					STR1510 := exefunction(rpath+"DevMax.ocl",dev2,repDate,SITE_DEV2);
+					STR1956 := exefunction(rpath+"maxReal.ocl",STR1956,STR1510);
+				end;
+				strTemp2 := tablevalue($STR,(1593 + cnt1*11),(STR1510));
+			end;
+		end;
+	end;
+	{
+				Generate report data for device 3 for the month 					
+	}
+	if dev3 <> "" then
+		if (left(SITE_DEV_3,3) = "DII") then
+		{
+		Generate Starts and Runtimes for device 3 for the month 					
+		}
+			STR1512 := exefunction(rpath+"DevStarts.ocl",dev3,repDate);
+			STR1946 := exefunction(rpath+"minInt.ocl",STR1946,STR1512);
+			STR1957 := exefunction(rpath+"maxInt.ocl",STR1957,STR1512);
+			STR1968 := exefunction(rpath+"totInt.ocl",STR1968,STR1512);
+			STR1979 := exefunction(rpath+"avgInt.ocl",STR1968,cnt1);
+			strTemp1 := tablevalue($STR,(1594 + cnt1*11),(STR1512));
+
+			STR1514 := exefunction(rpath+"DevRuntime.ocl",dev3,repDate);
+			STR1947 := exefunction(rpath+"minReal.ocl",STR1947,STR1514);
+			STR1958 := exefunction(rpath+"maxReal.ocl",STR1958,STR1514);
+			STR1969 := exefunction(rpath+"totReal.ocl",STR1969,STR1514);
+			STR1980 := exefunction(rpath+"avgReal.ocl",STR1969,cnt1);
+			strTemp2 := tablevalue($STR,(1595 + cnt1*11),(STR1514));
+		else
+		{
+			Generate Maximums and Minimums for device 3 for the month 					
+		}
+			if (left(SITE_DEV_3,3) = "EUR") then
+				STR1512 := exefunction(rpath+"DevMin.ocl",dev3,repDate,SITE_DEV3);
+				STR1946 := exefunction(rpath+"minReal.ocl",STR1946,STR1512);
+				strTemp1 := tablevalue($STR,(1594 + cnt1*11),(STR1512));
+
+				if (pos("FLOW",SITE_DEV3) > 0) & (pos("RAS",SITE_DEV3) = 0) & (pos("WAS",SITE_DEV3) = 0) then
+					STR1514 := exefunction(rpath+"DevFlow.ocl",dev3,repDate,SITE_DEV3);
+					STR1969 := exefunction(rpath+"totReal.ocl",STR1969,STR1514);
+				else
+					STR1514 := exefunction(rpath+"DevMax.ocl",dev3,repDate,SITE_DEV3);
+					STR1958 := exefunction(rpath+"maxReal.ocl",STR1958,STR1514);
+				end;
+				strTemp2 := tablevalue($STR,(1595 + cnt1*11),(STR1514));
+			end;
+		end;
+	end;
+	{
+				Generate report data for device 4 for the month 					
+	}
+	if dev4 <> "" then
+		if (left(SITE_DEV_4,3) = "DII") then
+		{
+			Generate Starts and Runtimes for device 4 for the month 					
+		}
+			STR1516 := exefunction(rpath+"DevStarts.ocl",dev4,repDate);
+			STR1948 := exefunction(rpath+"minInt.ocl",STR1948,STR1516);
+			STR1959 := exefunction(rpath+"maxInt.ocl",STR1959,STR1516);
+			STR1970 := exefunction(rpath+"totInt.ocl",STR1970,STR1516);
+			STR1981 := exefunction(rpath+"avgInt.ocl",STR1970,cnt1);
+			strTemp1 := tablevalue($STR,(1596 + cnt1*11),(STR1516));
+
+			STR1518 := exefunction(rpath+"DevRuntime.ocl",dev4,repDate);
+			STR1949 := exefunction(rpath+"minReal.ocl",STR1949,STR1518);
+			STR1960 := exefunction(rpath+"maxReal.ocl",STR1960,STR1518);
+			STR1971 := exefunction(rpath+"totReal.ocl",STR1971,STR1518);
+			STR1982 := exefunction(rpath+"avgReal.ocl",STR1971,cnt1);
+			strTemp2 := tablevalue($STR,(1597 + cnt1*11),(STR1518));
+		else
+		{
+			Generate Maximums and Minimums for device 4 for the month 					
+		}
+			if (left(SITE_DEV_4,3) = "EUR") then
+				STR1516 := exefunction(rpath+"DevMin.ocl",dev4,repDate,SITE_DEV4);
+				STR1948 := exefunction(rpath+"minReal.ocl",STR1948,STR1516);
+				strTemp1 := tablevalue($STR,(1596 + cnt1*11),(STR1516));
+
+				if (pos("FLOW",SITE_DEV4) > 0) & (pos("RAS",SITE_DEV4) = 0) & (pos("WAS",SITE_DEV4) = 0) then
+					STR1518 := exefunction(rpath+"DevFlow.ocl",dev4,repDate,SITE_DEV4);
+					STR1971 := exefunction(rpath+"totReal.ocl",STR1971,STR1518);
+				else
+					STR1518 := exefunction(rpath+"DevMax.ocl",dev4,repDate,SITE_DEV4);
+					STR1960 := exefunction(rpath+"maxReal.ocl",STR1960,STR1518);
+				end;
+				strTemp2 := tablevalue($STR,(1597 + cnt1*11),(STR1518));
+			end;
+		end;
+	end;
+	{
+				Generate report data for device 5 for the month 					
+	}
+	if dev5 <> "" then
+		if (left(SITE_DEV_5,3) = "DII") then
+		{
+			Generate Starts and Runtimes for device 5 for the month 					
+		}
+			STR1520 := exefunction(rpath+"DevStarts.ocl",dev5,repDate);
+			STR1950 := exefunction(rpath+"minInt.ocl",STR1950,STR1520);
+			STR1961 := exefunction(rpath+"maxInt.ocl",STR1961,STR1520);
+			STR1972 := exefunction(rpath+"totInt.ocl",STR1972,STR1520);
+			STR1983 := exefunction(rpath+"avgInt.ocl",STR1972,cnt1);
+			strTemp1 := tablevalue($STR,(1598 + cnt1*11),(STR1520));
+
+			STR1522 := exefunction(rpath+"DevRuntime.ocl",dev5,repDate);
+			STR1951 := exefunction(rpath+"minReal.ocl",STR1951,STR1522);
+			STR1962 := exefunction(rpath+"maxReal.ocl",STR1962,STR1522);
+			STR1973 := exefunction(rpath+"totReal.ocl",STR1973,STR1522);
+			STR1984 := exefunction(rpath+"avgReal.ocl",STR1973,cnt1);
+			strTemp2 := tablevalue($STR,(1599 + cnt1*11),(STR1522));
+		else
+		{
+			Generate Maximums and Minimums for device 5 for the month 					
+		}
+			if (left(SITE_DEV_5,3) = "EUR") then
+				STR1520 := exefunction(rpath+"DevMin.ocl",dev5,repDate,SITE_DEV5);
+				STR1950 := exefunction(rpath+"minReal.ocl",STR1948,STR1520);
+				strTemp1 := tablevalue($STR,(1598 + cnt1*11),(STR1520));
+
+				if (pos("FLOW",SITE_DEV5) > 0) & (pos("RAS",SITE_DEV5) = 0) & (pos("WAS",SITE_DEV5) = 0) then
+					STR1522 := exefunction(rpath+"DevFlow.ocl",dev5,repDate,SITE_DEV5);
+					STR1973 := exefunction(rpath+"totReal.ocl",STR1973,STR1522);
+				else
+					STR1522 := exefunction(rpath+"DevMax.ocl",dev5,repDate,SITE_DEV5);
+					STR1962 := exefunction(rpath+"maxReal.ocl",STR1962,STR1522);
+				end;
+				strTemp2 := tablevalue($STR,(1599 + cnt1*11),(STR1522));
+			end;
+		end;
+	end;
+	{
+				Increment the date
+	}
+	
+	repDate := dateStr(parseDate(repDate) + LOD +3600);
+	repMon := left(repDate,2);
+		if repMon <> tempMon then
+			if ((left(SITE_DEV_1,3) = "EUR") & (pos("FLOW",SITE_DEV1) > 0)) then
+				STR1975 := exefunction(rpath+"DevAvg.ocl",dev1,repdate,cnt1);
+			end;
+			if ((left(SITE_DEV_2,3) = "EUR") & (pos("FLOW",SITE_DEV2) > 0)) then
+				STR1977 := exefunction(rpath+"DevAvg.ocl",dev2,repdate,cnt1);
+			end;
+			if ((left(SITE_DEV_3,3) = "EUR") & (pos("FLOW",SITE_DEV3) > 0)) then
+				STR1979 := exefunction(rpath+"DevAvg.ocl",dev3,repdate,cnt1);
+			end;
+			if ((left(SITE_DEV_4,3) = "EUR") & (pos("FLOW",SITE_DEV4) > 0)) then
+				STR1981 := exefunction(rpath+"DevAvg.ocl",dev4,repdate,cnt1);
+			end;
+			if ((left(SITE_DEV_5,3) = "EUR") & (pos("FLOW",SITE_DEV5) > 0)) then
+				STR1983 := exefunction(rpath+"DevAvg.ocl",dev5,repdate,cnt1);
+			end;
+		end;
+	{
+			Write a line to the report file.
+	}
+write(reportFile,STR1502+","+STR1504+","+STR1506+","+STR1508+","+STR1510+","+STR1512+","+STR1514+","+STR1516+","+STR1518+","+STR1520+","+STR1522);
+
+cnt1 := cnt1 + 1;  {error trapping}
+		if cnt1 > 31 then
+			break;
+		end;
+	end;
+	
+write(reportFile,",");
+write(reportFile,"Minimum,"+STR1942+","+STR1943+","+STR1944+","+STR1945+","+STR1946+","+STR1947+","+STR1948+","+STR1949+","+STR1950+","+STR1951+","+STR1952);
+write(reportFile,"Maximum,"+STR1953+","+STR1954+","+STR1955+","+STR1506+","+STR1957+","+STR1958+","+STR1959+","+STR1960+","+STR1961+","+STR1962+","+STR1963);
+write(reportFile,"Total,"+STR1964+","+STR1965+","+STR1966+","+STR1967+","+STR1968+","+STR1969+","+STR1970+","+STR1971+","+STR1972+","+STR1973+","+STR1974);
+write(reportFile,"Average,"+STR1975+","+STR1976+","+STR1977+","+STR1978+","+STR1979+","+STR1980+","+STR1981+","+STR1982+","+STR1983+","+STR1984+","+STR1985);
+
+close(reportFile);
+
+STR1502 := "";	STR1504 := "";	STR1506 := "";	STR1508 := "";
+STR1510 := "";	STR1512 := "";	STR1514 := "";	STR1516 := "";
+STR1518 := "";	STR1520 := "";	STR1522 := "";
+
+done := 1;
+
+RETURN done;

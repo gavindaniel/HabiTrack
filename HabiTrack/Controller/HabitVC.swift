@@ -37,7 +37,7 @@ class HabitVC: UIViewController, UITextFieldDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print()
-        print("viewDidAppear...")
+        print("HabitVC : viewDidAppear...")
         print()
         // update views
         habitTableView?.updateTableView(habitDayView: habitUITableView)
@@ -52,7 +52,7 @@ class HabitVC: UIViewController, UITextFieldDelegate {
     // load : viewDidDisappear
     override func viewDidDisappear(_ animated: Bool) {
         print()
-        print("viewDidDisappear...")
+        print("HabitVC : viewDidDisappear...")
         print()
         // testing
         let storyBoard = UIStoryboard(name: "Main", bundle:nil)
@@ -66,7 +66,7 @@ class HabitVC: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         print()
-        print("viewDidLoad...")
+        print("HabitVC : viewDidLoad...")
         print()
         
         // testing
@@ -75,10 +75,14 @@ class HabitVC: UIViewController, UITextFieldDelegate {
         //Looks for single or multiple taps.
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
         
+        
         //Uncomment the line below if you want the tap not not interfere and cancel other interactions.
         //tap.cancelsTouchesInView = false
         
         addHabitView.addGestureRecognizer(tap)
+        
+        // testing
+//        habitUITableView.addGestureRecognizer(tap)
         
         self.nameTextField.delegate = self
         nameTextField.returnKeyType = UIReturnKeyType.done
@@ -105,7 +109,7 @@ class HabitVC: UIViewController, UITextFieldDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print()
-        print("viewWillAppear...")
+        print("HabitVC : viewWillAppear...")
         print()
         // testing
         let defaultColor = getSystemColor()
@@ -118,7 +122,7 @@ class HabitVC: UIViewController, UITextFieldDelegate {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         print()
-        print("traitCollectionDidChange")
+        print("HabitVC : traitCollectionDidChange")
         print()
         // check if change from light/dark mode
         if #available(iOS 13, *), traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
@@ -136,9 +140,12 @@ class HabitVC: UIViewController, UITextFieldDelegate {
     @objc func dismissKeyboard() {
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
         print()
-        print("dismissKeyboard...")
+        print("HabitVC : dismissKeyboard...")
         print()
         addHabitView.endEditing(true)
+        
+//        testing
+        habitUITableView.endEditing(true)
     }
     
     // Assign the newly active text field to your activeTextField variable
@@ -240,8 +247,15 @@ class HabitVC: UIViewController, UITextFieldDelegate {
                 self.journal.entries.addDay(habit: habit ?? "error", date: Date())
                 nameTextField.text = ""
                 
+                // testing ...
+                
+                // end testing
+                
                 // return to journal view controller
                 dismiss(animated: true, completion: nil)
+                
+                
+                
                 
             } catch {
                 print (error)
