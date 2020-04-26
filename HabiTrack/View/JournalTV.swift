@@ -48,10 +48,6 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
     
     // tableView : cellForRowAt
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        print()
-//        print("cellForRowAt...\(indexPath.row)")
-//        print()
-        
         // create tableView cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
             as! JournalTableViewCell
@@ -67,64 +63,26 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
             for habit in habits {
                 if ((count - buffer) == indexPath.row) {
                     if (checkDayOfWeek(dayInt: habit[self.journal.dayOfWeek], dayOfWeek: currentDayOfWeek)) {
+                        // get the habit string and put it in the cell
                         cell.habitUILabel?.text = habit[self.journal.habit]
-                        
-                        //testing ...
-                        let repeatString = habit[self.journal.time]
-                        if (repeatString == "weekly") {
-//                            let dayOfWeekString = getDayOfWeekString(dayOfWeek: habit[self.journal.dayOfWeek], length: "long")
-//                            repeatString += " (\(dayOfWeekString)s)"
-                        }
-                        cell.timeUILabel?.text = repeatString
-                        cell.timeUILabel?.isHidden = getShowRepeatLabel()
-                        
                         // get the name of habit and size of habit entries table
                         let habitString = habit[self.journal.habit]
                         let habitDayOfWeek = habit[self.journal.dayOfWeek]
-//                        print("calling countStreak...")
-                        let currentStreak = self.journal.entries.countStreak(habit: habitString, date: dateSelected, habitRepeat: habitDayOfWeek) // habitRepeatString
-//                        print("calling countLongestStreak...")
+                        let currentStreak = self.journal.entries.countStreak(habit: habitString, date: dateSelected, habitRepeat: habitDayOfWeek)
                         let longestStreak = self.journal.entries.countLongestStreak(habit: habitString, date: dateSelected, habitRepeat: habitDayOfWeek) // habitRepeatString
                         // set the streak
                         cell.streakUILabel?.text = String(currentStreak)
-                        
-                        // check if the current streak is equal or greater than the longest
+                        // if the current streak is equal or greater than the longest, change streak color
                         if (currentStreak >= longestStreak && longestStreak > 0) {
-                            cell.longestStreakUILabel?.text = "current longest streak!"
-                            cell.longestStreakUILabel?.textColor = getSystemColor()
-                        } else { // else return the the longest streak
-                            cell.longestStreakUILabel?.text = "longest streak (\( String(longestStreak)))"
-                            if #available(iOS 13.0, *) {
-                                cell.longestStreakUILabel?.textColor = UIColor.systemGray
-                            } else {
-                                // Fallback on earlier versions
-                                cell.longestStreakUILabel?.textColor = UIColor.darkGray
-                            }
-                        }
-                        cell.longestStreakUILabel?.isHidden = getShowLongestLabel()
-                        
-                        if (currentStreak == 1) {
-//                            if (cell.timeUILabel?.text == "weekly") {
-                            if (habit[self.journal.time] == "weekly") {
-                                cell.streakDayUILabel?.text = "week"
-                            } else {
-                                cell.streakDayUILabel?.text = "day"
-                            }
+                            cell.streakUILabel?.textColor = getSystemColor()
                         } else {
-//                            if (cell.timeUILabel?.text == "weekly") {
-                            if (habit[self.journal.time] == "weekly") {
-                                cell.streakDayUILabel?.text = "weeks"
-                            } else {
-                                cell.streakDayUILabel?.text = "days"
-                            }
+                            cell.streakUILabel?.textColor = UIColor.label
                         }
                         // check if today has already been completed
                         if (self.journal.entries.checkCompleted(habit: habitString, date: dateSelected)) {
                             if #available(iOS 13.0, *) {
                                 cell.checkImageView?.image = UIImage(systemName: "checkmark.circle.fill")
-                                let defaultColor = getSystemColor()
-                                cell.checkImageView?.tintColor = defaultColor
-                                
+                                cell.checkImageView?.tintColor = getSystemColor()
                             } else {
                                 // Fallback on earlier versions
                                 cell.accessoryType = .checkmark
@@ -156,7 +114,6 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
     // tableView : didSelectRowAt
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // get the cell from the tableView
-        print("didSelectRowAt...")
         if let cell: JournalTableViewCell = (tableView.cellForRow(at: indexPath) as? JournalTableViewCell) {
             // get the habit string from the cell
             let tempString = cell.habitUILabel?.text
@@ -184,10 +141,9 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
         }
         self.habitTableView.reloadData()
     }
-    
+
     // custom : updateTableView
     func updateTableView(habitView: UITableView) {
         habitTableView = habitView
     }
-
 }

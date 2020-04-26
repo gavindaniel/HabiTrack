@@ -18,10 +18,7 @@ class DateCollectionViewCell: UICollectionViewCell {
 // class: HabitTableViewCell
 class JournalTableViewCell: UITableViewCell {
     @IBOutlet weak var habitUILabel: UILabel!
-    @IBOutlet weak var timeUILabel: UILabel!
     @IBOutlet weak var streakUILabel: UILabel!
-    @IBOutlet weak var streakDayUILabel: UILabel!
-    @IBOutlet weak var longestStreakUILabel: UILabel!
     @IBOutlet weak var checkImageView: UIImageView!
     
 //    @IBOutlet var checkBox: BEMCheckBox!

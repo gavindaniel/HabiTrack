@@ -8,13 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		4C15613B235EBEA80026E770 /* TabBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C15613A235EBEA80026E770 /* TabBarVC.swift */; };
-		4C225B88233E6EDD0062E195 /* JournalTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C225B87233E6EDD0062E195 /* JournalTableView.swift */; };
-		4C225B8A233E6EEC0062E195 /* JournalDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C225B89233E6EEC0062E195 /* JournalDateView.swift */; };
-		4C28331A235B7A4100A10642 /* ManageColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C283319235B7A4100A10642 /* ManageColorView.swift */; };
+		4C225B88233E6EDD0062E195 /* JournalTV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C225B87233E6EDD0062E195 /* JournalTV.swift */; };
+		4C225B8A233E6EEC0062E195 /* JournalDateCV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C225B89233E6EEC0062E195 /* JournalDateCV.swift */; };
+		4C28331A235B7A4100A10642 /* ManageColorCV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C283319235B7A4100A10642 /* ManageColorCV.swift */; };
 		4C283322235B86FE00A10642 /* CustomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C283321235B86FE00A10642 /* CustomColor.swift */; };
 		4C2D42D6235A7D1800D5C628 /* ManageJournalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2D42D5235A7D1800D5C628 /* ManageJournalVC.swift */; };
-		4C2D42DE235A9A2700D5C628 /* ManageTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2D42DD235A9A2700D5C628 /* ManageTableView.swift */; };
-		4C36235F2357E94F005A12C2 /* HabitTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C36235E2357E94F005A12C2 /* HabitTableView.swift */; };
+		4C2D42DE235A9A2700D5C628 /* ManageHabitsTV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2D42DD235A9A2700D5C628 /* ManageHabitsTV.swift */; };
+		4C36235F2357E94F005A12C2 /* AddHabitTV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C36235E2357E94F005A12C2 /* AddHabitTV.swift */; };
+		4C3C9DD22456416C0070EC94 /* AddDateCV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3C9DD12456416C0070EC94 /* AddDateCV.swift */; };
 		4C4FF7AF230F620B00DAC450 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4FF7AE230F620B00DAC450 /* AppDelegate.swift */; };
 		4C4FF7B1230F620B00DAC450 /* JournalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4FF7B0230F620B00DAC450 /* JournalVC.swift */; };
 		4C4FF7B3230F620B00DAC450 /* DevelopmentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4FF7B2230F620B00DAC450 /* DevelopmentVC.swift */; };
@@ -29,11 +30,11 @@
 		4C89B815231B62D500AE45F4 /* Journal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C89B814231B62D500AE45F4 /* Journal.swift */; };
 		4C89B81D231C44E400AE45F4 /* Entries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C89B81C231C44E400AE45F4 /* Entries.swift */; };
 		4C89B81F231CE2A600AE45F4 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C89B81E231CE2A600AE45F4 /* SettingsVC.swift */; };
-		4CAAAC82232B5CD5000C9AD8 /* HabitVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAAAC81232B5CD5000C9AD8 /* HabitVC.swift */; };
+		4CAAAC82232B5CD5000C9AD8 /* AddHabitVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAAAC81232B5CD5000C9AD8 /* AddHabitVC.swift */; };
 		4CAAAC90232C3E84000C9AD8 /* Classes in Resources */ = {isa = PBXBuildFile; fileRef = 4CAAAC8F232C3E84000C9AD8 /* Classes */; };
 		4CB004C82311A59400417248 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB004BA2311A56E00417248 /* SQLite.framework */; };
 		4CB004C92311A59400417248 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB004BA2311A56E00417248 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		4CFFD4D8234991BE0004B45E /* JournalTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFFD4D7234991BE0004B45E /* JournalTitleView.swift */; };
+		4CFFD4D8234991BE0004B45E /* JournalTitleCV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFFD4D7234991BE0004B45E /* JournalTitleCV.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -125,14 +126,15 @@
 
 /* Begin PBXFileReference section */
 		4C15613A235EBEA80026E770 /* TabBarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarVC.swift; sourceTree = "<group>"; };
-		4C225B87233E6EDD0062E195 /* JournalTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalTableView.swift; sourceTree = "<group>"; };
-		4C225B89233E6EEC0062E195 /* JournalDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalDateView.swift; sourceTree = "<group>"; };
+		4C225B87233E6EDD0062E195 /* JournalTV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalTV.swift; sourceTree = "<group>"; };
+		4C225B89233E6EEC0062E195 /* JournalDateCV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalDateCV.swift; sourceTree = "<group>"; };
 		4C225B8B233E768B0062E195 /* HabiTrackBridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HabiTrackBridgingHeader.h; sourceTree = "<group>"; };
-		4C283319235B7A4100A10642 /* ManageColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageColorView.swift; sourceTree = "<group>"; };
+		4C283319235B7A4100A10642 /* ManageColorCV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageColorCV.swift; sourceTree = "<group>"; };
 		4C283321235B86FE00A10642 /* CustomColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColor.swift; sourceTree = "<group>"; };
 		4C2D42D5235A7D1800D5C628 /* ManageJournalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageJournalVC.swift; sourceTree = "<group>"; };
-		4C2D42DD235A9A2700D5C628 /* ManageTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageTableView.swift; sourceTree = "<group>"; };
-		4C36235E2357E94F005A12C2 /* HabitTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitTableView.swift; sourceTree = "<group>"; };
+		4C2D42DD235A9A2700D5C628 /* ManageHabitsTV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageHabitsTV.swift; sourceTree = "<group>"; };
+		4C36235E2357E94F005A12C2 /* AddHabitTV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHabitTV.swift; sourceTree = "<group>"; };
+		4C3C9DD12456416C0070EC94 /* AddDateCV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDateCV.swift; sourceTree = "<group>"; };
 		4C4FF7AB230F620B00DAC450 /* HabiTrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HabiTrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C4FF7AE230F620B00DAC450 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4C4FF7B0230F620B00DAC450 /* JournalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalVC.swift; sourceTree = "<group>"; };
@@ -153,10 +155,10 @@
 		4C89B814231B62D500AE45F4 /* Journal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Journal.swift; sourceTree = "<group>"; };
 		4C89B81C231C44E400AE45F4 /* Entries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entries.swift; sourceTree = "<group>"; };
 		4C89B81E231CE2A600AE45F4 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
-		4CAAAC81232B5CD5000C9AD8 /* HabitVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitVC.swift; sourceTree = "<group>"; };
+		4CAAAC81232B5CD5000C9AD8 /* AddHabitVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHabitVC.swift; sourceTree = "<group>"; };
 		4CAAAC8F232C3E84000C9AD8 /* Classes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Classes; sourceTree = "<group>"; };
 		4CB004AF2311A56D00417248 /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = "../SQLite.swift-master/SQLite.xcodeproj"; sourceTree = "<group>"; };
-		4CFFD4D7234991BE0004B45E /* JournalTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalTitleView.swift; sourceTree = "<group>"; };
+		4CFFD4D7234991BE0004B45E /* JournalTitleCV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalTitleCV.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -197,7 +199,7 @@
 			children = (
 				4C4FF7AE230F620B00DAC450 /* AppDelegate.swift */,
 				4C4FF7B2230F620B00DAC450 /* DevelopmentVC.swift */,
-				4CAAAC81232B5CD5000C9AD8 /* HabitVC.swift */,
+				4CAAAC81232B5CD5000C9AD8 /* AddHabitVC.swift */,
 				4C4FF7B0230F620B00DAC450 /* JournalVC.swift */,
 				4C6FDDC423618D2A00E54485 /* ManageDisplayVC.swift */,
 				4C2D42D5235A7D1800D5C628 /* ManageJournalVC.swift */,
@@ -210,12 +212,13 @@
 		4C225B85233E6CEA0062E195 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				4C36235E2357E94F005A12C2 /* HabitTableView.swift */,
-				4C225B89233E6EEC0062E195 /* JournalDateView.swift */,
-				4C225B87233E6EDD0062E195 /* JournalTableView.swift */,
-				4CFFD4D7234991BE0004B45E /* JournalTitleView.swift */,
-				4C283319235B7A4100A10642 /* ManageColorView.swift */,
-				4C2D42DD235A9A2700D5C628 /* ManageTableView.swift */,
+				4C3C9DD12456416C0070EC94 /* AddDateCV.swift */,
+				4C36235E2357E94F005A12C2 /* AddHabitTV.swift */,
+				4C225B89233E6EEC0062E195 /* JournalDateCV.swift */,
+				4C225B87233E6EDD0062E195 /* JournalTV.swift */,
+				4CFFD4D7234991BE0004B45E /* JournalTitleCV.swift */,
+				4C283319235B7A4100A10642 /* ManageColorCV.swift */,
+				4C2D42DD235A9A2700D5C628 /* ManageHabitsTV.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -503,20 +506,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				4C4FF7B3230F620B00DAC450 /* DevelopmentVC.swift in Sources */,
-				4C225B88233E6EDD0062E195 /* JournalTableView.swift in Sources */,
+				4C225B88233E6EDD0062E195 /* JournalTV.swift in Sources */,
 				4C89B81D231C44E400AE45F4 /* Entries.swift in Sources */,
 				4C4FF7AF230F620B00DAC450 /* AppDelegate.swift in Sources */,
-				4C225B8A233E6EEC0062E195 /* JournalDateView.swift in Sources */,
-				4CAAAC82232B5CD5000C9AD8 /* HabitVC.swift in Sources */,
+				4C225B8A233E6EEC0062E195 /* JournalDateCV.swift in Sources */,
+				4CAAAC82232B5CD5000C9AD8 /* AddHabitVC.swift in Sources */,
 				4C283322235B86FE00A10642 /* CustomColor.swift in Sources */,
 				4C4FF7B1230F620B00DAC450 /* JournalVC.swift in Sources */,
-				4CFFD4D8234991BE0004B45E /* JournalTitleView.swift in Sources */,
+				4CFFD4D8234991BE0004B45E /* JournalTitleCV.swift in Sources */,
 				4C6A161A2320BA4000274316 /* CustomDate.swift in Sources */,
 				4C89B815231B62D500AE45F4 /* Journal.swift in Sources */,
-				4C2D42DE235A9A2700D5C628 /* ManageTableView.swift in Sources */,
-				4C28331A235B7A4100A10642 /* ManageColorView.swift in Sources */,
-				4C36235F2357E94F005A12C2 /* HabitTableView.swift in Sources */,
+				4C2D42DE235A9A2700D5C628 /* ManageHabitsTV.swift in Sources */,
+				4C28331A235B7A4100A10642 /* ManageColorCV.swift in Sources */,
+				4C36235F2357E94F005A12C2 /* AddHabitTV.swift in Sources */,
 				4C15613B235EBEA80026E770 /* TabBarVC.swift in Sources */,
+				4C3C9DD22456416C0070EC94 /* AddDateCV.swift in Sources */,
 				4C6FDDBD23617A7F00E54485 /* CustomDisplay.swift in Sources */,
 				4C89B81F231CE2A600AE45F4 /* SettingsVC.swift in Sources */,
 				4C2D42D6235A7D1800D5C628 /* ManageJournalVC.swift in Sources */,
@@ -631,7 +635,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -686,7 +690,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

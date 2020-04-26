@@ -14,11 +14,16 @@ class HabitTableViewCell: UITableViewCell {
     @IBOutlet weak var dayUILabel: UILabel!
 }
 
+// class: DateCollectionViewCell
+class AddDateCollectionViewCell: UICollectionViewCell {
+    @IBOutlet weak var dayUILabel: UILabel!
+}
+
 class HabitVC: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var nameUnderlineLabel: UILabel!
-    @IBOutlet weak var habitUILabel: UILabel!
+//    @IBOutlet weak var habitUILabel: UILabel!
     
     @IBOutlet weak var addUIButton: UIButton!
     @IBOutlet weak var cancelUIButton: UIButton!
@@ -26,7 +31,12 @@ class HabitVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var addHabitView: UIView!
     
     var habitTableView: HabitTableView?
+    var addDateCV: AddDateCollectionView?
+    
     @IBOutlet weak var habitUITableView: UITableView!
+    @IBOutlet weak var dateUICollectionView: UICollectionView!
+    
+    
     
     var activeTextField = UITextField()
     var lastActiveTextField: String!
@@ -41,12 +51,7 @@ class HabitVC: UIViewController, UITextFieldDelegate {
         print()
         // update views
         habitTableView?.updateTableView(habitDayView: habitUITableView)
-        
-        // set observer of application entering foreground
-//        NotificationCenter.default.addObserver(self,
-//                                               selector: #selector(applicationWillEnterForeground),
-//                                               name: UIApplication.willEnterForegroundNotification,
-//                                               object: nil)
+        addDateCollectionView?.updateCollectionView(dateCV: dateUICollectionView)
     }
     
     // load : viewDidDisappear
@@ -57,7 +62,6 @@ class HabitVC: UIViewController, UITextFieldDelegate {
         // testing
         let storyBoard = UIStoryboard(name: "Main", bundle:nil)
         let journalVC = storyBoard.instantiateViewController(withIdentifier: "journalVC") as! JournalVC
-//        self.navigationController?.pushViewController(nextViewController, animated: true)
         journalVC.journalUITableView?.reloadData()
     }
     
@@ -81,7 +85,7 @@ class HabitVC: UIViewController, UITextFieldDelegate {
         
         addHabitView.addGestureRecognizer(tap)
         
-        // testing
+        //testing... works but causes the selection to not be recognized
 //        habitUITableView.addGestureRecognizer(tap)
         
         self.nameTextField.delegate = self
@@ -157,7 +161,7 @@ class HabitVC: UIViewController, UITextFieldDelegate {
         if (id == "titleTextField") {
             let defaultColor = getSystemColor()
             nameUnderlineLabel.textColor = defaultColor
-            habitUILabel.textColor = defaultColor
+//            habitUILabel.textColor = defaultColor
         }
     }
     
@@ -168,20 +172,20 @@ class HabitVC: UIViewController, UITextFieldDelegate {
             if (textField.text != "") {
                 if #available(iOS 13.0, *) {
                     nameUnderlineLabel.textColor = UIColor.label
-                    habitUILabel.textColor = UIColor.label
+//                    habitUILabel.textColor = UIColor.label
                 } else {
                     // Fallback on earlier versions
                     nameUnderlineLabel.textColor = UIColor.black
-                    habitUILabel.textColor = UIColor.black
+//                    habitUILabel.textColor = UIColor.black
                 }
             } else {
                 if #available(iOS 13.0, *) {
                     nameUnderlineLabel.textColor = UIColor.systemGray
-                    habitUILabel.textColor = UIColor.systemGray
+//                    habitUILabel.textColor = UIColor.systemGray
                 } else {
                     // Fallback on earlier versions
                     nameUnderlineLabel.textColor = UIColor.systemGray
-                    habitUILabel.textColor = UIColor.systemGray
+//                    habitUILabel.textColor = UIColor.systemGray
                 }
             }
         }
@@ -217,7 +221,7 @@ class HabitVC: UIViewController, UITextFieldDelegate {
         if (habit == "" || count == 0) {
             if (habit == "") {
                 print("Name blank, displaying required...")
-                habitUILabel.textColor = UIColor.red
+//                habitUILabel.textColor = UIColor.red
                 nameUnderlineLabel.textColor = UIColor.red
             }
             if (count == 0) {
