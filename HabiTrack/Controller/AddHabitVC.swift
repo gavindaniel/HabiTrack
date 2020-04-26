@@ -51,7 +51,7 @@ class HabitVC: UIViewController, UITextFieldDelegate {
         print()
         // update views
         habitTableView?.updateTableView(habitDayView: habitUITableView)
-        addDateCollectionView?.updateCollectionView(dateCV: dateUICollectionView)
+        addDateCV?.updateView(dateCV: dateUICollectionView)
     }
     
     // load : viewDidDisappear
