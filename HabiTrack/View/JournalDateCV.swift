@@ -196,15 +196,22 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
     // custom : updateDaysArray (init daysArray)
     func updateDaysArray(date: Date) {
         daysArray = []
-        var count = -3
-        let max_count = 3
-        var day = Calendar.current.date(byAdding: .day, value: count, to: date)
+        var index = 1
         
-        while count <= max_count {
-            daysArray.append(day ?? Date())
+        let calendar = Calendar.current
+        let dateComponents = DateComponents(year: calendar.component(.year, from: date), month: calendar.component(.month, from: date), day: 1)
+        var day = calendar.date(from: dateComponents)!
+//        print("start day: \(day)")
+        let range = calendar.range(of: .day, in: .month, for: day)!
+        let numDays = range.count
+//        print(numDays) // 31
+        
+        while index <= numDays {
+            daysArray.append(day)
             // increment day count
-            day = Calendar.current.date(byAdding: .day, value: 1, to: day ?? date)
-            count += 1
+            day = Calendar.current.date(byAdding: .day, value: 1, to: day)!
+//            print("\tday: \(day)")
+            index += 1
         }
         self.habitTableView.reloadData()
     }

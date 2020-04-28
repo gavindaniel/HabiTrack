@@ -51,8 +51,7 @@ class JournalVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         print()
-        print("JournalVC : viewDidAppear...")
-        print()
+        print("JournalVC : viewDidAppear...start")
         // update views
         journalTableView?.updateTableView(habitView: journalUITableView)
         journalDateView?.updateDateView(dateView: dateUICollectionView)
@@ -64,10 +63,13 @@ class JournalVC: UIViewController {
                                                name: UIApplication.willEnterForegroundNotification,
                                                object: nil)
         // select today
-        self.dateUICollectionView.selectItem(at: IndexPath(row: 3, section: 0), animated: false, scrollPosition: [])
-        self.dateUICollectionView.delegate?.collectionView!(self.dateUICollectionView, didSelectItemAt: IndexPath(item: 3, section: 0))
+        let calendar = Calendar.current
+        let day = calendar.component(.day, from: Date())
+        self.dateUICollectionView.selectItem(at: IndexPath(row: day-1, section: 0), animated: false, scrollPosition: [])
+        self.dateUICollectionView.delegate?.collectionView!(self.dateUICollectionView, didSelectItemAt: IndexPath(item: day-1, section: 0))
         // check for day change
         update()
+        print("JournalVC : viewDidAppear...end")
     }
     
     // load : viewDidLoad
@@ -75,9 +77,7 @@ class JournalVC: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         print()
-        print("JournalVC : viewDidLoad...")
-        print()
-        
+        print("JournalVC : viewDidLoad...start")
         // initialize journalTitleTableView
         self.journalTitleView = JournalTitleView(titleTableView: titleUICollectionView, date: Date())
         
@@ -118,48 +118,48 @@ class JournalVC: UIViewController {
         } catch {
             print(error)
         }
+        print("JournalVC : viewDidLoad...end")
     }
     
     // load : viewWillAppear
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print()
-        print("JournalVC : viewWillAppear...")
-        print()
+        print("JournalVC : viewWillAppear...start")
         // reload the views
         self.titleUICollectionView.reloadData()
         self.journalUITableView.reloadData()
         self.dateUICollectionView.reloadData()
+        print("JournalVC : viewWillAppear...end")
     }
     
     // load : applicationWillEnterForeground
     @objc func applicationWillEnterForeground() {
         print()
-        print("JournalVC : applicationWillEnterForeground...")
-        print()
+        print("JournalVC : applicationWillEnterForeground...start")
         // check for day change
         update()
+        print("JournalVC : applicationWillEnterForeground...end")
     }
     
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         print()
-        print("JournalVC : traitCollectionDidChange")
-        print()
+        print("JournalVC : traitCollectionDidChange...start")
         // check if change from light/dark mode
         if #available(iOS 13, *), traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
             // handle theme change here.
             self.journalUITableView.reloadData()
             self.dateUICollectionView.reloadData()
         }
+        print("JournalVC : traitCollectionDidChange...end")
     }
     
     // custom : update
     func update() {
         print()
-        print("JournalVC : Updating View Controller...")
-        print()
+        print("JournalVC : Updating View Controller...start")
         
         let dateToday = Date()
         let defaults = UserDefaults.standard
@@ -216,5 +216,6 @@ class JournalVC: UIViewController {
         } else {
             print("Day has not changed.")
         }
+        print("JournalVC : Updating View Controller...end")
     } // end of update func.
 }
