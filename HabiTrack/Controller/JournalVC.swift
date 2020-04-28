@@ -43,18 +43,18 @@ class JournalVC: UIViewController {
     var journalDateCV: JournalDateCV?
     var journalTitleCV: JournalTitleCV?
     
-    @IBOutlet weak var journalUITV: UITableView!
-    @IBOutlet weak var dateUICV: UICollectionView!
-    @IBOutlet weak var titleUICV: UICollectionView!
+    @IBOutlet weak var journalUITableView: UITableView!
+    @IBOutlet weak var dateUICollectionView: UICollectionView!
+    @IBOutlet weak var titleUICollectionView: UICollectionView!
 
     // load : viewDidAppear
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         debugPrint("JournalVC", "viewDidAppear", "start", false)
         // update views
-        journalHabitsTV?.updateTableView(habitView: journalUITV)
-        journalDateCV?.updateDateView(dateUICV)
-        journalTitleCV?.updateTitleView(titleView: titleUICV)
+        journalHabitsTV?.updateUITableView(journalUITableView)
+        journalDateCV?.updateUICollectionView(dateUICollectionView)
+        journalTitleCV?.updateUICollectionView(titleUICollectionView)
         
         // set observer of application entering foreground
         NotificationCenter.default.addObserver(self,
@@ -64,8 +64,8 @@ class JournalVC: UIViewController {
         // select today
         let calendar = Calendar.current
         let day = calendar.component(.day, from: Date())
-        self.dateUICV.selectItem(at: IndexPath(row: day-1, section: 0), animated: false, scrollPosition: [])
-        self.dateUICV.delegate?.collectionView!(self.dateUICV, didSelectItemAt: IndexPath(item: day-1, section: 0))
+        self.dateUICollectionView.selectItem(at: IndexPath(row: day-1, section: 0), animated: false, scrollPosition: [])
+        self.dateUICollectionView.delegate?.collectionView!(self.dateUICollectionView, didSelectItemAt: IndexPath(item: day-1, section: 0))
         // check for day change
         updateViewController()
         debugPrint("JournalVC", "viewDidAppear", "end", false)
@@ -77,14 +77,13 @@ class JournalVC: UIViewController {
         // Do any additional setup after loading the view.
         debugPrint("JournalVC", "viewDidLoad", "start", false)
         // initialize journalTitleTableView
-        self.journalTitleCV = JournalTitleCV(titleTableView: titleUICV, date: Date())
+        self.journalTitleCV = JournalTitleCV(titleUICollectionView, Date())
         
         // initialize journalHabitsTV
-        self.journalHabitsTV = JournalHabitsTV(journal: journal, habitTableView: journalUITV, date: Date())
+        self.journalHabitsTV = JournalHabitsTV(journal, journalUITableView, Date())
         
         // initialize journalDateCV
-        self.journalDateCV = JournalDateCV(dateUICV, journalHabitsTV: journalHabitsTV!, habitUITV: journalUITV, journalTitleCV: journalTitleCV!,
-                                           titleUICV: titleUICV)
+        self.journalDateCV = JournalDateCV(dateUICollectionView, journalHabitsTV!, journalUITableView, journalTitleCV!, titleUICollectionView)
         
         // set observer of application entering foreground
         NotificationCenter.default.addObserver(self,
@@ -102,16 +101,16 @@ class JournalVC: UIViewController {
             self.journal.entries.database = database
             
             // set the dataSource and delegate
-            self.titleUICV.dataSource = journalTitleCV
-            self.titleUICV.delegate = journalTitleCV
+            self.titleUICollectionView.dataSource = journalTitleCV
+            self.titleUICollectionView.delegate = journalTitleCV
             
             // set the dataSource and delegate
-            self.journalUITV.dataSource = journalHabitsTV
-            self.journalUITV.delegate = journalHabitsTV
+            self.journalUITableView.dataSource = journalHabitsTV
+            self.journalUITableView.delegate = journalHabitsTV
             
             // set the dataSource and delegate
-            self.dateUICV.dataSource = journalDateCV
-            self.dateUICV.delegate = journalDateCV
+            self.dateUICollectionView.dataSource = journalDateCV
+            self.dateUICollectionView.delegate = journalDateCV
             
         } catch {
             print(error)
@@ -124,9 +123,9 @@ class JournalVC: UIViewController {
         super.viewWillAppear(animated)
         debugPrint("JournalVC", "viewWillAppear", "start", false)
         // reload the views
-        self.titleUICV.reloadData()
-        self.journalUITV.reloadData()
-        self.dateUICV.reloadData()
+        self.titleUICollectionView.reloadData()
+        self.journalUITableView.reloadData()
+        self.dateUICollectionView.reloadData()
         debugPrint("JournalVC", "viewWillAppear", "end", false)
     }
     
@@ -145,8 +144,8 @@ class JournalVC: UIViewController {
         // check if change from light/dark mode
         if #available(iOS 13, *), traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
             // handle theme change here.
-            self.journalUITV.reloadData()
-            self.dateUICV.reloadData()
+            self.journalUITableView.reloadData()
+            self.dateUICollectionView.reloadData()
         }
         debugPrint("JournalVC", "traitCollectionDidChange", "end", false)
     }
@@ -177,9 +176,9 @@ class JournalVC: UIViewController {
                 self.journal.database = database
                 self.journal.entries.database = database
                 // update the views
-                self.journalTitleCV?.updateTitleView(titleView: titleUICV)
-                self.journalHabitsTV?.updateTableView(habitView: journalUITV)
-                self.journalDateCV?.updateDateView(dateUICV)
+                self.journalTitleCV?.updateUICollectionView(titleUICollectionView)
+                self.journalHabitsTV?.updateUITableView(journalUITableView)
+                self.journalDateCV?.updateUICollectionView(dateUICollectionView)
             } catch {
                 print(error)
             }
@@ -191,19 +190,19 @@ class JournalVC: UIViewController {
             UserDefaults.standard.set(dateToday, forKey: "lastRun")
             
             // reload the views
-            self.titleUICV.reloadData()
-            self.journalUITV.reloadData()
-            self.dateUICV.reloadData()
+            self.titleUICollectionView.reloadData()
+            self.journalUITableView.reloadData()
+            self.dateUICollectionView.reloadData()
             
             // update days array and views
             self.journalDateCV?.updateDaysArray(dateToday)
-            self.journalHabitsTV?.updateTableView(habitView: journalUITV)
-            self.journalDateCV?.updateDateView(dateUICV)
+            self.journalHabitsTV?.updateUITableView(journalUITableView)
+            self.journalDateCV?.updateUICollectionView(dateUICollectionView)
             
             // reload the views
-            self.titleUICV.reloadData()
-            self.journalUITV.reloadData()
-            self.dateUICV.reloadData()
+            self.titleUICollectionView.reloadData()
+            self.journalUITableView.reloadData()
+            self.dateUICollectionView.reloadData()
             
         // day has not changed since last run
         } else {

@@ -12,9 +12,9 @@ import SQLite
 
 class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSource {
     // view objects
-    var dateUICV: UICollectionView
-    var habitUITV: UITableView
-    var titleUICV: UICollectionView
+    var dateUICollectionView: UICollectionView
+    var journalUITableView: UITableView
+    var titleUICollectionView: UICollectionView
     var journalHabitsTV: JournalHabitsTV?
     var journalTitleCV: JournalTitleCV?
     // variables unique to this view
@@ -25,13 +25,13 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
     var selectedCell = [IndexPath]()
     
     // initializer
-    init(_ dateUICV: UICollectionView, journalHabitsTV: JournalHabitsTV, habitUITV: UITableView, journalTitleCV: JournalTitleCV,
-         titleUICV: UICollectionView) {
-        self.dateUICV = dateUICV
+    init(_ dateUICollectionView: UICollectionView,_ journalHabitsTV: JournalHabitsTV,_ journalUITableView: UITableView,_ journalTitleCV: JournalTitleCV,
+        _ titleUICollectionView: UICollectionView) {
+        self.dateUICollectionView = dateUICollectionView
         self.journalHabitsTV = journalHabitsTV
-        self.habitUITV = habitUITV
+        self.journalUITableView = journalUITableView
         self.journalTitleCV = journalTitleCV
-        self.titleUICV = titleUICV
+        self.titleUICollectionView = titleUICollectionView
         super.init()
     }
     
@@ -175,7 +175,7 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
             // check to deselect cells not selected
             while tempIndex < daysArray.count {
                 if (tempIndex != lastSelectedItem) {
-                    self.dateUICV.deselectItem(at: IndexPath(row: tempIndex, section: 0), animated: false)
+                    self.dateUICollectionView.deselectItem(at: IndexPath(row: tempIndex, section: 0), animated: false)
                 }
                 // increment index
                 tempIndex += 1
@@ -190,9 +190,9 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
         // testing
         self.journalTitleCV?.dateSelected = dateSelected
         updateDaysArray(dateSelected)
-        self.dateUICV.reloadData()
+        self.dateUICollectionView.reloadData()
         // testing
-        self.titleUICV.reloadData()
+        self.titleUICollectionView.reloadData()
         debugPrint("JournalDateCV", "didSelectItemAt", "end", false)
     }
     
@@ -217,14 +217,14 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
 //            print("\tday: \(day)")
             index += 1
         }
-        self.habitUITV.reloadData()
+        self.journalUITableView.reloadData()
         debugPrint("JournalDateCV", "updateDaysArray", "end", false)
     }
     
     // custom : updateTableView
-    func updateDateView(_ dateView: UICollectionView) {
+    func updateUICollectionView(_ dateUICollolectionView: UICollectionView) {
         debugPrint("JournalDateCV", "updateDateView", "start", false)
-        dateUICV = dateView
+        dateUICollectionView = dateUICollolectionView
         debugPrint("JournalDateCV", "updateDateView", "end", false)
     }
 }

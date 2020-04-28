@@ -8,7 +8,7 @@
 
 import Foundation
 
-func debugPrint(_ fileString: String, funcString: String, startEndString: String, printHide: Bool) {
+func debugPrint(_ fileString: String,_ funcString: String,_ startEndString: String,_ printHide: Bool) {
     if (printHide == false) {
         if (startEndString == "start") {
             print()

@@ -27,7 +27,7 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
     
     var addDateCV: AddDateCV?
     
-    @IBOutlet weak var dateUICollectionView: UICollectionView!
+    @IBOutlet weak var dateUICV: UICollectionView!
     
     
     
@@ -42,7 +42,7 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
         print()
         print("AddHabitVC : viewDidAppear...start")
         // update views
-        addDateCV?.updateView(dateUICV: dateUICollectionView)
+        addDateCV?.updateView(dateUICV: dateUICV)
         print("AddHabitVC : viewDidAppear...end")
     }
     
@@ -52,7 +52,7 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
         print("AddHabitVC : viewDidDisappear...start")
         let storyBoard = UIStoryboard(name: "Main", bundle:nil)
         let journalVC = storyBoard.instantiateViewController(withIdentifier: "journalVC") as! JournalVC
-        journalVC.journalUITV?.reloadData()
+        journalVC.journalUITableView?.reloadData()
         print("AddHabitVC : viewDidDisappear...stop")
     }
     
@@ -62,7 +62,7 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
         // Do any additional setup after loading the view.
         print()
         print("AddHabitVC : viewDidLoad...start")
-        self.addDateCV = AddDateCV(dateUICV: dateUICollectionView)
+        self.addDateCV = AddDateCV(dateUICV: dateUICV)
         
         // Looks for single or multiple taps.
 //        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
@@ -80,8 +80,8 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
             self.journal.database = database
             self.journal.entries.database = database
             // set the dataSource and delegate
-            self.dateUICollectionView.dataSource = addDateCV
-            self.dateUICollectionView.delegate = addDateCV
+            self.dateUICV.dataSource = addDateCV
+            self.dateUICV.delegate = addDateCV
         } catch {
             print(error)
         }
@@ -97,7 +97,7 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
         addUIButton?.tintColor = defaultColor
         cancelUIButton?.tintColor = defaultColor
         // reload the views
-        self.dateUICollectionView.reloadData()
+        self.dateUICV.reloadData()
         print("AddHabitVC : viewWillAppear...stop")
     }
     
@@ -108,7 +108,7 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
         // check if change from light/dark mode
         if #available(iOS 13, *), traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
             // handle theme change here.
-            self.dateUICollectionView.reloadData()
+            self.dateUICV.reloadData()
         }
         print("AddHabitVC : traitCollectionDidChange...stop")
     }

@@ -10,12 +10,12 @@ import Foundation
 
 class JournalTitleCV: NSObject, UICollectionViewDataSource, UICollectionViewDelegate {
     
-    var titleTableView: UICollectionView
+    var titleUICollectionView: UICollectionView
     var dateSelected: Date
     
     // initializer
-    init(titleTableView: UICollectionView, date: Date) {
-        self.titleTableView = titleTableView
+    init(_ titleUICollectionView: UICollectionView,_ date: Date) {
+        self.titleUICollectionView = titleUICollectionView
         self.dateSelected = date
         super.init()
     }
@@ -47,7 +47,7 @@ class JournalTitleCV: NSObject, UICollectionViewDataSource, UICollectionViewDele
     }
     
     // custom : updateTableView
-    func updateTitleView(titleView: UICollectionView) {
-        self.titleTableView = titleView
+    func updateUICollectionView(_ titleUICollectionView: UICollectionView) {
+        self.titleUICollectionView = titleUICollectionView
     }
 }

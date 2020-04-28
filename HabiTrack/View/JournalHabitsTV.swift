@@ -13,13 +13,13 @@ import MobileCoreServices
 class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
 
     var journal: Journal
-    var habitTableView: UITableView
+    var journalUITableView: UITableView
     var dateSelected: Date
     var buffer = 0
     
-    init(journal: Journal, habitTableView: UITableView, date: Date) {
+    init(_ journal: Journal,_ habitTableView: UITableView,_ date: Date) {
         self.journal = journal
-        self.habitTableView = habitTableView
+        self.journalUITableView = habitTableView
         self.dateSelected = date
         super.init()
     }
@@ -139,11 +139,11 @@ class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
                 }
             }
         }
-        self.habitTableView.reloadData()
+        self.journalUITableView.reloadData()
     }
 
     // custom : updateTableView
-    func updateTableView(habitView: UITableView) {
-        habitTableView = habitView
+    func updateUITableView(_ journalUITableView: UITableView) {
+        self.journalUITableView = journalUITableView
     }
 }

@@ -21,7 +21,7 @@
                                 <autoresizingMask key="autoresizingMask"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" rowHeight="70" id="gE1-jZ-7Bn" customClass="JournalTableViewCell" customModule="HabiTrack" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="cell" rowHeight="70" id="gE1-jZ-7Bn" customClass="JournalHabitsTVCell" customModule="HabiTrack" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gE1-jZ-7Bn" id="VAy-mG-wGZ">
@@ -83,7 +83,7 @@
                                     <inset key="sectionInset" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="title" reuseIdentifier="title" id="iDE-jz-rdB" customClass="JournalTitleCollectionViewCell" customModule="HabiTrack" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="title" reuseIdentifier="title" id="iDE-jz-rdB" customClass="JournalTitleCVCell" customModule="HabiTrack" customModuleProvider="target">
                                         <rect key="frame" x="10" y="3" width="394" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
@@ -141,7 +141,7 @@
                                     <inset key="sectionInset" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="dateCell" id="ZDs-aU-10u" customClass="DateCollectionViewCell" customModule="HabiTrack" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="dateCell" id="ZDs-aU-10u" customClass="JournalDateCVCell" customModule="HabiTrack" customModuleProvider="target">
                                         <rect key="frame" x="10" y="3" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
@@ -185,7 +185,7 @@
                     <navigationItem key="navigationItem" title="Title" id="fid-Se-Xzd"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="dateUICollectionView" destination="V6s-eF-jjI" id="eQB-9y-mr7"/>
+                        <outlet property="dateUICollectionView" destination="V6s-eF-jjI" id="Z90-dp-r5K"/>
                         <outlet property="journalUITableView" destination="IvO-YG-L6D" id="VGN-lT-HLk"/>
                         <outlet property="titleUICollectionView" destination="N7Z-ze-Xih" id="8n7-r6-EnJ"/>
                     </connections>
@@ -240,7 +240,7 @@
                                             <inset key="sectionInset" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         </collectionViewFlowLayout>
                                         <cells>
-                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="addHabitDateCell" id="svD-Lf-ADj" customClass="AddDateCollectionViewCell" customModule="HabiTrack" customModuleProvider="target">
+                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="addHabitDateCell" id="svD-Lf-ADj" customClass="AddDateCVCell" customModule="HabiTrack" customModuleProvider="target">
                                                 <rect key="frame" x="10" y="3" width="50" height="50"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
