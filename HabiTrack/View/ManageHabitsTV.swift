@@ -88,7 +88,9 @@ class ManageTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UIT
                         let deleteHabit = habit.delete()
                         do {
                             try self.journal.database.run(deleteHabit)
-                            print("Deleted habit")
+                            print("\tDeleted habit...\(habitString)...from database")
+                            updateHabitIDs()
+                            updateLocalTable()
                             manageTableView.reloadData()
                             return
                         } catch {
@@ -109,6 +111,71 @@ class ManageTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UIT
         manageTableView = tableView
     }
     
+    
+    func updateLocalTable() {
+        print("updateLocalTable...")
+        if (isKeyPresentInUserDefaults(key: "localHabits") == false) {
+            let defaults = UserDefaults.standard
+            defaults.set([String](), forKey: "localHabits")
+        }
+        do {
+            let table = Table("habits")
+            let habits = try self.journal.database.prepare(table)
+            let defaults = UserDefaults.standard
+            var localHabits = [String]()
+            for habit in habits {
+                localHabits.append(habit[self.journal.habit])
+            }
+            defaults.set(localHabits, forKey: "localHabits")
+        } catch {
+            print(error)
+        }
+    }
+    
+    
+    // name:
+    // desc:
+    // last updated: 4/28/2020
+    // last update: fixed issue where database wasn't updating
+    func updateHabitIDs() {
+        print("updateHabitIDs...")
+        do {
+            // define variable(s)
+            let table = Table("habits")
+            let habits = try self.journal.database.prepare(table)
+            var index = 1, currId = 1, diff = 0, numUpdates = 0
+            // loop through habits table
+            for habit in habits {
+                // calculate difference = current habit ID - loop index
+                currId = habit[self.journal.id]
+                diff = currId - index
+                // check if there is a difference
+                if (diff > 0) {
+                    // calculate the new ID based on the difference between database table and local table
+                    let newId = currId - diff
+                    // get the habit with the current ID
+                    let tempHabit = self.journal.habitsTable.filter(self.journal.id == currId)
+                    let updateHabit = tempHabit.update(self.journal.id <- newId)
+                    // attempt to update the database
+                    do {
+                        try self.journal.database.run(updateHabit)
+                        print("\tupdated habit ID...\(habit[self.journal.id])->\(newId)")
+                        numUpdates += 1
+                    } catch {
+                        print(error)
+                    }
+                }
+                // increment ID
+                index += 1
+            } // end for loop
+            // check for no updates
+            if (numUpdates == 0) {
+                print("\tno IDs updated")
+            }
+        } catch {
+            print(error)
+        }
+    } // end func
     
     // testing ...
     

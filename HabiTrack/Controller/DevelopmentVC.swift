@@ -11,25 +11,28 @@ import SQLite
 
 class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    var list = ["Delete Database Table (S)",
-//                "Force Update Habit ID (S)",
-                "Update Local Table From Database (S)",
-                "Force Update Habit IDs (S)",
+    var list = ["Force Delete Database Table",
+                "Force Update Local Table From Database",
+                "Force Update Database Habit IDs",
                 "Print Database Journal Table",
                 "Print Local Journal Table",
                 "Print Current Date",
                 "Print Date Selected",
-                "Delete Habit",
-                "Force Add Days",
-                "Update Habit Day",
-                "Update Habit Repeat"]
+                "Add Entry Days for Habit",
+                "Delete Entry Days for Habit",
+                "Delete Habit by ID",
+                "Update Habit Days by ID"]
     
     var database: Connection!
     let journal = Journal()
     
     @IBOutlet weak var devTableView: UITableView!
     
-    // viewDidLoad
+    
+    // name:
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -44,12 +47,18 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         }
     }
     
-    // tableView : numberOfRowsInSection
+    
+    // name:
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return (list.count)
     }
     
-    // tableView : cellForRowAt -> cell
+    
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "devCell")
         cell.textLabel?.text = list[indexPath.row]
@@ -57,17 +66,19 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         return (cell)
     }
     
-    // tableView : didSelectRowAt
+    
+    // name:
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selection = list[indexPath.row]
         switch selection {
-        case "Delete Database Table (S)":
+        case "Force Delete Database Table":
             deleteDatabaseTable()
-//        case "Force Update Habit ID (S)":
-//            updateID()
-        case "Update Local Table From Database (S)":
+        case "Force Update Local Table From Database":
             updateLocalTable()
-        case "Force Update Habit IDs (S)":
+        case "Force Update Database Habit IDs":
             updateHabitIDs()
         case "Print Database Journal Table":
             printDatabaseTable()
@@ -78,23 +89,25 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         case "Print Date Selected":
 //            printDateSelected()
             break
-        case "Delete Habit":
-            deleteHabitById()
-        case "Force Add Days":
+        case "Add Entry Days for Habit":
             addDays()
-        case "Force Delete Days":
+        case "Delete Entry Days for Habit":
             deleteDays()
-        case "Update Habit Day":
-            updateDayOfWeek()
-        case "Update Habit Repeat":
-            updateRepeatById()
+        case "Delete Habit by ID":
+            deleteHabitById()
+        case "Update Habit Days by ID":
+            updateRepeatDaysById()
         default:
             print("default")
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    // custom : getTableSize (size of database table)
+    
+    // name:
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func getTableSize(habit: String) -> Int {
         var count = 0;
         do {
@@ -110,7 +123,10 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     
-    // custom : printTable (select row in table)
+    // name:
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func printDatabaseTable() {
         print()
         print("Printing database table...")
@@ -127,7 +143,10 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     
-    // UIButton : printEntriesTable
+    // name:
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func printJournalEntries(_ habit: String) {
         do {
             let table = Table(habit)
@@ -140,8 +159,11 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         }
     }
     
-
-    // custom : printTable (select row in table)
+    
+    // name:
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func printLocalTable() {
         print()
         print("Printing local table...")
@@ -156,7 +178,10 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     
-    // custom : deleteTable (delete SQL table)
+    // name:
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func deleteDatabaseTable() {
         print("Deleting Table...")
         let deleteTable = self.journal.habitsTable.drop()
@@ -169,7 +194,10 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     
-    // custom : Add Day Entry to a Habit
+    // name:
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func addDays() {
         // to be changed for testing
         print("Force adding day...")
@@ -232,8 +260,10 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     
-    
-    // custom : Delete Day Entry for a Habit
+    // name:
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func deleteDays() {
         // to be changed for testing
         print("Force deleting day...")
@@ -301,6 +331,11 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         present(alert, animated: true, completion: nil)
     }
     
+    
+    // name:
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func deleteHabitById() {
         print("deleting habit from table...")
         // create alert controller
@@ -333,6 +368,11 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         present(alert, animated: true, completion: nil)
     }
     
+    
+    // name:
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func updateLocalTable() {
         print("updateLocalTable...")
         if (isKeyPresentInUserDefaults(key: "localHabits") == false) {
@@ -354,6 +394,10 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     
+    // name:
+    // desc:
+    // last updated: 4/28/2020
+    // last update: fixed issue where database wasn't updating
     func updateHabitIDs() {
         print("updateHabitIDs...")
         do {
@@ -393,57 +437,13 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             print(error)
         }
     } // end func
-//
-//    func updateID() {
-//        let oldId = 999
-//        let newId = 4
-//        let tempHabit = self.journal.habitsTable.filter(self.journal.id == oldId)
-//        let updateHabit = tempHabit.update(self.journal.id <- newId)
-//
-//        // attempt to update the database
-//        do {
-//            try self.journal.database.run(updateHabit)
-//            print("updated habit ID.")
-//        } catch {
-//            print(error)
-//        }
-//    }
     
-    func updateRepeatById() {
-        print("updating repeat for habit...")
-        // create alert controller
-        let alert = UIAlertController(title: "Update Repeat", message: nil, preferredStyle: .alert)
-        // add text fields
-        alert.addTextField { (tf) in
-            tf.placeholder = "Habit ID" }
-        alert.addTextField { (tf) in
-            tf.placeholder = "Repeat" }
-        // create 'Submit' action
-        let submit = UIAlertAction(title: "Submit", style: .default) { (_) in
-            // get strings from text fields
-            guard let habitIdString = alert.textFields?.first?.text, let habitId = Int(habitIdString), let habitRepeat = alert.textFields?.last?.text
-                else { return }
-            // find the correct in the table
-            let habit = self.journal.habitsTable.filter(self.journal.id == habitId)
-            // udpate the habit
-            let updateHabit = habit.update(self.journal.time <- habitRepeat)
-            
-            // attempt to update the database
-            do {
-                try self.journal.database.run(updateHabit)
-                print("updated habit repeat.")
-            } catch {
-                print(error)
-            }
-        }
-        alert.addAction(submit)
-        // create 'Cancel' alert action
-        let cancel = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil)
-        alert.addAction(cancel)
-        present(alert, animated: true, completion: nil)
-    }
     
-    func updateDayOfWeek() {
+    // name: updateRepeatDaysById
+    // desc: Pop-up for updating the repeat days for a habit
+    // last updated: 4/28/2020
+    // last update: cleaned up
+    func updateRepeatDaysById() {
         print("updating day of week for journal entry...")
         // create alert controller
         let alert = UIAlertController(title: "Update Week Day", message: nil, preferredStyle: .alert)
@@ -477,6 +477,11 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         present(alert, animated: true, completion: nil)
     }
     
+    
+    // name:
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func printDayOfWeek() {
         print("current Date: \(Date())")
     }
