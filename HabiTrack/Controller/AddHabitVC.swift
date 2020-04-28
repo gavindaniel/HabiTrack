@@ -9,11 +9,6 @@
 import UIKit
 import SQLite
 
-// class: HabitTableViewCell
-class HabitTableViewCell: UITableViewCell {
-    @IBOutlet weak var dayUILabel: UILabel!
-}
-
 // class: DateCollectionViewCell
 class AddDateCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var dayUILabel: UILabel!
@@ -30,10 +25,8 @@ class HabitVC: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var addHabitView: UIView!
     
-    var habitTableView: HabitTableView?
     var addDateCV: AddDateCollectionView?
     
-    @IBOutlet weak var habitUITableView: UITableView!
     @IBOutlet weak var dateUICollectionView: UICollectionView!
     
     
@@ -50,16 +43,11 @@ class HabitVC: UIViewController, UITextFieldDelegate {
         print("HabitVC : viewDidAppear...")
         print()
         // update views
-        habitTableView?.updateTableView(habitDayView: habitUITableView)
         addDateCV?.updateView(dateCV: dateUICollectionView)
     }
     
     // load : viewDidDisappear
     override func viewDidDisappear(_ animated: Bool) {
-        print()
-        print("HabitVC : viewDidDisappear...")
-        print()
-        // testing
         let storyBoard = UIStoryboard(name: "Main", bundle:nil)
         let journalVC = storyBoard.instantiateViewController(withIdentifier: "journalVC") as! JournalVC
         journalVC.journalUITableView?.reloadData()
@@ -69,29 +57,21 @@ class HabitVC: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        print()
-        print("HabitVC : viewDidLoad...")
-        print()
-        
-        // testing
-        self.habitTableView = HabitTableView(habitTableView: habitUITableView)
+        self.addDateCV = AddDateCollectionView(dateCollectionView: dateUICollectionView)
         
         //Looks for single or multiple taps.
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
-        
+//        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
         
         //Uncomment the line below if you want the tap not not interfere and cancel other interactions.
         //tap.cancelsTouchesInView = false
         
-        addHabitView.addGestureRecognizer(tap)
+//        addHabitView.addGestureRecognizer(tap)
         
         //testing... works but causes the selection to not be recognized
 //        habitUITableView.addGestureRecognizer(tap)
         
         self.nameTextField.delegate = self
         nameTextField.returnKeyType = UIReturnKeyType.done
-        
-        
         
         do {
             let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
@@ -101,8 +81,8 @@ class HabitVC: UIViewController, UITextFieldDelegate {
             self.journal.entries.database = database
             
             // set the dataSource and delegate
-            self.habitUITableView.dataSource = habitTableView
-            self.habitUITableView.delegate = habitTableView
+            self.dateUICollectionView.dataSource = addDateCV
+            self.dateUICollectionView.delegate = addDateCV
             
         } catch {
             print(error)
@@ -120,7 +100,7 @@ class HabitVC: UIViewController, UITextFieldDelegate {
         addUIButton?.tintColor = defaultColor
         cancelUIButton?.tintColor = defaultColor
         // reload the views
-        self.habitUITableView.reloadData()
+        self.dateUICollectionView.reloadData()
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -131,7 +111,7 @@ class HabitVC: UIViewController, UITextFieldDelegate {
         // check if change from light/dark mode
         if #available(iOS 13, *), traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
             // handle theme change here.
-            self.habitUITableView.reloadData()
+            self.dateUICollectionView.reloadData()
         }
     }
     
@@ -147,45 +127,34 @@ class HabitVC: UIViewController, UITextFieldDelegate {
         print("HabitVC : dismissKeyboard...")
         print()
         addHabitView.endEditing(true)
-        
-//        testing
-        habitUITableView.endEditing(true)
     }
     
     // Assign the newly active text field to your activeTextField variable
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        
         self.activeTextField = textField
         let id = textField.restorationIdentifier
-        
         if (id == "titleTextField") {
             let defaultColor = getSystemColor()
             nameUnderlineLabel.textColor = defaultColor
-//            habitUILabel.textColor = defaultColor
         }
     }
     
     // Assign the newly active text field to your activeTextField variable
     func textFieldDidEndEditing(_ textField: UITextField) {
-    
         if (textField.restorationIdentifier == "titleTextField") {
             if (textField.text != "") {
                 if #available(iOS 13.0, *) {
                     nameUnderlineLabel.textColor = UIColor.label
-//                    habitUILabel.textColor = UIColor.label
                 } else {
                     // Fallback on earlier versions
                     nameUnderlineLabel.textColor = UIColor.black
-//                    habitUILabel.textColor = UIColor.black
                 }
             } else {
                 if #available(iOS 13.0, *) {
                     nameUnderlineLabel.textColor = UIColor.systemGray
-//                    habitUILabel.textColor = UIColor.systemGray
                 } else {
                     // Fallback on earlier versions
                     nameUnderlineLabel.textColor = UIColor.systemGray
-//                    habitUILabel.textColor = UIColor.systemGray
                 }
             }
         }
@@ -196,43 +165,40 @@ class HabitVC: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func addHabit(_ sender: AnyObject) {
-
         // create table if there isn't one
         journal.createTable()
         // create alert controller
-        
         // insert new habit into journal
         let habit = nameTextField.text
         // testing
-        let selectedDays = habitTableView?.selectedList
-        var i = 0, count = 0, repeatInt = ""
-        var repeatString = "weekly"
-        while (i < selectedDays!.count) {
-            if (selectedDays![i] == 1) {
-                    repeatInt += "\(i+1)"
-                count += 1
-            }
-            i += 1
-        }
-        print("repeatInt: \(repeatInt)")
-        if (count >= 7) {
-            repeatString = "daily"
-        }
-        if (habit == "" || count == 0) {
+//        let selectedDays = self.dateUICollectionView?.indexPathsForSelectedItems
+        let selectedDays = self.addDateCV?.getDaysSelected()
+        if (habit == "" || selectedDays!.count == 0) {
             if (habit == "") {
                 print("Name blank, displaying required...")
-//                habitUILabel.textColor = UIColor.red
+    //                habitUILabel.textColor = UIColor.red
                 nameUnderlineLabel.textColor = UIColor.red
             }
-            if (count == 0) {
+            if (selectedDays!.count == 0) {
                 print("No days selected, displaying required...")
             }
         } else {
+            var i = 0, repeatInt = "", repeatString = ""
+            print("# selectedDays : \(selectedDays!.count)")
+            while (i < selectedDays!.count) {
+                repeatInt += "\(selectedDays![i].row+1)"
+                i += 1
+            }
+            print("repeatInt: \(repeatInt)")
+            if (selectedDays!.count >= 7) {
+                repeatString = "daily"
+            } else {
+                repeatString = "weekly"
+            }
             let addHabit = self.journal.habitsTable.insert(self.journal.habit <- habit ?? "error",
             self.journal.time <- repeatString,
             self.journal.streak <- 0,
             self.journal.dayOfWeek <- Int(repeatInt) ?? 1)
-
             // attempt to add habit to database
             do {
                 try self.journal.database.run(addHabit)
@@ -246,21 +212,11 @@ class HabitVC: UIViewController, UITextFieldDelegate {
                 var localHabits = defaults.object(forKey: "localHabits") as! [String]
                 localHabits.append(habit!)
                 defaults.set(localHabits, forKey: "localHabits")
-                
                 print("Habit Added -> habit: \(habit ?? "error"), time: \("daily")")
                 self.journal.entries.addDay(habit: habit ?? "error", date: Date())
                 nameTextField.text = ""
-                
-                // testing ...
-                
-                // end testing
-                
                 // return to journal view controller
                 dismiss(animated: true, completion: nil)
-                
-                
-                
-                
             } catch {
                 print (error)
             }

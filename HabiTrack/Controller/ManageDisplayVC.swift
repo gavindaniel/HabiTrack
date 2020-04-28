@@ -36,14 +36,11 @@ class ManageDisplayVC: UIViewController {
 //        print()
 //        print("viewDidLoad...")
 //        print()
-        
-       
         // testing
         self.repeatUISwitch.isOn = getShowRepeatLabel()
         self.longestUISwitch.isOn = getShowLongestLabel()
-        
+        // initialize views
         self.colorCollectionView = ManageColorView(colorUICollectionView: colorUICollectionView)
-               
         // set the dataSource and delegate
         self.colorUICollectionView.dataSource = colorCollectionView
         self.colorUICollectionView.delegate = colorCollectionView

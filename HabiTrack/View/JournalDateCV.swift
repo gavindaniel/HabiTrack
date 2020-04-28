@@ -22,6 +22,8 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
     var lastSelectedItem = -1
     var dateSelected = Date()
     
+    var selectedCell = [IndexPath]()
+    
     // initializer
     init(dateCollectionView: UICollectionView, journalTableView: JournalTableView, habitTableView: UITableView, journalTitleView: JournalTitleView,
          titleCollectionView: UICollectionView) {

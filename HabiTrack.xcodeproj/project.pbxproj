@@ -14,7 +14,6 @@
 		4C283322235B86FE00A10642 /* CustomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C283321235B86FE00A10642 /* CustomColor.swift */; };
 		4C2D42D6235A7D1800D5C628 /* ManageJournalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2D42D5235A7D1800D5C628 /* ManageJournalVC.swift */; };
 		4C2D42DE235A9A2700D5C628 /* ManageHabitsTV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2D42DD235A9A2700D5C628 /* ManageHabitsTV.swift */; };
-		4C36235F2357E94F005A12C2 /* AddHabitTV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C36235E2357E94F005A12C2 /* AddHabitTV.swift */; };
 		4C4FF7AF230F620B00DAC450 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4FF7AE230F620B00DAC450 /* AppDelegate.swift */; };
 		4C4FF7B1230F620B00DAC450 /* JournalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4FF7B0230F620B00DAC450 /* JournalVC.swift */; };
 		4C4FF7B3230F620B00DAC450 /* DevelopmentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4FF7B2230F620B00DAC450 /* DevelopmentVC.swift */; };
@@ -133,7 +132,6 @@
 		4C283321235B86FE00A10642 /* CustomColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColor.swift; sourceTree = "<group>"; };
 		4C2D42D5235A7D1800D5C628 /* ManageJournalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageJournalVC.swift; sourceTree = "<group>"; };
 		4C2D42DD235A9A2700D5C628 /* ManageHabitsTV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageHabitsTV.swift; sourceTree = "<group>"; };
-		4C36235E2357E94F005A12C2 /* AddHabitTV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHabitTV.swift; sourceTree = "<group>"; };
 		4C3C9DD12456416C0070EC94 /* AddDateCV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDateCV.swift; sourceTree = "<group>"; };
 		4C4FF7AB230F620B00DAC450 /* HabiTrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HabiTrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C4FF7AE230F620B00DAC450 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -213,7 +211,6 @@
 			isa = PBXGroup;
 			children = (
 				4C3C9DD12456416C0070EC94 /* AddDateCV.swift */,
-				4C36235E2357E94F005A12C2 /* AddHabitTV.swift */,
 				4C225B89233E6EEC0062E195 /* JournalDateCV.swift */,
 				4C225B87233E6EDD0062E195 /* JournalTV.swift */,
 				4CFFD4D7234991BE0004B45E /* JournalTitleCV.swift */,
@@ -519,7 +516,6 @@
 				4C89B815231B62D500AE45F4 /* Journal.swift in Sources */,
 				4C2D42DE235A9A2700D5C628 /* ManageHabitsTV.swift in Sources */,
 				4C28331A235B7A4100A10642 /* ManageColorCV.swift in Sources */,
-				4C36235F2357E94F005A12C2 /* AddHabitTV.swift in Sources */,
 				4C15613B235EBEA80026E770 /* TabBarVC.swift in Sources */,
 				4C6FDDBD23617A7F00E54485 /* CustomDisplay.swift in Sources */,
 				4C89B81F231CE2A600AE45F4 /* SettingsVC.swift in Sources */,

@@ -63,9 +63,7 @@ class ManageColorView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
     
     // collectionView : didDeselectItemAt
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-//        print()
-//        print("didDeselectColorItemAt..\(indexPath.row)")
-//        print()
+        print("ManageColorCV : didDeselectColorItemAt..\(indexPath.row)")
         if let cell: ColorCollectionViewCell = (collectionView.cellForItem(at: indexPath) as? ColorCollectionViewCell) {
             let defaultColor = getSystemColor()
             // selected a different color than what is currently selected
@@ -81,9 +79,7 @@ class ManageColorView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
     
     // collectionView : didSelectItemAt
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        print()
-//        print("didSelectColorItemAt..\(indexPath.row)")
-//        print()
+        print("ManageColorCV : didSelectItemAt..\(indexPath.row)")
         // get the cell from the tableView
         if let cell: ColorCollectionViewCell = (collectionView.cellForItem(at: indexPath) as? ColorCollectionViewCell) {
             let defaultColor = getSystemColor()

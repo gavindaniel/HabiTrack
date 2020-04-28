@@ -15,34 +15,47 @@ class AddDateCollectionView: NSObject, UICollectionViewDelegate, UICollectionVie
     var dateCollectionView: UICollectionView
     var lastSelectedItem: Int
     
+    var selectedCells = [IndexPath]()
+    
     // initializer
     init(dateCollectionView: UICollectionView) {
         self.dateCollectionView = dateCollectionView
-        self.lastSelectedItem = 1
+        self.lastSelectedItem = -1
         super.init()
     }
     
     // collectionView : numberOfItemsInSection
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        print()
+//        print("AddDateCV : numberOfItemsInSection...")
+//        print()
         return (7)
     }
         
     // collectionView : cellForItemAt
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        print()
+//        print("AddDateCV : cellForItemAt...\(indexPath.row)")
+//        print()
         // create collectionView item
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "addHabitDateCell", for: indexPath)
-            as! DateCollectionViewCell
+            as! AddDateCollectionViewCell
         // add labels and style
-        cell.dayUILabel?.text = getDayOfWeekString(dayOfWeek: indexPath.row, length: "short")
+        cell.dayUILabel?.text = getDayOfWeekString(dayOfWeek: (indexPath.row)+1, length: "short")
         cell.layer.cornerRadius = 10.0
         cell.layer.borderWidth = 1.0
-        // return initialized item
-        return (cell)
-    }
     
-    // collectionView : didDeselectItemAt
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        if let cell: DateCollectionViewCell = (collectionView.cellForItem(at: indexPath) as? DateCollectionViewCell) {
+        // check if day selected, mark blue, else mark gray
+        if selectedCells.contains(indexPath) {
+            let defaultColor = getSystemColor()
+            cell.layer.borderColor = defaultColor.cgColor
+            cell.dayUILabel?.textColor = defaultColor
+            // testing
+            cell.layer.borderWidth = 2.0
+            cell.dayUILabel?.font = UIFont.boldSystemFont(ofSize: 16.0)
+        } else {
+            // unbolds days that were previously, there was a bug where days before the day selected were bold.
+            cell.dayUILabel?.font = UIFont.systemFont(ofSize: 16.0)
             if #available(iOS 13.0, *) {
                 cell.layer.borderColor = UIColor.systemGray2.cgColor
                 cell.dayUILabel?.textColor = UIColor.systemGray2
@@ -51,35 +64,74 @@ class AddDateCollectionView: NSObject, UICollectionViewDelegate, UICollectionVie
                 cell.layer.borderColor = UIColor.lightGray.cgColor
                 cell.dayUILabel?.textColor = UIColor.lightGray
             }
+            // testing if today, make a different shade of gray so people know which day is today if not selected.
+        }
+        // return initialized item
+        return (cell)
+    }
+    
+    // collectionView : didDeselectItemAt
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        print()
+        print("AddDateCV : didDeselectItemAt...")
+        if let cell: AddDateCollectionViewCell = (collectionView.cellForItem(at: indexPath) as? AddDateCollectionViewCell) {
+            // clear the selection
+            if selectedCells.contains(indexPath) {
+                selectedCells.remove(at: selectedCells.firstIndex(of: indexPath)!)
+                // check if date selected, mark a different shade of gray
+                if #available(iOS 13.0, *) {
+                    cell.layer.borderColor = UIColor.systemGray2.cgColor
+                    cell.dayUILabel?.textColor = UIColor.systemGray2
+                } else {
+                    // Fallback on earlier versions
+                    cell.layer.borderColor = UIColor.lightGray.cgColor
+                    cell.dayUILabel?.textColor = UIColor.lightGray
+                }
+            }
         }
     }
     
     // collectionView : didSelectItemAt
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("AddDateCV : didSelectItemAt...\(indexPath.row)")
         // get the cell from the tableView
-        if let cell: DateCollectionViewCell = (collectionView.cellForItem(at: indexPath) as? DateCollectionViewCell) {
-            // if the selected item is different from the last, deselect the last item
-            lastSelectedItem = indexPath.row
-            // loop through cells and deselect
-            var tempIndex = 0
-            // check to deselect cells not selected
-            while tempIndex < 7 {
-                if (tempIndex != lastSelectedItem) {
-                    self.dateCollectionView.deselectItem(at: IndexPath(row: tempIndex, section: 0), animated: false)
+        if let cell: AddDateCollectionViewCell = (collectionView.cellForItem(at: indexPath) as? AddDateCollectionViewCell) {
+            if selectedCells.contains(indexPath) {
+                selectedCells.remove(at: selectedCells.firstIndex(of: indexPath)!)
+                // check if date selected, mark a different shade of gray
+                if #available(iOS 13.0, *) {
+                    cell.layer.borderColor = UIColor.systemGray2.cgColor
+                    cell.dayUILabel?.textColor = UIColor.systemGray2
+                } else {
+                    // Fallback on earlier versions
+                    cell.layer.borderColor = UIColor.lightGray.cgColor
+                    cell.dayUILabel?.textColor = UIColor.lightGray
                 }
-                // increment index
-                tempIndex += 1
+            } else {
+                // if the selected item is different from the last, deselect the last item
+                selectedCells.append(indexPath)
+                print("# selectedCells : \(selectedCells.count)")
+//                self.dateCollectionView.reloadData()
+                print("# indexPathsForSelectedItems : \(self.dateCollectionView.indexPathsForSelectedItems?.count ?? -1)")
+                // change the border fo the selected item
+                let defaultColor = getSystemColor()
+                cell.layer.borderColor = defaultColor.cgColor
+                cell.dayUILabel?.textColor = defaultColor
             }
-            // change the border fo the selected item
-            let defaultColor = getSystemColor()
-            cell.layer.borderColor = defaultColor.cgColor
-            cell.dayUILabel?.textColor = defaultColor
+            self.dateCollectionView.reloadData()
         }
-        self.dateCollectionView.reloadData()
     }
     
     // custom : updateTableView
     func updateView(dateCV: UICollectionView) {
         dateCollectionView = dateCV
+    }
+    
+    func getNumDaysSelected() -> Int {
+        return selectedCells.count
+    }
+    
+    func getDaysSelected() -> [IndexPath] {
+        return selectedCells
     }
 }
