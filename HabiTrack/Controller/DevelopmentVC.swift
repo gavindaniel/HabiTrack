@@ -357,31 +357,42 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func updateHabitIDs() {
         print("updateHabitIDs...")
         do {
+            // define variable(s)
             let table = Table("habits")
             let habits = try self.database.prepare(table)
-            var count = 1
-            var diff = 0
+            var index = 1, currId = 1, diff = 0, numUpdates = 0
+            // loop through habits table
             for habit in habits {
-                if (count == 1) {
-                    diff = habit[self.journal.id] - count
-                    count = habit[self.journal.id]
+                // calculate difference = current habit ID - loop index
+                currId = habit[self.journal.id]
+                diff = currId - index
+                // check if there is a difference
+                if (diff > 0) {
+                    // calculate the new ID based on the difference between database table and local table
+                    let newId = currId - diff
+                    // get the habit with the current ID
+                    let tempHabit = self.journal.habitsTable.filter(self.journal.id == currId)
+                    let updateHabit = tempHabit.update(self.journal.id <- newId)
+                    // attempt to update the database
+                    do {
+                        try self.journal.database.run(updateHabit)
+                        print("\tupdated habit ID...\(habit[self.journal.id])->\(newId)")
+                        numUpdates += 1
+                    } catch {
+                        print(error)
+                    }
                 }
-                let tempHabit = self.journal.habitsTable.filter(self.journal.id == count)
-                let newId = count - diff
-                let updateHabit = tempHabit.update(self.journal.id <- newId)
-                // attempt to update the database
-                do {
-                    try self.journal.database.run(updateHabit)
-                    print("\tupdated habit ID...\(habit[self.journal.id])->\(newId)")
-                } catch {
-                    print(error)
-                }
-                count += 1
+                // increment ID
+                index += 1
+            } // end for loop
+            // check for no updates
+            if (numUpdates == 0) {
+                print("\tno IDs updated")
             }
         } catch {
             print(error)
         }
-    }
+    } // end func
 //
 //    func updateID() {
 //        let oldId = 999
