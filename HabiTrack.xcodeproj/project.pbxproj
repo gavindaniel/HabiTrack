@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4C15613B235EBEA80026E770 /* TabBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C15613A235EBEA80026E770 /* TabBarVC.swift */; };
-		4C225B88233E6EDD0062E195 /* JournalTV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C225B87233E6EDD0062E195 /* JournalTV.swift */; };
+		4C225B88233E6EDD0062E195 /* JournalHabitsTV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C225B87233E6EDD0062E195 /* JournalHabitsTV.swift */; };
 		4C225B8A233E6EEC0062E195 /* JournalDateCV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C225B89233E6EEC0062E195 /* JournalDateCV.swift */; };
 		4C28331A235B7A4100A10642 /* ManageColorCV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C283319235B7A4100A10642 /* ManageColorCV.swift */; };
 		4C283322235B86FE00A10642 /* CustomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C283321235B86FE00A10642 /* CustomColor.swift */; };
@@ -126,7 +126,7 @@
 
 /* Begin PBXFileReference section */
 		4C15613A235EBEA80026E770 /* TabBarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarVC.swift; sourceTree = "<group>"; };
-		4C225B87233E6EDD0062E195 /* JournalTV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalTV.swift; sourceTree = "<group>"; };
+		4C225B87233E6EDD0062E195 /* JournalHabitsTV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalHabitsTV.swift; sourceTree = "<group>"; };
 		4C225B89233E6EEC0062E195 /* JournalDateCV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalDateCV.swift; sourceTree = "<group>"; };
 		4C225B8B233E768B0062E195 /* HabiTrackBridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HabiTrackBridgingHeader.h; sourceTree = "<group>"; };
 		4C283319235B7A4100A10642 /* ManageColorCV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageColorCV.swift; sourceTree = "<group>"; };
@@ -214,7 +214,7 @@
 			children = (
 				4C3C9DD12456416C0070EC94 /* AddDateCV.swift */,
 				4C225B89233E6EEC0062E195 /* JournalDateCV.swift */,
-				4C225B87233E6EDD0062E195 /* JournalTV.swift */,
+				4C225B87233E6EDD0062E195 /* JournalHabitsTV.swift */,
 				4CFFD4D7234991BE0004B45E /* JournalTitleCV.swift */,
 				4C283319235B7A4100A10642 /* ManageColorCV.swift */,
 				4C2D42DD235A9A2700D5C628 /* ManageHabitsTV.swift */,
@@ -506,7 +506,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4C4FF7B3230F620B00DAC450 /* DevelopmentVC.swift in Sources */,
-				4C225B88233E6EDD0062E195 /* JournalTV.swift in Sources */,
+				4C225B88233E6EDD0062E195 /* JournalHabitsTV.swift in Sources */,
 				4C89B81D231C44E400AE45F4 /* Entries.swift in Sources */,
 				4C4FF7AF230F620B00DAC450 /* AppDelegate.swift in Sources */,
 				4C225B8A233E6EEC0062E195 /* JournalDateCV.swift in Sources */,

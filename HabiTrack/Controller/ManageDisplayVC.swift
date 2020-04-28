@@ -11,7 +11,7 @@ import UIKit
 
 class ManageDisplayVC: UIViewController {
     
-    var colorCollectionView: ManageColorView?
+    var manageColorCV: ManageColorCV?
     @IBOutlet weak var colorUICollectionView: UICollectionView!
     
     @IBOutlet weak var closeUIButton: UIButton!
@@ -26,7 +26,7 @@ class ManageDisplayVC: UIViewController {
 //        print()
 //        print("viewDidAppear...")
 //        print()
-        colorCollectionView?.updateColorView(colorUICollectionView: colorUICollectionView)
+        manageColorCV?.updateColorView(colorUICollectionView: colorUICollectionView)
     }
 
     // load : viewDidLoad
@@ -40,10 +40,10 @@ class ManageDisplayVC: UIViewController {
         self.repeatUISwitch.isOn = getShowRepeatLabel()
         self.longestUISwitch.isOn = getShowLongestLabel()
         // initialize views
-        self.colorCollectionView = ManageColorView(colorUICollectionView: colorUICollectionView)
+        self.manageColorCV = ManageColorCV(colorUICollectionView: colorUICollectionView)
         // set the dataSource and delegate
-        self.colorUICollectionView.dataSource = colorCollectionView
-        self.colorUICollectionView.delegate = colorCollectionView
+        self.colorUICollectionView.dataSource = manageColorCV
+        self.colorUICollectionView.delegate = manageColorCV
         
     }
     

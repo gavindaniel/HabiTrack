@@ -13,7 +13,7 @@ class ColorCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var colorUIImageView: UIImageView!
 }
 
-class ManageTableViewCell: UITableViewCell {
+class ManageHabitsTVCell: UITableViewCell {
     @IBOutlet weak var habitNameUILabel: UILabel!
     @IBOutlet weak var habitRepeatUILabel: UILabel!
 }
@@ -21,7 +21,7 @@ class ManageTableViewCell: UITableViewCell {
 class ManageJournalVC: UIViewController {
     
     var journal = Journal()
-    var manageTableView: ManageTableView?
+    var manageHabitsTV: ManageHabitsTV?
     
     @IBOutlet weak var manageUIView: UIView!
     @IBOutlet weak var manageUITableView: UITableView!
@@ -37,7 +37,7 @@ class ManageJournalVC: UIViewController {
 //        print("viewDidAppear...")
 //        print()
         // update views
-        manageTableView?.updateTableView(tableView: manageUITableView)
+        manageHabitsTV?.updateTableView(manageUITableView)
     }
 
     // load : viewDidLoad
@@ -49,7 +49,7 @@ class ManageJournalVC: UIViewController {
 //        print()
         
         // initialize views
-        self.manageTableView = ManageTableView(journal: journal, manageTableView: manageUITableView)
+        self.manageHabitsTV = ManageHabitsTV(journal, manageUITV: manageUITableView)
         
         // set the databases, dataSources and delegates
         do {
@@ -61,13 +61,13 @@ class ManageJournalVC: UIViewController {
             self.journal.entries.database = database
             
             // set the dataSource and delegate
-            self.manageUITableView.dataSource = manageTableView
-            self.manageUITableView.delegate = manageTableView
+            self.manageUITableView.dataSource = manageHabitsTV
+            self.manageUITableView.delegate = manageHabitsTV
             
             // testing drag and drop delegate
             self.manageUITableView.dragInteractionEnabled = true
-            self.manageUITableView.dragDelegate = manageTableView
-            self.manageUITableView.dragDelegate = manageTableView
+            self.manageUITableView.dragDelegate = manageHabitsTV
+            self.manageUITableView.dragDelegate = manageHabitsTV
             
             
         } catch {

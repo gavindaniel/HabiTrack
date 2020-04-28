@@ -8,7 +8,7 @@
 
 import Foundation
 
-class JournalTitleView: NSObject, UICollectionViewDataSource, UICollectionViewDelegate {
+class JournalTitleCV: NSObject, UICollectionViewDataSource, UICollectionViewDelegate {
     
     var titleTableView: UICollectionView
     var dateSelected: Date
@@ -29,7 +29,7 @@ class JournalTitleView: NSObject, UICollectionViewDataSource, UICollectionViewDe
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         // get the title cell
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "title", for: indexPath)
-        as! JournalTitleCollectionViewCell
+        as! JournalTitleCVCell
         
         // comment/uncomment for Day of Week in weekDayLabel
 //        cell.weekDayLabel?.text = getDayOfWeek(date: self.dateSelected, length: "long")

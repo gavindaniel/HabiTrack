@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ManageColorView: NSObject, UICollectionViewDelegate, UICollectionViewDataSource {
+class ManageColorCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSource {
 
     // view objects
     var colorCollectionView: UICollectionView

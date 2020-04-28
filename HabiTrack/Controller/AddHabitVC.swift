@@ -10,7 +10,7 @@ import UIKit
 import SQLite
 
 // class: DateCollectionViewCell
-class AddDateCollectionViewCell: UICollectionViewCell {
+class AddDateCVCell: UICollectionViewCell {
     @IBOutlet weak var dayUILabel: UILabel!
 }
 
@@ -25,7 +25,7 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var addHabitView: UIView!
     
-    var addDateCV: AddDateCollectionView?
+    var addDateCV: AddDateCV?
     
     @IBOutlet weak var dateUICollectionView: UICollectionView!
     
@@ -42,7 +42,7 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
         print()
         print("AddHabitVC : viewDidAppear...start")
         // update views
-        addDateCV?.updateView(dateCV: dateUICollectionView)
+        addDateCV?.updateView(dateUICV: dateUICollectionView)
         print("AddHabitVC : viewDidAppear...end")
     }
     
@@ -52,7 +52,7 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
         print("AddHabitVC : viewDidDisappear...start")
         let storyBoard = UIStoryboard(name: "Main", bundle:nil)
         let journalVC = storyBoard.instantiateViewController(withIdentifier: "journalVC") as! JournalVC
-        journalVC.journalUITableView?.reloadData()
+        journalVC.journalUITV?.reloadData()
         print("AddHabitVC : viewDidDisappear...stop")
     }
     
@@ -62,7 +62,7 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
         // Do any additional setup after loading the view.
         print()
         print("AddHabitVC : viewDidLoad...start")
-        self.addDateCV = AddDateCollectionView(dateCollectionView: dateUICollectionView)
+        self.addDateCV = AddDateCV(dateUICV: dateUICollectionView)
         
         // Looks for single or multiple taps.
 //        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))

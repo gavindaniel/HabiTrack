@@ -10,7 +10,7 @@ import Foundation
 import SQLite
 import MobileCoreServices
 
-class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
+class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
 
     var journal: Journal
     var habitTableView: UITableView
@@ -50,7 +50,7 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // create tableView cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-            as! JournalTableViewCell
+            as! JournalHabitsTVCell
         // since the database only increments from the last ID,
         // this for loop fixes issues with gaps in the database.
         var count = 0
@@ -114,7 +114,7 @@ class JournalTableView: NSObject, UITableViewDataSource, UITableViewDelegate {
     // tableView : didSelectRowAt
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // get the cell from the tableView
-        if let cell: JournalTableViewCell = (tableView.cellForRow(at: indexPath) as? JournalTableViewCell) {
+        if let cell: JournalHabitsTVCell = (tableView.cellForRow(at: indexPath) as? JournalHabitsTVCell) {
             // get the habit string from the cell
             let tempString = cell.habitUILabel?.text
             // check if the cell has been completed

@@ -10,16 +10,16 @@ import Foundation
 import SQLite
 import MobileCoreServices
 
-class ManageTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UITableViewDragDelegate {
+class ManageHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate, UITableViewDragDelegate {
 
     var journal: Journal
-    var manageTableView: UITableView
+    var manageUITV: UITableView
 //    var dateSelected: Date
 //    var buffer = 0
     
-    init(journal: Journal, manageTableView: UITableView) {
+    init(_ journal: Journal, manageUITV: UITableView) {
         self.journal = journal
-        self.manageTableView = manageTableView
+        self.manageUITV = manageUITV
 //        self.dateSelected = date
         super.init()
     }
@@ -37,7 +37,7 @@ class ManageTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UIT
         
         // create tableView cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "settings_cell", for: indexPath)
-            as! ManageTableViewCell
+            as! ManageHabitsTVCell
         do {
             // get the table
             let habits = try self.journal.database.prepare(self.journal.habitsTable)
@@ -67,7 +67,7 @@ class ManageTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UIT
             var firstId = 0
             var habitString = ""
             // get the habit string from the tableview cell
-            if let cell: ManageTableViewCell = (tableView.cellForRow(at: indexPath) as? ManageTableViewCell) {
+            if let cell: ManageHabitsTVCell = (tableView.cellForRow(at: indexPath) as? ManageHabitsTVCell) {
                 habitString = cell.habitNameUILabel?.text ?? "error"
             }
             // delete the habit from the table
@@ -91,7 +91,7 @@ class ManageTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UIT
                             print("\tDeleted habit...\(habitString)...from database")
                             updateHabitIDs()
                             updateLocalTable()
-                            manageTableView.reloadData()
+                            manageUITV.reloadData()
                             return
                         } catch {
                             print(error)
@@ -107,8 +107,8 @@ class ManageTableView: NSObject, UITableViewDataSource, UITableViewDelegate, UIT
     }
     
     // custom : updateTableView
-    func updateTableView(tableView: UITableView) {
-        manageTableView = tableView
+    func updateTableView(_ manageUITV: UITableView) {
+        self.manageUITV = manageUITV
     }
     
     
