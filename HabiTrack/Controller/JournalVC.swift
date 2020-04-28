@@ -40,7 +40,7 @@ class JournalVC: UIViewController {
     
     // customViews
     var journalTableView: JournalTableView?
-    var journalDateView: JournalDateView?
+    var journalDateView: JournalDateCV?
     var journalTitleView: JournalTitleView?
     
     @IBOutlet weak var journalUITableView: UITableView!
@@ -50,8 +50,7 @@ class JournalVC: UIViewController {
     // load : viewDidAppear
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print()
-        print("JournalVC : viewDidAppear...start")
+        debugPrint("JournalVC", "viewDidAppear", "start", false)
         // update views
         journalTableView?.updateTableView(habitView: journalUITableView)
         journalDateView?.updateDateView(dateView: dateUICollectionView)
@@ -68,16 +67,15 @@ class JournalVC: UIViewController {
         self.dateUICollectionView.selectItem(at: IndexPath(row: day-1, section: 0), animated: false, scrollPosition: [])
         self.dateUICollectionView.delegate?.collectionView!(self.dateUICollectionView, didSelectItemAt: IndexPath(item: day-1, section: 0))
         // check for day change
-        update()
-        print("JournalVC : viewDidAppear...end")
+        updateViewController()
+        debugPrint("JournalVC", "viewDidAppear", "end", false)
     }
     
     // load : viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        print()
-        print("JournalVC : viewDidLoad...start")
+        debugPrint("JournalVC", "viewDidLoad", "start", false)
         // initialize journalTitleTableView
         self.journalTitleView = JournalTitleView(titleTableView: titleUICollectionView, date: Date())
         
@@ -85,7 +83,7 @@ class JournalVC: UIViewController {
         self.journalTableView = JournalTableView(journal: journal, habitTableView: journalUITableView, date: Date())
         
         // initialize journalDateView
-        self.journalDateView = JournalDateView(dateCollectionView: dateUICollectionView, journalTableView: journalTableView!, habitTableView: journalUITableView, journalTitleView: journalTitleView!,
+        self.journalDateView = JournalDateCV(dateCollectionView: dateUICollectionView, journalTableView: journalTableView!, habitTableView: journalUITableView, journalTitleView: journalTitleView!,
             titleCollectionView: titleUICollectionView)
         
         // set observer of application entering foreground
@@ -118,49 +116,44 @@ class JournalVC: UIViewController {
         } catch {
             print(error)
         }
-        print("JournalVC : viewDidLoad...end")
+        debugPrint("JournalVC", "viewDidLoad", "end", false)
     }
     
     // load : viewWillAppear
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print()
-        print("JournalVC : viewWillAppear...start")
+        debugPrint("JournalVC", "viewWillAppear", "start", false)
         // reload the views
         self.titleUICollectionView.reloadData()
         self.journalUITableView.reloadData()
         self.dateUICollectionView.reloadData()
-        print("JournalVC : viewWillAppear...end")
+        debugPrint("JournalVC", "viewWillAppear", "end", false)
     }
     
     // load : applicationWillEnterForeground
     @objc func applicationWillEnterForeground() {
-        print()
-        print("JournalVC : applicationWillEnterForeground...start")
+        debugPrint("JournalVC", "applicationWillEnterForeground", "start", false)
         // check for day change
-        update()
-        print("JournalVC : applicationWillEnterForeground...end")
+        updateViewController()
+        debugPrint("JournalVC", "applicationWillEnterForeground", "end", false)
     }
     
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        print()
-        print("JournalVC : traitCollectionDidChange...start")
+        debugPrint("JournalVC", "traitCollectionDidChange", "start", false)
         // check if change from light/dark mode
         if #available(iOS 13, *), traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
             // handle theme change here.
             self.journalUITableView.reloadData()
             self.dateUICollectionView.reloadData()
         }
-        print("JournalVC : traitCollectionDidChange...end")
+        debugPrint("JournalVC", "traitCollectionDidChange", "end", false)
     }
     
     // custom : update
-    func update() {
-        print()
-        print("JournalVC : Updating View Controller...start")
-        
+    func updateViewController() {
+        debugPrint("JournalVC", "update", "start", false)
         let dateToday = Date()
         let defaults = UserDefaults.standard
         let lastRun = defaults.object(forKey: "lastRun") as! Date
@@ -170,7 +163,7 @@ class JournalVC: UIViewController {
             Calendar.current.component(.month, from: lastRun) != Calendar.current.component(.month, from: dateToday) ||
             Calendar.current.component(.day, from: lastRun) != Calendar.current.component(.day, from: dateToday)) {
             
-            print("Date has changed. Updating last run date...")
+            print("\tDate has changed. Updating last run date...")
             
             // count number of days since last run
             let count = countDays(date1: lastRun, date2: dateToday)
@@ -214,8 +207,8 @@ class JournalVC: UIViewController {
             
         // day has not changed since last run
         } else {
-            print("Day has not changed.")
+            print("\tDay has not changed.")
         }
-        print("JournalVC : Updating View Controller...end")
+        debugPrint("JournalVC", "update", "start", false)
     } // end of update func.
 }

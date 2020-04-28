@@ -35,7 +35,8 @@ class JournalTitleView: NSObject, UICollectionViewDataSource, UICollectionViewDe
 //        cell.weekDayLabel?.text = getDayOfWeek(date: self.dateSelected, length: "long")
         
         // comment/uncomment for Date in weekDayLabel
-        cell.weekDayLabel?.text = getDateAsString(date: self.dateSelected, length: "long")
+//        cell.weekDayLabel?.text = getDateAsString(date: self.dateSelected, length: "long")
+        cell.weekDayLabel?.text = getMonthAsString(date: self.dateSelected, length: "long")
         
         let defaultColor = getSystemColor()
         cell.weekDayLabel?.textColor = defaultColor

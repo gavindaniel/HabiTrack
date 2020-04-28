@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import SQLite
 
-class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataSource {
+class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSource {
     // view objects
     var dateCollectionView: UICollectionView
     var habitTableView: UITableView
@@ -38,15 +38,18 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
     
     // collectionView : numberOfItemsInSection
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        debugPrint("JournalDateCV", "numberOfItemsInSection", "start", false)
         // if the days array has not been initialized, create the array
         if (daysArray.count == 0) {
             updateDaysArray(date: Date())
         }
+        debugPrint("JournalDateCV", "numberOfItemsInSection", "end", false)
         return (daysArray.count)
     }
         
     // collectionView : cellForItemAt
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        debugPrint("JournalDateCV", "cellForItemAt", "start", false)
         // create collectionView item
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "dateCell", for: indexPath)
             as! DateCollectionViewCell
@@ -112,12 +115,14 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
                 }
             }
         }
+        debugPrint("JournalDateCV", "cellForItemAt", "end", false)
         // return initialized item
         return (cell)
     }
     
     // collectionView : didDeselectItemAt
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        debugPrint("JournalDateCV", "didDeselectItemAt", "start", false)
         if let cell: DateCollectionViewCell = (collectionView.cellForItem(at: indexPath) as? DateCollectionViewCell) {
             // clear the selection
             let tempDay = Calendar.current.component(.day, from: Date())
@@ -146,10 +151,12 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
                 }
             }
         }
+        debugPrint("JournalDateCV", "didDeselectItemAt", "end", false)
     }
     
     // collectionView : didSelectItemAt
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        debugPrint("JournalDateCV", "didSelectItemAt", "start", false)
         // get the cell from the tableView
         if let cell: DateCollectionViewCell = (collectionView.cellForItem(at: indexPath) as? DateCollectionViewCell) {
             // if the selected item is different from the last, deselect the last item
@@ -158,9 +165,9 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
             let month = getMonthAsString(date: daysArray[indexPath.row], length: "short")
             let day = cell.dayUILabel?.text ?? String(Calendar.current.component(.day, from: Date()))
             let date = getDate(year: Calendar.current.component(.year, from: Date()), month: getMonthAsInt(month: month), day: Int(day) ?? Calendar.current.component(.day, from: Date()))
-            print("date: \(date)")
+//            print("date: \(date)")
             self.dateSelected = date
-            print("dateSelected: \(dateSelected)")
+//            print("dateSelected: \(dateSelected)")
             
             // FIXME: replace 'days' with a calculation for number of days in the month
             
@@ -187,14 +194,12 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
         self.dateCollectionView.reloadData()
         // testing
         self.titleCollectionView.reloadData()
-        
-        
-        
-        
+        debugPrint("JournalDateCV", "didSelectItemAt", "end", false)
     }
     
     // custom : updateDaysArray (init daysArray)
     func updateDaysArray(date: Date) {
+        debugPrint("JournalDateCV", "updateDaysArray", "start", false)
         daysArray = []
         var index = 1
         
@@ -214,10 +219,13 @@ class JournalDateView: NSObject, UICollectionViewDelegate, UICollectionViewDataS
             index += 1
         }
         self.habitTableView.reloadData()
+        debugPrint("JournalDateCV", "updateDaysArray", "end", false)
     }
     
     // custom : updateTableView
     func updateDateView(dateView: UICollectionView) {
+        debugPrint("JournalDateCV", "updateDateView", "start", false)
         dateCollectionView = dateView
+        debugPrint("JournalDateCV", "updateDateView", "end", false)
     }
 }
