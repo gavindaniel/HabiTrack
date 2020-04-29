@@ -9,8 +9,13 @@
 import Foundation
 import SQLite
 
+
+// name: JournalDateCV
+// desc: journal date collection view class
+// last updated: 4/28/2020
+// last update: cleaned up
 class Entries {
-    
+    // variables
     var database: Connection!
     // individual habit journal entry table columns
     let id = Expression<Int>("id")
@@ -19,8 +24,14 @@ class Entries {
     let day = Expression<Int>("day")
     let completed = Expression<Int>("completed")
     
+    
+    // name: createTable
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     // custom : createTable (create SQL table for each new habit)
     func createTable(habit: String) {
+        debugPrint("Entries", "createTable", "start", true)
         // get the table for the habit specified
         let tempTable = Table(habit)
         // create the table with the columns listed below
@@ -38,10 +49,17 @@ class Entries {
         } catch {
             print (error)
         }
+        debugPrint("Entries", "createTable", "end", true)
     }
     
+    
+    // name: deleteTable
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     // custom : deleteTable (delete SQL table)
     func deleteTable(habit: String) {
+        debugPrint("Entries", "deleteTable", "start", true)
         // get the table for the habit specified
         let table = Table(habit)
         // drop the table for the habit specified
@@ -53,10 +71,17 @@ class Entries {
         } catch {
             print (error)
         }
+        debugPrint("Entries", "deleteTable", "end", true)
     }
     
+    
+    // name: getTableSize
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     // custom : getTableSize (size of entries table for the habit specified)
     func getTableSize(habit: String) -> Int {
+        debugPrint("Entries", "getTableSize", "start", true)
         var count = 0               // table size counter
         let table = Table(habit)    // table for the habit specified
         do {
@@ -70,12 +95,19 @@ class Entries {
         } catch {
             print (error)
         }
+        debugPrint("Entries", "getTableSize", "end", true)
         // return the table size
         return (count)
     }
     
+    
+    // name: checkCompleted
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     // custom : checkDateCompleted
     func checkCompleted(habit: String, date: Date) -> Bool {
+        debugPrint("Entries", "checkCompleted", "start", true)
         // get the table for the habit
         let table = Table(habit)
         do {
@@ -91,6 +123,7 @@ class Entries {
                 if (entry[self.year] == year  && entry[self.month] == month && entry[self.day] == day) {
                     // check if the entry has been completed for that date
                     if (entry[self.completed] == 1) {
+                        debugPrint("Entries", "checkCompleted", "end", true)
                         // return true, the entry has been completed for that date
                         return true
                     }
@@ -100,12 +133,19 @@ class Entries {
         } catch {
             print(error)
         }
+        debugPrint("Entries", "checkCompleted", "end", true)
         // return false, the entry has NOT been completed for that date
         return false
     }
     
+    
+    // name: markCompleted
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     // custom : markDateCompleted
     func markCompleted(habit: String, date: Date, val: Int) {
+        debugPrint("Entries", "markCompleted", "start", true)
         // get the table for the habit
         let table = Table(habit)
         do {
@@ -136,10 +176,17 @@ class Entries {
         } catch {
             print(error)
         }
+        debugPrint("Entries", "markCompleted", "end", true)
     }
     
+    
+    // name: countStreak
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     // custom : countDateStreak
     func countStreak(habit: String, date: Date, habitRepeat: Int) -> Int { //habitRepeat: String
+        debugPrint("Entries", "countStreak", "start", true)
         // get the table for the habit
         let table = Table(habit)
         // count has to be defined outside to not be binding
@@ -254,12 +301,19 @@ class Entries {
         } catch {
             print(error)
         }
+        debugPrint("Entries", "countStreak", "end", true)
         // return streak count
         return(count)
     }
     
+    
+    // name: checkDayExists
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     // custom: checkDayExists (check if the day selected exists for the habit specified in the entries table)
     func checkDayExists(habit: String, date: Date) -> Bool {
+        debugPrint("Entries", "checkDayExists", "start", true)
         // get the table for the habit
         let table = Table(habit)
         do {
@@ -271,6 +325,7 @@ class Entries {
                 if (Calendar.current.component(.year, from: date) == entry[self.year] &&
                     Calendar.current.component(.month, from: date) == entry[self.month] &&
                     Calendar.current.component(.day, from: date) == entry[self.day]) {
+                    debugPrint("Entries", "checkDayExists", "end", true)
                     // return true, the day exists in the entries table
                     return true
                 }
@@ -279,12 +334,19 @@ class Entries {
         } catch {
             print(error)
         }
+        debugPrint("Entries", "checkDayExists", "end", true)
         // return false, the day specified was not found in the entries table
         return false
     }
     
+    
+    // name: addDay
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     // custom : addDay(add a day to habit completed table)
     func addDay(habit: String, date: Date) {
+        debugPrint("Entries", "addDay", "start", true)
         // try to create a table for the habit
         createTable(habit: habit)
         // get the table for the habit
@@ -302,10 +364,17 @@ class Entries {
         } catch {
             print (error)
         }
+        debugPrint("Entries", "addDay", "end", true)
     }
     
+    
+    // name: deleteDay
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     // custom : addDay(add a day to habit completed table)
     func deleteDay(habit: String, date: Date) {
+        debugPrint("Entries", "deleteDay", "start", true)
         // get the table
         let table = Table(habit)
         // get the date components from the date specified
@@ -323,10 +392,18 @@ class Entries {
         } catch {
             print(error)
         }
+        debugPrint("Entries", "deleteDay", "end", true)
     }
     
+    
+    // name: countLongestStreak
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
+    // custom : addDay(add a day to habit completed table)
     // custom : countLongestStreak
     func countLongestStreak(habit: String, date: Date, habitRepeat: Int) -> Int {   // String
+        debugPrint("Entries", "countLongestStreak", "start", true)
         // defining return variables so they're non-binding
         var count = 0           // count of current streak
         var longestStreak = 0   // longest streak in the entries
@@ -452,6 +529,7 @@ class Entries {
         } catch {
             print(error)
         }
+        debugPrint("Entries", "countLongestStreak", "end", true)
         // return the longest streak count
         return(longestStreak)
     }

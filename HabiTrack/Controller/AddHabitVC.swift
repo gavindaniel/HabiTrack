@@ -9,68 +9,67 @@
 import UIKit
 import SQLite
 
-// class: DateCollectionViewCell
+// name: AddDateCVCell
+// desc: date selection collection view cell class
+// last updated: 4/28/2020
+// last update: cleaned up
 class AddDateCVCell: UICollectionViewCell {
     @IBOutlet weak var dayUILabel: UILabel!
 }
 
+// name: AddHabitVC
+// desc: add habit view controller class
+// last updated: 4/28/2020
+// last update: cleaned up
 class AddHabitVC: UIViewController, UITextFieldDelegate {
-    
-    @IBOutlet weak var nameTextField: UITextField!
-    @IBOutlet weak var nameUnderlineLabel: UILabel!
-//    @IBOutlet weak var habitUILabel: UILabel!
-    
+    // variables
     @IBOutlet weak var addUIButton: UIButton!
     @IBOutlet weak var cancelUIButton: UIButton!
-    
+    @IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet weak var nameUnderlineLabel: UILabel!
     @IBOutlet weak var addHabitView: UIView!
-    
+    @IBOutlet weak var dateUICollectionView: UICollectionView!
     var addDateCV: AddDateCV?
-    
-    @IBOutlet weak var dateUICV: UICollectionView!
-    
-    
-    
     var activeTextField = UITextField()
     var lastActiveTextField: String!
-    
     var journal = Journal()
     
-    // load : viewDidAppear
+    
+    // name: viewDidAppear
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        print()
-        print("AddHabitVC : viewDidAppear...start")
+        debugPrint("AddHabitVC", "viewDidAppear", "start", false)
         // update views
-        addDateCV?.updateView(dateUICV: dateUICV)
-        print("AddHabitVC : viewDidAppear...end")
+        addDateCV?.updateUICollectionView(dateUICollectionView)
+        debugPrint("AddHabitVC", "viewDidAppear", "end", false)
     }
     
-    // load : viewDidDisappear
+    
+    // name: viewDidDisappear
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     override func viewDidDisappear(_ animated: Bool) {
-        print()
-        print("AddHabitVC : viewDidDisappear...start")
+        debugPrint("AddHabitVC", "viewDidDisappear", "start", false)
         let storyBoard = UIStoryboard(name: "Main", bundle:nil)
         let journalVC = storyBoard.instantiateViewController(withIdentifier: "journalVC") as! JournalVC
         journalVC.journalUITableView?.reloadData()
-        print("AddHabitVC : viewDidDisappear...stop")
+        debugPrint("AddHabitVC", "viewDidDisappear", "end", false)
     }
     
-    // load : viewDidLoad
+    
+    // name: viewDidLoad
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        print()
-        print("AddHabitVC : viewDidLoad...start")
-        self.addDateCV = AddDateCV(dateUICV: dateUICV)
-        
-        // Looks for single or multiple taps.
-//        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
-        // Uncomment the line below if you want the tap not not interfere and cancel other interactions.
-//        tap.cancelsTouchesInView = false
-//        addHabitView.addGestureRecognizer(tap)
-        // testing... works but causes the selection to not be recognized
-//        habitUITableView.addGestureRecognizer(tap)
+        debugPrint("AddHabitVC", "viewDidLoad", "start", false)
+        self.addDateCV = AddDateCV(dateUICollectionView)
         self.nameTextField.delegate = self
         nameTextField.returnKeyType = UIReturnKeyType.done
         do {
@@ -80,73 +79,93 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
             self.journal.database = database
             self.journal.entries.database = database
             // set the dataSource and delegate
-            self.dateUICV.dataSource = addDateCV
-            self.dateUICV.delegate = addDateCV
+            self.dateUICollectionView.dataSource = addDateCV
+            self.dateUICollectionView.delegate = addDateCV
         } catch {
             print(error)
         }
+        debugPrint("AddHabitVC", "viewDidLoad", "end", false)
     }
     
-    // load : viewWillAppear
+    
+    // name: viewWillAppear
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print()
-        print("AddHabitVC : viewWillAppear...start")
-        // testing
-        let defaultColor = getSystemColor()
+        debugPrint("AddHabitVC", "viewWillAppear", "start", false)
+        let defaultColor = getColor("System")
         addUIButton?.tintColor = defaultColor
         cancelUIButton?.tintColor = defaultColor
         // reload the views
-        self.dateUICV.reloadData()
-        print("AddHabitVC : viewWillAppear...stop")
+        self.dateUICollectionView.reloadData()
+        debugPrint("AddHabitVC", "viewWillAppear", "end", false)
     }
     
+    
+    // name: traitCollectionDidChange
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        print()
-        print("AddHabitVC : traitCollectionDidChange...start")
+        debugPrint("AddHabitVC", "traitCollectionDidChange", "start", false)
         // check if change from light/dark mode
         if #available(iOS 13, *), traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
             // handle theme change here.
-            self.dateUICV.reloadData()
+            self.dateUICollectionView.reloadData()
         }
-        print("AddHabitVC : traitCollectionDidChange...stop")
+        debugPrint("AddHabitVC", "traitCollectionDidChange", "end", false)
     }
     
+    
+    // name: textFieldShouldReturn
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        print()
-        print("AddHabitVC : textFieldShouldReturn...start")
+        debugPrint("AddHabitVC", "textFieldShouldReturn", "start", false)
         self.view.endEditing(true)
-        print("AddHabitVC : textFieldShouldReturn...stop")
+        debugPrint("AddHabitVC", "textFieldShouldReturn", "end", false)
         return false
     }
     
-    //Calls this function when the tap is recognized.
+    
+    // name: dismissKeyboard
+    // desc: Calls this function when the tap is recognized.
+    // last updated: 4/28/2020
+    // last update: cleaned up
     @objc func dismissKeyboard() {
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
-        print()
-        print("AddHabitVC : dismissKeyboard...start")
+        debugPrint("AddHabitVC", "dismissKeyboard", "start", false)
         addHabitView.endEditing(true)
-        print("AddHabitVC : dismissKeyboard...stop")
+        debugPrint("AddHabitVC", "dismissKeyboard", "end", false)
     }
     
-    // Assign the newly active text field to your activeTextField variable
+    
+    // name: textFieldDidBeginEditing
+    // desc: Assign the newly active text field to your activeTextField variable
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        print()
-        print("AddHabitVC : textFieldDidBeginEditing...start")
+        debugPrint("AddHabitVC", "textFieldDidBeginEditing", "start", false)
         self.activeTextField = textField
         let id = textField.restorationIdentifier
         if (id == "titleTextField") {
-            let defaultColor = getSystemColor()
+            let defaultColor = getColor("System")
             nameUnderlineLabel.textColor = defaultColor
         }
-        print("AddHabitVC : textFieldDidBeginEditing...stop")
+        debugPrint("AddHabitVC", "textFieldDidBeginEditing", "end", false)
     }
     
-    // Assign the newly active text field to your activeTextField variable
+    
+    // name: textFieldDidEndEditing
+    // desc: Assign the newly active text field to your activeTextField variable
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func textFieldDidEndEditing(_ textField: UITextField) {
-        print()
-        print("AddHabitVC : textFieldDidEndEditing...start")
+        debugPrint("AddHabitVC", "textFieldDidEndEditing", "start", false)
         if (textField.restorationIdentifier == "titleTextField") {
             if (textField.text != "") {
                 if #available(iOS 13.0, *) {
@@ -164,31 +183,35 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
                 }
             }
         }
-        print("AddHabitVC : textFieldDidEndEditing...stop")
+        debugPrint("AddHabitVC", "textFieldDidEndEditing", "end", false)
     }
     
+    
+    // name: cancelAddHabit
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     @IBAction func cancelAddHabit(_ sender: AnyObject) {
-        print()
-        print("AddHabitVC : cancelAddHabit...start")
+        debugPrint("AddHabitVC", "cancelAddHabit", "start", false)
         dismiss(animated: true, completion: nil)
-        print("AddHabitVC : cancelAddHabit...stop")
+        debugPrint("AddHabitVC", "cancelAddHabit", "end", false)
     }
     
+    
+    // name: addHabit
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     @IBAction func addHabit(_ sender: AnyObject) {
-        print()
-        print("AddHabitVC : addHabit...start")
+        debugPrint("AddHabitVC", "addHabit", "start", false)
         // create table if there isn't one
         journal.createTable()
-        // create alert controller
         // insert new habit into journal
         let habit = nameTextField.text
-        // testing
-//        let selectedDays = self.dateUICollectionView?.indexPathsForSelectedItems
         let selectedDays = self.addDateCV?.getDaysSelected()
         if (habit == "" || selectedDays!.count == 0) {
             if (habit == "") {
                 print("Name blank, displaying required...")
-    //                habitUILabel.textColor = UIColor.red
                 nameUnderlineLabel.textColor = UIColor.red
             }
             if (selectedDays!.count == 0) {
@@ -216,11 +239,9 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
                 try self.journal.database.run(addHabit)
                 // testing ...
                 let defaults = UserDefaults.standard
-                // FIXME: errror caused by LOCAL copy of database not existing, need to check if database exists and if not, create it
                 if (isKeyPresentInUserDefaults(key: "localHabits") == false) {
                     defaults.set([String](), forKey: "localHabits")
                 }
-                // end FIXME
                 var localHabits = defaults.object(forKey: "localHabits") as! [String]
                 localHabits.append(habit!)
                 defaults.set(localHabits, forKey: "localHabits")
@@ -233,6 +254,6 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
                 print (error)
             } // end catch
         } // end if
-        print("AddHabitVC : addHabit...stop")
+        debugPrint("AddHabitVC", "addHabit", "end", false)
     } // end func
 } // end class

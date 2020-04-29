@@ -9,8 +9,13 @@
 import Foundation
 import SQLite
 
-class Journal {
 
+// name: JournalDateCV
+// desc: journal date collection view class
+// last updated: 4/28/2020
+// last update: cleaned up
+class Journal {
+    // variables
     var database: Connection!
     let habitsTable = Table("habits")
     let entries = Entries()
@@ -22,8 +27,13 @@ class Journal {
     let dayOfWeek = Expression<Int>("currentDay") // day of week, weekly streaks reset
     
     
+    // name: createTable
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     // custom : createTable (create SQL table)
     func createTable() {
+        debugPrint("Journal", "createTable", "start", false)
         // create the habit table with the columns specified below
         let createTable = self.habitsTable.create { (table) in
             table.column(self.id, primaryKey: true)
@@ -39,11 +49,17 @@ class Journal {
         } catch {
             print (error)
         }
+        debugPrint("Journal", "createTable", "end", false)
     }
 
 
+    // name: getTableSize
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     // custom : getTableSize (size of database table)
     func getTableSize() -> Int {
+        debugPrint("Journal", "getTableSize", "start", false)
         var count = 0   // table size counter
         do {
             // try to get the habits table from the database
@@ -56,12 +72,19 @@ class Journal {
         } catch {
             print (error)
         }
+        debugPrint("Journal", "getTableSize", "end", false)
         // return the size of the table
         return (count)
     }
 
+    
+    // name: updateStreak
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     // custome : updateStreak
     func updateStreak(row: Int, inc: Int, date: Date, habitString: String) {
+        debugPrint("Journal", "updateStreak", "start", false)
         var index = 0       // index of for loop array
         var firstId = 0     // id of first entry in table
         print("updateStreak...\(row) \(habitString) \(inc) \(date)")
@@ -88,6 +111,7 @@ class Journal {
                     do {
                         // try to update the database with the updated habit
                         try self.database.run(updateHabit)
+                        debugPrint("Journal", "updateStreak", "end", false)
                         return
                     // catch any errors while trying to update the database
                     } catch {
@@ -102,10 +126,17 @@ class Journal {
         } catch {
             print (error)
         }
+        debugPrint("Journal", "updateStreak", "end", false)
     }
     
+    
+    // name: addDays
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     // custom : addDays
     func addDays(numDays: Int, startDate: Date) {
+        debugPrint("Journal", "addDays", "start", false)
         var index = 0   // index for counting number of days that have been added
         // get the next day from the date specified to start at
         var nextDay = Calendar.current.date(byAdding: .day, value: 1, to: startDate)
@@ -133,10 +164,17 @@ class Journal {
             // increment the next day
             nextDay = Calendar.current.date(byAdding: .day, value: 1, to: nextDay!)
         }
+        debugPrint("Journal", "addDays", "end", false)
     }
     
+    
+    // name: deleteDays
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     // custom : deleteDays
     func deleteDays(date: Date) {
+        debugPrint("Journal", "deleteDays", "start", false)
         do {
             // try to get the table of habits from the database
             let habits = try self.database.prepare(self.habitsTable)
@@ -151,11 +189,17 @@ class Journal {
         } catch {
             print(error)
         }
+        debugPrint("Journal", "deleteDays", "end", false)
     }
     
     
+    // name: moveItem
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     /// The traditional method for rearranging rows in a table view.
     func moveItem(at sourceIndex: Int, to destinationIndex: Int) {
+        debugPrint("Journal", "moveItem", "start", false)
         print()
         print("moveItem")
         print()
@@ -168,19 +212,33 @@ class Journal {
         localHabits.insert(habitString, at: destinationIndex)
         defaults.set(localHabits, forKey: "localHabits")
         updateHabitIDs(oldId: sourceIndex + 1, newId: destinationIndex + 1)
+        debugPrint("Journal", "moveItem", "end", false)
     }
     
+    
+    // name: addItem
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     /// The method for adding a new item to the table view's data model.
     func addItem(_ habitString: String, at index: Int) {
+        debugPrint("Journal", "addItem", "start", false)
         print("addItem")
         let defaults = UserDefaults.standard
         var localHabits = defaults.object(forKey: "localHabits") as! [String]
         localHabits.insert(habitString, at: index)
         defaults.set(localHabits, forKey: "localHabits")
+        debugPrint("Journal", "addItem", "end", false)
     }
     
+    
+    // name: updateHabitIDs
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     // custom : updateHabitIDs (for drag and drop to properly update the habits in the database)
     func updateHabitIDs(oldId: Int, newId: Int) {
+        debugPrint("Journal", "updateHabitIDs", "start", false)
         // flags for finding the habits whose IDs match the ones specified
         var flag1 = false
         var flag2 = false
@@ -239,5 +297,6 @@ class Journal {
         } catch {
             print(error)
         }
+        debugPrint("Journal", "updateHabitIDs", "end", false)
     }
-}
+} // end class

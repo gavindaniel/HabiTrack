@@ -10,22 +10,39 @@ import Foundation
 import SQLite
 import MobileCoreServices
 
-class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
 
+// name: JournalHabitsTV
+// desc: journal habits table view class
+// last updated: 4/28/2020
+// last update: cleaned up
+class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
+    // variables
     var journal: Journal
     var journalUITableView: UITableView
     var dateSelected: Date
     var buffer = 0
     
+    
+    // name: init
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     init(_ journal: Journal,_ habitTableView: UITableView,_ date: Date) {
+        debugPrint("JournalHabitsTV", "init", "start", true)
         self.journal = journal
         self.journalUITableView = habitTableView
         self.dateSelected = date
         super.init()
+        debugPrint("JournalHabitsTV", "init", "end", true)
     }
     
-    // tableView : numberOfRowsInSection
+    
+    // name: numberOfRowsInSection
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        debugPrint("JournalHabitsTV", "numberOfRowsInSection", "start", true)
         // get the number of habits in the journal
         buffer = 0
         var count = 0
@@ -43,11 +60,17 @@ class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
         } catch {
             print(error)
         }
+        debugPrint("JournalHabitsTV", "numberOfRowsInSection", "end", true)
         return (count)
     }
     
-    // tableView : cellForRowAt
+    
+    // name: cellForRowAt
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        debugPrint("JournalHabitsTV", "cellForRowAt", "start", false, indexPath.row)
         // create tableView cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
             as! JournalHabitsTVCell
@@ -74,7 +97,7 @@ class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
                         cell.streakUILabel?.text = String(currentStreak)
                         // if the current streak is equal or greater than the longest, change streak color
                         if (currentStreak >= longestStreak && longestStreak > 0) {
-                            cell.streakUILabel?.textColor = getSystemColor()
+                            cell.streakUILabel?.textColor = getColor("System")
                         } else {
                             cell.streakUILabel?.textColor = UIColor.label
                         }
@@ -82,7 +105,7 @@ class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
                         if (self.journal.entries.checkCompleted(habit: habitString, date: dateSelected)) {
                             if #available(iOS 13.0, *) {
                                 cell.checkImageView?.image = UIImage(systemName: "checkmark.circle.fill")
-                                cell.checkImageView?.tintColor = getSystemColor()
+                                cell.checkImageView?.tintColor = getColor("System")
                             } else {
                                 // Fallback on earlier versions
                                 cell.accessoryType = .checkmark
@@ -96,6 +119,7 @@ class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
                                 cell.accessoryType = .none
                             }
                         }
+                        debugPrint("\tJournalHabitsTV", "cellForRowAt", "end", false, indexPath.row)
                         return (cell)
                     } else {
                         buffer += 1
@@ -108,11 +132,17 @@ class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
         } catch {
             print (error)
         }
+        debugPrint("JournalHabitsTV", "cellForRowAt", "end", false, indexPath.row)
         return (cell)
     }
     
-    // tableView : didSelectRowAt
+    
+    // name: didSelectRowAt
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        debugPrint("JournalHabitsTV", "didSelectRowAt", "start", false, indexPath.row)
         // get the cell from the tableView
         if let cell: JournalHabitsTVCell = (tableView.cellForRow(at: indexPath) as? JournalHabitsTVCell) {
             // get the habit string from the cell
@@ -125,7 +155,7 @@ class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
                     journal.updateStreak(row: indexPath.row, inc: 0, date: dateSelected, habitString: tempString ?? "none")
                 } else {
                     cell.checkImageView?.image = UIImage(systemName: "checkmark.circle.fill")
-                    cell.checkImageView?.tintColor = getSystemColor()
+                    cell.checkImageView?.tintColor = getColor("System")
                     journal.updateStreak(row: indexPath.row, inc: 1, date: dateSelected, habitString: tempString ?? "none")
                 }
             } else {
@@ -140,10 +170,17 @@ class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
             }
         }
         self.journalUITableView.reloadData()
+        debugPrint("JournalHabitsTV", "didSelectRowAt", "end", false, indexPath.row)
     }
 
-    // custom : updateTableView
+    
+    // name: updateUITableView
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func updateUITableView(_ journalUITableView: UITableView) {
+        debugPrint("JournalHabitsTV", "updateUITableView", "start", false)
         self.journalUITableView = journalUITableView
+        debugPrint("JournalHabitsTV", "updateUITableView", "end", false)
     }
 }

@@ -11,26 +11,43 @@ import SQLite
 import MobileCoreServices
 
 class ManageHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate, UITableViewDragDelegate {
-
+    // variables
     var journal: Journal
-    var manageUITV: UITableView
-//    var dateSelected: Date
-//    var buffer = 0
+    var manageUITableView: UITableView
     
-    init(_ journal: Journal, manageUITV: UITableView) {
+    
+    // name: init
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
+    init(_ journal: Journal,_ manageUITableView: UITableView) {
+        debugPrint("ManageHabitsTV", "init", "start", false)
         self.journal = journal
-        self.manageUITV = manageUITV
+        self.manageUITableView = manageUITableView
 //        self.dateSelected = date
         super.init()
+        debugPrint("ManageHabitsTV", "init", "end", false)
     }
     
-    // tableView : numberOfRowsInSection
+    
+    // name: numberOfRowsInSection
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        debugPrint("ManageHabitsTV", "numberOfRowsInSection", "start", false)
+        debugPrint("ManageHabitsTV", "numberOfRowsInSection", "end", false)
         // get the number of habits in the journal
         return (journal.getTableSize())
     }
     
+    
+    // name: cellForRowAt
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        debugPrint("ManageHabitsTV", "cellForRowAt", "start", false, indexPath.row)
 //        print()
 //        print("cellForRowAt...\(indexPath.row)")
 //        print()
@@ -47,20 +64,25 @@ class ManageHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate, UITa
                     cell.habitNameUILabel?.text = habit[self.journal.habit]
                     let tempString = getRepeatDaysString(dayInt: habit[self.journal.dayOfWeek])
                     cell.habitRepeatUILabel?.text = tempString
-                    cell.habitRepeatUILabel?.textColor = getSystemColor()
+                    cell.habitRepeatUILabel?.textColor = getColor("System")
                     return (cell)
                 }
             }
-
         } catch {
             print(error)
         }
+        debugPrint("ManageHabitsTV", "cellForRowAt", "end", false, indexPath.row)
         return (cell)
     }
     
-    // tableView : editingStyle
+    
+    // name: editingStyle
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath)
     {
+        debugPrint("ManageHabitsTV", "editingStyle", "start", false)
         // check if the editingStyle is delete
         if (editingStyle == UITableViewCell.EditingStyle.delete) {
             var count = 0
@@ -91,7 +113,7 @@ class ManageHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate, UITa
                             print("\tDeleted habit...\(habitString)...from database")
                             updateHabitIDs()
                             updateLocalTable()
-                            manageUITV.reloadData()
+                            manageUITableView.reloadData()
                             return
                         } catch {
                             print(error)
@@ -104,15 +126,27 @@ class ManageHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate, UITa
                 print (error)
             }
         }
-    }
-    
-    // custom : updateTableView
-    func updateTableView(_ manageUITV: UITableView) {
-        self.manageUITV = manageUITV
+        debugPrint("ManageHabitsTV", "editingStyle", "end", false)
     }
     
     
+    // name: updateUITableView
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
+    func updateUITableView(_ manageUITableView: UITableView) {
+        debugPrint("ManageHabitsTV", "updateUITableView", "start", false)
+        self.manageUITableView = manageUITableView
+        debugPrint("ManageHabitsTV", "updateUITableView", "end", false)
+    }
+    
+    
+    // name: updateLocalTable
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func updateLocalTable() {
+        debugPrint("ManageHabitsTV", "updateLocalTable", "start", false)
         print("updateLocalTable...")
         if (isKeyPresentInUserDefaults(key: "localHabits") == false) {
             let defaults = UserDefaults.standard
@@ -130,14 +164,16 @@ class ManageHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate, UITa
         } catch {
             print(error)
         }
+        debugPrint("ManageHabitsTV", "updateLocalTable", "end", false)
     }
     
     
-    // name:
+    // name: updateHabitIDs
     // desc:
     // last updated: 4/28/2020
     // last update: fixed issue where database wasn't updating
     func updateHabitIDs() {
+        debugPrint("ManageHabitsTV", "updateHabitIDs", "start", false)
         print("updateHabitIDs...")
         do {
             // define variable(s)
@@ -175,120 +211,164 @@ class ManageHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate, UITa
         } catch {
             print(error)
         }
+        debugPrint("ManageHabitsTV", "updateHabitIDs", "end", false)
     } // end func
     
-    // testing ...
     
+    // name: canHandle
+    // desc:
     /**
          A helper function that serves as an interface to the data model,
          called by the implementation of the `tableView(_ canHandle:)` method.
     */
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func canHandle(_ session: UIDropSession) -> Bool {
+        debugPrint("ManageHabitsTV", "canHandle", "start", false)
+        debugPrint("ManageHabitsTV", "canHandle", "end", false)
         return session.canLoadObjects(ofClass: NSString.self)
     }
     
+    
+    // name: dragItems
+    // desc:
     /**
          A helper function that serves as an interface to the data mode, called
          by the `tableView(_:itemsForBeginning:at:)` method.
     */
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func dragItems(for indexPath: IndexPath) -> [UIDragItem] {
+        debugPrint("ManageHabitsTV", "dragItems", "start", false)
         let defaults = UserDefaults.standard
         let localHabits = defaults.object(forKey: "localHabits") as! [String]
         let habitString = localHabits[indexPath.row]
-
         let data = habitString.data(using: .utf8)
         let itemProvider = NSItemProvider()
-        
         itemProvider.registerDataRepresentation(forTypeIdentifier: kUTTypePlainText as String, visibility: .all) { completion in
             completion(data, nil)
             return nil
         }
+        debugPrint("ManageHabitsTV", "dragItems", "end", false)
+        return [UIDragItem(itemProvider: itemProvider)]
+    }
 
-        return [
-            UIDragItem(itemProvider: itemProvider)
-        ]
+    
+    // name: itemsForBeginning
+    // desc:
+    /**
+         The `tableView(_:itemsForBeginning:at:)` method is the essential method
+         to implement for allowing dragging from a table.
+    */
+    // last updated: 4/28/2020
+    // last update: cleaned up
+    func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        debugPrint("ManageHabitsTV", "itemsForBeginning", "start", false)
+        debugPrint("ManageHabitsTV", "itemsForBeginning", "end", false)
+        return ( dragItems(for: indexPath) )
     }
     
-     // testing drag extension ...
-        /**
-             The `tableView(_:itemsForBeginning:at:)` method is the essential method
-             to implement for allowing dragging from a table.
-        */
-        func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
-            return ( dragItems(for: indexPath) )
-        }
+    
+    // name: canHandle
+    // desc:
+    /**
+         Ensure that the drop session contains a drag item with a data representation
+         that the view can consume.
+    */
+    // last updated: 4/28/2020
+    // last update: cleaned up
+    func tableView(_ tableView: UITableView, canHandle session: UIDropSession) -> Bool {
+        debugPrint("ManageHabitsTV", "canHandle", "start", false)
+        debugPrint("ManageHabitsTV", "canHandle", "end", false)
+        return ( canHandle(session) )
+    }
         
-        // testing drop extension ...
-        /**
-             Ensure that the drop session contains a drag item with a data representation
-             that the view can consume.
-        */
-        func tableView(_ tableView: UITableView, canHandle session: UIDropSession) -> Bool {
-            return ( canHandle(session) )
-        }
         
-        /**
-             A drop proposal from a table view includes two items: a drop operation,
-             typically .move or .copy; and an intent, which declares the action the
-             table view will take upon receiving the items. (A drop proposal from a
-             custom view does includes only a drop operation, not an intent.)
-        */
-        func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
-            // The .move operation is available only for dragging within a single app.
-            
-            if tableView.hasActiveDrag {
-                if session.items.count > 1 {
-                    return UITableViewDropProposal(operation: .cancel)
-                } else {
-                    return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
-                }
+    // name: dropSessionDidUpdate
+    // desc:
+    /**
+         A drop proposal from a table view includes two items: a drop operation,
+         typically .move or .copy; and an intent, which declares the action the
+         table view will take upon receiving the items. (A drop proposal from a
+         custom view does includes only a drop operation, not an intent.)
+    */
+    // last updated: 4/28/2020
+    // last update: cleaned up
+    func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
+        debugPrint("ManageHabitsTV", "dropSessionDidUpdate", "start", false)
+        // The .move operation is available only for dragging within a single app.
+        if tableView.hasActiveDrag {
+            if session.items.count > 1 {
+                debugPrint("ManageHabitsTV", "dropSessionDidUpdate", "end", false)
+                return UITableViewDropProposal(operation: .cancel)
             } else {
-                return UITableViewDropProposal(operation: .copy, intent: .insertAtDestinationIndexPath)
+                debugPrint("ManageHabitsTV", "dropSessionDidUpdate", "end", false)
+                return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
             }
+        } else {
+            debugPrint("ManageHabitsTV", "dropSessionDidUpdate", "end", false)
+            return UITableViewDropProposal(operation: .copy, intent: .insertAtDestinationIndexPath)
         }
-        /**
-             This delegate method is the only opportunity for accessing and loading
-             the data representations offered in the drag item. The drop coordinator
-             supports accessing the dropped items, updating the table view, and specifying
-             optional animations. Local drags with one item go through the existing
-             `tableView(_:moveRowAt:to:)` method on the data source.
-        */
-        func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
-            let destinationIndexPath: IndexPath
+    }
+        
+    
+    // name: performDropWith
+    // desc:
+    /**
+         This delegate method is the only opportunity for accessing and loading
+         the data representations offered in the drag item. The drop coordinator
+         supports accessing the dropped items, updating the table view, and specifying
+         optional animations. Local drags with one item go through the existing
+         `tableView(_:moveRowAt:to:)` method on the data source.
+    */
+    // last updated: 4/28/2020
+    // last update: cleaned up
+    func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
+        debugPrint("ManageHabitsTV", "performDropWith", "start", false)
+        let destinationIndexPath: IndexPath
+        if let indexPath = coordinator.destinationIndexPath {
+            destinationIndexPath = indexPath
+        } else {
+            // Get last index path of table view.
+            let section = tableView.numberOfSections - 1
+            let row = tableView.numberOfRows(inSection: section)
+            destinationIndexPath = IndexPath(row: row, section: section)
+        }
+        coordinator.session.loadObjects(ofClass: NSString.self) { items in
+            // Consume drag items.
+            let stringItems = items as! [String]
             
-            if let indexPath = coordinator.destinationIndexPath {
-                destinationIndexPath = indexPath
-            } else {
-                // Get last index path of table view.
-                let section = tableView.numberOfSections - 1
-                let row = tableView.numberOfRows(inSection: section)
-                destinationIndexPath = IndexPath(row: row, section: section)
+            var indexPaths = [IndexPath]()
+            for (index, item) in stringItems.enumerated() {
+                let indexPath = IndexPath(row: destinationIndexPath.row + index, section: destinationIndexPath.section)
+                self.journal.addItem(item, at: indexPath.row)
+                indexPaths.append(indexPath)
             }
-            
-            coordinator.session.loadObjects(ofClass: NSString.self) { items in
-                // Consume drag items.
-                let stringItems = items as! [String]
-                
-                var indexPaths = [IndexPath]()
-                for (index, item) in stringItems.enumerated() {
-                    let indexPath = IndexPath(row: destinationIndexPath.row + index, section: destinationIndexPath.section)
-                    self.journal.addItem(item, at: indexPath.row)
-                    indexPaths.append(indexPath)
-                }
 
-                tableView.insertRows(at: indexPaths, with: .automatic)
-            }
+            tableView.insertRows(at: indexPaths, with: .automatic)
         }
+        debugPrint("ManageHabitsTV", "performDropWith", "end", false)
+    }
         
-        // testing data extension ....
+    
+    // name: canMoveRowAt
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
+    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        debugPrint("ManageHabitsTV", "canMoveRowAt", "start", false)
+        debugPrint("ManageHabitsTV", "canMoveRowAt", "end", false)
+        return true
+    }
         
-        // MARK: - UITableViewDelegate
-
-        func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-            return true
-        }
-        
-        func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-            self.journal.moveItem(at: sourceIndexPath.row, to: destinationIndexPath.row)
+    
+    // name: moveRowAt
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        debugPrint("ManageHabitsTV", "moveRowAt", "start", false)
+        self.journal.moveItem(at: sourceIndexPath.row, to: destinationIndexPath.row)
+        debugPrint("ManageHabitsTV", "moveRowAt", "end", false)
     }
 }

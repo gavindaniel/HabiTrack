@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         setColorDefaults()
         setDateDefaults()
         setDisplayDefaults()
-        UITabBar.appearance().tintColor = getSystemColor()
+        UITabBar.appearance().tintColor = getColor("System")
         journalVC = JournalVC()
         return true
     }

@@ -62,7 +62,6 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "devCell")
         cell.textLabel?.text = list[indexPath.row]
-        
         return (cell)
     }
     
@@ -127,6 +126,15 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     // desc:
     // last updated: 4/28/2020
     // last update: cleaned up
+    func printDayOfWeek() {
+        print("current Date: \(Date())")
+    }
+    
+    
+    // name:
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func printDatabaseTable() {
         print()
         print("Printing database table...")
@@ -178,7 +186,7 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     
-    // name:
+    // name: deleteDatabaseTable
     // desc:
     // last updated: 4/28/2020
     // last update: cleaned up
@@ -194,7 +202,7 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     
-    // name:
+    // name: addDays
     // desc:
     // last updated: 4/28/2020
     // last update: cleaned up
@@ -213,7 +221,6 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             // get strings from text fields
             guard let habitString = alert.textFields?.first?.text, let numDaysString = alert.textFields?.last?.text, let numDays = Int(numDaysString)
             else { return }
-            
             if (habitString == "All") {
                 var temp = 0
                 let table = Table("habits")
@@ -260,7 +267,7 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     
-    // name:
+    // name: deleteDays
     // desc:
     // last updated: 4/28/2020
     // last update: cleaned up
@@ -279,7 +286,6 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             // get strings from text fields
             guard let habitString = alert.textFields?.first?.text, let numDaysString = alert.textFields?.last?.text, let numDays = Int(numDaysString)
             else { return }
-            
             if (habitString == "All") {
                 var temp = 0
                 let table = Table("habits")
@@ -332,7 +338,7 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     
-    // name:
+    // name: deleteHabitById
     // desc:
     // last updated: 4/28/2020
     // last update: cleaned up
@@ -475,16 +481,6 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         let cancel = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil)
         alert.addAction(cancel)
         present(alert, animated: true, completion: nil)
-    }
-    
-    
-    // name:
-    // desc:
-    // last updated: 4/28/2020
-    // last update: cleaned up
-    func printDayOfWeek() {
-        print("current Date: \(Date())")
-    }
-    
+    } // end func
 }
 

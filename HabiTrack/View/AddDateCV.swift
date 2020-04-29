@@ -1,5 +1,5 @@
 //
-//  AddHabitDateCV.swift
+//  AddDateCV.swift
 //  HabiTrack
 //
 //  Created by Gavin Daniel on 4/26/20.
@@ -10,28 +10,46 @@ import Foundation
 import UIKit
 import SQLite
 
+
+// name: AddDateCV
+// desc: add date collection view class
+// last updated: 4/28/2020
+// last update: cleaned up
 class AddDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSource {
-    // view objects
-    var dateUICV: UICollectionView
+    // variables
+    var dateUICollectionView: UICollectionView
     var lastSelectedItem: Int
-    
     var selectedCells = [IndexPath]()
     
-    // initializer
-    init(dateUICV: UICollectionView) {
-        self.dateUICV = dateUICV
+    
+    // name: init
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
+    init(_ dateUICollectionView: UICollectionView) {
+        debugPrint("AddDateCV", "init", "start", false)
+        self.dateUICollectionView = dateUICollectionView
         self.lastSelectedItem = -1
         super.init()
+        debugPrint("AddDateCV", "init", "end", false)
     }
     
-    // collectionView : numberOfItemsInSection
+    
+    // name: numberOfItemsInSection
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         debugPrint("AddDateCV", "numberOfItemsInSection", "start", false)
-        debugPrint("AddDateCV", "numberOfItemsInSection", "stop", false)
+        debugPrint("AddDateCV", "numberOfItemsInSection", "end", false)
         return (7)
     }
         
-    // collectionView : cellForItemAt
+    
+    // name: cellForItemAt
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         debugPrint("AddDateCV", "cellForItemAt", "start", false)
         // create collectionView item
@@ -41,10 +59,9 @@ class AddDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSource 
         cell.dayUILabel?.text = getDayOfWeekString(dayOfWeek: (indexPath.row)+1, length: "short")
         cell.layer.cornerRadius = 10.0
         cell.layer.borderWidth = 1.0
-    
         // check if day selected, mark blue, else mark gray
         if selectedCells.contains(indexPath) {
-            let defaultColor = getSystemColor()
+            let defaultColor = getColor("System")
             cell.layer.borderColor = defaultColor.cgColor
             cell.dayUILabel?.textColor = defaultColor
             // testing
@@ -64,11 +81,15 @@ class AddDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSource 
             // testing if today, make a different shade of gray so people know which day is today if not selected.
         }
         // return initialized item
-        debugPrint("AddDateCV", "cellForItemAt", "stop", false)
+        debugPrint("AddDateCV", "cellForItemAt", "end", false)
         return (cell)
     }
     
-    // collectionView : didDeselectItemAt
+    
+    // name: didDeselectItemAt
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         debugPrint("AddDateCV", "didDeselectItemAt", "start", false)
         if let cell: AddDateCVCell = (collectionView.cellForItem(at: indexPath) as? AddDateCVCell) {
@@ -86,10 +107,14 @@ class AddDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSource 
                 }
             } // endif
         } // endif
-        debugPrint("AddDateCV", "didDeselectItemAt", "stop", false)
+        debugPrint("AddDateCV", "didDeselectItemAt", "end", false)
     } // end func
     
-    // collectionView : didSelectItemAt
+    
+    // name: didSelectItemAt
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         debugPrint("AddDateCV", "didSelectItemAt", "start", false)
         // get the cell from the tableView
@@ -110,33 +135,47 @@ class AddDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSource 
                 selectedCells.append(indexPath)
                 print("# selectedCells : \(selectedCells.count)")
 //                self.dateCV.reloadData()
-                print("# indexPathsForSelectedItems : \(self.dateUICV.indexPathsForSelectedItems?.count ?? -1)")
+                print("# indexPathsForSelectedItems : \(self.dateUICollectionView.indexPathsForSelectedItems?.count ?? -1)")
                 // change the border fo the selected item
-                let defaultColor = getSystemColor()
+                let defaultColor = getColor("System")
                 cell.layer.borderColor = defaultColor.cgColor
                 cell.dayUILabel?.textColor = defaultColor
             }
-            self.dateUICV.reloadData()
+            self.dateUICollectionView.reloadData()
         } // endif
-        debugPrint("AddDateCV", "didSelectItemAt", "stop", false)
+        debugPrint("AddDateCV", "didSelectItemAt", "end", false)
     } // end func
     
-    // custom : updateView
-    func updateView(dateUICV: UICollectionView) {
-        debugPrint("AddDateCV", "updateView", "start", false)
-        self.dateUICV = dateUICV
-        debugPrint("AddDateCV", "updateView", "stop", false)
+    
+    // name: updateUICollectionView
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
+    func updateUICollectionView(_ dateUICollectionView: UICollectionView) {
+        debugPrint("AddDateCV", "updateUICollectionView", "start", false)
+        self.dateUICollectionView = dateUICollectionView
+        debugPrint("AddDateCV", "updateUICollectionView", "end", false)
     }
     
+    
+    // name: viewDidAppear
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func getNumDaysSelected() -> Int {
         debugPrint("AddDateCV", "getNumDaysSelected", "start", false)
-        debugPrint("AddDateCV", "getNumDaysSelected", "stop", false)
+        debugPrint("AddDateCV", "getNumDaysSelected", "end", false)
         return selectedCells.count
     }
     
+    
+    // name: viewDidAppear
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func getDaysSelected() -> [IndexPath] {
         debugPrint("AddDateCV", "getDaysSelected", "start", false)
-        debugPrint("AddDateCV", "getDaysSelected", "stop", false)
+        debugPrint("AddDateCV", "getDaysSelected", "end", false)
         return selectedCells
     }
 }

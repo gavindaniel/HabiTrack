@@ -10,6 +10,11 @@ import Foundation
 import UIKit
 import SQLite
 
+
+// name: JournalDateCV
+// desc: journal date collection view class
+// last updated: 4/28/2020
+// last update: cleaned up
 class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSource {
     // view objects
     var dateUICollectionView: UICollectionView
@@ -24,36 +29,49 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
     
     var selectedCell = [IndexPath]()
     
-    // initializer
+    
+    // name: init
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     init(_ dateUICollectionView: UICollectionView,_ journalHabitsTV: JournalHabitsTV,_ journalUITableView: UITableView,_ journalTitleCV: JournalTitleCV,
         _ titleUICollectionView: UICollectionView) {
+        debugPrint("JournalDateCV", "init", "start", true)
         self.dateUICollectionView = dateUICollectionView
         self.journalHabitsTV = journalHabitsTV
         self.journalUITableView = journalUITableView
         self.journalTitleCV = journalTitleCV
         self.titleUICollectionView = titleUICollectionView
         super.init()
+        debugPrint("JournalDateCV", "init", "end", true)
     }
     
-    // collectionView : numberOfItemsInSection
+    
+    // name: numberOfItemsInSection
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        debugPrint("JournalDateCV", "numberOfItemsInSection", "start", false)
+        debugPrint("JournalDateCV", "numberOfItemsInSection", "start", true)
         // if the days array has not been initialized, create the array
         if (daysArray.count == 0) {
             updateDaysArray(Date())
         }
-        debugPrint("JournalDateCV", "numberOfItemsInSection", "end", false)
+        debugPrint("JournalDateCV", "numberOfItemsInSection", "end", true)
         return (daysArray.count)
     }
         
-    // collectionView : cellForItemAt
+    
+    // name: cellForItemAt
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        debugPrint("JournalDateCV", "cellForItemAt", "start", false)
+        debugPrint("JournalDateCV", "cellForItemAt", "start", true, indexPath.row)
         // create collectionView item
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "dateCell", for: indexPath)
             as! JournalDateCVCell
         // add labels and style
-        
         // comment/uncomment for month 'Oct' in date collection view
 //        cell.monthUILabel?.text = getMonthAsString(date: daysArray[indexPath.row], length: "short")
         // comment/uncomment for day of week 'Fri' in date collection view
@@ -74,7 +92,7 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
         let tempDay = Calendar.current.component(.day, from: tempDate)
         // check if day selected, mark blue, else mark gray
         if (tempDay == getDayAsInt(date: daysArray[indexPath.row])) {
-            let defaultColor = getSystemColor()
+            let defaultColor = getColor("System")
             cell.layer.borderColor = defaultColor.cgColor
             cell.monthUILabel?.textColor = defaultColor
             cell.dayUILabel?.textColor = defaultColor
@@ -114,14 +132,18 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
                 }
             }
         }
-        debugPrint("JournalDateCV", "cellForItemAt", "end", false)
+        debugPrint("JournalDateCV", "cellForItemAt", "end", true, indexPath.row)
         // return initialized item
         return (cell)
     }
     
-    // collectionView : didDeselectItemAt
+    
+    // name: didDeselectItemAt
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        debugPrint("JournalDateCV", "didDeselectItemAt", "start", false)
+        debugPrint("JournalDateCV", "didDeselectItemAt", "start", false, indexPath.row)
         if let cell: JournalDateCVCell = (collectionView.cellForItem(at: indexPath) as? JournalDateCVCell) {
             // clear the selection
             let tempDay = Calendar.current.component(.day, from: Date())
@@ -150,12 +172,16 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
                 }
             }
         }
-        debugPrint("JournalDateCV", "didDeselectItemAt", "end", false)
+        debugPrint("JournalDateCV", "didDeselectItemAt", "end", false, indexPath.row)
     }
     
-    // collectionView : didSelectItemAt
+    
+    // name: didSelectItemAt
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        debugPrint("JournalDateCV", "didSelectItemAt", "start", false)
+        debugPrint("JournalDateCV", "didSelectItemAt", "start", false, indexPath.row)
         // get the cell from the tableView
         if let cell: JournalDateCVCell = (collectionView.cellForItem(at: indexPath) as? JournalDateCVCell) {
             // if the selected item is different from the last, deselect the last item
@@ -167,9 +193,7 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
 //            print("date: \(date)")
             self.dateSelected = date
 //            print("dateSelected: \(dateSelected)")
-            
             // FIXME: replace 'days' with a calculation for number of days in the month
-            
             // loop through cells and deselect
             var tempIndex = 0
             // check to deselect cells not selected
@@ -181,7 +205,7 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
                 tempIndex += 1
             }
             // change the border fo the selected item
-            let defaultColor = getSystemColor()
+            let defaultColor = getColor("System")
             cell.layer.borderColor = defaultColor.cgColor
             cell.monthUILabel?.textColor = defaultColor
             cell.dayUILabel?.textColor = defaultColor
@@ -193,15 +217,18 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
         self.dateUICollectionView.reloadData()
         // testing
         self.titleUICollectionView.reloadData()
-        debugPrint("JournalDateCV", "didSelectItemAt", "end", false)
+        debugPrint("JournalDateCV", "didSelectItemAt", "end", false, indexPath.row)
     }
     
-    // custom : updateDaysArray (init daysArray)
+    
+    // name: updateDaysArray
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func updateDaysArray(_ date: Date) {
-        debugPrint("JournalDateCV", "updateDaysArray", "start", false)
+        debugPrint("JournalDateCV", "updateDaysArray", "start", true)
         daysArray = []
         var index = 1
-        
         let calendar = Calendar.current
         let dateComponents = DateComponents(year: calendar.component(.year, from: date), month: calendar.component(.month, from: date), day: 1)
         var day = calendar.date(from: dateComponents)!
@@ -209,7 +236,6 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
         let range = calendar.range(of: .day, in: .month, for: day)!
         let numDays = range.count
 //        print(numDays) // 31
-        
         while index <= numDays {
             daysArray.append(day)
             // increment day count
@@ -218,13 +244,17 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
             index += 1
         }
         self.journalUITableView.reloadData()
-        debugPrint("JournalDateCV", "updateDaysArray", "end", false)
+        debugPrint("JournalDateCV", "updateDaysArray", "end", true)
     }
     
-    // custom : updateTableView
+    
+    // name: updateUICollectionView
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func updateUICollectionView(_ dateUICollolectionView: UICollectionView) {
-        debugPrint("JournalDateCV", "updateDateView", "start", false)
+        debugPrint("JournalDateCV", "updateUICollectionView", "start", false)
         dateUICollectionView = dateUICollolectionView
-        debugPrint("JournalDateCV", "updateDateView", "end", false)
+        debugPrint("JournalDateCV", "updateUICollectionView", "end", false)
     }
 }

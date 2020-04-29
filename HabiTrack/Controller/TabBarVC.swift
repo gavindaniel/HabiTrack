@@ -21,6 +21,11 @@ class TabBarVC: UITabBarController, UITabBarControllerDelegate {
         
     }
     
+    
+    // name: viewDidAppear
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         

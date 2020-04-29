@@ -8,11 +8,14 @@
 
 import Foundation
 
-class ManageColorCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSource {
 
-    // view objects
-    var colorCollectionView: UICollectionView
-    
+// name: JournalDateCV
+// desc: journal date collection view class
+// last updated: 4/28/2020
+// last update: cleaned up
+class ManageColorCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSource {
+    // variables
+    var colorUICollectionView: UICollectionView
     var colorList = ["teal",
                      "blue",
                      "indigo",
@@ -21,26 +24,41 @@ class ManageColorCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
                      "red",
                      "orange"]
     
-    // initializer
+    
+    // name: init
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     init(colorUICollectionView: UICollectionView) {
-        self.colorCollectionView = colorUICollectionView
+        debugPrint("ManageColorCV", "init", "start", false)
+        self.colorUICollectionView = colorUICollectionView
         super.init()
+        debugPrint("ManageColorCV", "init", "end", false)
     }
         
-    // collectionView : numberOfItemsInSection
+    
+    // name: numberOfItemsInSection
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        debugPrint("ManageColorCV", "numberOfItemsInSection", "start", false)
+        debugPrint("ManageColorCV", "numberOfItemsInSection", "end", false)
         return (colorList.count)
     }
         
-    // collectionView : cellForItemAt
+    
+    // name: cellForItemAt
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        debugPrint("ManageColorCV", "cellForItemAt", "start", false, indexPath.row)
         // create collectionView item
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "colorCell", for: indexPath)
-            as! ColorCollectionViewCell
-        
-        let defaultColor = getSystemColor()
-        let listColor = getColor(colorString: colorList[indexPath.row])
-        
+            as! ColorCVCell
+        let defaultColor = getColor("System")
+        let listColor = getColor(colorList[indexPath.row])
         if (defaultColor == listColor) {
             if #available(iOS 13.0, *) {
                 cell.colorUIImageView?.image = UIImage(systemName: "largecircle.fill.circle")
@@ -55,17 +73,20 @@ class ManageColorCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
             }
         }
         cell.colorUIImageView?.tintColor = listColor
-        
-        
         // return initialized item
+        debugPrint("ManageColorCV", "cellForItemAt", "end", false, indexPath.row)
         return (cell)
     }
     
-    // collectionView : didDeselectItemAt
+    
+    // name: didDeselectItemAt
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        print("ManageColorCV : didDeselectColorItemAt..\(indexPath.row)")
-        if let cell: ColorCollectionViewCell = (collectionView.cellForItem(at: indexPath) as? ColorCollectionViewCell) {
-            let defaultColor = getSystemColor()
+        debugPrint("ManageColorCV", "didDeselectItemAt", "start", false, indexPath.row)
+        if let cell: ColorCVCell = (collectionView.cellForItem(at: indexPath) as? ColorCVCell) {
+            let defaultColor = getColor("System")
             // selected a different color than what is currently selected
             if (cell.colorUIImageView?.tintColor != defaultColor) {
                 if #available(iOS 13.0, *) {
@@ -75,14 +96,20 @@ class ManageColorCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
                 }
             }
         }
+        debugPrint("ManageColorCV", "didDeselectItemAt", "end", false, indexPath.row)
     }
     
-    // collectionView : didSelectItemAt
+    
+    // name: didSelectItemAt
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        debugPrint("ManageColorCV", "didSelectItemAt", "start", false, indexPath.row)
         print("ManageColorCV : didSelectItemAt..\(indexPath.row)")
         // get the cell from the tableView
-        if let cell: ColorCollectionViewCell = (collectionView.cellForItem(at: indexPath) as? ColorCollectionViewCell) {
-            let defaultColor = getSystemColor()
+        if let cell: ColorCVCell = (collectionView.cellForItem(at: indexPath) as? ColorCVCell) {
+            let defaultColor = getColor("System")
             // selected a different color than what is currently selected
             if (cell.colorUIImageView?.tintColor != defaultColor) {
                 if #available(iOS 13.0, *) {
@@ -92,13 +119,20 @@ class ManageColorCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
                 }
                 let colorString = getColorString(color: cell.colorUIImageView!.tintColor)
                 UserDefaults.standard.set(colorString, forKey: "defaultColor")
-                self.colorCollectionView.reloadData()
+                self.colorUICollectionView.reloadData()
             }
         }
+        debugPrint("ManageColorCV", "didSelectItemAt", "end", false, indexPath.row)
     }
     
-    // custom : updateTableView
-    func updateColorView(colorUICollectionView: UICollectionView) {
-        colorCollectionView = colorUICollectionView
+    
+    // name: updatedUICollectionView
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
+    func updateUICollectionView(_ colorUICollectionView: UICollectionView) {
+        debugPrint("ManageColorCV", "updatedUICollectionView", "start", false)
+        self.colorUICollectionView = colorUICollectionView
+        debugPrint("ManageColorCV", "updatedUICollectionView", "end", false)
     }
 }

@@ -9,25 +9,28 @@
 import UIKit
 import SQLite
 
-class SettingTableViewCell: UITableViewCell {
+class SettingsTVCell: UITableViewCell {
     @IBOutlet weak var settingUILabel: UILabel!
     @IBOutlet weak var settingUISwitch: UISwitch!
 }
 
 class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
+    // variables
     var settingList = ["Manage Habits", "Customize Display"]
-    
     var database: Connection!
     let journal = Journal()
-    
+    // IBOutlet connections
     @IBOutlet weak var settingsTableView: UITableView!
 
     
-    // viewDidLoad
+    // name: viewDidLoad
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        debugPrint("SettingsVC", "viewDidAppear", "start", false)
         do {
             let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
             let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
@@ -36,31 +39,45 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         } catch {
             print(error)
         }
+        debugPrint("SettingsVC", "viewDidAppear", "end", false)
     }
     
-    // tableView : numberOfRowsInSection
+    
+    // name: viewDidAppear
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        debugPrint("SettingsVC", "viewDidAppear", "start", false)
+        debugPrint("SettingsVC", "viewDidAppear", "end", false)
         return (settingList.count)
     }
     
-    // tableView : cellForRowAt -> cell
+    
+    // name: viewDidAppear
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "settingCell")
+        debugPrint("SettingsVC", "viewDidAppear", "start", false)
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingCell", for: indexPath)
-        as! SettingTableViewCell
-        
+        as! SettingsTVCell
         cell.settingUILabel.text = settingList[indexPath.row]
-        
+        debugPrint("SettingsVC", "viewDidAppear", "end", false)
         return (cell)
     }
     
-    // tableView : didSelectRowAt
+    
+    // name: viewDidAppear
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        debugPrint("SettingsVC", "viewDidAppear", "start", false)
         print("Selected row: \(indexPath.row)")
         if (settingList[indexPath.row] == "Manage Habits") {
             // do something..
             print("\tManage Habits...")
-            
             let storyBoard = UIStoryboard(name: "Main", bundle:nil)
             let manageJournalVC = storyBoard.instantiateViewController(withIdentifier: "manageJournalVC") as! ManageJournalVC
             manageJournalVC.journal = journal
@@ -74,9 +91,8 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             self.present(manageDisplayVC, animated: true, completion: nil)
         }
         tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
-    
-}
+        debugPrint("SettingsVC", "viewDidAppear", "end", false)
+    } // end func
+} // end class
 
 
