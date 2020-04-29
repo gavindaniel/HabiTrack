@@ -9,11 +9,21 @@
 import UIKit
 import SQLite
 
+
+// name: SettingsTVCell
+// desc: settings table view cell class
+// last updated: 4/28/2020
+// last update: cleaned up
 class SettingsTVCell: UITableViewCell {
     @IBOutlet weak var settingUILabel: UILabel!
     @IBOutlet weak var settingUISwitch: UISwitch!
 }
 
+
+// name: SettingsVC
+// desc: settings view controller class
+// last updated: 4/28/2020
+// last update: cleaned up
 class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     // variables
     var settingList = ["Manage Habits", "Customize Display"]
@@ -30,7 +40,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        debugPrint("SettingsVC", "viewDidAppear", "start", false)
+        debugPrint("SettingsVC", "viewDidLoad", "start", true)
         do {
             let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
             let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
@@ -39,59 +49,58 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         } catch {
             print(error)
         }
-        debugPrint("SettingsVC", "viewDidAppear", "end", false)
+        debugPrint("SettingsVC", "viewDidLoad", "end", true)
     }
     
     
-    // name: viewDidAppear
+    // name: numberOfRowsInSection
     // desc:
     // last updated: 4/28/2020
     // last update: cleaned up
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        debugPrint("SettingsVC", "viewDidAppear", "start", false)
-        debugPrint("SettingsVC", "viewDidAppear", "end", false)
+        debugPrint("SettingsVC", "numberOfRowsInSection", "start", true)
+        debugPrint("SettingsVC", "numberOfRowsInSection", "end", true)
         return (settingList.count)
     }
     
     
-    // name: viewDidAppear
+    // name: cellForRowAt
     // desc:
     // last updated: 4/28/2020
     // last update: cleaned up
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        debugPrint("SettingsVC", "viewDidAppear", "start", false)
+        debugPrint("SettingsVC", "cellForRowAt", "start", true, indexPath.row)
         let cell = tableView.dequeueReusableCell(withIdentifier: "settingCell", for: indexPath)
         as! SettingsTVCell
         cell.settingUILabel.text = settingList[indexPath.row]
-        debugPrint("SettingsVC", "viewDidAppear", "end", false)
+        debugPrint("SettingsVC", "cellForRowAt", "end", true, indexPath.row)
         return (cell)
     }
     
     
-    // name: viewDidAppear
+    // name: didSelectRowAt
     // desc:
     // last updated: 4/28/2020
     // last update: cleaned up
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        debugPrint("SettingsVC", "viewDidAppear", "start", false)
-        print("Selected row: \(indexPath.row)")
+        debugPrint("SettingsVC", "didSelectRowAt", "start", false, indexPath.row)
         if (settingList[indexPath.row] == "Manage Habits") {
-            // do something..
-            print("\tManage Habits...")
+            debugPrint("\tdidSelectRowAt", "Manage Habits", "start", false)
             let storyBoard = UIStoryboard(name: "Main", bundle:nil)
             let manageJournalVC = storyBoard.instantiateViewController(withIdentifier: "manageJournalVC") as! ManageJournalVC
             manageJournalVC.journal = journal
+            debugPrint("\tdidSelectRowAt", "Manage Habits", "end", false)
             self.present(manageJournalVC, animated: true, completion: nil)
         }
         else if (settingList[indexPath.row] == "Customize Display") {
-            // do something..
-            print("\tManage Habits...")
+            debugPrint("\tdidSelectRowAt", "Customize Display", "start", false)
             let storyBoard = UIStoryboard(name: "Main", bundle:nil)
             let manageDisplayVC = storyBoard.instantiateViewController(withIdentifier: "manageDisplayVC") as! ManageDisplayVC
+            debugPrint("\tdidSelectRowAt", "Customize Display", "end", false)
             self.present(manageDisplayVC, animated: true, completion: nil)
         }
         tableView.deselectRow(at: indexPath, animated: true)
-        debugPrint("SettingsVC", "viewDidAppear", "end", false)
+        debugPrint("SettingsVC", "didSelectRowAt", "end", false, indexPath.row)
     } // end func
 } // end class
 

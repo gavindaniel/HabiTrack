@@ -113,14 +113,14 @@ class ManageJournalVC: UIViewController {
     // last update: cleaned up
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        debugPrint("ManageJournalVC", "traitCollectionDidChange", "start", false)
+        debugPrint("ManageJournalVC", "traitCollectionDidChange", "start", true)
         // check if change from light/dark mode
         if #available(iOS 13, *), traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
             // handle theme change here.
             self.manageUITableView.reloadData()
 //            self.colorUICollectionView.reloadData()
         }
-        debugPrint("ManageJournalVC", "traitCollectionDidChange", "end", false)
+        debugPrint("ManageJournalVC", "traitCollectionDidChange", "end", true)
     }
     
     

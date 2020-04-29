@@ -70,7 +70,7 @@ class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
     // last updated: 4/28/2020
     // last update: cleaned up
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        debugPrint("JournalHabitsTV", "cellForRowAt", "start", false, indexPath.row)
+        debugPrint("JournalHabitsTV", "cellForRowAt", "start", true, indexPath.row)
         // create tableView cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
             as! JournalHabitsTVCell
@@ -119,7 +119,7 @@ class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
                                 cell.accessoryType = .none
                             }
                         }
-                        debugPrint("\tJournalHabitsTV", "cellForRowAt", "end", false, indexPath.row)
+                        debugPrint("\tJournalHabitsTV", "cellForRowAt", "end", true, indexPath.row)
                         return (cell)
                     } else {
                         buffer += 1
@@ -132,7 +132,7 @@ class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
         } catch {
             print (error)
         }
-        debugPrint("JournalHabitsTV", "cellForRowAt", "end", false, indexPath.row)
+        debugPrint("JournalHabitsTV", "cellForRowAt", "end", true, indexPath.row)
         return (cell)
     }
     

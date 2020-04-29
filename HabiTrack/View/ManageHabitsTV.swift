@@ -21,12 +21,12 @@ class ManageHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate, UITa
     // last updated: 4/28/2020
     // last update: cleaned up
     init(_ journal: Journal,_ manageUITableView: UITableView) {
-        debugPrint("ManageHabitsTV", "init", "start", false)
+        debugPrint("ManageHabitsTV", "init", "start", true)
         self.journal = journal
         self.manageUITableView = manageUITableView
 //        self.dateSelected = date
         super.init()
-        debugPrint("ManageHabitsTV", "init", "end", false)
+        debugPrint("ManageHabitsTV", "init", "end", true)
     }
     
     
@@ -65,6 +65,7 @@ class ManageHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate, UITa
                     let tempString = getRepeatDaysString(dayInt: habit[self.journal.dayOfWeek])
                     cell.habitRepeatUILabel?.text = tempString
                     cell.habitRepeatUILabel?.textColor = getColor("System")
+                    debugPrint("\tManageHabitsTV", "cellForRowAt", "end", false, indexPath.row)
                     return (cell)
                 }
             }
@@ -174,7 +175,6 @@ class ManageHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate, UITa
     // last update: fixed issue where database wasn't updating
     func updateHabitIDs() {
         debugPrint("ManageHabitsTV", "updateHabitIDs", "start", false)
-        print("updateHabitIDs...")
         do {
             // define variable(s)
             let table = Table("habits")
