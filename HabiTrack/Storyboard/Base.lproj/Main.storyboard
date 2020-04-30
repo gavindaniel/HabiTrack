@@ -197,7 +197,7 @@
         <!--Habit-->
         <scene sceneID="lGp-ZO-F53">
             <objects>
-                <viewController id="wIU-Me-2Is" userLabel="Habit" customClass="HabitVC" customModule="HabiTrack" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="wIU-Me-2Is" userLabel="Habit" customClass="AddHabitVC" customModule="HabiTrack" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="IkD-IG-m8W">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="716"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -292,7 +292,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="ACJ-P4-4C0"/>
                     <connections>
-                        <outlet property="addHabitView" destination="Mg5-3m-djD" id="f46-UD-KvR"/>
+                        <outlet property="addHabitView" destination="Mg5-3m-djD" id="SLN-RA-pQj"/>
                         <outlet property="addUIButton" destination="NZw-sv-9NZ" id="Hz9-d0-HEo"/>
                         <outlet property="cancelUIButton" destination="Cbq-zG-HdL" id="J70-jn-lKS"/>
                         <outlet property="dateUICollectionView" destination="bNp-Ye-kqt" id="JOk-7Q-vN4"/>

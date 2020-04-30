@@ -50,7 +50,7 @@ class JournalVC: UIViewController {
     // variables
     var lastSelectedItem = -1
     var dateSelected = Date()
-    var journal = Journal()
+    var habits = Habits()
     // customViews
     var journalHabitsTV: JournalHabitsTV?
     var journalDateCV: JournalDateCV?
@@ -72,7 +72,7 @@ class JournalVC: UIViewController {
         // initialize journalTitleTableView
         self.journalTitleCV = JournalTitleCV(titleUICollectionView, Date())
         // initialize journalHabitsTV
-        self.journalHabitsTV = JournalHabitsTV(journal, journalUITableView, Date())
+        self.journalHabitsTV = JournalHabitsTV(habits, journalUITableView, Date())
         // initialize journalDateCV
         self.journalDateCV = JournalDateCV(dateUICollectionView, journalHabitsTV!, journalUITableView, journalTitleCV!, titleUICollectionView)
         // set observer of application entering foreground
@@ -86,8 +86,8 @@ class JournalVC: UIViewController {
             let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
             let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
             let database = try Connection(fileUrl.path)
-            self.journal.database = database
-            self.journal.entries.database = database
+            self.habits.database = database
+            self.habits.entries.database = database
             // set the dataSource and delegate
             self.titleUICollectionView.dataSource = journalTitleCV
             self.titleUICollectionView.delegate = journalTitleCV
@@ -198,8 +198,8 @@ class JournalVC: UIViewController {
                 let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
                 let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
                 let database = try Connection(fileUrl.path)
-                self.journal.database = database
-                self.journal.entries.database = database
+                self.habits.database = database
+                self.habits.entries.database = database
                 // update the views
                 self.journalTitleCV?.updateUICollectionView(titleUICollectionView)
                 self.journalHabitsTV?.updateUITableView(journalUITableView)
@@ -208,7 +208,7 @@ class JournalVC: UIViewController {
                 print(error)
             }
             // add number of days since last run date
-            self.journal.addDays(numDays: count, startDate: lastRun)
+            self.habits.addDays(numDays: count, startDate: lastRun)
             // set the last run date to the current date
             UserDefaults.standard.set(dateToday, forKey: "lastRun")
             // reload the views

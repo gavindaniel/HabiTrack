@@ -25,7 +25,7 @@
 		4C6A161A2320BA4000274316 /* CustomDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A16192320BA4000274316 /* CustomDate.swift */; };
 		4C6FDDBD23617A7F00E54485 /* CustomDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6FDDBC23617A7F00E54485 /* CustomDisplay.swift */; };
 		4C6FDDC523618D2A00E54485 /* ManageDisplayVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6FDDC423618D2A00E54485 /* ManageDisplayVC.swift */; };
-		4C89B815231B62D500AE45F4 /* Journal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C89B814231B62D500AE45F4 /* Journal.swift */; };
+		4C89B815231B62D500AE45F4 /* Habits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C89B814231B62D500AE45F4 /* Habits.swift */; };
 		4C89B81D231C44E400AE45F4 /* Entries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C89B81C231C44E400AE45F4 /* Entries.swift */; };
 		4C89B81F231CE2A600AE45F4 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C89B81E231CE2A600AE45F4 /* SettingsVC.swift */; };
 		4CAAAC82232B5CD5000C9AD8 /* AddHabitVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAAAC81232B5CD5000C9AD8 /* AddHabitVC.swift */; };
@@ -151,7 +151,7 @@
 		4C6A16192320BA4000274316 /* CustomDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDate.swift; sourceTree = "<group>"; };
 		4C6FDDBC23617A7F00E54485 /* CustomDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDisplay.swift; sourceTree = "<group>"; };
 		4C6FDDC423618D2A00E54485 /* ManageDisplayVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageDisplayVC.swift; sourceTree = "<group>"; };
-		4C89B814231B62D500AE45F4 /* Journal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Journal.swift; sourceTree = "<group>"; };
+		4C89B814231B62D500AE45F4 /* Habits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Habits.swift; sourceTree = "<group>"; };
 		4C89B81C231C44E400AE45F4 /* Entries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entries.swift; sourceTree = "<group>"; };
 		4C89B81E231CE2A600AE45F4 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		4CAAAC81232B5CD5000C9AD8 /* AddHabitVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHabitVC.swift; sourceTree = "<group>"; };
@@ -229,7 +229,7 @@
 				4C6A16192320BA4000274316 /* CustomDate.swift */,
 				4C6FDDBC23617A7F00E54485 /* CustomDisplay.swift */,
 				4CB577AA2458C87B00244CAD /* CustomPrint.swift */,
-				4C89B814231B62D500AE45F4 /* Journal.swift */,
+				4C89B814231B62D500AE45F4 /* Habits.swift */,
 				4C89B81C231C44E400AE45F4 /* Entries.swift */,
 			);
 			path = Model;
@@ -517,7 +517,7 @@
 				4CFFD4D8234991BE0004B45E /* JournalTitleCV.swift in Sources */,
 				4C6A161A2320BA4000274316 /* CustomDate.swift in Sources */,
 				4CB577A92456500E00244CAD /* AddDateCV.swift in Sources */,
-				4C89B815231B62D500AE45F4 /* Journal.swift in Sources */,
+				4C89B815231B62D500AE45F4 /* Habits.swift in Sources */,
 				4C2D42DE235A9A2700D5C628 /* ManageHabitsTV.swift in Sources */,
 				4C28331A235B7A4100A10642 /* ManageColorCV.swift in Sources */,
 				4C15613B235EBEA80026E770 /* TabBarVC.swift in Sources */,

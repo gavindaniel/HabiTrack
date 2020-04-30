@@ -35,7 +35,7 @@ class ManageHabitsTVCell: UITableViewCell {
 // last update: cleaned up
 class ManageJournalVC: UIViewController {
     // variables
-    var journal = Journal()
+    var habits = Habits()
     var manageHabitsTV: ManageHabitsTV?
     // IBOutlet connections
     @IBOutlet weak var manageUIView: UIView!
@@ -66,15 +66,15 @@ class ManageJournalVC: UIViewController {
         // Do any additional setup after loading the view.
         debugPrint("ManageJournalVC", "viewDidLoad", "start", false)
         // initialize views
-        self.manageHabitsTV = ManageHabitsTV(journal, manageUITableView)
+        self.manageHabitsTV = ManageHabitsTV(habits, manageUITableView)
         // set the databases, dataSources and delegates
         do {
             // set the databases
             let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
             let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
             let database = try Connection(fileUrl.path)
-            self.journal.database = database
-            self.journal.entries.database = database
+            self.habits.database = database
+            self.habits.entries.database = database
             // set the dataSource and delegate
             self.manageUITableView.dataSource = manageHabitsTV
             self.manageUITableView.delegate = manageHabitsTV

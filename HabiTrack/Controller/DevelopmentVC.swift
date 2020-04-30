@@ -24,7 +24,7 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 "Update Habit Days by ID"]
     
     var database: Connection!
-    let journal = Journal()
+    let habits = Habits()
     
     @IBOutlet weak var devTableView: UITableView!
     
@@ -41,7 +41,7 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
             let database = try Connection(fileUrl.path)
             self.database = database
-            self.journal.database = database
+            self.habits.database = database
         } catch {
             print(error)
         }
@@ -139,11 +139,11 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         print()
         print("Printing database table...")
         do {
-            let habits = try self.database.prepare(self.journal.habitsTable)
+            let habits = try self.database.prepare(self.habits.habitsTable)
             for habit in habits {
-                print("\tid: \(habit[self.journal.id]), habit: \(habit[self.journal.habit]), time: \(habit[self.journal.time]), current day: \(habit[self.journal.dayOfWeek])")
+                print("\tid: \(habit[self.habits.id]), name: \(habit[self.habits.name]), days: \(habit[self.habits.days]), start date: \(habit[self.habits.startDay])/\(habit[self.habits.startMonth])/\(habit[self.habits.startYear])")
                 // uncomment to print daily entries
-//                printJournalEntries(habit[self.journal.habit])
+//                printJournalEntries(habit[self.habits.habit])
             }
         } catch {
             print(error)
@@ -160,7 +160,7 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             let table = Table(habit)
             let habits = try self.database.prepare(table)
             for entry in habits {
-                print("\t\tid: \(entry[self.journal.entries.id]), year: \(entry[self.journal.entries.year]), month: \(entry[self.journal.entries.month]), day: \(entry[self.journal.entries.day]), done: \(entry[self.journal.entries.completed])")
+                print("\t\tid: \(entry[self.habits.entries.id]), year: \(entry[self.habits.entries.year]), month: \(entry[self.habits.entries.month]), day: \(entry[self.habits.entries.day]), done: \(entry[self.habits.entries.completed])")
             }
         } catch {
             print (error)
@@ -180,7 +180,7 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         var count = 1
         for habit in habits {
             print("\tid: \(count), habit: \(habit)")
-//            printJournalEntries(habit[self.journal.habit])
+//            printJournalEntries(habit[self.habits.habit])
             count += 1
         }
     }
@@ -192,7 +192,7 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     // last update: cleaned up
     func deleteDatabaseTable() {
         print("Deleting Table...")
-        let deleteTable = self.journal.habitsTable.drop()
+        let deleteTable = self.habits.habitsTable.drop()
         do {
             try self.database.run(deleteTable)
             print("Deleted Table")
@@ -231,7 +231,7 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                             let year = Calendar.current.component(.year, from: Date())
                             let month = Calendar.current.component(.month, from:  Date())
                             let day = Calendar.current.component(.day, from:  Date())
-                            let dayAdd = table.insert(self.journal.entries.year <- year, self.journal.entries.month <- month, self.journal.entries.day <- day, self.journal.entries.completed <- 0)
+                            let dayAdd = table.insert(self.habits.entries.year <- year, self.habits.entries.month <- month, self.habits.entries.day <- day, self.habits.entries.completed <- 0)
                             do {
                                 try self.database.run(dayAdd)
                             } catch {
@@ -245,13 +245,13 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 }
             } else {
                 // find the correct in the table
-//                let habit = self.journal.habitsTable.filter(self.journal.habit == habitString)
+//                let habit = self.habits.habitsTable.filter(self.habits.habit == habitString)
                 // udpate the habit
                 let table = Table(habitString)
                 let year = Calendar.current.component(.year, from: Date())
                 let month = Calendar.current.component(.month, from:  Date())
                 let day = Calendar.current.component(.day, from:  Date())
-                let dayAdd = table.insert(self.journal.entries.year <- year, self.journal.entries.month <- month, self.journal.entries.day <- day, self.journal.entries.completed <- 0)
+                let dayAdd = table.insert(self.habits.entries.year <- year, self.habits.entries.month <- month, self.habits.entries.day <- day, self.habits.entries.completed <- 0)
                 do {
                     try self.database.run(dayAdd)
                 } catch {
@@ -298,7 +298,7 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                             let day = Calendar.current.component(.day, from:  Date())
                             do {
                                 // loop through the table
-                                let entry = table.filter(self.journal.entries.year == year).filter(self.journal.entries.month == month).filter(self.journal.entries.day == day)
+                                let entry = table.filter(self.habits.entries.year == year).filter(self.habits.entries.month == month).filter(self.habits.entries.day == day)
                                 // delete the habit
                                 let deleteDay = entry.delete()
                                 try self.database.run(deleteDay)
@@ -320,7 +320,7 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 let day = Calendar.current.component(.day, from:  Date())
                 do {
                     // loop through the table
-                    let entry = table.filter(self.journal.entries.year == year).filter(self.journal.entries.month == month).filter(self.journal.entries.day == day)
+                    let entry = table.filter(self.habits.entries.year == year).filter(self.habits.entries.month == month).filter(self.habits.entries.day == day)
                     // delete the habit
                     let deleteDay = entry.delete()
                     try self.database.run(deleteDay)
@@ -355,13 +355,13 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             guard let habitIdString = alert.textFields?.first?.text, let habitId = Int(habitIdString)
                 else { return }
             // find the correct in the table
-            let habit = self.journal.habitsTable.filter(self.journal.id == habitId)
+            let habit = self.habits.habitsTable.filter(self.habits.id == habitId)
             // udpate the habit
             let deleteHabit = habit.delete()
             
             // attempt to update the database
             do {
-                try self.journal.database.run(deleteHabit)
+                try self.habits.database.run(deleteHabit)
                 print("deleted habit.")
             } catch {
                 print(error)
@@ -387,11 +387,11 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         }
         do {
             let table = Table("habits")
-            let habits = try self.database.prepare(table)
+            let habitsTable = try self.database.prepare(table)
             let defaults = UserDefaults.standard
             var localHabits = [String]()
-            for habit in habits {
-                localHabits.append(habit[self.journal.habit])
+            for habit in habitsTable {
+                localHabits.append(habit[self.habits.name])
             }
             defaults.set(localHabits, forKey: "localHabits")
         } catch {
@@ -414,19 +414,19 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             // loop through habits table
             for habit in habits {
                 // calculate difference = current habit ID - loop index
-                currId = habit[self.journal.id]
+                currId = habit[self.habits.id]
                 diff = currId - index
                 // check if there is a difference
                 if (diff > 0) {
                     // calculate the new ID based on the difference between database table and local table
                     let newId = currId - diff
                     // get the habit with the current ID
-                    let tempHabit = self.journal.habitsTable.filter(self.journal.id == currId)
-                    let updateHabit = tempHabit.update(self.journal.id <- newId)
+                    let tempHabit = self.habits.habitsTable.filter(self.habits.id == currId)
+                    let updateHabit = tempHabit.update(self.habits.id <- newId)
                     // attempt to update the database
                     do {
-                        try self.journal.database.run(updateHabit)
-                        print("\tupdated habit ID...\(habit[self.journal.id])->\(newId)")
+                        try self.habits.database.run(updateHabit)
+                        print("\tupdated habit ID...\(habit[self.habits.id])->\(newId)")
                         numUpdates += 1
                     } catch {
                         print(error)
@@ -450,7 +450,7 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     // last updated: 4/28/2020
     // last update: cleaned up
     func updateRepeatDaysById() {
-        print("updating day of week for journal entry...")
+        print("updating day of week for habits entry...")
         // create alert controller
         let alert = UIAlertController(title: "Update Week Day", message: nil, preferredStyle: .alert)
         // add text fields
@@ -464,13 +464,13 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             guard let habitIdString = alert.textFields?.first?.text, let habitId = Int(habitIdString), let habitDayString = alert.textFields?.last?.text, let habitDayOfWeek = Int(habitDayString)
                 else { return }
             // find the correct in the table
-            let habit = self.journal.habitsTable.filter(self.journal.id == habitId)
+            let habit = self.habits.habitsTable.filter(self.habits.id == habitId)
             // udpate the habit
-            let updateHabit = habit.update(self.journal.dayOfWeek <- habitDayOfWeek)
+            let updateHabit = habit.update(self.habits.days <- habitDayOfWeek)
             
             // attempt to update the database
             do {
-                try self.journal.database.run(updateHabit)
+                try self.habits.database.run(updateHabit)
                 print("updated habit repeat.")
             } catch {
                 print(error)

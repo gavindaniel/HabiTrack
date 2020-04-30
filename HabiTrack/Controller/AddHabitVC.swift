@@ -27,12 +27,13 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var cancelUIButton: UIButton!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var nameUnderlineLabel: UILabel!
+//    @IBOutlet weak var addHabitView: UIView!
     @IBOutlet weak var addHabitView: UIView!
     @IBOutlet weak var dateUICollectionView: UICollectionView!
     var addDateCV: AddDateCV?
     var activeTextField = UITextField()
     var lastActiveTextField: String!
-    var journal = Journal()
+    var habits = Habits()
     
     
     // name: viewDidAppear
@@ -76,8 +77,8 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
             let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
             let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
             let database = try Connection(fileUrl.path)
-            self.journal.database = database
-            self.journal.entries.database = database
+            self.habits.database = database
+            self.habits.entries.database = database
             // set the dataSource and delegate
             self.dateUICollectionView.dataSource = addDateCV
             self.dateUICollectionView.delegate = addDateCV
@@ -205,12 +206,12 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
     @IBAction func addHabit(_ sender: AnyObject) {
         debugPrint("AddHabitVC", "addHabit", "start", false)
         // create table if there isn't one
-        journal.createTable()
+        habits.createTable()
         // insert new habit into journal
-        let habit = nameTextField.text
+        let nameString = nameTextField.text
         let selectedDays = self.addDateCV?.getDaysSelected()
-        if (habit == "" || selectedDays!.count == 0) {
-            if (habit == "") {
+        if (nameString == "" || selectedDays!.count == 0) {
+            if (nameString == "") {
                 print("Name blank, displaying required...")
                 nameUnderlineLabel.textColor = UIColor.red
             }
@@ -218,35 +219,41 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
                 print("No days selected, displaying required...")
             }
         } else {
-            var i = 0, repeatInt = "", repeatString = ""
+            let calendar = Calendar.current
+            var year = calendar.component(.year, from: Date())
+            var month = calendar.component(.month, from: Date())
+            var day = calendar.component(.day, from: Date())
+            var i = 0, daysString = ""
             print("# selectedDays : \(selectedDays!.count)")
             while (i < selectedDays!.count) {
-                repeatInt += "\(selectedDays![i].row+1)"
+                daysString += "\(selectedDays![i].row+1)"
                 i += 1
             }
-            print("repeatInt: \(repeatInt)")
-            if (selectedDays!.count >= 7) {
-                repeatString = "daily"
-            } else {
-                repeatString = "weekly"
-            }
-            let addHabit = self.journal.habitsTable.insert(self.journal.habit <- habit ?? "error",
-            self.journal.time <- repeatString,
-            self.journal.streak <- 0,
-            self.journal.dayOfWeek <- Int(repeatInt) ?? 1)
+            print("daysString: \(daysString)")
+//            if (selectedDays!.count >= 7) {
+//                repeatString = "daily"
+//            } else {
+//                repeatString = "weekly"
+//            }
+            let addHabit = self.habits.habitsTable.insert(self.habits.name <- nameString ?? "error",
+            self.habits.days <- Int(daysString) ?? 1,
+            self.habits.streak <- 0,
+            self.habits.startYear <- Int(year),
+            self.habits.startMonth <- Int(month),
+            self.habits.startDay <- Int(day))
             // attempt to add habit to database
             do {
-                try self.journal.database.run(addHabit)
+                try self.habits.database.run(addHabit)
                 // testing ...
                 let defaults = UserDefaults.standard
                 if (isKeyPresentInUserDefaults(key: "localHabits") == false) {
                     defaults.set([String](), forKey: "localHabits")
                 }
                 var localHabits = defaults.object(forKey: "localHabits") as! [String]
-                localHabits.append(habit!)
+                localHabits.append(nameString!)
                 defaults.set(localHabits, forKey: "localHabits")
-                print("Habit Added -> habit: \(habit ?? "error"), time: \("daily")")
-                self.journal.entries.addDay(habit: habit ?? "error", date: Date())
+                print("Habit Added -> habit: \(nameString ?? "error"), time: \("daily")")
+                self.habits.entries.addDay(habit: nameString ?? "error", date: Date())
                 nameTextField.text = ""
                 // return to journal view controller
                 dismiss(animated: true, completion: nil)

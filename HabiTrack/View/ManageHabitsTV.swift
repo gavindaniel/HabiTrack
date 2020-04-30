@@ -12,7 +12,7 @@ import MobileCoreServices
 
 class ManageHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate, UITableViewDragDelegate {
     // variables
-    var journal: Journal
+    var habits: Habits
     var manageUITableView: UITableView
     
     
@@ -20,9 +20,9 @@ class ManageHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate, UITa
     // desc:
     // last updated: 4/28/2020
     // last update: cleaned up
-    init(_ journal: Journal,_ manageUITableView: UITableView) {
+    init(_ habits: Habits,_ manageUITableView: UITableView) {
         debugPrint("ManageHabitsTV", "init", "start", true)
-        self.journal = journal
+        self.habits = habits
         self.manageUITableView = manageUITableView
 //        self.dateSelected = date
         super.init()
@@ -37,8 +37,8 @@ class ManageHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate, UITa
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         debugPrint("ManageHabitsTV", "numberOfRowsInSection", "start", false)
         debugPrint("ManageHabitsTV", "numberOfRowsInSection", "end", false)
-        // get the number of habits in the journal
-        return (journal.getTableSize())
+        // get the number of habits in the table
+        return (habits.getTableSize())
     }
     
     
@@ -57,12 +57,12 @@ class ManageHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate, UITa
             as! ManageHabitsTVCell
         do {
             // get the table
-            let habits = try self.journal.database.prepare(self.journal.habitsTable)
+            let habits = try self.habits.database.prepare(self.habits.habitsTable)
             // loop through the list of habits
             for habit in habits {
-                if (habit[self.journal.id] == (indexPath.row+1)) {
-                    cell.habitNameUILabel?.text = habit[self.journal.habit]
-                    let tempString = getRepeatDaysString(dayInt: habit[self.journal.dayOfWeek])
+                if (habit[self.habits.id] == (indexPath.row+1)) {
+                    cell.habitNameUILabel?.text = habit[self.habits.name]
+                    let tempString = getRepeatDaysString(dayInt: habit[self.habits.days])
                     cell.habitRepeatUILabel?.text = tempString
                     cell.habitRepeatUILabel?.textColor = getColor("System")
                     debugPrint("\tManageHabitsTV", "cellForRowAt", "end", false, indexPath.row)
@@ -88,30 +88,30 @@ class ManageHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate, UITa
         if (editingStyle == UITableViewCell.EditingStyle.delete) {
             var count = 0
             var firstId = 0
-            var habitString = ""
+            var nameString = ""
             // get the habit string from the tableview cell
             if let cell: ManageHabitsTVCell = (tableView.cellForRow(at: indexPath) as? ManageHabitsTVCell) {
-                habitString = cell.habitNameUILabel?.text ?? "error"
+                nameString = cell.habitNameUILabel?.text ?? "error"
             }
             // delete the habit from the table
-            journal.entries.deleteTable(habit: habitString)
+            habits.entries.deleteTable(habit: nameString)
             do {
                 // get the habits table
-                let habits = try self.journal.database.prepare(self.journal.habitsTable)
+                let habits = try self.habits.database.prepare(self.habits.habitsTable)
                 // loop through the table
                 for habit in habits {
                     // get the id of the first habit
                     if (count == 0) {
-                        firstId = habit[self.journal.id]
+                        firstId = habit[self.habits.id]
                     }
-                    if (habit[self.journal.habit] == habitString) {
+                    if (habit[self.habits.name] == nameString) {
                         // get the habit whose id matches the count + first ID in the tableView
-                        let habit = self.journal.habitsTable.filter(self.journal.id == (firstId+count))
+                        let habit = self.habits.habitsTable.filter(self.habits.id == (firstId+count))
                         // delete the habit
                         let deleteHabit = habit.delete()
                         do {
-                            try self.journal.database.run(deleteHabit)
-                            print("\tDeleted habit...\(habitString)...from database")
+                            try self.habits.database.run(deleteHabit)
+                            print("\tDeleted habit...\(nameString)...from database")
                             updateHabitIDs()
                             updateLocalTable()
                             manageUITableView.reloadData()
@@ -155,11 +155,11 @@ class ManageHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate, UITa
         }
         do {
             let table = Table("habits")
-            let habits = try self.journal.database.prepare(table)
+            let habits = try self.habits.database.prepare(table)
             let defaults = UserDefaults.standard
             var localHabits = [String]()
             for habit in habits {
-                localHabits.append(habit[self.journal.habit])
+                localHabits.append(habit[self.habits.name])
             }
             defaults.set(localHabits, forKey: "localHabits")
         } catch {
@@ -178,24 +178,24 @@ class ManageHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate, UITa
         do {
             // define variable(s)
             let table = Table("habits")
-            let habits = try self.journal.database.prepare(table)
+            let habits = try self.habits.database.prepare(table)
             var index = 1, currId = 1, diff = 0, numUpdates = 0
             // loop through habits table
             for habit in habits {
                 // calculate difference = current habit ID - loop index
-                currId = habit[self.journal.id]
+                currId = habit[self.habits.id]
                 diff = currId - index
                 // check if there is a difference
                 if (diff > 0) {
                     // calculate the new ID based on the difference between database table and local table
                     let newId = currId - diff
                     // get the habit with the current ID
-                    let tempHabit = self.journal.habitsTable.filter(self.journal.id == currId)
-                    let updateHabit = tempHabit.update(self.journal.id <- newId)
+                    let tempHabit = self.habits.habitsTable.filter(self.habits.id == currId)
+                    let updateHabit = tempHabit.update(self.habits.id <- newId)
                     // attempt to update the database
                     do {
-                        try self.journal.database.run(updateHabit)
-                        print("\tupdated habit ID...\(habit[self.journal.id])->\(newId)")
+                        try self.habits.database.run(updateHabit)
+                        print("\tupdated habit ID...\(habit[self.habits.id])->\(newId)")
                         numUpdates += 1
                     } catch {
                         print(error)
@@ -341,7 +341,7 @@ class ManageHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate, UITa
             var indexPaths = [IndexPath]()
             for (index, item) in stringItems.enumerated() {
                 let indexPath = IndexPath(row: destinationIndexPath.row + index, section: destinationIndexPath.section)
-                self.journal.addItem(item, at: indexPath.row)
+                self.habits.addItem(item, at: indexPath.row)
                 indexPaths.append(indexPath)
             }
 
@@ -368,7 +368,7 @@ class ManageHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate, UITa
     // last update: cleaned up
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         debugPrint("ManageHabitsTV", "moveRowAt", "start", false)
-        self.journal.moveItem(at: sourceIndexPath.row, to: destinationIndexPath.row)
+        self.habits.moveItem(at: sourceIndexPath.row, to: destinationIndexPath.row)
         debugPrint("ManageHabitsTV", "moveRowAt", "end", false)
     }
 }

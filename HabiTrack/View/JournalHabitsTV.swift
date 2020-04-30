@@ -17,7 +17,7 @@ import MobileCoreServices
 // last update: cleaned up
 class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
     // variables
-    var journal: Journal
+    var habits: Habits
     var journalUITableView: UITableView
     var dateSelected: Date
     var buffer = 0
@@ -27,9 +27,9 @@ class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
     // desc:
     // last updated: 4/28/2020
     // last update: cleaned up
-    init(_ journal: Journal,_ habitTableView: UITableView,_ date: Date) {
+    init(_ habits: Habits,_ habitTableView: UITableView,_ date: Date) {
         debugPrint("JournalHabitsTV", "init", "start", true)
-        self.journal = journal
+        self.habits = habits
         self.journalUITableView = habitTableView
         self.dateSelected = date
         super.init()
@@ -48,12 +48,12 @@ class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
         var count = 0
         do {
             // get the table
-            let habits = try self.journal.database.prepare(self.journal.habitsTable)
+            let habits = try self.habits.database.prepare(self.habits.habitsTable)
             // testing
             let currentDayOfWeek = Calendar.current.component(.weekday, from: dateSelected)
             // loop through the list of habits
             for habit in habits {
-                if(checkDayOfWeek(dayInt: habit[self.journal.dayOfWeek], dayOfWeek: currentDayOfWeek)) {
+                if(checkDayOfWeek(dayInt: habit[self.habits.days], dayOfWeek: currentDayOfWeek)) {
                     count += 1
                 }
             }
@@ -79,20 +79,20 @@ class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
         var count = 0
         do {
             // get the table
-            let habits = try self.journal.database.prepare(self.journal.habitsTable)
+            let habits = try self.habits.database.prepare(self.habits.habitsTable)
             // testing
             let currentDayOfWeek = Calendar.current.component(.weekday, from: dateSelected)
             // loop through the list of habits
             for habit in habits {
                 if ((count - buffer) == indexPath.row) {
-                    if (checkDayOfWeek(dayInt: habit[self.journal.dayOfWeek], dayOfWeek: currentDayOfWeek)) {
+                    if (checkDayOfWeek(dayInt: habit[self.habits.days], dayOfWeek: currentDayOfWeek)) {
                         // get the habit string and put it in the cell
-                        cell.habitUILabel?.text = habit[self.journal.habit]
+                        cell.habitUILabel?.text = habit[self.habits.name]
                         // get the name of habit and size of habit entries table
-                        let habitString = habit[self.journal.habit]
-                        let habitDayOfWeek = habit[self.journal.dayOfWeek]
-                        let currentStreak = self.journal.entries.countStreak(habit: habitString, date: dateSelected, habitRepeat: habitDayOfWeek)
-                        let longestStreak = self.journal.entries.countLongestStreak(habit: habitString, date: dateSelected, habitRepeat: habitDayOfWeek) // habitRepeatString
+                        let habitString = habit[self.habits.name]
+                        let habitDayOfWeek = habit[self.habits.days]
+                        let currentStreak = self.habits.entries.countStreak(habit: habitString, date: dateSelected, habitRepeat: habitDayOfWeek)
+                        let longestStreak = self.habits.entries.countLongestStreak(habit: habitString, date: dateSelected, habitRepeat: habitDayOfWeek) // habitRepeatString
                         // set the streak
                         cell.streakUILabel?.text = String(currentStreak)
                         // if the current streak is equal or greater than the longest, change streak color
@@ -102,7 +102,7 @@ class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
                             cell.streakUILabel?.textColor = UIColor.label
                         }
                         // check if today has already been completed
-                        if (self.journal.entries.checkCompleted(habit: habitString, date: dateSelected)) {
+                        if (self.habits.entries.checkCompleted(habit: habitString, date: dateSelected)) {
                             if #available(iOS 13.0, *) {
                                 cell.checkImageView?.image = UIImage(systemName: "checkmark.circle.fill")
                                 cell.checkImageView?.tintColor = getColor("System")
@@ -152,20 +152,20 @@ class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
                 if cell.checkImageView?.image == UIImage(systemName: "checkmark.circle.fill") {
                     cell.checkImageView?.image = UIImage(systemName: "circle")
                     cell.checkImageView?.tintColor = UIColor.systemGray
-                    journal.updateStreak(row: indexPath.row, inc: 0, date: dateSelected, habitString: tempString ?? "none")
+                    habits.updateStreak(row: indexPath.row, inc: 0, date: dateSelected, habitString: tempString ?? "none")
                 } else {
                     cell.checkImageView?.image = UIImage(systemName: "checkmark.circle.fill")
                     cell.checkImageView?.tintColor = getColor("System")
-                    journal.updateStreak(row: indexPath.row, inc: 1, date: dateSelected, habitString: tempString ?? "none")
+                    habits.updateStreak(row: indexPath.row, inc: 1, date: dateSelected, habitString: tempString ?? "none")
                 }
             } else {
                 // Fallback on earlier versions
                 if cell.accessoryType == UITableViewCell.AccessoryType.checkmark {
                     cell.accessoryType = .none
-                    journal.updateStreak(row: indexPath.row, inc: 0, date: dateSelected, habitString: tempString ?? "none")
+                    habits.updateStreak(row: indexPath.row, inc: 0, date: dateSelected, habitString: tempString ?? "none")
                 } else {
                     cell.accessoryType = .checkmark
-                    journal.updateStreak(row: indexPath.row, inc: 1, date: dateSelected, habitString: tempString ?? "none")
+                    habits.updateStreak(row: indexPath.row, inc: 1, date: dateSelected, habitString: tempString ?? "none")
                 }
             }
         }

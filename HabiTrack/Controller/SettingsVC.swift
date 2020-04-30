@@ -28,7 +28,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     // variables
     var settingList = ["Manage Habits", "Customize Display"]
     var database: Connection!
-    let journal = Journal()
+    let habits = Habits()
     // IBOutlet connections
     @IBOutlet weak var settingsTableView: UITableView!
 
@@ -88,7 +88,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             debugPrint("\tdidSelectRowAt", "Manage Habits", "start", false)
             let storyBoard = UIStoryboard(name: "Main", bundle:nil)
             let manageJournalVC = storyBoard.instantiateViewController(withIdentifier: "manageJournalVC") as! ManageJournalVC
-            manageJournalVC.journal = journal
+            manageJournalVC.habits = habits
             debugPrint("\tdidSelectRowAt", "Manage Habits", "end", false)
             self.present(manageJournalVC, animated: true, completion: nil)
         }
