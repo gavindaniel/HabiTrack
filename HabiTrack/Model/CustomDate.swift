@@ -34,6 +34,49 @@ func setDateDefaults() {
 }
 
 
+// name: countDaysBetweenDates
+// desc:
+// last updated: 4/28/2020
+// last update: cleaned up
+func countDaysBetweenDates(_ date1: Date,_ date2: Date) -> Int {
+    debugPrint("CustomDate", "countDaysBetweenDates", "start", true)
+    let calendar = Calendar.current
+    let d1 = calendar.startOfDay(for: date1)
+    let d2 = calendar.startOfDay(for: date2)
+    let components = calendar.dateComponents([.day], from: d1, to: d2).day ?? 0
+    debugPrint("CustomDate", "countDaysBetweenDates", "end", true)
+    return(components)
+}
+
+
+// name: checkDayOfWeek
+// desc: since arrays aren't supported with sqlite
+// last updated: 4/28/2020
+// last update: cleaned up
+func checkDayOfWeek(days: Int, dayOfWeek: Int) -> Bool {
+    debugPrint("CustomDate", "checkDayOfWeek", "start", true)
+    let dayString = String(days)
+    if (dayString.contains(String(dayOfWeek))) {
+//        print("\(dayInt) contains a \(dayOfWeek)")
+        debugPrint("CustomDate", "checkDayOfWeek", "end", true)
+        return true
+    } else {
+        debugPrint("CustomDate", "checkDayOfWeek", "end", true)
+        return false
+    }
+}
+
+
+// name:
+// desc:
+// last updated: 4/29/2020
+// last update: new
+func checkDateBeforeStart(date: Date, startDate: Date) -> Bool {
+    
+    return false
+}
+
+
 // name: getDayAsInt
 // desc:
 // last updated: 4/28/2020
@@ -75,39 +118,6 @@ func getDayTh(date: Date) -> String {
         return(dayString)
     }
     
-}
-
-
-// name: countDaysBetweenDates
-// desc:
-// last updated: 4/28/2020
-// last update: cleaned up
-func countDaysBetweenDates(_ date1: Date,_ date2: Date) -> Int {
-    debugPrint("CustomDate", "countDaysBetweenDates", "start", true)
-    let calendar = Calendar.current
-    let d1 = calendar.startOfDay(for: date1)
-    let d2 = calendar.startOfDay(for: date2)
-    let components = calendar.dateComponents([.day], from: d1, to: d2).day ?? 0
-    debugPrint("CustomDate", "countDaysBetweenDates", "end", true)
-    return(components)
-}
-
-
-// name: checkDayOfWeek
-// desc: since arrays aren't supported with sqlite
-// last updated: 4/28/2020
-// last update: cleaned up
-func checkDayOfWeek(dayInt: Int, dayOfWeek: Int) -> Bool {
-    debugPrint("CustomDate", "checkDayOfWeek", "start", true)
-    let dayString = String(dayInt)
-    if (dayString.contains(String(dayOfWeek))) {
-//        print("\(dayInt) contains a \(dayOfWeek)")
-        debugPrint("CustomDate", "checkDayOfWeek", "end", true)
-        return true
-    } else {
-        debugPrint("CustomDate", "checkDayOfWeek", "end", true)
-        return false
-    }
 }
 
 
@@ -206,7 +216,7 @@ func getRepeatDaysAsString(_ days: Int) -> String {
     var dayOfWeek = 1, count = 1
     while (dayOfWeek <= 7) {
 //        print("dayInt: \(dayInt), dayOfWeek: \(dayOfWeek)")
-        if (checkDayOfWeek(dayInt: days, dayOfWeek: dayOfWeek)) {
+        if (checkDayOfWeek(days: days, dayOfWeek: dayOfWeek)) {
 //            print("yay true")
             if (count != 1) {
                 repeatString += ", "
