@@ -46,33 +46,6 @@ func getDayAsInt(date: Date) -> Int {
 }
 
 
-// name: getDayOfWeek
-// desc:
-// last updated: 4/28/2020
-// last update: cleaned up
-func getDayOfWeek(date: Date, length: String) -> String {
-    debugPrint("CustomDate", "getDayOfWeek", "start", true)
-//    print("date: \(date)")
-    let weekDaySelected = Calendar.current.component(.weekday, from: date)
-//    print("weekDaySelected: \(weekDaySelected)")
-    // check if requesting full spelling
-    debugPrint("CustomDate", "getDayOfWeek", "end", true)
-    return (getDayOfWeekString(dayOfWeek: weekDaySelected, length: length))
-}
-
-
-// name: getDate
-// desc:
-// last updated: 4/28/2020
-// last update: cleaned up
-func getDate(year: Int, month: Int, day: Int) -> Date {
-    debugPrint("CustomDate", "getDate", "start", true)
-    let components = DateComponents(year: year, month: month, day: day, hour: 0, minute: 0, second: 0)
-    let date = Calendar.current.date(from: components) ?? Date()
-    debugPrint("CustomDate", "getDate", "end", true)
-    return date
-}
-
 
 // name: getDayTh
 // desc:
@@ -102,6 +75,197 @@ func getDayTh(date: Date) -> String {
         return(dayString)
     }
     
+}
+
+
+// name: countDaysBetweenDates
+// desc:
+// last updated: 4/28/2020
+// last update: cleaned up
+func countDaysBetweenDates(_ date1: Date,_ date2: Date) -> Int {
+    debugPrint("CustomDate", "countDaysBetweenDates", "start", true)
+    let calendar = Calendar.current
+    let d1 = calendar.startOfDay(for: date1)
+    let d2 = calendar.startOfDay(for: date2)
+    let components = calendar.dateComponents([.day], from: d1, to: d2).day ?? 0
+    debugPrint("CustomDate", "countDaysBetweenDates", "end", true)
+    return(components)
+}
+
+
+// name: checkDayOfWeek
+// desc: since arrays aren't supported with sqlite
+// last updated: 4/28/2020
+// last update: cleaned up
+func checkDayOfWeek(dayInt: Int, dayOfWeek: Int) -> Bool {
+    debugPrint("CustomDate", "checkDayOfWeek", "start", true)
+    let dayString = String(dayInt)
+    if (dayString.contains(String(dayOfWeek))) {
+//        print("\(dayInt) contains a \(dayOfWeek)")
+        debugPrint("CustomDate", "checkDayOfWeek", "end", true)
+        return true
+    } else {
+        debugPrint("CustomDate", "checkDayOfWeek", "end", true)
+        return false
+    }
+}
+
+
+// name: getDateAsString
+// desc:
+// last updated: 4/28/2020
+// last update: cleaned up
+func getDateAsString(_ date: Date, length: String) -> String {
+    debugPrint("CustomDate", "getDateAsString", "start", true)
+//    if today, return 'Today'
+    if (countDaysBetweenDates(Date(), date) == 0) {
+        debugPrint("CustomDate", "getDateAsString", "end", true)
+        return "Today"
+    }
+    // 'Tomorrow'
+    else if (countDaysBetweenDates(Date(), date) == 1) {
+        debugPrint("CustomDate", "getDateAsString", "end", true)
+        return "Tomorrow"
+    }
+    // 'Yesterday'
+    else if (countDaysBetweenDates(Date(), date) == -1) {
+        debugPrint("CustomDate", "getDateAsString", "end", true)
+        return "Yesterday"
+    }
+    // return abbreviated length
+    else {
+        let tempString = "\(getMonthAsString(date: date, length: length)) \(getDayTh(date: date))"
+        debugPrint("CustomDate", "getDateAsString", "end", true)
+        return tempString
+    }
+}
+
+
+// name: getStreakAsString
+// desc: get streak as string
+// last updated: 4/28/2020
+// last update: cleaned up
+func getStreakAsString(_ streak: Int) -> String {
+    debugPrint("CustomDate", "getStreakAsString", "start", true)
+//    var numDays = streak
+    var numWeeks = 0
+//    var numMonths = 0
+    var numYears = 0
+    var dateString = ""
+    if (streak / 365 > 0) {
+        numYears = streak / 365
+        if (numYears > 1) {
+            dateString += "\(numYears) years "
+        } else {
+            dateString += "\(numYears) year "
+        }
+        if (streak % 365 == 0) {
+            dateString += "0 months 0 weeks 0 days"
+        } else if (streak % 7 == 1) {
+            dateString += "1 day"
+        } else  {
+            dateString += "\(streak % 7) days"
+        }
+    }
+    if (streak / 7 > 0) {
+        numWeeks = streak / 7
+        if (numWeeks > 1) {
+            dateString += "\(numWeeks) weeks "
+        } else {
+            dateString += "\(numWeeks) week "
+        }
+        if (streak % 7 == 0) {
+            dateString += "0 days"
+        } else if (streak % 7 == 1) {
+            dateString += "1 day"
+        } else  {
+            dateString += "\(streak % 7) days"
+        }
+    }
+    if (streak < 7) {
+        if (streak == 0) {
+            dateString += "0 days"
+        } else if (streak == 1) {
+            dateString += "1 day"
+        } else {
+            dateString += "\(streak) days"
+        }
+    }
+    debugPrint("CustomDate", "getStreakAsString", "end", true)
+    return dateString
+}
+
+
+// name: getRepeatDaysAsString
+// desc: get Days of Week Habit repeats
+// last updated: 4/29/2020
+// last update: renamed
+func getRepeatDaysAsString(_ days: Int) -> String {
+    debugPrint("CustomDate", "getRepeatDaysAsString", "start", true)
+    var repeatString = ""
+    var dayOfWeek = 1, count = 1
+    while (dayOfWeek <= 7) {
+//        print("dayInt: \(dayInt), dayOfWeek: \(dayOfWeek)")
+        if (checkDayOfWeek(dayInt: days, dayOfWeek: dayOfWeek)) {
+//            print("yay true")
+            if (count != 1) {
+                repeatString += ", "
+            } else {
+                repeatString += "Repeats: "
+            }
+            repeatString += getDayOfWeekAsString(dayOfWeek, length: "short")
+//            print("repeatString: \(repeatString)")
+            count += 1
+        }
+        dayOfWeek += 1
+    }
+//    print("return repeatString: \(repeatString)")
+    debugPrint("CustomDate", "getRepeatDaysString", "end", true)
+    return repeatString
+}
+
+
+// name: getDateFromString
+// desc: get date from a string
+// last updated: 4/29/2020
+// last update: new
+func getDateFromString(_ dateString: String) -> Date {
+    debugPrint("CustomDate", "getDateFromString", "start", false)
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "dd/MM/yyyy" //Your date format
+    dateFormatter.timeZone = TimeZone(abbreviation: "GMT+0:00") //Current time zone
+    //according to date format your date string
+    guard let date = dateFormatter.date(from: dateString) else {
+        fatalError()
+    }
+    print("\t\(date)") //Convert String to Date
+    debugPrint("CustomDate", "getDateFromString", "end", false)
+    return date
+}
+
+
+// name: getDayOfWeekAsString
+// desc:
+// last updated: 4/28/2020
+// last update: cleaned up
+//func getDayOfWeekAsString(date: Date, length: String) -> String {
+//    debugPrint("CustomDate", "getDayOfWeekAsString", "start", true)
+//    let weekDaySelected = Calendar.current.component(.weekday, from: date)
+//    debugPrint("CustomDate", "getDayOfWeekAsString", "end", true)
+//    return (getDayOfWeekString(dayOfWeek: weekDaySelected, length: length))
+//}
+
+
+// name: getDate
+// desc:
+// last updated: 4/28/2020
+// last update: cleaned up
+func getDateFromComponents(_ day: Int,_ month: Int,_ year: Int) -> Date {
+    debugPrint("CustomDate", "getDate", "start", true)
+    let components = DateComponents(year: year, month: month, day: day, hour: 0, minute: 0, second: 0)
+    let date = Calendar.current.date(from: components) ?? Date()
+    debugPrint("CustomDate", "getDate", "end", true)
+    return date
 }
 
 
@@ -181,7 +345,7 @@ func getMonthAsInt(month: String) -> Int {
 // desc:
 // last updated: 4/28/2020
 // last update: cleaned up
-func getDayOfWeekString(dayOfWeek: Int, length: String) -> String {
+func getDayOfWeekAsString(_ dayOfWeek: Int, length: String) -> String {
     debugPrint("CustomDate", "getDayOfWeekString", "start", true)
     if (length == "long") {
         debugPrint("CustomDate", "getDayOfWeekString", "end", true)
@@ -222,157 +386,4 @@ func getDayOfWeekString(dayOfWeek: Int, length: String) -> String {
         default: return("")
         }
     }
-}
-
-
-
-
-
-// name: countDays
-// desc:
-// last updated: 4/28/2020
-// last update: cleaned up
-func countDays(date1: Date, date2: Date) -> Int {
-    debugPrint("CustomDate", "countDays", "start", true)
-    let calendar = Calendar.current
-    let d1 = calendar.startOfDay(for: date1)
-    let d2 = calendar.startOfDay(for: date2)
-    let components = calendar.dateComponents([.day], from: d1, to: d2).day ?? 0
-    debugPrint("CustomDate", "countDays", "end", true)
-    return(components)
-}
-
-
-// name: getDateAsString
-// desc:
-// last updated: 4/28/2020
-// last update: cleaned up
-func getDateAsString(date: Date, length: String) -> String {
-    debugPrint("CustomDate", "getDateAsString", "start", true)
-//    if today, return 'Today'
-    if (countDays(date1: Date(), date2: date) == 0) {
-        debugPrint("CustomDate", "getDateAsString", "end", true)
-        return "Today"
-    }
-    // 'Tomorrow'
-    else if (countDays(date1: Date(), date2: date) == 1) {
-        debugPrint("CustomDate", "getDateAsString", "end", true)
-        return "Tomorrow"
-    }
-    // 'Yesterday'
-    else if (countDays(date1: Date(), date2: date) == -1) {
-        debugPrint("CustomDate", "getDateAsString", "end", true)
-        return "Yesterday"
-    }
-    // return abbreviated length
-    else {
-        let tempString = "\(getMonthAsString(date: date, length: length)) \(getDayTh(date: date))"
-        debugPrint("CustomDate", "getDateAsString", "end", true)
-        return tempString
-    }
-}
-
-
-// name: getStreakAsString
-// desc:
-// last updated: 4/28/2020
-// last update: cleaned up
-// get streak as string
-func getStreakAsString(streak: Int) -> String {
-    debugPrint("CustomDate", "getStreakAsString", "start", true)
-//    var numDays = streak
-    var numWeeks = 0
-//    var numMonths = 0
-    var numYears = 0
-    var dateString = ""
-    if (streak / 365 > 0) {
-        numYears = streak / 365
-        if (numYears > 1) {
-            dateString += "\(numYears) years "
-        } else {
-            dateString += "\(numYears) year "
-        }
-        if (streak % 365 == 0) {
-            dateString += "0 months 0 weeks 0 days"
-        } else if (streak % 7 == 1) {
-            dateString += "1 day"
-        } else  {
-            dateString += "\(streak % 7) days"
-        }
-    }
-    if (streak / 7 > 0) {
-        numWeeks = streak / 7
-        if (numWeeks > 1) {
-            dateString += "\(numWeeks) weeks "
-        } else {
-            dateString += "\(numWeeks) week "
-        }
-        if (streak % 7 == 0) {
-            dateString += "0 days"
-        } else if (streak % 7 == 1) {
-            dateString += "1 day"
-        } else  {
-            dateString += "\(streak % 7) days"
-        }
-    }
-    if (streak < 7) {
-        if (streak == 0) {
-            dateString += "0 days"
-        } else if (streak == 1) {
-            dateString += "1 day"
-        } else {
-            dateString += "\(streak) days"
-        }
-    }
-    debugPrint("CustomDate", "getStreakAsString", "end", true)
-    return dateString
-}
-
-
-// name: checkDayOfWeek
-// desc:
-// last updated: 4/28/2020
-// last update: cleaned up
-// since arrays aren't supported with sqlite
-func checkDayOfWeek(dayInt: Int, dayOfWeek: Int) -> Bool {
-    debugPrint("CustomDate", "checkDayOfWeek", "start", true)
-    let dayString = String(dayInt)
-    if (dayString.contains(String(dayOfWeek))) {
-//        print("\(dayInt) contains a \(dayOfWeek)")
-        debugPrint("CustomDate", "checkDayOfWeek", "end", true)
-        return true
-    } else {
-        debugPrint("CustomDate", "checkDayOfWeek", "end", true)
-        return false
-    }
-}
-
-
-// name: getRepeatDaysString
-// desc:
-// last updated: 4/28/2020
-// last update: cleaned up
-// get Days of Week Habit repeats
-func getRepeatDaysString(dayInt: Int) -> String {
-    debugPrint("CustomDate", "getRepeatDaysString", "start", true)
-    var repeatString = ""
-    var dayOfWeek = 1, count = 1
-    while (dayOfWeek <= 7) {
-//        print("dayInt: \(dayInt), dayOfWeek: \(dayOfWeek)")
-        if (checkDayOfWeek(dayInt: dayInt, dayOfWeek: dayOfWeek)) {
-//            print("yay true")
-            if (count != 1) {
-                repeatString += ", "
-            } else {
-                repeatString += "Repeats: "
-            }
-            repeatString += getDayOfWeekString(dayOfWeek: dayOfWeek, length: "short")
-//            print("repeatString: \(repeatString)")
-            count += 1
-        }
-        dayOfWeek += 1
-    }
-//    print("return repeatString: \(repeatString)")
-    debugPrint("CustomDate", "getRepeatDaysString", "end", true)
-    return repeatString
 }

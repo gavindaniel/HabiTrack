@@ -75,7 +75,9 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
         // comment/uncomment for month 'Oct' in date collection view
 //        cell.monthUILabel?.text = getMonthAsString(date: daysArray[indexPath.row], length: "short")
         // comment/uncomment for day of week 'Fri' in date collection view
-        cell.monthUILabel?.text = getDayOfWeek(date: daysArray[indexPath.row], length: "short")
+        let calendar = Calendar.current
+        let weekday = calendar.component(.weekday, from: daysArray[indexPath.row])
+        cell.monthUILabel?.text = getDayOfWeekAsString(weekday, length: "short")
         cell.dayUILabel?.text = String(getDayAsInt(date: daysArray[indexPath.row]))
         cell.layer.cornerRadius = 10.0
         cell.layer.borderWidth = 1.0
@@ -83,10 +85,10 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
         var tempDate = Date()
         // check that this isn't the initial load of the program, if not get the date from last selected.
         if (lastSelectedItem != -1) {
-            let year = Calendar.current.component(.year, from: dateSelected)
-            let month = Calendar.current.component(.month, from: dateSelected)
-            let day = Calendar.current.component(.day, from: dateSelected)
-            tempDate = getDate(year: year, month: month, day: day)
+            let year = calendar.component(.year, from: dateSelected)
+            let month = calendar.component(.month, from: dateSelected)
+            let day = calendar.component(.day, from: dateSelected)
+            tempDate = getDateFromComponents(day, month, year)
         }
         // get the day from either today or the last selected date.
         let tempDay = Calendar.current.component(.day, from: tempDate)
@@ -186,10 +188,11 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
         if let cell: JournalDateCVCell = (collectionView.cellForItem(at: indexPath) as? JournalDateCVCell) {
             // if the selected item is different from the last, deselect the last item
             lastSelectedItem = indexPath.row
-//            let month = cell.monthUILabel?.text ?? String(Calendar.current.component(.month, from: Date()))
-            let month = getMonthAsString(date: daysArray[indexPath.row], length: "short")
-            let day = cell.dayUILabel?.text ?? String(Calendar.current.component(.day, from: Date()))
-            let date = getDate(year: Calendar.current.component(.year, from: Date()), month: getMonthAsInt(month: month), day: Int(day) ?? Calendar.current.component(.day, from: Date()))
+            let calendar = Calendar.current
+            let day = Int(cell.dayUILabel?.text ?? "1") ?? 1
+            let month = calendar.component(.month, from: daysArray[indexPath.row])
+            let year = calendar.component(.year, from: Date())
+            let date = getDateFromComponents(day, month, year)
 //            print("date: \(date)")
             self.dateSelected = date
 //            print("dateSelected: \(dateSelected)")

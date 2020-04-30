@@ -56,7 +56,7 @@ class AddDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSource 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "addHabitDateCell", for: indexPath)
             as! AddDateCVCell
         // add labels and style
-        cell.dayUILabel?.text = getDayOfWeekString(dayOfWeek: (indexPath.row)+1, length: "short")
+        cell.dayUILabel?.text = getDayOfWeekAsString((indexPath.row)+1, length: "short")
         cell.layer.cornerRadius = 10.0
         cell.layer.borderWidth = 1.0
         // check if day selected, mark blue, else mark gray

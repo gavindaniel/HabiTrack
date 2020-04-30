@@ -191,7 +191,7 @@ class JournalVC: UIViewController {
             calendar.component(.day, from: lastRun) != calendar.component(.day, from: dateToday)) {
             print("\tDate has changed. Updating last run date...")
             // count number of days since last run
-            let count = countDays(date1: lastRun, date2: dateToday)
+            let count = countDaysBetweenDates(lastRun, dateToday)
             // update the databases and views
             do {
                 // update the database

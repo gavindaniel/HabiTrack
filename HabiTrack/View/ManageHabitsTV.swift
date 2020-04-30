@@ -62,7 +62,7 @@ class ManageHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate, UITa
             for habit in habits {
                 if (habit[self.habits.id] == (indexPath.row+1)) {
                     cell.habitNameUILabel?.text = habit[self.habits.name]
-                    let tempString = getRepeatDaysString(dayInt: habit[self.habits.days])
+                    let tempString = getRepeatDaysAsString(habit[self.habits.days])
                     cell.habitRepeatUILabel?.text = tempString
                     cell.habitRepeatUILabel?.textColor = getColor("System")
                     debugPrint("\tManageHabitsTV", "cellForRowAt", "end", false, indexPath.row)

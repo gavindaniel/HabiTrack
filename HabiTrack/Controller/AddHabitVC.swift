@@ -26,8 +26,10 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var addUIButton: UIButton!
     @IBOutlet weak var cancelUIButton: UIButton!
     @IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet weak var dateTextField: UITextField!
     @IBOutlet weak var nameUnderlineLabel: UILabel!
-//    @IBOutlet weak var addHabitView: UIView!
+    @IBOutlet weak var dateUnderlineLabel: UILabel!
+    //    @IBOutlet weak var addHabitView: UIView!
     @IBOutlet weak var addHabitView: UIView!
     @IBOutlet weak var dateUICollectionView: UICollectionView!
     var addDateCV: AddDateCV?
@@ -35,6 +37,7 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
     var lastActiveTextField: String!
     var habits = Habits()
     
+    let datePicker = UIDatePicker() // new
     
     // name: viewDidAppear
     // desc:
@@ -85,6 +88,13 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
         } catch {
             print(error)
         }
+        
+//        showDatePicker() // new
+        
+        datePicker.datePickerMode = .date
+        dateTextField.inputView = datePicker
+        datePicker.addTarget(self, action: #selector(handleDatePicker(sender:)), for: .valueChanged)
+        
         debugPrint("AddHabitVC", "viewDidLoad", "end", false)
     }
     
@@ -167,7 +177,7 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
     // last update: cleaned up
     func textFieldDidEndEditing(_ textField: UITextField) {
         debugPrint("AddHabitVC", "textFieldDidEndEditing", "start", false)
-        if (textField.restorationIdentifier == "titleTextField") {
+        if (textField.restorationIdentifier == "nameTextField") {
             if (textField.text != "") {
                 if #available(iOS 13.0, *) {
                     nameUnderlineLabel.textColor = UIColor.label
@@ -209,27 +219,34 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
         habits.createTable()
         // insert new habit into journal
         let nameString = nameTextField.text
+        let dateString = dateTextField.text
         let selectedDays = self.addDateCV?.getDaysSelected()
-        if (nameString == "" || selectedDays!.count == 0) {
+        if (nameString == "" || dateString == "" || selectedDays!.count == 0) {
             if (nameString == "") {
-                print("Name blank, displaying required...")
+                print("\tName blank, displaying required...")
                 nameUnderlineLabel.textColor = UIColor.red
             }
+            if (dateString == "") {
+                print("\tDate blank, displaying required...")
+                dateUnderlineLabel.textColor = UIColor.red
+            }
             if (selectedDays!.count == 0) {
-                print("No days selected, displaying required...")
+                print("\tNo days selected, displaying required...")
             }
         } else {
+            let date = getDateFromString(dateString ?? "")
+            print("\tdate: \(date)")
             let calendar = Calendar.current
-            var year = calendar.component(.year, from: Date())
-            var month = calendar.component(.month, from: Date())
-            var day = calendar.component(.day, from: Date())
+            let year = calendar.component(.year, from: date)
+            let month = calendar.component(.month, from: date)
+            let day = calendar.component(.day, from: date)
             var i = 0, daysString = ""
-            print("# selectedDays : \(selectedDays!.count)")
+            print("\t# selectedDays : \(selectedDays!.count)")
             while (i < selectedDays!.count) {
                 daysString += "\(selectedDays![i].row+1)"
                 i += 1
             }
-            print("daysString: \(daysString)")
+            print("\tdaysString: \(daysString)")
 //            if (selectedDays!.count >= 7) {
 //                repeatString = "daily"
 //            } else {
@@ -252,8 +269,8 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
                 var localHabits = defaults.object(forKey: "localHabits") as! [String]
                 localHabits.append(nameString!)
                 defaults.set(localHabits, forKey: "localHabits")
-                print("Habit Added -> habit: \(nameString ?? "error"), time: \("daily")")
-                self.habits.entries.addDay(habit: nameString ?? "error", date: Date())
+                print("\tHabit Added -> name: \(nameString ?? "error"), startDay: \(day)")
+                self.habits.entries.addDay(habit: nameString ?? "error", date: date)
                 nameTextField.text = ""
                 // return to journal view controller
                 dismiss(animated: true, completion: nil)
@@ -263,4 +280,24 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
         } // end if
         debugPrint("AddHabitVC", "addHabit", "end", false)
     } // end func
+    
+    
+    // name: handleDatePicker
+    // desc:
+    // last updated: 4/29/2020
+    // last update: added
+    @objc func handleDatePicker(sender: UIDatePicker) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy"
+        dateTextField.text = dateFormatter.string(from: sender.date)
+    }
+
+
+    // name: touchesBegan
+    // desc:
+    // last updated: 4/29/2020
+    // last update: added
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
 } // end class
