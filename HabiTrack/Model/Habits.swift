@@ -88,42 +88,31 @@ class Habits {
     // custome : updateStreak
     func updateStreak(row: Int, inc: Int, date: Date, habitString: String) {
         debugPrint("Habits", "updateStreak", "start", false)
-        var index = 0       // index of for loop array
-        var firstId = 0     // id of first entry in table
-        print("updateStreak...\(row) \(habitString) \(inc) \(date)")
+//        var index = 0       // index of for loop array
+//        var firstId = 0     // id of first entry in table
+        print("\tupdateStreak...\(row) \(habitString) \(inc) \(date)")
         do {
             // try to get the table of habits from the database
             let habits = try self.database.prepare(self.habitsTable)
+            var days = 1
             for habit in habits {
-                if (index == 0) {
-                    firstId = habit[self.id]
+                if (habit[self.name] == habitString) {
+                    days = habit[self.days]
                 }
-                // check if the index equals the row specified to be updated
-                if (index == row) {
-                    // get the habit whose ID matches the index + the first ID incase it doesn't start at 1
-                    let tempHabit = self.habitsTable.filter(self.id == index + firstId)
-                    // get the string of how often the habit is repeated
-//                    let repeatString = habit[self.time]
-                    let days = habit[self.days]
-                    // mark the entry completed for the date specified and the value specified for the completed column
-                    entries.markCompleted(habit: habitString, date: date, val: inc)
-                    // count the current streak for the habit and date specified
-                    let currentStreak = entries.countStreak(habit: habitString, date: date, habitRepeat: days) // repeatString
-                    // update the habit with the current streak
-                    let updateHabit = tempHabit.update(self.streak <- currentStreak)
-                    do {
-                        // try to update the database with the updated habit
-                        try self.database.run(updateHabit)
-                        debugPrint("Habits", "updateStreak", "end", false)
-                        return
-                    // catch any errors while trying to update the database
-                    } catch {
-                        print(error)
-                    }
-                // if the index does not equal the row to be updated, increment the index
-                } else {
-                    index += 1
-                }
+            }
+            let tempHabit = self.habitsTable.filter(self.name == habitString)
+//            let days = 1234567
+            entries.markCompleted(habit: habitString, date: date, val: inc)
+            let currentStreak = entries.countStreak(habit: habitString, date: date, habitRepeat: days) // repeatString
+            let updateHabit = tempHabit.update(self.streak <- currentStreak)
+            do {
+                // try to update the database with the updated habit
+                try self.database.run(updateHabit)
+                debugPrint("Habits", "updateStreak", "end", false)
+                return
+            // catch any errors while trying to update the database
+            } catch {
+                print(error)
             }
         // catch any errors while getting the habits table from the database
         } catch {

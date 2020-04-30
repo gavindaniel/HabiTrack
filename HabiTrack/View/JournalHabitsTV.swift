@@ -75,7 +75,7 @@ class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
     // last updated: 4/28/2020
     // last update: cleaned up
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        debugPrint("JournalHabitsTV", "cellForRowAt", "start", false, indexPath.row)
+        debugPrint("JournalHabitsTV", "cellForRowAt", "start", true, indexPath.row)
         // create tableView cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
             as! JournalHabitsTVCell
@@ -93,14 +93,14 @@ class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
             let currentDayOfWeek = Calendar.current.component(.weekday, from: dateSelected)
             // loop through the list of habits
             for habit in habits {
-                print("\tcount: \(index)\tbuffer: \(buffer)")
+//                print("\tcount: \(index)\tbuffer: \(buffer)")
 //                let numHabits = self.habits.getTableSize()
                 if ((index - buffer) == indexPath.row) {
                     let startDate = getDateFromComponents(habit[self.habits.startDay], habit[self.habits.startMonth], habit[self.habits.startYear])
                     if (countDaysBetweenDates(startDate, dateSelected) >= 0) {
                         if (checkDayOfWeek(days: habit[self.habits.days], dayOfWeek: currentDayOfWeek)) {
                             // get the habit string and put it in the cell
-                            print("\thabit...\(habit[self.habits.name])")
+//                            print("\thabit...\(habit[self.habits.name])")
                             cell.habitUILabel?.text = habit[self.habits.name]
                             cell.habitUILabel?.isHidden = false
                             // get the name of habit and size of habit entries table
@@ -136,7 +136,7 @@ class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
                                 }
                             }
                             cell.checkImageView?.isHidden = false
-                            debugPrint("\tJournalHabitsTV", "cellForRowAt", "end", false, indexPath.row)
+                            debugPrint("\tJournalHabitsTV", "cellForRowAt", "end", true, indexPath.row)
                             return (cell)
                         }
                         else {
@@ -155,7 +155,7 @@ class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
         } catch {
             print (error)
         }
-        debugPrint("JournalHabitsTV", "cellForRowAt", "end", false, indexPath.row)
+        debugPrint("JournalHabitsTV", "cellForRowAt", "end", true, indexPath.row)
         return (cell)
     }
     
