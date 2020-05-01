@@ -29,7 +29,6 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var dateTextField: UITextField!
     @IBOutlet weak var nameUnderlineLabel: UILabel!
     @IBOutlet weak var dateUnderlineLabel: UILabel!
-    //    @IBOutlet weak var addHabitView: UIView!
     @IBOutlet weak var addHabitView: UIView!
     @IBOutlet weak var dateUICollectionView: UICollectionView!
     var addDateCV: AddDateCV?

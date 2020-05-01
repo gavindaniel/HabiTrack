@@ -31,9 +31,9 @@ class ManageDisplayVC: UIViewController {
     // last update: cleaned up
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        debugPrint("JournalVC", "viewDidAppear", "start", false)
+        debugPrint("ManageDisplayVC", "viewDidAppear", "start", true)
         manageColorCV?.updateUICollectionView(colorUICollectionView)
-        debugPrint("JournalVC", "viewDidAppear", "end", false)
+        debugPrint("ManageDisplayVC", "viewDidAppear", "end", true)
     }
 
     
@@ -44,7 +44,7 @@ class ManageDisplayVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        debugPrint("JournalVC", "viewDidLoad", "start", false)
+        debugPrint("ManageDisplayVC", "viewDidLoad", "start", false)
         // turn the switches on/off
         self.repeatUISwitch.isOn = getShowRepeatLabel()
         self.longestUISwitch.isOn = getShowLongestLabel()
@@ -53,7 +53,7 @@ class ManageDisplayVC: UIViewController {
         // set the dataSource and delegate
         self.colorUICollectionView.dataSource = manageColorCV
         self.colorUICollectionView.delegate = manageColorCV
-        debugPrint("JournalVC", "viewDidLoad", "end", false)
+        debugPrint("ManageDisplayVC", "viewDidLoad", "end", false)
     }
     
     
@@ -63,12 +63,12 @@ class ManageDisplayVC: UIViewController {
     // last update: cleaned up
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        debugPrint("JournalVC", "viewWillAppear", "start", false)
+        debugPrint("ManageDisplayVC", "viewWillAppear", "start", false)
         closeUIButton?.tintColor = getColor("System")
         saveDispUIButton?.tintColor = getColor("System")
         // reload the views
         self.colorUICollectionView.reloadData()
-        debugPrint("JournalVC", "viewWillAppear", "end", false)
+        debugPrint("ManageDisplayVC", "viewWillAppear", "end", false)
     }
     
     
@@ -78,13 +78,13 @@ class ManageDisplayVC: UIViewController {
     // last update: cleaned up
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        debugPrint("JournalVC", "traitCollectionDidChange", "start", false)
+        debugPrint("ManageDisplayVC", "traitCollectionDidChange", "start", true)
         // check if change from light/dark mode
         if #available(iOS 13, *), traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
             // handle theme change here.
         }
         self.colorUICollectionView.reloadData()
-        debugPrint("JournalVC", "traitCollectionDidChange", "end", false)
+        debugPrint("ManageDisplayVC", "traitCollectionDidChange", "end", true)
     }
     
     
@@ -92,11 +92,11 @@ class ManageDisplayVC: UIViewController {
     // desc:
     // last updated: 4/28/2020
     // last update: cleaned up
-    @IBAction func closeManageView(_ sender: AnyObject) {
-        debugPrint("JournalVC", "closeManageView", "start", false)
-        UITabBar.appearance().tintColor = getColor("System")
+    @IBAction func cancelChanges(_ sender: AnyObject) {
+        debugPrint("ManageDisplayVC", "cancelChanges", "start", false)
+//        UITabBar.appearance().tintColor = getColor("System")
         dismiss(animated: true, completion: nil)
-        debugPrint("JournalVC", "closeManageView", "end", false)
+        debugPrint("ManageDisplayVC", "cancelChanges", "end", false)
     }
     
     
@@ -105,9 +105,9 @@ class ManageDisplayVC: UIViewController {
     // last updated: 4/28/2020
     // last update: cleaned up
     @IBAction func hideRepeatLabel(_ sender: AnyObject) {
-        debugPrint("JournalVC", "hideRepeatLabel", "start", false)
+        debugPrint("ManageDisplayVC", "hideRepeatLabel", "start", false)
         toggleShowRepeatLabel()
-        debugPrint("JournalVC", "hideRepeatLabel", "end", false)
+        debugPrint("ManageDisplayVC", "hideRepeatLabel", "end", false)
     }
     
     
@@ -116,8 +116,19 @@ class ManageDisplayVC: UIViewController {
     // last updated: 4/28/2020
     // last update: cleaned up
     @IBAction func hideLongestLabel(_ sender: AnyObject) {
-        debugPrint("JournalVC", "hideLongestLabel", "start", false)
+        debugPrint("ManageDisplayVC", "hideLongestLabel", "start", false)
         toggleShowLongestLabel()
-        debugPrint("JournalVC", "hideLongestLabel", "end", false)
+        debugPrint("ManageDisplayVC", "hideLongestLabel", "end", false)
+    }
+    @IBAction func saveChanges(_ sender: Any) {
+        debugPrint("ManageColorCV", "saveChanges", "start", false)
+        let defaultColor = getColor("System")
+        let defaultColorString = getColorString(color: defaultColor)
+        if (defaultColorString != self.manageColorCV!.colorSelected) {
+            UserDefaults.standard.set(self.manageColorCV!.colorSelected, forKey: "defaultColor")
+        }
+        self.colorUICollectionView.reloadData()
+        debugPrint("ManageColorCV", "saveChanges", "end", false)
+        dismiss(animated: true, completion: nil)
     }
 }

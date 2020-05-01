@@ -23,6 +23,7 @@ class ManageColorCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
                      "pink",
                      "red",
                      "orange"]
+    var colorSelected = "blue"
     
     
     // name: init
@@ -42,8 +43,8 @@ class ManageColorCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
     // last updated: 4/28/2020
     // last update: cleaned up
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        debugPrint("ManageColorCV", "numberOfItemsInSection", "start", false)
-        debugPrint("ManageColorCV", "numberOfItemsInSection", "end", false)
+        debugPrint("ManageColorCV", "numberOfItemsInSection", "start", true)
+        debugPrint("ManageColorCV", "numberOfItemsInSection", "end", true)
         return (colorList.count)
     }
         
@@ -118,8 +119,9 @@ class ManageColorCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
                     // Fallback on earlier versions
                 }
                 let colorString = getColorString(color: cell.colorUIImageView!.tintColor)
-                UserDefaults.standard.set(colorString, forKey: "defaultColor")
-                self.colorUICollectionView.reloadData()
+                colorSelected = colorString
+//                UserDefaults.standard.set(colorString, forKey: "defaultColor")
+//                self.colorUICollectionView.reloadData()
             }
         }
         debugPrint("ManageColorCV", "didSelectItemAt", "end", false, indexPath.row)
@@ -135,4 +137,14 @@ class ManageColorCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
         self.colorUICollectionView = colorUICollectionView
         debugPrint("ManageColorCV", "updatedUICollectionView", "end", false)
     }
+//    @IBAction func saveChanges(_ sender: Any) {
+//        debugPrint("ManageColorCV", "saveChanges", "start", false)
+//        let defaultColor = getColor("System")
+//        let defaultColorString = getColorString(color: defaultColor)
+//        if (defaultColorString != colorSelected) {
+//            UserDefaults.standard.set(colorSelected, forKey: "defaultColor")
+//        }
+//        self.colorUICollectionView.reloadData()
+//        debugPrint("ManageColorCV", "saveChanges", "end", false)
+//    }
 }

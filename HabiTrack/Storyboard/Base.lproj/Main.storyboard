@@ -544,9 +544,7 @@
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="18"/>
                                 <state key="normal" title="Cancel"/>
                                 <connections>
-                                    <action selector="cancelAddHabit:" destination="wIU-Me-2Is" eventType="touchUpInside" id="aJe-dJ-AeL"/>
-                                    <action selector="closeManageView:" destination="yBQ-RU-HmR" eventType="touchUpInside" id="Gds-w6-Abb"/>
-                                    <action selector="closeManageView:" destination="reh-3q-dvH" eventType="touchUpInside" id="i3E-7l-OKc"/>
+                                    <action selector="cancelChanges:" destination="reh-3q-dvH" eventType="touchUpInside" id="IGc-aU-y83"/>
                                 </connections>
                             </button>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IPc-g0-HDL">
@@ -619,6 +617,9 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <state key="normal" title="Save"/>
+                                <connections>
+                                    <action selector="saveChanges:" destination="reh-3q-dvH" eventType="touchUpInside" id="8hN-Lv-NsO"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Customize Display" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hcZ-Ln-TT3">
                                 <rect key="frame" x="107" y="20" width="201" height="40"/>
