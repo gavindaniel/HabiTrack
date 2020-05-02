@@ -21,7 +21,7 @@ class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
     var journalUITableView: UITableView
     var dateSelected: Date
     var buffer = 0
-//    var index = 0
+    var selectedRow = [IndexPath]()
     
     
     // name: init

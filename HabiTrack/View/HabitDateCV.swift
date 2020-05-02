@@ -15,7 +15,7 @@ import SQLite
 // desc: add date collection view class
 // last updated: 4/28/2020
 // last update: cleaned up
-class AddDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSource {
+class HabitDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSource {
     // variables
     var dateUICollectionView: UICollectionView
     var lastSelectedItem: Int
@@ -27,11 +27,11 @@ class AddDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSource 
     // last updated: 4/28/2020
     // last update: cleaned up
     init(_ dateUICollectionView: UICollectionView) {
-        debugPrint("AddDateCV", "init", "start", false)
+        debugPrint("HabitDateCV", "init", "start", false)
         self.dateUICollectionView = dateUICollectionView
         self.lastSelectedItem = -1
         super.init()
-        debugPrint("AddDateCV", "init", "end", false)
+        debugPrint("HabitDateCV", "init", "end", false)
     }
     
     
@@ -40,8 +40,8 @@ class AddDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSource 
     // last updated: 4/28/2020
     // last update: cleaned up
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        debugPrint("AddDateCV", "numberOfItemsInSection", "start", false)
-        debugPrint("AddDateCV", "numberOfItemsInSection", "end", false)
+        debugPrint("HabitDateCV", "numberOfItemsInSection", "start", false)
+        debugPrint("HabitDateCV", "numberOfItemsInSection", "end", false)
         return (7)
     }
         
@@ -51,10 +51,10 @@ class AddDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSource 
     // last updated: 4/28/2020
     // last update: cleaned up
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        debugPrint("AddDateCV", "cellForItemAt", "start", false)
+        debugPrint("HabitDateCV", "cellForItemAt", "start", false)
         // create collectionView item
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "addHabitDateCell", for: indexPath)
-            as! AddDateCVCell
+            as! HabitDateCVCell
         // add labels and style
         cell.dayUILabel?.text = getDayOfWeekAsString((indexPath.row)+1, length: "short")
         cell.layer.cornerRadius = 10.0
@@ -81,7 +81,7 @@ class AddDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSource 
             // testing if today, make a different shade of gray so people know which day is today if not selected.
         }
         // return initialized item
-        debugPrint("AddDateCV", "cellForItemAt", "end", false)
+        debugPrint("HabitDateCV", "cellForItemAt", "end", false)
         return (cell)
     }
     
@@ -91,8 +91,8 @@ class AddDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSource 
     // last updated: 4/28/2020
     // last update: cleaned up
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        debugPrint("AddDateCV", "didDeselectItemAt", "start", false)
-        if let cell: AddDateCVCell = (collectionView.cellForItem(at: indexPath) as? AddDateCVCell) {
+        debugPrint("HabitDateCV", "didDeselectItemAt", "start", false)
+        if let cell: HabitDateCVCell = (collectionView.cellForItem(at: indexPath) as? HabitDateCVCell) {
             // clear the selection
             if selectedCells.contains(indexPath) {
                 selectedCells.remove(at: selectedCells.firstIndex(of: indexPath)!)
@@ -107,7 +107,7 @@ class AddDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSource 
                 }
             } // endif
         } // endif
-        debugPrint("AddDateCV", "didDeselectItemAt", "end", false)
+        debugPrint("HabitDateCV", "didDeselectItemAt", "end", false)
     } // end func
     
     
@@ -116,9 +116,9 @@ class AddDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSource 
     // last updated: 4/28/2020
     // last update: cleaned up
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        debugPrint("AddDateCV", "didSelectItemAt", "start", false)
+        debugPrint("HabitDateCV", "didSelectItemAt", "start", false)
         // get the cell from the tableView
-        if let cell: AddDateCVCell = (collectionView.cellForItem(at: indexPath) as? AddDateCVCell) {
+        if let cell: HabitDateCVCell = (collectionView.cellForItem(at: indexPath) as? HabitDateCVCell) {
             if selectedCells.contains(indexPath) {
                 selectedCells.remove(at: selectedCells.firstIndex(of: indexPath)!)
                 // check if date selected, mark a different shade of gray
@@ -143,7 +143,7 @@ class AddDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSource 
             }
             self.dateUICollectionView.reloadData()
         } // endif
-        debugPrint("AddDateCV", "didSelectItemAt", "end", false)
+        debugPrint("HabitDateCV", "didSelectItemAt", "end", false)
     } // end func
     
     
@@ -152,9 +152,9 @@ class AddDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSource 
     // last updated: 4/28/2020
     // last update: cleaned up
     func updateUICollectionView(_ dateUICollectionView: UICollectionView) {
-        debugPrint("AddDateCV", "updateUICollectionView", "start", false)
+        debugPrint("HabitDateCV", "updateUICollectionView", "start", false)
         self.dateUICollectionView = dateUICollectionView
-        debugPrint("AddDateCV", "updateUICollectionView", "end", false)
+        debugPrint("HabitDateCV", "updateUICollectionView", "end", false)
     }
     
     
@@ -163,8 +163,8 @@ class AddDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSource 
     // last updated: 4/28/2020
     // last update: cleaned up
     func getNumDaysSelected() -> Int {
-        debugPrint("AddDateCV", "getNumDaysSelected", "start", false)
-        debugPrint("AddDateCV", "getNumDaysSelected", "end", false)
+        debugPrint("HabitDateCV", "getNumDaysSelected", "start", false)
+        debugPrint("HabitDateCV", "getNumDaysSelected", "end", false)
         return selectedCells.count
     }
     
@@ -174,8 +174,8 @@ class AddDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSource 
     // last updated: 4/28/2020
     // last update: cleaned up
     func getDaysSelected() -> [IndexPath] {
-        debugPrint("AddDateCV", "getDaysSelected", "start", false)
-        debugPrint("AddDateCV", "getDaysSelected", "end", false)
+        debugPrint("HabitDateCV", "getDaysSelected", "start", false)
+        debugPrint("HabitDateCV", "getDaysSelected", "end", false)
         return selectedCells
     }
 }

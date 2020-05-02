@@ -19,9 +19,7 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
     // view objects
     var dateUICollectionView: UICollectionView
     var journalUITableView: UITableView
-    var titleUICollectionView: UICollectionView
     var journalHabitsTV: JournalHabitsTV?
-    var journalTitleCV: JournalTitleCV?
     // variables unique to this view
     var daysArray: Array<Date> = []
     var lastSelectedItem = -1
@@ -34,14 +32,11 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
     // desc:
     // last updated: 4/28/2020
     // last update: cleaned up
-    init(_ dateUICollectionView: UICollectionView,_ journalHabitsTV: JournalHabitsTV,_ journalUITableView: UITableView,_ journalTitleCV: JournalTitleCV,
-        _ titleUICollectionView: UICollectionView) {
+    init(_ dateUICollectionView: UICollectionView,_ journalHabitsTV: JournalHabitsTV,_ journalUITableView: UITableView) {
         debugPrint("JournalDateCV", "init", "start", true)
         self.dateUICollectionView = dateUICollectionView
         self.journalHabitsTV = journalHabitsTV
         self.journalUITableView = journalUITableView
-        self.journalTitleCV = journalTitleCV
-        self.titleUICollectionView = titleUICollectionView
         super.init()
         debugPrint("JournalDateCV", "init", "end", true)
     }
@@ -215,11 +210,11 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
         }
         self.journalHabitsTV?.dateSelected = dateSelected
         // testing
-        self.journalTitleCV?.dateSelected = dateSelected
+//        self.journalTitleCV?.dateSelected = dateSelected
         updateDaysArray(dateSelected)
         self.dateUICollectionView.reloadData()
         // testing
-        self.titleUICollectionView.reloadData()
+//        self.titleUICollectionView.reloadData()
         debugPrint("JournalDateCV", "didSelectItemAt", "end", false, indexPath.row)
     }
     

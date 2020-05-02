@@ -13,15 +13,15 @@ import SQLite
 // desc: date selection collection view cell class
 // last updated: 4/28/2020
 // last update: cleaned up
-class AddDateCVCell: UICollectionViewCell {
+class HabitDateCVCell: UICollectionViewCell {
     @IBOutlet weak var dayUILabel: UILabel!
 }
 
-// name: AddHabitVC
+// name: HabitVC
 // desc: add habit view controller class
 // last updated: 4/28/2020
 // last update: cleaned up
-class AddHabitVC: UIViewController, UITextFieldDelegate {
+class HabitVC: UIViewController, UITextFieldDelegate {
     // variables
     @IBOutlet weak var addUIButton: UIButton!
     @IBOutlet weak var cancelUIButton: UIButton!
@@ -31,7 +31,7 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var dateUnderlineLabel: UILabel!
     @IBOutlet weak var addHabitView: UIView!
     @IBOutlet weak var dateUICollectionView: UICollectionView!
-    var addDateCV: AddDateCV?
+    var habitDateCV: HabitDateCV?
     var activeTextField = UITextField()
     var lastActiveTextField: String!
     var habits = Habits()
@@ -46,7 +46,7 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
         super.viewDidAppear(animated)
         debugPrint("AddHabitVC", "viewDidAppear", "start", false)
         // update views
-        addDateCV?.updateUICollectionView(dateUICollectionView)
+        habitDateCV?.updateUICollectionView(dateUICollectionView)
         debugPrint("AddHabitVC", "viewDidAppear", "end", false)
     }
     
@@ -72,7 +72,7 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         debugPrint("AddHabitVC", "viewDidLoad", "start", false)
-        self.addDateCV = AddDateCV(dateUICollectionView)
+        self.habitDateCV = HabitDateCV(dateUICollectionView)
         self.nameTextField.delegate = self
         nameTextField.returnKeyType = UIReturnKeyType.done
         do {
@@ -82,8 +82,8 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
             self.habits.database = database
             self.habits.entries.database = database
             // set the dataSource and delegate
-            self.dateUICollectionView.dataSource = addDateCV
-            self.dateUICollectionView.delegate = addDateCV
+            self.dateUICollectionView.dataSource = habitDateCV
+            self.dateUICollectionView.delegate = habitDateCV
         } catch {
             print(error)
         }
@@ -219,7 +219,7 @@ class AddHabitVC: UIViewController, UITextFieldDelegate {
         // insert new habit into journal
         let nameString = nameTextField.text
         let dateString = dateTextField.text
-        let selectedDays = self.addDateCV?.getDaysSelected()
+        let selectedDays = self.habitDateCV?.getDaysSelected()
         if (nameString == "" || dateString == "" || selectedDays!.count == 0) {
             if (nameString == "") {
                 print("\tName blank, displaying required...")

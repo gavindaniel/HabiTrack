@@ -28,13 +28,14 @@
 		4C89B815231B62D500AE45F4 /* Habits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C89B814231B62D500AE45F4 /* Habits.swift */; };
 		4C89B81D231C44E400AE45F4 /* Entries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C89B81C231C44E400AE45F4 /* Entries.swift */; };
 		4C89B81F231CE2A600AE45F4 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C89B81E231CE2A600AE45F4 /* SettingsVC.swift */; };
-		4CAAAC82232B5CD5000C9AD8 /* AddHabitVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAAAC81232B5CD5000C9AD8 /* AddHabitVC.swift */; };
+		4CA7A58B245D44670010E192 /* CalendarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA7A58A245D44670010E192 /* CalendarVC.swift */; };
+		4CA7A58D245D48140010E192 /* ChangeDateCV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA7A58C245D48140010E192 /* ChangeDateCV.swift */; };
+		4CAAAC82232B5CD5000C9AD8 /* HabitVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAAAC81232B5CD5000C9AD8 /* HabitVC.swift */; };
 		4CAAAC90232C3E84000C9AD8 /* Classes in Resources */ = {isa = PBXBuildFile; fileRef = 4CAAAC8F232C3E84000C9AD8 /* Classes */; };
 		4CB004C82311A59400417248 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB004BA2311A56E00417248 /* SQLite.framework */; };
 		4CB004C92311A59400417248 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4CB004BA2311A56E00417248 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		4CB577A92456500E00244CAD /* AddDateCV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3C9DD12456416C0070EC94 /* AddDateCV.swift */; };
+		4CB577A92456500E00244CAD /* HabitDateCV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3C9DD12456416C0070EC94 /* HabitDateCV.swift */; };
 		4CB577AB2458C87B00244CAD /* CustomPrint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB577AA2458C87B00244CAD /* CustomPrint.swift */; };
-		4CFFD4D8234991BE0004B45E /* JournalTitleCV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CFFD4D7234991BE0004B45E /* JournalTitleCV.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -133,7 +134,7 @@
 		4C283321235B86FE00A10642 /* CustomColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColor.swift; sourceTree = "<group>"; };
 		4C2D42D5235A7D1800D5C628 /* ManageJournalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageJournalVC.swift; sourceTree = "<group>"; };
 		4C2D42DD235A9A2700D5C628 /* ManageHabitsTV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageHabitsTV.swift; sourceTree = "<group>"; };
-		4C3C9DD12456416C0070EC94 /* AddDateCV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDateCV.swift; sourceTree = "<group>"; };
+		4C3C9DD12456416C0070EC94 /* HabitDateCV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitDateCV.swift; sourceTree = "<group>"; };
 		4C4FF7AB230F620B00DAC450 /* HabiTrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HabiTrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C4FF7AE230F620B00DAC450 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4C4FF7B0230F620B00DAC450 /* JournalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalVC.swift; sourceTree = "<group>"; };
@@ -154,11 +155,12 @@
 		4C89B814231B62D500AE45F4 /* Habits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Habits.swift; sourceTree = "<group>"; };
 		4C89B81C231C44E400AE45F4 /* Entries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entries.swift; sourceTree = "<group>"; };
 		4C89B81E231CE2A600AE45F4 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
-		4CAAAC81232B5CD5000C9AD8 /* AddHabitVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddHabitVC.swift; sourceTree = "<group>"; };
+		4CA7A58A245D44670010E192 /* CalendarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarVC.swift; sourceTree = "<group>"; };
+		4CA7A58C245D48140010E192 /* ChangeDateCV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeDateCV.swift; sourceTree = "<group>"; };
+		4CAAAC81232B5CD5000C9AD8 /* HabitVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitVC.swift; sourceTree = "<group>"; };
 		4CAAAC8F232C3E84000C9AD8 /* Classes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Classes; sourceTree = "<group>"; };
 		4CB004AF2311A56D00417248 /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = "../SQLite.swift-master/SQLite.xcodeproj"; sourceTree = "<group>"; };
 		4CB577AA2458C87B00244CAD /* CustomPrint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPrint.swift; sourceTree = "<group>"; };
-		4CFFD4D7234991BE0004B45E /* JournalTitleCV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalTitleCV.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,8 +200,9 @@
 			isa = PBXGroup;
 			children = (
 				4C4FF7AE230F620B00DAC450 /* AppDelegate.swift */,
+				4CA7A58A245D44670010E192 /* CalendarVC.swift */,
 				4C4FF7B2230F620B00DAC450 /* DevelopmentVC.swift */,
-				4CAAAC81232B5CD5000C9AD8 /* AddHabitVC.swift */,
+				4CAAAC81232B5CD5000C9AD8 /* HabitVC.swift */,
 				4C4FF7B0230F620B00DAC450 /* JournalVC.swift */,
 				4C6FDDC423618D2A00E54485 /* ManageDisplayVC.swift */,
 				4C2D42D5235A7D1800D5C628 /* ManageJournalVC.swift */,
@@ -212,10 +215,10 @@
 		4C225B85233E6CEA0062E195 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				4C3C9DD12456416C0070EC94 /* AddDateCV.swift */,
+				4CA7A58C245D48140010E192 /* ChangeDateCV.swift */,
+				4C3C9DD12456416C0070EC94 /* HabitDateCV.swift */,
 				4C225B89233E6EEC0062E195 /* JournalDateCV.swift */,
 				4C225B87233E6EDD0062E195 /* JournalHabitsTV.swift */,
-				4CFFD4D7234991BE0004B45E /* JournalTitleCV.swift */,
 				4C283319235B7A4100A10642 /* ManageColorCV.swift */,
 				4C2D42DD235A9A2700D5C628 /* ManageHabitsTV.swift */,
 			);
@@ -510,13 +513,14 @@
 				4C89B81D231C44E400AE45F4 /* Entries.swift in Sources */,
 				4C4FF7AF230F620B00DAC450 /* AppDelegate.swift in Sources */,
 				4C225B8A233E6EEC0062E195 /* JournalDateCV.swift in Sources */,
-				4CAAAC82232B5CD5000C9AD8 /* AddHabitVC.swift in Sources */,
+				4CAAAC82232B5CD5000C9AD8 /* HabitVC.swift in Sources */,
 				4C283322235B86FE00A10642 /* CustomColor.swift in Sources */,
 				4C4FF7B1230F620B00DAC450 /* JournalVC.swift in Sources */,
 				4CB577AB2458C87B00244CAD /* CustomPrint.swift in Sources */,
-				4CFFD4D8234991BE0004B45E /* JournalTitleCV.swift in Sources */,
 				4C6A161A2320BA4000274316 /* CustomDate.swift in Sources */,
-				4CB577A92456500E00244CAD /* AddDateCV.swift in Sources */,
+				4CA7A58B245D44670010E192 /* CalendarVC.swift in Sources */,
+				4CB577A92456500E00244CAD /* HabitDateCV.swift in Sources */,
+				4CA7A58D245D48140010E192 /* ChangeDateCV.swift in Sources */,
 				4C89B815231B62D500AE45F4 /* Habits.swift in Sources */,
 				4C2D42DE235A9A2700D5C628 /* ManageHabitsTV.swift in Sources */,
 				4C28331A235B7A4100A10642 /* ManageColorCV.swift in Sources */,

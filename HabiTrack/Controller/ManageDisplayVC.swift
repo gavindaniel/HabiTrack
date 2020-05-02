@@ -136,5 +136,6 @@ class ManageDisplayVC: UIViewController {
         self.colorUICollectionView.reloadData()
         debugPrint("ManageColorCV", "saveChanges", "end", false)
         dismiss(animated: true, completion: nil)
+        exit(-1)
     }
 }

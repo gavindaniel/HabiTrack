@@ -31,17 +31,6 @@ class JournalHabitsTVCell: UITableViewCell {
 }
 
 
-// name: JournalTitleCVCell
-// desc: journal title collection view cell class
-// last updated: 4/28/2020
-// last update: cleaned up
-class JournalTitleCVCell: UICollectionViewCell {
-    @IBOutlet weak var journalTitleLabel: UILabel!
-    @IBOutlet weak var weekDayLabel: UILabel!
-    @IBOutlet weak var newEntryUIButton: UIButton!
-}
-
-
 // name: JournalVC
 // desc: journal view controller class
 // last updated: 4/28/2020
@@ -54,11 +43,17 @@ class JournalVC: UIViewController {
     // customViews
     var journalHabitsTV: JournalHabitsTV?
     var journalDateCV: JournalDateCV?
-    var journalTitleCV: JournalTitleCV?
+
     // IBOutlet connections
     @IBOutlet weak var journalUITableView: UITableView!
     @IBOutlet weak var dateUICollectionView: UICollectionView!
-    @IBOutlet weak var titleUICollectionView: UICollectionView!
+
+    @IBOutlet weak var addHabitUIButton: UIButton!
+    
+    @IBOutlet weak var dateUIButton: UIButton!
+    
+    
+    let datePicker = UIDatePicker() // new
 
     
     // name: viewDidLoad
@@ -69,12 +64,10 @@ class JournalVC: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         debugPrint("JournalVC", "viewDidLoad", "start", false)
-        // initialize journalTitleTableView
-        self.journalTitleCV = JournalTitleCV(titleUICollectionView, Date())
         // initialize journalHabitsTV
         self.journalHabitsTV = JournalHabitsTV(habits, journalUITableView, Date())
         // initialize journalDateCV
-        self.journalDateCV = JournalDateCV(dateUICollectionView, journalHabitsTV!, journalUITableView, journalTitleCV!, titleUICollectionView)
+        self.journalDateCV = JournalDateCV(dateUICollectionView, journalHabitsTV!, journalUITableView)
         // set observer of application entering foreground
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(applicationWillEnterForeground),
@@ -89,14 +82,18 @@ class JournalVC: UIViewController {
             self.habits.database = database
             self.habits.entries.database = database
             // set the dataSource and delegate
-            self.titleUICollectionView.dataSource = journalTitleCV
-            self.titleUICollectionView.delegate = journalTitleCV
-            // set the dataSource and delegate
             self.journalUITableView.dataSource = journalHabitsTV
             self.journalUITableView.delegate = journalHabitsTV
             // set the dataSource and delegate
             self.dateUICollectionView.dataSource = journalDateCV
             self.dateUICollectionView.delegate = journalDateCV
+            
+            datePicker.datePickerMode = .date
+            datePicker.addTarget(self, action: #selector(handleDatePicker(sender:)), for: .valueChanged)
+            
+            self.dateUIButton.tintColor = getColor("System")
+            self.addHabitUIButton.tintColor = getColor("System")
+            
         } catch {
             print(error)
         }
@@ -112,7 +109,6 @@ class JournalVC: UIViewController {
         super.viewWillAppear(animated)
         debugPrint("JournalVC", "viewWillAppear", "start", false)
         // reload the views
-        self.titleUICollectionView.reloadData()
         self.journalUITableView.reloadData()
         self.dateUICollectionView.reloadData()
         debugPrint("JournalVC", "viewWillAppear", "end", false)
@@ -129,7 +125,6 @@ class JournalVC: UIViewController {
         // update views
         journalHabitsTV?.updateUITableView(journalUITableView)
         journalDateCV?.updateUICollectionView(dateUICollectionView)
-        journalTitleCV?.updateUICollectionView(titleUICollectionView)
         // set observer of application entering foreground
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(applicationWillEnterForeground),
@@ -200,8 +195,7 @@ class JournalVC: UIViewController {
                 let database = try Connection(fileUrl.path)
                 self.habits.database = database
                 self.habits.entries.database = database
-                // update the views
-                self.journalTitleCV?.updateUICollectionView(titleUICollectionView)
+                
                 self.journalHabitsTV?.updateUITableView(journalUITableView)
                 self.journalDateCV?.updateUICollectionView(dateUICollectionView)
             } catch {
@@ -212,7 +206,6 @@ class JournalVC: UIViewController {
             // set the last run date to the current date
             UserDefaults.standard.set(dateToday, forKey: "lastRun")
             // reload the views
-            self.titleUICollectionView.reloadData()
             self.journalUITableView.reloadData()
             self.dateUICollectionView.reloadData()
             // update days array and views
@@ -220,7 +213,6 @@ class JournalVC: UIViewController {
             self.journalHabitsTV?.updateUITableView(journalUITableView)
             self.journalDateCV?.updateUICollectionView(dateUICollectionView)
             // reload the views
-            self.titleUICollectionView.reloadData()
             self.journalUITableView.reloadData()
             self.dateUICollectionView.reloadData()
         // day has not changed since last run
@@ -229,4 +221,52 @@ class JournalVC: UIViewController {
         }
         debugPrint("JournalVC", "updateViewController", "end", false)
     } // end of update func.
+    
+    
+    // name: handleDatePicker
+    // desc:
+    // last updated: 4/29/2020
+    // last update: added
+    @objc func handleDatePicker(sender: UIDatePicker) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy"
+    }
+
+
+    // name: touchesBegan
+    // desc:
+    // last updated: 4/29/2020
+    // last update: added
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    
+    // name: newHabit
+    // desc:
+    // last updated: 5/1/2020
+    // last update: added
+    @IBAction func newHabit(_ sender: Any) {
+        debugPrint("JournalVC", "newHabit", "start", false)
+        let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+        let habitVC = storyBoard.instantiateViewController(withIdentifier: "habitVC") as! HabitVC
+        habitVC.habits = habits
+        debugPrint("JournalVC", "newHabit", "end", false)
+        self.present(habitVC, animated: true, completion: nil)
+    }
+    
+    
+    // name: changeDate
+    // desc:
+    // last updated: 5/1/2020
+    // last update: added
+    @IBAction func changeDate(_ sender: Any) {
+        debugPrint("JournalVC", "changeDate", "start", false)
+        let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+        let calendarVC = storyBoard.instantiateViewController(withIdentifier: "calendarVC") as! CalendarVC
+//        calendarVC.habits = habits
+        debugPrint("JournalVC", "changeDate", "end", false)
+        self.present(calendarVC, animated: true, completion: nil)
+    }
+    
 }
