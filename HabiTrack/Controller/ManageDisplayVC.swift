@@ -120,11 +120,17 @@ class ManageDisplayVC: UIViewController {
         toggleShowLongestLabel()
         debugPrint("ManageDisplayVC", "hideLongestLabel", "end", false)
     }
+    
+    
+    // name: saveChanges
+    // desc:
+    // last updated: 5/1/2020
+    // last update: cleaned up
     @IBAction func saveChanges(_ sender: Any) {
         debugPrint("ManageColorCV", "saveChanges", "start", false)
         let defaultColor = getColor("System")
-        let defaultColorString = getColorString(color: defaultColor)
-        if (defaultColorString != self.manageColorCV!.colorSelected) {
+        let selectedColor = getColor(self.manageColorCV!.getColorSelected())
+        if (defaultColor != selectedColor) {
             UserDefaults.standard.set(self.manageColorCV!.colorSelected, forKey: "defaultColor")
         }
         self.colorUICollectionView.reloadData()
