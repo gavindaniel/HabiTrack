@@ -93,7 +93,9 @@ class JournalVC: UIViewController {
             
             self.dateUIButton.tintColor = getColor("System")
             self.addHabitUIButton.tintColor = getColor("System")
-            
+            let monthString = getMonthAsString(date: dateSelected, length: "long")
+//            print("\tmonthString : \(monthString)")
+            self.dateUIButton.setTitle(monthString, for: .normal)
         } catch {
             print(error)
         }
