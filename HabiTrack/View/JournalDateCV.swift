@@ -140,7 +140,7 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
     // last updated: 4/28/2020
     // last update: cleaned up
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        debugPrint("JournalDateCV", "didDeselectItemAt", "start", false, indexPath.row)
+        debugPrint("JournalDateCV", "didDeselectItemAt", "start", true, indexPath.row)
         if let cell: JournalDateCVCell = (collectionView.cellForItem(at: indexPath) as? JournalDateCVCell) {
             // clear the selection
             let tempDay = Calendar.current.component(.day, from: Date())
@@ -169,7 +169,7 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
                 }
             }
         }
-        debugPrint("JournalDateCV", "didDeselectItemAt", "end", false, indexPath.row)
+        debugPrint("JournalDateCV", "didDeselectItemAt", "end", true, indexPath.row)
     }
     
     
@@ -178,7 +178,7 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
     // last updated: 4/28/2020
     // last update: cleaned up
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        debugPrint("JournalDateCV", "didSelectItemAt", "start", false, indexPath.row)
+        debugPrint("JournalDateCV", "didSelectItemAt", "start", true, indexPath.row)
         // get the cell from the tableView
         if let cell: JournalDateCVCell = (collectionView.cellForItem(at: indexPath) as? JournalDateCVCell) {
             // if the selected item is different from the last, deselect the last item
@@ -215,7 +215,7 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
         self.dateUICollectionView.reloadData()
         // testing
 //        self.titleUICollectionView.reloadData()
-        debugPrint("JournalDateCV", "didSelectItemAt", "end", false, indexPath.row)
+        debugPrint("JournalDateCV", "didSelectItemAt", "end", true, indexPath.row)
     }
     
     
@@ -251,8 +251,8 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
     // last updated: 4/28/2020
     // last update: cleaned up
     func updateUICollectionView(_ dateUICollolectionView: UICollectionView) {
-        debugPrint("JournalDateCV", "updateUICollectionView", "start", false)
+        debugPrint("JournalDateCV", "updateUICollectionView", "start", true)
         dateUICollectionView = dateUICollolectionView
-        debugPrint("JournalDateCV", "updateUICollectionView", "end", false)
+        debugPrint("JournalDateCV", "updateUICollectionView", "end", true)
     }
 }

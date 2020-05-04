@@ -140,6 +140,7 @@ class JournalVC: UIViewController {
         // check for day change
         updateViewController()
         debugPrint("JournalVC", "viewDidAppear", "end", false)
+        print("******************************************************")
     }
     
     
@@ -148,10 +149,12 @@ class JournalVC: UIViewController {
     // last updated: 4/28/2020
     // last update: cleaned up
     @objc func applicationWillEnterForeground() {
+        print("******************************************************")
         debugPrint("JournalVC", "applicationWillEnterForeground", "start", false)
         // check for day change
         updateViewController()
         debugPrint("JournalVC", "applicationWillEnterForeground", "end", false)
+        print("******************************************************")
     }
     
     
@@ -161,14 +164,14 @@ class JournalVC: UIViewController {
     // last update: cleaned up
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        debugPrint("JournalVC", "traitCollectionDidChange", "start", false)
+        debugPrint("JournalVC", "traitCollectionDidChange", "start", true)
         // check if change from light/dark mode
         if #available(iOS 13, *), traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
             // handle theme change here.
             self.journalUITableView.reloadData()
             self.dateUICollectionView.reloadData()
         }
-        debugPrint("JournalVC", "traitCollectionDidChange", "end", false)
+        debugPrint("JournalVC", "traitCollectionDidChange", "end", true)
     }
     
     
@@ -264,11 +267,10 @@ class JournalVC: UIViewController {
     // last update: added
     @IBAction func changeDate(_ sender: Any) {
         debugPrint("JournalVC", "changeDate", "start", false)
-        let storyBoard = UIStoryboard(name: "Main", bundle:nil)
-        let calendarVC = storyBoard.instantiateViewController(withIdentifier: "calendarVC") as! CalendarVC
-//        calendarVC.habits = habits
+//        let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+//        let calendarVC = storyBoard.instantiateViewController(withIdentifier: "calendarVC") as! CalendarVC
         debugPrint("JournalVC", "changeDate", "end", false)
-        self.present(calendarVC, animated: true, completion: nil)
+//        self.present(calendarVC, animated: true, completion: nil)
     }
     
 }

@@ -27,11 +27,11 @@ class HabitDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSourc
     // last updated: 4/28/2020
     // last update: cleaned up
     init(_ dateUICollectionView: UICollectionView) {
-        debugPrint("HabitDateCV", "init", "start", false)
+        debugPrint("HabitDateCV", "init", "start", true)
         self.dateUICollectionView = dateUICollectionView
         self.lastSelectedItem = -1
         super.init()
-        debugPrint("HabitDateCV", "init", "end", false)
+        debugPrint("HabitDateCV", "init", "end", true)
     }
     
     
@@ -40,8 +40,8 @@ class HabitDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSourc
     // last updated: 4/28/2020
     // last update: cleaned up
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        debugPrint("HabitDateCV", "numberOfItemsInSection", "start", false)
-        debugPrint("HabitDateCV", "numberOfItemsInSection", "end", false)
+        debugPrint("HabitDateCV", "numberOfItemsInSection", "start", true)
+        debugPrint("HabitDateCV", "numberOfItemsInSection", "end", true)
         return (7)
     }
         
@@ -51,7 +51,7 @@ class HabitDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSourc
     // last updated: 4/28/2020
     // last update: cleaned up
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        debugPrint("HabitDateCV", "cellForItemAt", "start", false)
+        debugPrint("HabitDateCV", "cellForItemAt", "start", true, indexPath.row)
         // create collectionView item
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "addHabitDateCell", for: indexPath)
             as! HabitDateCVCell
@@ -81,7 +81,7 @@ class HabitDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSourc
             // testing if today, make a different shade of gray so people know which day is today if not selected.
         }
         // return initialized item
-        debugPrint("HabitDateCV", "cellForItemAt", "end", false)
+        debugPrint("HabitDateCV", "cellForItemAt", "end", true, indexPath.row)
         return (cell)
     }
     

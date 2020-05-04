@@ -135,7 +135,8 @@ class ManageDisplayVC: UIViewController {
         }
         self.colorUICollectionView.reloadData()
         debugPrint("ManageColorCV", "saveChanges", "end", false)
-        dismiss(animated: true, completion: nil)
+//        UITabBar.appearance().tintColor = getColor("System")
+//        dismiss(animated: true, completion: nil)
         exit(-1)
     }
 }

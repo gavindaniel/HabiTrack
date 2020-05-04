@@ -44,10 +44,11 @@ class HabitVC: UIViewController, UITextFieldDelegate {
     // last update: cleaned up
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        debugPrint("AddHabitVC", "viewDidAppear", "start", false)
+        debugPrint("HabitVC", "viewDidAppear", "start", false)
         // update views
         habitDateCV?.updateUICollectionView(dateUICollectionView)
-        debugPrint("AddHabitVC", "viewDidAppear", "end", false)
+        debugPrint("HabitVC", "viewDidAppear", "end", false)
+        print("******************************************************")
     }
     
     
@@ -56,11 +57,13 @@ class HabitVC: UIViewController, UITextFieldDelegate {
     // last updated: 4/28/2020
     // last update: cleaned up
     override func viewDidDisappear(_ animated: Bool) {
-        debugPrint("AddHabitVC", "viewDidDisappear", "start", false)
-        let storyBoard = UIStoryboard(name: "Main", bundle:nil)
-        let journalVC = storyBoard.instantiateViewController(withIdentifier: "journalVC") as! JournalVC
-        journalVC.journalUITableView?.reloadData()
-        debugPrint("AddHabitVC", "viewDidDisappear", "end", false)
+        debugPrint("HabitVC", "viewDidDisappear", "start", false)
+//        let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+//        let journalVC = storyBoard.instantiateViewController(withIdentifier: "journalVC") as! JournalVC
+//        journalVC.journalUITableView?.reloadData()
+        debugPrint("HabitVC", "viewDidDisappear", "end", false)
+        print("******************************************************")
+//        self.present(journalVC, animated: true, completion: nil)
     }
     
     
@@ -71,7 +74,7 @@ class HabitVC: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        debugPrint("AddHabitVC", "viewDidLoad", "start", false)
+        debugPrint("HabitVC", "viewDidLoad", "start", false)
         self.habitDateCV = HabitDateCV(dateUICollectionView)
         self.nameTextField.delegate = self
         nameTextField.returnKeyType = UIReturnKeyType.done
@@ -94,7 +97,7 @@ class HabitVC: UIViewController, UITextFieldDelegate {
         dateTextField.inputView = datePicker
         datePicker.addTarget(self, action: #selector(handleDatePicker(sender:)), for: .valueChanged)
         
-        debugPrint("AddHabitVC", "viewDidLoad", "end", false)
+        debugPrint("HabitVC", "viewDidLoad", "end", false)
     }
     
     
@@ -104,13 +107,13 @@ class HabitVC: UIViewController, UITextFieldDelegate {
     // last update: cleaned up
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        debugPrint("AddHabitVC", "viewWillAppear", "start", false)
+        debugPrint("HabitVC", "viewWillAppear", "start", false)
         let defaultColor = getColor("System")
         addUIButton?.tintColor = defaultColor
         cancelUIButton?.tintColor = defaultColor
         // reload the views
         self.dateUICollectionView.reloadData()
-        debugPrint("AddHabitVC", "viewWillAppear", "end", false)
+        debugPrint("HabitVC", "viewWillAppear", "end", false)
     }
     
     
@@ -120,13 +123,13 @@ class HabitVC: UIViewController, UITextFieldDelegate {
     // last update: cleaned up
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        debugPrint("AddHabitVC", "traitCollectionDidChange", "start", false)
+        debugPrint("HabitVC", "traitCollectionDidChange", "start", true)
         // check if change from light/dark mode
         if #available(iOS 13, *), traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
             // handle theme change here.
             self.dateUICollectionView.reloadData()
         }
-        debugPrint("AddHabitVC", "traitCollectionDidChange", "end", false)
+        debugPrint("HabitVC", "traitCollectionDidChange", "end", true)
     }
     
     
@@ -135,9 +138,9 @@ class HabitVC: UIViewController, UITextFieldDelegate {
     // last updated: 4/28/2020
     // last update: cleaned up
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        debugPrint("AddHabitVC", "textFieldShouldReturn", "start", false)
+        debugPrint("HabitVC", "textFieldShouldReturn", "start", true)
         self.view.endEditing(true)
-        debugPrint("AddHabitVC", "textFieldShouldReturn", "end", false)
+        debugPrint("HabitVC", "textFieldShouldReturn", "end", true)
         return false
     }
     
@@ -148,9 +151,9 @@ class HabitVC: UIViewController, UITextFieldDelegate {
     // last update: cleaned up
     @objc func dismissKeyboard() {
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
-        debugPrint("AddHabitVC", "dismissKeyboard", "start", false)
+        debugPrint("HabitVC", "dismissKeyboard", "start", true)
         addHabitView.endEditing(true)
-        debugPrint("AddHabitVC", "dismissKeyboard", "end", false)
+        debugPrint("HabitVC", "dismissKeyboard", "end", true)
     }
     
     
@@ -159,14 +162,14 @@ class HabitVC: UIViewController, UITextFieldDelegate {
     // last updated: 4/28/2020
     // last update: cleaned up
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        debugPrint("AddHabitVC", "textFieldDidBeginEditing", "start", false)
+        debugPrint("HabitVC", "textFieldDidBeginEditing", "start", true)
         self.activeTextField = textField
         let id = textField.restorationIdentifier
         if (id == "titleTextField") {
             let defaultColor = getColor("System")
             nameUnderlineLabel.textColor = defaultColor
         }
-        debugPrint("AddHabitVC", "textFieldDidBeginEditing", "end", false)
+        debugPrint("HabitVC", "textFieldDidBeginEditing", "end", true)
     }
     
     
@@ -175,7 +178,7 @@ class HabitVC: UIViewController, UITextFieldDelegate {
     // last updated: 4/28/2020
     // last update: cleaned up
     func textFieldDidEndEditing(_ textField: UITextField) {
-        debugPrint("AddHabitVC", "textFieldDidEndEditing", "start", false)
+        debugPrint("HabitVC", "textFieldDidEndEditing", "start", true)
         if (textField.restorationIdentifier == "nameTextField") {
             if (textField.text != "") {
                 if #available(iOS 13.0, *) {
@@ -193,7 +196,7 @@ class HabitVC: UIViewController, UITextFieldDelegate {
                 }
             }
         }
-        debugPrint("AddHabitVC", "textFieldDidEndEditing", "end", false)
+        debugPrint("HabitVC", "textFieldDidEndEditing", "end", true)
     }
     
     
@@ -202,9 +205,9 @@ class HabitVC: UIViewController, UITextFieldDelegate {
     // last updated: 4/28/2020
     // last update: cleaned up
     @IBAction func cancelAddHabit(_ sender: AnyObject) {
-        debugPrint("AddHabitVC", "cancelAddHabit", "start", false)
+        debugPrint("HabitVC", "cancelAddHabit", "start", false)
         dismiss(animated: true, completion: nil)
-        debugPrint("AddHabitVC", "cancelAddHabit", "end", false)
+        debugPrint("HabitVC", "cancelAddHabit", "end", false)
     }
     
     
@@ -213,7 +216,7 @@ class HabitVC: UIViewController, UITextFieldDelegate {
     // last updated: 4/28/2020
     // last update: cleaned up
     @IBAction func addHabit(_ sender: AnyObject) {
-        debugPrint("AddHabitVC", "addHabit", "start", false)
+        debugPrint("HabitVC", "addHabit", "start", false)
         // create table if there isn't one
         habits.createTable()
         // insert new habit into journal
@@ -272,12 +275,19 @@ class HabitVC: UIViewController, UITextFieldDelegate {
                 self.habits.entries.addDay(habit: nameString ?? "error", date: date)
                 nameTextField.text = ""
                 // return to journal view controller
+
+                let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+                let journalVC = storyBoard.instantiateViewController(withIdentifier: "journalVC") as! JournalVC
+                journalVC.journalUITableView?.reloadData()
+                debugPrint("\tdidSelectRowAt", "Manage Habits", "end", false)
+//                self.present(journalVC, animated: true, completion: nil)
+//                self.navigationController?.pushViewController(journalVC, animated: true)
                 dismiss(animated: true, completion: nil)
             } catch {
                 print (error)
             } // end catch
         } // end if
-        debugPrint("AddHabitVC", "addHabit", "end", false)
+        debugPrint("HabitVC", "addHabit", "end", false)
     } // end func
     
     
