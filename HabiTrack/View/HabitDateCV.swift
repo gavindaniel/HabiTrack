@@ -27,11 +27,11 @@ class HabitDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSourc
     // last updated: 4/28/2020
     // last update: cleaned up
     init(_ dateUICollectionView: UICollectionView) {
-        debugPrint("HabitDateCV", "init", "start", true)
+        debugPrint("HabitDateCV", "init", "start", false)
         self.dateUICollectionView = dateUICollectionView
         self.lastSelectedItem = -1
         super.init()
-        debugPrint("HabitDateCV", "init", "end", true)
+        debugPrint("HabitDateCV", "init", "end", false)
     }
     
     

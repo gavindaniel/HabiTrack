@@ -63,6 +63,7 @@ class JournalVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        print("******************************************************")
         debugPrint("JournalVC", "viewDidLoad", "start", false)
         // initialize journalHabitsTV
         self.journalHabitsTV = JournalHabitsTV(habits, journalUITableView, Date())
@@ -88,8 +89,8 @@ class JournalVC: UIViewController {
             self.dateUICollectionView.dataSource = journalDateCV
             self.dateUICollectionView.delegate = journalDateCV
             
-            datePicker.datePickerMode = .date
-            datePicker.addTarget(self, action: #selector(handleDatePicker(sender:)), for: .valueChanged)
+//            datePicker.datePickerMode = .date
+//            datePicker.addTarget(self, action: #selector(handleDatePicker(sender:)), for: .valueChanged)
             
             self.dateUIButton.tintColor = getColor("System")
             self.addHabitUIButton.tintColor = getColor("System")
@@ -232,10 +233,10 @@ class JournalVC: UIViewController {
     // desc:
     // last updated: 4/29/2020
     // last update: added
-    @objc func handleDatePicker(sender: UIDatePicker) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd/MM/yyyy"
-    }
+//    @objc func handleDatePicker(sender: UIDatePicker) {
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "dd/MM/yyyy"
+//    }
 
 
     // name: touchesBegan
@@ -267,10 +268,10 @@ class JournalVC: UIViewController {
     // last update: added
     @IBAction func changeDate(_ sender: Any) {
         debugPrint("JournalVC", "changeDate", "start", false)
-//        let storyBoard = UIStoryboard(name: "Main", bundle:nil)
-//        let calendarVC = storyBoard.instantiateViewController(withIdentifier: "calendarVC") as! CalendarVC
+        let storyBoard = UIStoryboard(name: "Main", bundle:nil)
+        let calendarVC = storyBoard.instantiateViewController(withIdentifier: "calendarVC") as! CalendarVC
         debugPrint("JournalVC", "changeDate", "end", false)
-//        self.present(calendarVC, animated: true, completion: nil)
+        self.present(calendarVC, animated: true, completion: nil)
     }
     
 }

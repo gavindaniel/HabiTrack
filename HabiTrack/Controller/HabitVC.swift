@@ -38,6 +38,53 @@ class HabitVC: UIViewController, UITextFieldDelegate {
     
     let datePicker = UIDatePicker() // new
     
+    
+    // name: viewDidLoad
+    // desc:
+    // last updated: 5/4/2020
+    // last update: cleaned up
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+        debugPrint("HabitVC", "viewDidLoad", "start", false)
+        self.habitDateCV = HabitDateCV(dateUICollectionView)
+        self.nameTextField.delegate = self
+        nameTextField.returnKeyType = UIReturnKeyType.done
+        do {
+            let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+            let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
+            let database = try Connection(fileUrl.path)
+            self.habits.database = database
+            self.habits.entries.database = database
+            // set the dataSource and delegate
+            self.dateUICollectionView.dataSource = habitDateCV
+            self.dateUICollectionView.delegate = habitDateCV
+        } catch {
+            print(error)
+        }
+        datePicker.datePickerMode = .date
+        dateTextField.inputView = datePicker
+        datePicker.addTarget(self, action: #selector(handleDatePicker(sender:)), for: .valueChanged)
+        debugPrint("HabitVC", "viewDidLoad", "end", false)
+    }
+    
+    
+    // name: viewWillAppear
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        debugPrint("HabitVC", "viewWillAppear", "start", false)
+        let defaultColor = getColor("System")
+        addUIButton?.tintColor = defaultColor
+        cancelUIButton?.tintColor = defaultColor
+        // reload the views
+        self.dateUICollectionView.reloadData()
+        debugPrint("HabitVC", "viewWillAppear", "end", false)
+    }
+    
+    
     // name: viewDidAppear
     // desc:
     // last updated: 4/28/2020
@@ -64,56 +111,6 @@ class HabitVC: UIViewController, UITextFieldDelegate {
         debugPrint("HabitVC", "viewDidDisappear", "end", false)
         print("******************************************************")
 //        self.present(journalVC, animated: true, completion: nil)
-    }
-    
-    
-    // name: viewDidLoad
-    // desc:
-    // last updated: 4/28/2020
-    // last update: cleaned up
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        debugPrint("HabitVC", "viewDidLoad", "start", false)
-        self.habitDateCV = HabitDateCV(dateUICollectionView)
-        self.nameTextField.delegate = self
-        nameTextField.returnKeyType = UIReturnKeyType.done
-        do {
-            let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-            let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
-            let database = try Connection(fileUrl.path)
-            self.habits.database = database
-            self.habits.entries.database = database
-            // set the dataSource and delegate
-            self.dateUICollectionView.dataSource = habitDateCV
-            self.dateUICollectionView.delegate = habitDateCV
-        } catch {
-            print(error)
-        }
-        
-//        showDatePicker() // new
-        
-        datePicker.datePickerMode = .date
-        dateTextField.inputView = datePicker
-        datePicker.addTarget(self, action: #selector(handleDatePicker(sender:)), for: .valueChanged)
-        
-        debugPrint("HabitVC", "viewDidLoad", "end", false)
-    }
-    
-    
-    // name: viewWillAppear
-    // desc:
-    // last updated: 4/28/2020
-    // last update: cleaned up
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        debugPrint("HabitVC", "viewWillAppear", "start", false)
-        let defaultColor = getColor("System")
-        addUIButton?.tintColor = defaultColor
-        cancelUIButton?.tintColor = defaultColor
-        // reload the views
-        self.dateUICollectionView.reloadData()
-        debugPrint("HabitVC", "viewWillAppear", "end", false)
     }
     
     

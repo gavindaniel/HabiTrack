@@ -27,11 +27,11 @@ class ChangeDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSour
     // last updated: 4/28/2020
     // last update: cleaned up
     init(_ dateUICollectionView: UICollectionView) {
-        debugPrint("AddDateCV", "init", "start", false)
+        debugPrint("ChangeDateCV", "init", "start", false)
         self.dateUICollectionView = dateUICollectionView
         self.lastSelectedItem = -1
         super.init()
-        debugPrint("AddDateCV", "init", "end", false)
+        debugPrint("ChangeDateCV", "init", "end", false)
     }
     
     
@@ -41,8 +41,18 @@ class ChangeDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSour
     // last update: cleaned up
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         debugPrint("ChangeDateCV", "numberOfItemsInSection", "start", false)
+        
+//        var index = 1
+        let date = Date()
+        let calendar = Calendar.current
+        let dateComponents = DateComponents(year: calendar.component(.year, from: date), month: calendar.component(.month, from: date), day: 1)
+        let day = calendar.date(from: dateComponents)!
+        let range = calendar.range(of: .day, in: .month, for: day)!
+        let numDays = range.count
+//        print(numDays) // 31
         debugPrint("ChangeDateCV", "numberOfItemsInSection", "end", false)
-        return (7)
+//        return (7)
+        return numDays
     }
     
     
@@ -85,7 +95,14 @@ class ChangeDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSour
         return (cell)
     }
     
-
     
-    
+    // name: updateUICollectionView
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
+    func updateUICollectionView(_ dateUICollolectionView: UICollectionView) {
+        debugPrint("ChangeDateCV", "updateUICollectionView", "start", false)
+        dateUICollectionView = dateUICollolectionView
+        debugPrint("ChangeDateCV", "updateUICollectionView", "end", false)
+    }
 }

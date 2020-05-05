@@ -24,11 +24,108 @@ class ChangeDateCVCell: UICollectionViewCell {
 // last updated: 5/1/2020
 // last update: new
 class CalendarVC: UIViewController {
-
+    // variables
+    var changeDateCV: ChangeDateCV?
+    // IBOutlet connections
+    @IBOutlet weak var dateUICollectionView: UICollectionView!
+    @IBOutlet weak var saveUIButton: UIButton!
+    @IBOutlet weak var cancelUIButton: UIButton!
     
+    
+    // name: saveChanges
+    // desc: save date change button
+    // last updated: 5/4/2020
+    // last update: new
     @IBAction func saveChanges(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
     }
     
+    
+    // name: cancelChanges
+    // desc: cancel date change button
+    // last updated: 5/4/2020
+    // last update: new
     @IBAction func cancelChanges(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    
+    // name: viewDidLoad
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+//        print("******************************************************")
+        debugPrint("CalendarVC", "viewDidLoad", "start", false)
+        self.changeDateCV = ChangeDateCV(dateUICollectionView)
+        do {
+            let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+            let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
+            // set the dataSource and delegate
+            self.dateUICollectionView.dataSource = changeDateCV
+            self.dateUICollectionView.delegate = changeDateCV
+        } catch {
+            print(error)
+        }
+        debugPrint("CalendarVC", "viewDidLoad", "end", false)
+    }
+    
+    
+    // name: viewWillAppear
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        debugPrint("CalendarVC", "viewWillAppear", "start", false)
+        let defaultColor = getColor("System")
+        saveUIButton?.tintColor = defaultColor
+        cancelUIButton?.tintColor = defaultColor
+        // reload the views
+        self.dateUICollectionView.reloadData()
+        debugPrint("CalendarVC", "viewWillAppear", "end", false)
+    }
+    
+    
+    // name: viewDidAppear
+    // desc:
+    // last updated: 5/4/2020
+    // last update: new
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        debugPrint("CalendarVC", "viewDidAppear", "start", false)
+        // update views
+        changeDateCV?.updateUICollectionView(dateUICollectionView)
+        debugPrint("CalendarVC", "viewDidAppear", "end", false)
+        print("******************************************************")
+    }
+    
+    
+    // name: viewDidDisappear
+    // desc:
+    // last updated: 5/4/2020
+    // last update: new
+    override func viewDidDisappear(_ animated: Bool) {
+        debugPrint("CalendarVC", "viewDidDisappear", "start", false)
+        debugPrint("CalendarVC", "viewDidDisappear", "end", false)
+        print("******************************************************")
+    }
+    
+    
+    // name: traitCollectionDidChange
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        debugPrint("CalendarVC", "traitCollectionDidChange", "start", true)
+        // check if change from light/dark mode
+        if #available(iOS 13, *), traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            // handle theme change here.
+            self.dateUICollectionView.reloadData()
+        }
+        debugPrint("CalendarVC", "traitCollectionDidChange", "end", true)
     }
 }
