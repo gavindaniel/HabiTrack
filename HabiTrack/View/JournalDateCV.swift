@@ -24,7 +24,6 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
     var daysArray: Array<Date> = []
     var lastSelectedItem = -1
     var dateSelected = Date()
-    
     var selectedCell = [IndexPath]()
     
     
@@ -50,7 +49,8 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
         debugPrint("JournalDateCV", "numberOfItemsInSection", "start", true)
         // if the days array has not been initialized, create the array
         if (daysArray.count == 0) {
-            updateDaysArray(Date())
+            daysArray = updateDaysArray(Date())
+            self.journalUITableView.reloadData()
         }
         debugPrint("JournalDateCV", "numberOfItemsInSection", "end", true)
         return (daysArray.count)
@@ -211,8 +211,9 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
         self.journalHabitsTV?.dateSelected = dateSelected
         // testing
 //        self.journalTitleCV?.dateSelected = dateSelected
-        updateDaysArray(dateSelected)
+        daysArray = updateDaysArray(dateSelected)
         self.dateUICollectionView.reloadData()
+        self.journalUITableView.reloadData()
         // testing
 //        self.titleUICollectionView.reloadData()
         debugPrint("JournalDateCV", "didSelectItemAt", "end", true, indexPath.row)
@@ -223,27 +224,27 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
     // desc:
     // last updated: 4/28/2020
     // last update: cleaned up
-    func updateDaysArray(_ date: Date) {
-        debugPrint("JournalDateCV", "updateDaysArray", "start", true)
-        daysArray = []
-        var index = 1
-        let calendar = Calendar.current
-        let dateComponents = DateComponents(year: calendar.component(.year, from: date), month: calendar.component(.month, from: date), day: 1)
-        var day = calendar.date(from: dateComponents)!
-//        print("start day: \(day)")
-        let range = calendar.range(of: .day, in: .month, for: day)!
-        let numDays = range.count
-//        print(numDays) // 31
-        while index <= numDays {
-            daysArray.append(day)
-            // increment day count
-            day = Calendar.current.date(byAdding: .day, value: 1, to: day)!
-//            print("\tday: \(day)")
-            index += 1
-        }
-        self.journalUITableView.reloadData()
-        debugPrint("JournalDateCV", "updateDaysArray", "end", true)
-    }
+//    func updateDaysArray(_ date: Date) {
+//        debugPrint("JournalDateCV", "updateDaysArray", "start", true)
+//        daysArray = []
+//        var index = 1
+//        let calendar = Calendar.current
+//        let dateComponents = DateComponents(year: calendar.component(.year, from: date), month: calendar.component(.month, from: date), day: 1)
+//        var day = calendar.date(from: dateComponents)!
+////        print("start day: \(day)")
+//        let range = calendar.range(of: .day, in: .month, for: day)!
+//        let numDays = range.count
+////        print(numDays) // 31
+//        while index <= numDays {
+//            daysArray.append(day)
+//            // increment day count
+//            day = Calendar.current.date(byAdding: .day, value: 1, to: day)!
+////            print("\tday: \(day)")
+//            index += 1
+//        }
+//        self.journalUITableView.reloadData()
+//        debugPrint("JournalDateCV", "updateDaysArray", "end", true)
+//    }
     
     
     // name: updateUICollectionView

@@ -47,13 +47,11 @@ class JournalVC: UIViewController {
     // IBOutlet connections
     @IBOutlet weak var journalUITableView: UITableView!
     @IBOutlet weak var dateUICollectionView: UICollectionView!
-
     @IBOutlet weak var addHabitUIButton: UIButton!
-    
     @IBOutlet weak var dateUIButton: UIButton!
     
     
-    let datePicker = UIDatePicker() // new
+//    let datePicker = UIDatePicker() // new
 
     
     // name: viewDidLoad
@@ -215,7 +213,7 @@ class JournalVC: UIViewController {
             self.journalUITableView.reloadData()
             self.dateUICollectionView.reloadData()
             // update days array and views
-            self.journalDateCV?.updateDaysArray(dateToday)
+            self.journalDateCV?.daysArray = updateDaysArray(dateToday)
             self.journalHabitsTV?.updateUITableView(journalUITableView)
             self.journalDateCV?.updateUICollectionView(dateUICollectionView)
             // reload the views

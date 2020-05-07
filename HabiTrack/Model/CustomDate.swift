@@ -67,12 +67,39 @@ func checkDayOfWeek(days: Int, dayOfWeek: Int) -> Bool {
 }
 
 
+// name: updateDaysArray
+    // desc:
+    // last updated: 4/28/2020
+    // last update: cleaned up
+    func updateDaysArray(_ date: Date) -> [Date] {
+        debugPrint("JournalDateCV", "updateDaysArray", "start", true)
+        var daysArray = [Date]()
+        var index = 1
+        let calendar = Calendar.current
+        let dateComponents = DateComponents(year: calendar.component(.year, from: date), month: calendar.component(.month, from: date), day: 1)
+        var day = calendar.date(from: dateComponents)!
+//        print("start day: \(day)")
+        let range = calendar.range(of: .day, in: .month, for: day)!
+        let numDays = range.count
+//        print(numDays) // 31
+        while index <= numDays {
+            daysArray.append(day)
+            // increment day count
+            day = Calendar.current.date(byAdding: .day, value: 1, to: day)!
+//            print("\tday: \(day)")
+            index += 1
+        }
+//        self.journalUITableView.reloadData()
+        debugPrint("JournalDateCV", "updateDaysArray", "end", true)
+        return daysArray
+    }
+
+
 // name:
 // desc:
 // last updated: 4/29/2020
 // last update: new
 func checkDateBeforeStart(date: Date, startDate: Date) -> Bool {
-    
     return false
 }
 

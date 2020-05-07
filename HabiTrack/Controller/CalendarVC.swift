@@ -14,7 +14,7 @@ import Foundation
 // last updated: 4/28/2020
 // last update: cleaned up
 class ChangeDateCVCell: UICollectionViewCell {
-    @IBOutlet weak var monthUILabel: UILabel!
+    @IBOutlet weak var dowUILabel: UILabel!
     @IBOutlet weak var dayUILabel: UILabel!
 }
 
@@ -26,6 +26,7 @@ class ChangeDateCVCell: UICollectionViewCell {
 class CalendarVC: UIViewController {
     // variables
     var changeDateCV: ChangeDateCV?
+//    var daysArray: Array<Date> = []
     // IBOutlet connections
     @IBOutlet weak var dateUICollectionView: UICollectionView!
     @IBOutlet weak var saveUIButton: UIButton!
@@ -61,14 +62,15 @@ class CalendarVC: UIViewController {
         debugPrint("CalendarVC", "viewDidLoad", "start", false)
         self.changeDateCV = ChangeDateCV(dateUICollectionView)
         do {
-            let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-            let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
+//            let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+//            let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
             // set the dataSource and delegate
             self.dateUICollectionView.dataSource = changeDateCV
             self.dateUICollectionView.delegate = changeDateCV
-        } catch {
-            print(error)
         }
+//        catch {
+//            print(error)
+//        }
         debugPrint("CalendarVC", "viewDidLoad", "end", false)
     }
     
