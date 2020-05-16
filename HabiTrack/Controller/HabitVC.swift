@@ -279,6 +279,8 @@ class HabitVC: UIViewController, UITextFieldDelegate {
                 debugPrint("\tdidSelectRowAt", "Manage Habits", "end", false)
 //                self.present(journalVC, animated: true, completion: nil)
 //                self.navigationController?.pushViewController(journalVC, animated: true)
+                DataManager.shared.journalVC.journalUITableView.reloadData()
+                DataManager.shared.journalVC.dateUICollectionView.reloadData()
                 dismiss(animated: true, completion: nil)
             } catch {
                 print (error)
