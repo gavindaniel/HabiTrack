@@ -76,20 +76,10 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
         cell.dayUILabel?.text = String(getDayAsInt(date: daysArray[indexPath.row]))
         cell.layer.cornerRadius = 10.0
         cell.layer.borderWidth = 1.0
-        // get today's date
-        var tempDate = Date()
-        // check that this isn't the initial load of the program, if not get the date from last selected.
-        if (lastSelectedItem != -1) {
-            let year = calendar.component(.year, from: dateSelected)
-            let month = calendar.component(.month, from: dateSelected)
-            let day = calendar.component(.day, from: dateSelected)
-            tempDate = getDateFromComponents(day, month, year)
-//            print("\t\tdateSelected: \(dateSelected)")
-        }
         // get the day from either today or the last selected date.
-        let tempDay = Calendar.current.component(.day, from: tempDate)
+        let day = Calendar.current.component(.day, from: dateSelected)
         // check if day selected, mark blue, else mark gray
-        if (tempDay == getDayAsInt(date: daysArray[indexPath.row])) {
+        if (day == getDayAsInt(date: daysArray[indexPath.row])) {
             let defaultColor = getColor("System")
             cell.layer.borderColor = defaultColor.cgColor
             cell.monthUILabel?.textColor = defaultColor
