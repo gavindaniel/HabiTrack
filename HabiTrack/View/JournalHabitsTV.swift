@@ -19,7 +19,7 @@ class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
     // variables
     var habits: Habits
     var journalUITableView: UITableView
-    var dateSelected: Date
+//    var dateSelected: Date
     var buffer = 0
     var selectedRow = [IndexPath]()
     
@@ -32,7 +32,7 @@ class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
         debugPrint("JournalHabitsTV", "init", "start", true)
         self.habits = habits
         self.journalUITableView = habitTableView
-        self.dateSelected = date
+        dateSelected = date
         super.init()
         debugPrint("JournalHabitsTV", "init", "end", true)
     }

@@ -9,6 +9,12 @@
 import UIKit
 import SQLite
 
+// name: Global Variables
+// desc: global variables
+// last updated: 5/16/2020
+// last update: new; added dateSelected
+public var dateSelected = Date()
+
 
 // name: JournalDateCVCell
 // desc: date selection collection view cell class
@@ -38,7 +44,7 @@ class JournalHabitsTVCell: UITableViewCell {
 class JournalVC: UIViewController {
     // variables
     var lastSelectedItem = -1
-    var dateSelected = Date()
+//    var dateSelected = Date()
     var habits = Habits()
     // customViews
     var journalHabitsTV: JournalHabitsTV?
@@ -51,9 +57,6 @@ class JournalVC: UIViewController {
     @IBOutlet weak var dateUIButton: UIButton!
     
     
-//    let datePicker = UIDatePicker() // new
-
-    
     // name: viewDidLoad
     // desc:
     // last updated: 4/28/2020
@@ -63,6 +66,8 @@ class JournalVC: UIViewController {
         // Do any additional setup after loading the view.
         print("******************************************************")
         debugPrint("JournalVC", "viewDidLoad", "start", false)
+        // testing
+        DataManager.shared.journalVC = self
         // initialize journalHabitsTV
         self.journalHabitsTV = JournalHabitsTV(habits, journalUITableView, Date())
         // initialize journalDateCV

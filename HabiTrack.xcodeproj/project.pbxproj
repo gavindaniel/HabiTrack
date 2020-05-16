@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4C0820CD24709CFA0079E5BF /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0820CC24709CFA0079E5BF /* DataManager.swift */; };
 		4C15613B235EBEA80026E770 /* TabBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C15613A235EBEA80026E770 /* TabBarVC.swift */; };
 		4C225B88233E6EDD0062E195 /* JournalHabitsTV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C225B87233E6EDD0062E195 /* JournalHabitsTV.swift */; };
 		4C225B8A233E6EEC0062E195 /* JournalDateCV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C225B89233E6EEC0062E195 /* JournalDateCV.swift */; };
@@ -126,6 +127,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4C0820CC24709CFA0079E5BF /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		4C15613A235EBEA80026E770 /* TabBarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarVC.swift; sourceTree = "<group>"; };
 		4C225B87233E6EDD0062E195 /* JournalHabitsTV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalHabitsTV.swift; sourceTree = "<group>"; };
 		4C225B89233E6EEC0062E195 /* JournalDateCV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalDateCV.swift; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 				4CB577AA2458C87B00244CAD /* CustomPrint.swift */,
 				4C89B814231B62D500AE45F4 /* Habits.swift */,
 				4C89B81C231C44E400AE45F4 /* Entries.swift */,
+				4C0820CC24709CFA0079E5BF /* DataManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -527,6 +530,7 @@
 				4C15613B235EBEA80026E770 /* TabBarVC.swift in Sources */,
 				4C6FDDBD23617A7F00E54485 /* CustomDisplay.swift in Sources */,
 				4C89B81F231CE2A600AE45F4 /* SettingsVC.swift in Sources */,
+				4C0820CD24709CFA0079E5BF /* DataManager.swift in Sources */,
 				4C2D42D6235A7D1800D5C628 /* ManageJournalVC.swift in Sources */,
 				4C6FDDC523618D2A00E54485 /* CustomizeVC.swift in Sources */,
 			);

@@ -38,6 +38,9 @@ class CalendarVC: UIViewController {
     // last updated: 5/4/2020
     // last update: new
     @IBAction func saveChanges(_ sender: Any) {
+        print("\t\tdateSelected: \(dateSelected)")
+        DataManager.shared.journalVC.journalUITableView.reloadData()
+        DataManager.shared.journalVC.dateUICollectionView.reloadData()
         dismiss(animated: true, completion: nil)
     }
     
@@ -60,6 +63,7 @@ class CalendarVC: UIViewController {
         // Do any additional setup after loading the view.
 //        print("******************************************************")
         debugPrint("CalendarVC", "viewDidLoad", "start", false)
+        print("\t\tdateSelected: \(dateSelected)")
         self.changeDateCV = ChangeDateCV(dateUICollectionView)
         do {
 //            let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
@@ -99,7 +103,9 @@ class CalendarVC: UIViewController {
         super.viewDidAppear(animated)
         debugPrint("CalendarVC", "viewDidAppear", "start", false)
         // update views
+        print("\t\tdateSelected: \(dateSelected)")
         changeDateCV?.updateUICollectionView(dateUICollectionView)
+        print("\t\tdateSelected: \(dateSelected)")
         debugPrint("CalendarVC", "viewDidAppear", "end", false)
         print("******************************************************")
     }

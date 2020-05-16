@@ -23,7 +23,7 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
     // variables unique to this view
     var daysArray: Array<Date> = []
     var lastSelectedItem = -1
-    var dateSelected = Date()
+//    var dateSelected = Date()
     var selectedCell = [IndexPath]()
     
     
@@ -84,6 +84,7 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
             let month = calendar.component(.month, from: dateSelected)
             let day = calendar.component(.day, from: dateSelected)
             tempDate = getDateFromComponents(day, month, year)
+//            print("\t\tdateSelected: \(dateSelected)")
         }
         // get the day from either today or the last selected date.
         let tempDay = Calendar.current.component(.day, from: tempDate)
@@ -189,7 +190,7 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
             let year = calendar.component(.year, from: Date())
             let date = getDateFromComponents(day, month, year)
 //            print("date: \(date)")
-            self.dateSelected = date
+            dateSelected = date
 //            print("dateSelected: \(dateSelected)")
             // FIXME: replace 'days' with a calculation for number of days in the month
             // loop through cells and deselect
@@ -208,7 +209,8 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
             cell.monthUILabel?.textColor = defaultColor
             cell.dayUILabel?.textColor = defaultColor
         }
-        self.journalHabitsTV?.dateSelected = dateSelected
+//        self.journalHabitsTV?.dateSelected = dateSelected
+        
         // testing
 //        self.journalTitleCV?.dateSelected = dateSelected
         daysArray = updateDaysArray(dateSelected)

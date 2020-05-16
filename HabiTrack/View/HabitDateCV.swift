@@ -11,7 +11,7 @@ import UIKit
 import SQLite
 
 
-// name: AddDateCV
+// name: HabitDateCV
 // desc: add date collection view class
 // last updated: 4/28/2020
 // last update: cleaned up
