@@ -39,6 +39,7 @@ class CalendarVC: UIViewController {
     // last update: new
     @IBAction func saveChanges(_ sender: Any) {
         print("\t\tdateSelected: \(dateSelected)")
+        dateSelected = changeDateCV?.tempDateSelected ?? Date()
         DataManager.shared.journalVC.journalUITableView.reloadData()
         DataManager.shared.journalVC.dateUICollectionView.reloadData()
         dismiss(animated: true, completion: nil)

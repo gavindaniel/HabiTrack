@@ -21,7 +21,7 @@ class ChangeDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSour
     var lastSelectedItem: Int
     var selectedCells = [IndexPath]()
     var daysArray: Array<Date> = []
-//    var dateSelected = Date()
+    var tempDateSelected = dateSelected
     
     
     
@@ -67,7 +67,7 @@ class ChangeDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSour
     // last update: cleaned up
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         debugPrint("ChangeDateCV", "cellForItemAt", "start", false, indexPath.row)
-        print("\t\tdateSelected: \(dateSelected)")
+        print("\t\tdateSelected: \(tempDateSelected)")
         // create collectionView item
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "changeDateCell", for: indexPath)
             as! ChangeDateCVCell
@@ -80,11 +80,11 @@ class ChangeDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSour
         cell.layer.borderWidth = 1.0
         
         // get the day from either today or the last selected date.
-        let day = Calendar.current.component(.day, from: dateSelected)
+        let day = Calendar.current.component(.day, from: tempDateSelected)
         // check if day selected, mark blue, else mark gray
         if (day == getDayAsInt(date: daysArray[indexPath.row])) {
 //        if selectedCells.contains(indexPath) {
-            print("\t\t\tmatching dateSelected: \(dateSelected)")
+            print("\t\t\tmatching dateSelected: \(tempDateSelected)")
             let defaultColor = getColor("System")
             cell.layer.borderColor = defaultColor.cgColor
             cell.dowUILabel?.textColor = defaultColor
@@ -147,7 +147,7 @@ class ChangeDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSour
             let year = calendar.component(.year, from: Date())
             let date = getDateFromComponents(day, month, year)
     //            print("date: \(date)")
-            dateSelected = date
+            tempDateSelected = date
     //            print("dateSelected: \(dateSelected)")
             // FIXME: replace 'days' with a calculation for number of days in the month
             // loop through cells and deselect
@@ -169,8 +169,8 @@ class ChangeDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSour
 //        self.journalHabitsTV?.dateSelected = dateSelected
         // testing
     //        self.journalTitleCV?.dateSelected = dateSelected
-        daysArray = updateDaysArray(dateSelected)
-        print("\t\tdateSelected: \(dateSelected)")
+        daysArray = updateDaysArray(tempDateSelected)
+        print("\t\tdateSelected: \(tempDateSelected)")
         self.dateUICollectionView.reloadData()
         // testing
     //        self.titleUICollectionView.reloadData()
