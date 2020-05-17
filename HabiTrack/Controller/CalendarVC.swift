@@ -38,7 +38,6 @@ class CalendarVC: UIViewController {
     // last updated: 5/4/2020
     // last update: new
     @IBAction func saveChanges(_ sender: Any) {
-        print("\t\tdateSelected: \(dateSelected)")
         dateSelected = changeDateCV?.tempDateSelected ?? Date()
         DataManager.shared.journalVC.updateDateButton()
         DataManager.shared.journalVC.journalUITableView.reloadData()
@@ -61,10 +60,8 @@ class CalendarVC: UIViewController {
     // last updated: 5/16/2020
     // last update: new
     @IBAction func changeDateToday(_ sender: Any) {
-        debugPrint("CalendarVC", "changeDateToday", "start", false)
         self.changeDateCV?.tempDateSelected = Date()
         self.dateUICollectionView.reloadData()
-        debugPrint("CalendarVC", "changeDateToday", "end", false)
     }
     
     
@@ -75,20 +72,12 @@ class CalendarVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-//        print("******************************************************")
-        debugPrint("CalendarVC", "viewDidLoad", "start", false)
-        print("\t\tdateSelected: \(dateSelected)")
         self.changeDateCV = ChangeDateCV(dateUICollectionView)
         do {
-//            let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-//            let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
             // set the dataSource and delegate
             self.dateUICollectionView.dataSource = changeDateCV
             self.dateUICollectionView.delegate = changeDateCV
         }
-//        catch {
-//            print(error)
-//        }
         debugPrint("CalendarVC", "viewDidLoad", "end", false)
     }
     
@@ -117,9 +106,8 @@ class CalendarVC: UIViewController {
         super.viewDidAppear(animated)
         debugPrint("CalendarVC", "viewDidAppear", "start", false)
         // update views
-        print("\t\tdateSelected: \(dateSelected)")
-        changeDateCV?.updateUICollectionView(dateUICollectionView)
-        print("\t\tdateSelected: \(dateSelected)")
+        changeDateCV?.dateUICollectionView.reloadData()
+//        changeDateCV?.updateUICollectionView(dateUICollectionView)
         debugPrint("CalendarVC", "viewDidAppear", "end", false)
         print("******************************************************")
     }

@@ -19,9 +19,9 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 "Print Current Date",
                 "Print Date Selected",
                 "Add Entry Days for Habit",
-                "Delete Entry Days for Habit",
-                "Delete Habit by ID",
-                "Update Habit Days by ID"]
+                "Delete Habit Entry Days",
+                "Delete Habit From Database",
+                "Update Habit Weekdays"]
     
     var database: Connection!
     let habits = Habits()
@@ -29,7 +29,7 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     @IBOutlet weak var devTableView: UITableView!
     
     
-    // name:
+    // name: viewDidLoad
     // desc:
     // last updated: 4/28/2020
     // last update: cleaned up
@@ -48,7 +48,7 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     
-    // name:
+    // name: numberOfRowsInSection
     // desc:
     // last updated: 4/28/2020
     // last update: cleaned up
@@ -57,6 +57,8 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     
+    // name: cellForRowAt
+    // desc:
     // last updated: 4/28/2020
     // last update: cleaned up
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -66,7 +68,7 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     
-    // name:
+    // name: didSelectRowAt
     // desc:
     // last updated: 4/28/2020
     // last update: cleaned up
@@ -86,16 +88,16 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         case "Print Current Date":
             printDayOfWeek()
         case "Print Date Selected":
-//            printDateSelected()
+            printDateSelected()
             break
         case "Add Entry Days for Habit":
             addDays()
-        case "Delete Entry Days for Habit":
+        case "Delete Habit Entry Days":
             deleteDays()
-        case "Delete Habit by ID":
-            deleteHabitById()
-        case "Update Habit Days by ID":
-            updateRepeatDaysById()
+        case "Delete Habit From Database":
+            deleteHabit()
+        case "Update Habit Weekdays":
+            updateHabitWeekdays()
         default:
             print("default")
         }
@@ -103,22 +105,121 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     
-    // name:
-    // desc:
-    // last updated: 4/28/2020
+    // name: deleteDatabaseTable
+    // desc: Force Delete Database Table
+    // last updated: 5/16/2020
     // last update: cleaned up
-    func getTableSize(habit: String) -> Int {
-        var count = 0;
-        do {
-            let table = Table(habit)
-            let habits = try self.database.prepare(table)
-            for _ in habits {
-                count += 1
+    func deleteDatabaseTable() {
+        print("Force Delete Database Table...")
+        // create alert controller
+        let alert = UIAlertController(title: "Force Delete Database Table?", message: nil, preferredStyle: .alert)
+        // create 'Submit' action
+        let confirm = UIAlertAction(title: "Confirm", style: .default) { (_) in
+            // delete the database table
+            let deleteTable = self.habits.habitsTable.drop()
+            do {
+                try self.database.run(deleteTable)
+                print("Deleted Table")
+            } catch {
+                print (error)
             }
-        } catch {
-            print(error)
         }
-        return (count)
+        alert.addAction(confirm)
+        // create 'Cancel' alert action
+        let cancel = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil)
+        alert.addAction(cancel)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    
+    // name: updateLocalTable
+    // desc: Force Update Local Table From Database
+    // last updated: 5/16/2020
+    // last update: cleaned up
+    func updateLocalTable() {
+        print("Force Update Local Table From Database...")
+        // create alert controller
+        let alert = UIAlertController(title: "Force Update Local Table From Database?", message: nil, preferredStyle: .alert)
+        // create 'Submit' action
+        let confirm = UIAlertAction(title: "Confirm", style: .default) { (_) in
+            if (isKeyPresentInUserDefaults(key: "localHabits") == false) {
+                let defaults = UserDefaults.standard
+                defaults.set([String](), forKey: "localHabits")
+            }
+            do {
+                let table = Table("habits")
+                let habitsTable = try self.database.prepare(table)
+                let defaults = UserDefaults.standard
+                var localHabits = [String]()
+                for habit in habitsTable {
+                    localHabits.append(habit[self.habits.name])
+                }
+                defaults.set(localHabits, forKey: "localHabits")
+            } catch {
+                print(error)
+            }
+        }
+        alert.addAction(confirm)
+        // create 'Cancel' alert action
+        let cancel = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil)
+        alert.addAction(cancel)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    
+    // name: updateHabitIDs
+    // desc: Force Update Database Habit IDs
+    // last updated: 5/16/2020
+    // last update: cleaned up
+    func updateHabitIDs() {
+        print("Force Update Database Habit IDs...")
+        // create alert controller
+        let alert = UIAlertController(title: "Force Update Database Habit IDs?", message: nil, preferredStyle: .alert)
+        // create 'Submit' action
+        let confirm = UIAlertAction(title: "Confirm", style: .default) { (_) in
+            print("updateHabitIDs...")
+            do {
+                // define variable(s)
+                let table = Table("habits")
+                let habits = try self.database.prepare(table)
+                var index = 1, currId = 1, diff = 0, numUpdates = 0
+                // loop through habits table
+                for habit in habits {
+                    // calculate difference = current habit ID - loop index
+                    currId = habit[self.habits.id]
+                    diff = currId - index
+                    // check if there is a difference
+                    if (diff > 0) {
+                        // calculate the new ID based on the difference between database table and local table
+                        let newId = currId - diff
+                        // get the habit with the current ID
+                        let tempHabit = self.habits.habitsTable.filter(self.habits.id == currId)
+                        let updateHabit = tempHabit.update(self.habits.id <- newId)
+                        // attempt to update the database
+                        do {
+                            try self.habits.database.run(updateHabit)
+                            print("\tupdated habit ID...\(habit[self.habits.id])->\(newId)")
+                            numUpdates += 1
+                        } catch {
+                            print(error)
+                        }
+                    }
+                    // increment ID
+                    index += 1
+                } // end for loop
+                // check for no updates
+                if (numUpdates == 0) {
+                    print("\tno IDs updated")
+                }
+            } catch {
+                print(error)
+            }
+        }
+        alert.addAction(confirm)
+        // create 'Cancel' alert action
+        let cancel = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil)
+        alert.addAction(cancel)
+        present(alert, animated: true, completion: nil)
     }
     
     
@@ -128,6 +229,15 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     // last update: cleaned up
     func printDayOfWeek() {
         print("current Date: \(Date())")
+    }
+    
+    
+    // name: printDateSelected
+    // desc: print globabl date selected
+    // last updated: 5/16/2020
+    // last update: new
+    func printDateSelected() {
+        print("date selected: \(dateSelected)")
     }
     
     
@@ -151,7 +261,7 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     
-    // name:
+    // name: printJournalEntries
     // desc:
     // last updated: 4/28/2020
     // last update: cleaned up
@@ -182,22 +292,6 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             print("\tid: \(count), habit: \(habit)")
 //            printJournalEntries(habit[self.habits.habit])
             count += 1
-        }
-    }
-    
-    
-    // name: deleteDatabaseTable
-    // desc:
-    // last updated: 4/28/2020
-    // last update: cleaned up
-    func deleteDatabaseTable() {
-        print("Deleting Table...")
-        let deleteTable = self.habits.habitsTable.drop()
-        do {
-            try self.database.run(deleteTable)
-            print("Deleted Table")
-        } catch {
-            print (error)
         }
     }
     
@@ -338,24 +432,24 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     
-    // name: deleteHabitById
+    // name: deleteHabit
     // desc:
-    // last updated: 4/28/2020
+    // last updated: 5/16/2020
     // last update: cleaned up
-    func deleteHabitById() {
-        print("deleting habit from table...")
+    func deleteHabit() {
+        print("deleting habit from database table...")
         // create alert controller
-        let alert = UIAlertController(title: "Delete Habit", message: nil, preferredStyle: .alert)
+        let alert = UIAlertController(title: "Delete Habit From Database", message: nil, preferredStyle: .alert)
         // add text fields
         alert.addTextField { (tf) in
-            tf.placeholder = "Habit ID" }
+            tf.placeholder = "Habit" }
         // create 'Submit' action
         let submit = UIAlertAction(title: "Submit", style: .default) { (_) in
             // get strings from text fields
-            guard let habitIdString = alert.textFields?.first?.text, let habitId = Int(habitIdString)
+            guard let habitString = alert.textFields?.first?.text
                 else { return }
             // find the correct in the table
-            let habit = self.habits.habitsTable.filter(self.habits.id == habitId)
+            let habit = self.habits.habitsTable.filter(self.habits.name == habitString)
             // udpate the habit
             let deleteHabit = habit.delete()
             
@@ -375,98 +469,28 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     }
     
     
-    // name:
-    // desc:
-    // last updated: 4/28/2020
-    // last update: cleaned up
-    func updateLocalTable() {
-        print("updateLocalTable...")
-        if (isKeyPresentInUserDefaults(key: "localHabits") == false) {
-            let defaults = UserDefaults.standard
-            defaults.set([String](), forKey: "localHabits")
-        }
-        do {
-            let table = Table("habits")
-            let habitsTable = try self.database.prepare(table)
-            let defaults = UserDefaults.standard
-            var localHabits = [String]()
-            for habit in habitsTable {
-                localHabits.append(habit[self.habits.name])
-            }
-            defaults.set(localHabits, forKey: "localHabits")
-        } catch {
-            print(error)
-        }
-    }
-    
-    
-    // name:
-    // desc:
-    // last updated: 4/28/2020
-    // last update: fixed issue where database wasn't updating
-    func updateHabitIDs() {
-        print("updateHabitIDs...")
-        do {
-            // define variable(s)
-            let table = Table("habits")
-            let habits = try self.database.prepare(table)
-            var index = 1, currId = 1, diff = 0, numUpdates = 0
-            // loop through habits table
-            for habit in habits {
-                // calculate difference = current habit ID - loop index
-                currId = habit[self.habits.id]
-                diff = currId - index
-                // check if there is a difference
-                if (diff > 0) {
-                    // calculate the new ID based on the difference between database table and local table
-                    let newId = currId - diff
-                    // get the habit with the current ID
-                    let tempHabit = self.habits.habitsTable.filter(self.habits.id == currId)
-                    let updateHabit = tempHabit.update(self.habits.id <- newId)
-                    // attempt to update the database
-                    do {
-                        try self.habits.database.run(updateHabit)
-                        print("\tupdated habit ID...\(habit[self.habits.id])->\(newId)")
-                        numUpdates += 1
-                    } catch {
-                        print(error)
-                    }
-                }
-                // increment ID
-                index += 1
-            } // end for loop
-            // check for no updates
-            if (numUpdates == 0) {
-                print("\tno IDs updated")
-            }
-        } catch {
-            print(error)
-        }
-    } // end func
-    
-    
-    // name: updateRepeatDaysById
+    // name: updateHabitWeekdays
     // desc: Pop-up for updating the repeat days for a habit
-    // last updated: 4/28/2020
+    // last updated: 5/16/2020
     // last update: cleaned up
-    func updateRepeatDaysById() {
+    func updateHabitWeekdays() {
         print("updating day of week for habits entry...")
         // create alert controller
-        let alert = UIAlertController(title: "Update Week Day", message: nil, preferredStyle: .alert)
+        let alert = UIAlertController(title: "Update Weekdays For Habit", message: nil, preferredStyle: .alert)
         // add text fields
         alert.addTextField { (tf) in
-            tf.placeholder = "Habit ID" }
+            tf.placeholder = "Habit" }
         alert.addTextField { (tf) in
-            tf.placeholder = "Day Of Week" }
+            tf.placeholder = "1234567" }
         // create 'Submit' action
         let submit = UIAlertAction(title: "Submit", style: .default) { (_) in
             // get strings from text fields
-            guard let habitIdString = alert.textFields?.first?.text, let habitId = Int(habitIdString), let habitDayString = alert.textFields?.last?.text, let habitDayOfWeek = Int(habitDayString)
+            guard let habitString = alert.textFields?.first?.text, let habitWeekdayString = alert.textFields?.last?.text, let habitWeekdays = Int(habitWeekdayString)
                 else { return }
             // find the correct in the table
-            let habit = self.habits.habitsTable.filter(self.habits.id == habitId)
+            let habit = self.habits.habitsTable.filter(self.habits.name == habitString)
             // udpate the habit
-            let updateHabit = habit.update(self.habits.days <- habitDayOfWeek)
+            let updateHabit = habit.update(self.habits.days <- habitWeekdays)
             
             // attempt to update the database
             do {
@@ -482,5 +506,40 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
         alert.addAction(cancel)
         present(alert, animated: true, completion: nil)
     } // end func
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // name: getTableSize
+    // desc:
+    // last updated: 5/16/2020
+    // last update: cleaned up
+    func getTableSize(habit: String) -> Int {
+        var count = 0;
+        do {
+            let table = Table(habit)
+            let habits = try self.database.prepare(table)
+            for _ in habits {
+                count += 1
+            }
+        } catch {
+            print(error)
+        }
+        return (count)
+    }
 }
 

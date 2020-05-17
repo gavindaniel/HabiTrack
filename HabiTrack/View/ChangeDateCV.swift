@@ -30,11 +30,9 @@ class ChangeDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSour
     // last updated: 4/28/2020
     // last update: cleaned up
     init(_ dateUICollectionView: UICollectionView) {
-        debugPrint("ChangeDateCV", "init", "start", false)
         self.dateUICollectionView = dateUICollectionView
         self.lastSelectedItem = -1
         super.init()
-        debugPrint("ChangeDateCV", "init", "end", false)
     }
     
     
@@ -43,9 +41,7 @@ class ChangeDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSour
     // last updated: 4/28/2020
     // last update: cleaned up
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        debugPrint("ChangeDateCV", "numberOfItemsInSection", "start", false)
         dateArray = updateDateArray(dateSelected)
-        debugPrint("ChangeDateCV", "numberOfItemsInSection", "end", false)
         return dateArray.count
     }
     
@@ -55,8 +51,6 @@ class ChangeDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSour
     // last updated: 4/28/2020
     // last update: cleaned up
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        debugPrint("ChangeDateCV", "cellForItemAt", "start", false, indexPath.row)
-        print("\t\tdateSelected: \(tempDateSelected)")
         // create collectionView item
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "changeDateCell", for: indexPath)
             as! ChangeDateCVCell
@@ -67,14 +61,11 @@ class ChangeDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSour
         cell.dayUILabel?.text = String(getDay(dateArray[indexPath.row]))
         cell.layer.cornerRadius = 10.0
         cell.layer.borderWidth = 1.0
-        
         // get the day from either today or the last selected date.
         let day = calendar.component(.day, from: tempDateSelected)
         let month = calendar.component(.month, from: tempDateSelected)
         // check if day selected, mark blue, else mark gray
         if (day == getDay(dateArray[indexPath.row]) && month == getMonth(dateArray[indexPath.row])) {
-//        if selectedCells.contains(indexPath) {
-            print("\t\t\tmatching dateSelected: \(tempDateSelected)")
             let defaultColor = getColor("System")
             cell.layer.borderColor = defaultColor.cgColor
             cell.dowUILabel?.textColor = defaultColor
@@ -129,7 +120,6 @@ class ChangeDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSour
             }
         }
         // return initialized item
-        debugPrint("ChangeDateCV", "cellForItemAt", "end", true, indexPath.row)
         return (cell)
     }
     
@@ -139,7 +129,6 @@ class ChangeDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSour
     // last updated: 4/28/2020
     // last update: cleaned up
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        debugPrint("JournalDateCV", "didSelectItemAt", "start", true, indexPath.row)
         // get the cell from the tableView
         if let cell: ChangeDateCVCell = (collectionView.cellForItem(at: indexPath) as? ChangeDateCVCell) {
             // if the selected item is different from the last, deselect the last item
@@ -166,9 +155,7 @@ class ChangeDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSour
             cell.dayUILabel?.textColor = defaultColor
         }
         dateArray = updateDateArray(tempDateSelected)
-        print("\t\tdateSelected: \(tempDateSelected)")
         self.dateUICollectionView.reloadData()
-        debugPrint("JournalDateCV", "didSelectItemAt", "end", true, indexPath.row)
     }
         
         

@@ -87,13 +87,13 @@ class HabitVC: UIViewController, UITextFieldDelegate {
     
     // name: viewDidAppear
     // desc:
-    // last updated: 4/28/2020
+    // last updated: 5/16/2020
     // last update: cleaned up
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         debugPrint("HabitVC", "viewDidAppear", "start", false)
         // update views
-        habitDateCV?.updateUICollectionView(dateUICollectionView)
+        habitDateCV?.dateUICollectionView.reloadData()
         debugPrint("HabitVC", "viewDidAppear", "end", false)
         print("******************************************************")
     }
@@ -101,16 +101,12 @@ class HabitVC: UIViewController, UITextFieldDelegate {
     
     // name: viewDidDisappear
     // desc:
-    // last updated: 4/28/2020
+    // last updated: 5/16/2020
     // last update: cleaned up
     override func viewDidDisappear(_ animated: Bool) {
         debugPrint("HabitVC", "viewDidDisappear", "start", false)
-//        let storyBoard = UIStoryboard(name: "Main", bundle:nil)
-//        let journalVC = storyBoard.instantiateViewController(withIdentifier: "journalVC") as! JournalVC
-//        journalVC.journalUITableView?.reloadData()
         debugPrint("HabitVC", "viewDidDisappear", "end", false)
         print("******************************************************")
-//        self.present(journalVC, animated: true, completion: nil)
     }
     
     
@@ -246,11 +242,6 @@ class HabitVC: UIViewController, UITextFieldDelegate {
                 i += 1
             }
             print("\tdaysString: \(daysString)")
-//            if (selectedDays!.count >= 7) {
-//                repeatString = "daily"
-//            } else {
-//                repeatString = "weekly"
-//            }
             let addHabit = self.habits.habitsTable.insert(self.habits.name <- nameString ?? "error",
             self.habits.days <- Int(daysString) ?? 1,
             self.habits.streak <- 0,

@@ -129,8 +129,6 @@ class JournalVC: UIViewController {
         // update views
         self.journalUITableView.reloadData()
         self.dateUICollectionView.reloadData()
-//        journalHabitsTV?.updateUITableView(journalUITableView)
-//        journalDateCV?.updateUICollectionView(dateUICollectionView)
         // set observer of application entering foreground
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(applicationWillEnterForeground),
@@ -181,8 +179,8 @@ class JournalVC: UIViewController {
     
     // name: updateViewController
     // desc:
-    // last updated: 4/28/2020
-    // last update: cleaned up
+    // last updated: 5/16/2020
+    // last update: fixed bug with tabs remembering old states, replaced with reloadData on views.
     func updateViewController() {
         debugPrint("JournalVC", "updateViewController", "start", false)
         let dateToday = Date()
@@ -204,9 +202,7 @@ class JournalVC: UIViewController {
                 let database = try Connection(fileUrl.path)
                 self.habits.database = database
                 self.habits.entries.database = database
-                
-//                self.journalHabitsTV?.updateUITableView(journalUITableView)
-//                self.journalDateCV?.updateUICollectionView(dateUICollectionView)
+                // reload the views
                 self.journalUITableView.reloadData()
                 self.dateUICollectionView.reloadData()
             } catch {
@@ -219,13 +215,6 @@ class JournalVC: UIViewController {
             // reload the views
             self.journalUITableView.reloadData()
             self.dateUICollectionView.reloadData()
-            // update days array and views
-//            self.journalDateCV?.dateArray = updateDateArray(dateToday)
-//            self.journalHabitsTV?.updateUITableView(journalUITableView)
-//            self.journalDateCV?.updateUICollectionView(dateUICollectionView)
-            // reload the views
-            self.journalUITableView.reloadData()
-            self.dateUICollectionView.reloadData()
         // day has not changed since last run
         } else {
             print("\tDay has not changed.")
@@ -233,16 +222,6 @@ class JournalVC: UIViewController {
         debugPrint("JournalVC", "updateViewController", "end", false)
     } // end of update func.
     
-    
-    // name: handleDatePicker
-    // desc:
-    // last updated: 4/29/2020
-    // last update: added
-//    @objc func handleDatePicker(sender: UIDatePicker) {
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "dd/MM/yyyy"
-//    }
-
 
     // name: touchesBegan
     // desc:
@@ -262,7 +241,6 @@ class JournalVC: UIViewController {
         let storyBoard = UIStoryboard(name: "Main", bundle:nil)
         let habitVC = storyBoard.instantiateViewController(withIdentifier: "habitVC") as! HabitVC
         habitVC.habits = habits
-        debugPrint("JournalVC", "newHabit", "end", false)
         self.present(habitVC, animated: true, completion: nil)
     }
     
@@ -272,14 +250,16 @@ class JournalVC: UIViewController {
     // last updated: 5/1/2020
     // last update: added
     @IBAction func changeDate(_ sender: Any) {
-        debugPrint("JournalVC", "changeDate", "start", false)
         let storyBoard = UIStoryboard(name: "Main", bundle:nil)
         let calendarVC = storyBoard.instantiateViewController(withIdentifier: "calendarVC") as! CalendarVC
-        debugPrint("JournalVC", "changeDate", "end", false)
         self.present(calendarVC, animated: true, completion: nil)
     }
     
     
+    // name: changeDate
+    // desc:
+    // last updated: 5/1/2020
+    // last update: added
     func updateDateButton() {
         let monthString = getMonthAsString(date: dateSelected, length: "long")
         let dateString = monthString + " \(getDay(dateSelected))\(getDayOfMonthSuffix(dateSelected))"
