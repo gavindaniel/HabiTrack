@@ -97,9 +97,7 @@ class JournalVC: UIViewController {
             
             self.dateUIButton.tintColor = getColor("System")
             self.addHabitUIButton.tintColor = getColor("System")
-            let monthString = getMonthAsString(date: dateSelected, length: "long")
-//            print("\tmonthString : \(monthString)")
-            self.dateUIButton.setTitle(monthString, for: .normal)
+            updateDateButton()
         } catch {
             print(error)
         }
@@ -218,7 +216,7 @@ class JournalVC: UIViewController {
             self.journalUITableView.reloadData()
             self.dateUICollectionView.reloadData()
             // update days array and views
-            self.journalDateCV?.daysArray = updateDaysArray(dateToday)
+            self.journalDateCV?.dateArray = updateDateArray(dateToday)
             self.journalHabitsTV?.updateUITableView(journalUITableView)
             self.journalDateCV?.updateUICollectionView(dateUICollectionView)
             // reload the views
@@ -277,4 +275,10 @@ class JournalVC: UIViewController {
         self.present(calendarVC, animated: true, completion: nil)
     }
     
+    
+    func updateDateButton() {
+        let monthString = getMonthAsString(date: dateSelected, length: "long")
+        let dateString = monthString + " \(getDay(dateSelected))\(getDayOfMonthSuffix(dateSelected))"
+        self.dateUIButton.setTitle(dateString, for: .normal)
+    }
 }

@@ -71,27 +71,32 @@ func checkDayOfWeek(days: Int, dayOfWeek: Int) -> Bool {
     // desc:
     // last updated: 4/28/2020
     // last update: cleaned up
-    func updateDaysArray(_ date: Date) -> [Date] {
-        debugPrint("JournalDateCV", "updateDaysArray", "start", true)
-        var daysArray = [Date]()
-        var index = 1
+    func updateDateArray(_ date: Date) -> [Date] {
+        debugPrint("CustomDate", "updateDaysArray", "start", true)
+        var dateArray = [Date]()
         let calendar = Calendar.current
         let dateComponents = DateComponents(year: calendar.component(.year, from: date), month: calendar.component(.month, from: date), day: 1)
-        var day = calendar.date(from: dateComponents)!
+        var tempDate = calendar.date(from: dateComponents)!
+        let weekday = calendar.component(.weekday, from: tempDate)
+        if (weekday != 1) {
+            let buffer = 1 - weekday
+            tempDate = calendar.date(byAdding: .day, value: buffer, to: tempDate)!
+        }
 //        print("start day: \(day)")
-        let range = calendar.range(of: .day, in: .month, for: day)!
-        let numDays = range.count
+//        let range = calendar.range(of: .day, in: .month, for: tempDate)!
+//        let numDays = range.count
 //        print(numDays) // 31
-        while index <= numDays {
-            daysArray.append(day)
+        for _ in 1...7 {
+            for _ in 1...5 {
+            dateArray.append(tempDate)
             // increment day count
-            day = Calendar.current.date(byAdding: .day, value: 1, to: day)!
+            tempDate = calendar.date(byAdding: .day, value: 1, to: tempDate)!
 //            print("\tday: \(day)")
-            index += 1
+            }
         }
 //        self.journalUITableView.reloadData()
-        debugPrint("JournalDateCV", "updateDaysArray", "end", true)
-        return daysArray
+        debugPrint("CustomDate", "updateDaysArray", "end", true)
+        return dateArray
     }
 
 
@@ -104,47 +109,47 @@ func checkDateBeforeStart(date: Date, startDate: Date) -> Bool {
 }
 
 
-// name: getDayAsInt
+// name: getDayIntFromDate
 // desc:
-// last updated: 4/28/2020
-// last update: cleaned up
-func getDayAsInt(date: Date) -> Int {
-    debugPrint("CustomDate", "getDayAsInt", "start", true)
+// last updated: 5/16/2020
+// last update: refactored
+func getDay(_ date: Date) -> Int {
+    debugPrint("CustomDate", "getDayIntFromDate", "start", true)
     let day = Calendar.current.component(.day, from: date)
-    debugPrint("CustomDate", "getDayAsInt", "end", true)
+    debugPrint("CustomDate", "getDayIntFromDate", "end", true)
     return day
 }
 
+
+// name: getMonthIntFromDate
+// desc:
+// last updated: 4/28/2020
+// last update: cleaned up
+func getMonth(_ date: Date) -> Int {
+    debugPrint("CustomDate", "getMonthIntFromDate", "start", true)
+    let month = Calendar.current.component(.month, from: date)
+    debugPrint("CustomDate", "getMonthIntFromDate", "end", true)
+    return month
+}
 
 
 // name: getDayTh
 // desc:
 // last updated: 4/28/2020
 // last update: cleaned up
-func getDayTh(date: Date) -> String {
+func getDayOfMonthSuffix(_ date: Date) -> String {
     debugPrint("CustomDate", "getDayTh", "start", true)
     // variables
-    let day = Calendar.current.component(.day, from: date)
-    // 1st, 21st, 31st
-    debugPrint("CustomDate", "getDayTh", "end", true)
-    if (day == 1 || day == 21 || day == 31) {
-        let dayString = "\(day)st"
-//        return("\(day)st")
-        return(dayString)
-    // 2nd , 22nd
-    } else if (day == 2 || day == 22) {
-        let dayString = "\(day)nd"
-        return(dayString)
-    // 3rd, 23rd
-    } else if (day == 3 || day == 23) {
-        let dayString = "\(day)rd"
-        return(dayString)
-    // else th
-    } else {
-        let dayString = "\(day)th"
-        return(dayString)
+    let day = getDay(date)
+    if (day >= 11 && day <= 13) {
+        return "th";
     }
-    
+    switch (day % 10) {
+        case 1:  return "st";
+        case 2:  return "nd";
+        case 3:  return "rd";
+        default: return "th";
+    }
 }
 
 
@@ -171,7 +176,7 @@ func getDateAsString(_ date: Date, length: String) -> String {
     }
     // return abbreviated length
     else {
-        let tempString = "\(getMonthAsString(date: date, length: length)) \(getDayTh(date: date))"
+        let tempString = "\(getMonthAsString(date: date, length: length)) \(getDayOfMonthSuffix(date))"
         debugPrint("CustomDate", "getDateAsString", "end", true)
         return tempString
     }
@@ -250,7 +255,7 @@ func getRepeatDaysAsString(_ days: Int) -> String {
             } else {
                 repeatString += "Repeats: "
             }
-            repeatString += getDayOfWeekAsString(dayOfWeek, length: "short")
+            repeatString += getWeekdayAsString(dayOfWeek, length: "short")
 //            print("repeatString: \(repeatString)")
             count += 1
         }
@@ -293,15 +298,15 @@ func getDateFromString(_ dateString: String) -> Date {
 //}
 
 
-// name: getDate
+// name: getDateFromComponents
 // desc:
-// last updated: 4/28/2020
+// last updated: 5/16/2020
 // last update: cleaned up
 func getDateFromComponents(_ day: Int,_ month: Int,_ year: Int) -> Date {
-    debugPrint("CustomDate", "getDate", "start", true)
+    debugPrint("CustomDate", "getDateFromComponents", "start", true)
     let components = DateComponents(year: year, month: month, day: day, hour: 0, minute: 0, second: 0)
     let date = Calendar.current.date(from: components) ?? Date()
-    debugPrint("CustomDate", "getDate", "end", true)
+    debugPrint("CustomDate", "getDateFromComponents", "end", true)
     return date
 }
 
@@ -353,13 +358,13 @@ func getMonthAsString(date: Date, length: String) -> String {
 }
 
 
-// name: getMonthAsInt
+// name: getMonthFromString
 // desc:
 // last updated: 4/28/2020
 // last update: cleaned up
-func getMonthAsInt(month: String) -> Int {
-    debugPrint("CustomDate", "getMonthAsInt", "start", true)
-    debugPrint("CustomDate", "getMonthAsInt", "end", true)
+func getMonthFromString(month: String) -> Int {
+    debugPrint("CustomDate", "getMonthFromString", "start", true)
+    debugPrint("CustomDate", "getMonthFromString", "end", true)
     switch (month) {
     case "Jan": return (1)
     case "Feb": return (2)
@@ -378,14 +383,14 @@ func getMonthAsInt(month: String) -> Int {
 }
 
 
-// name: getDayOfWeekString
+// name: getWeekdayAsString
 // desc:
 // last updated: 4/28/2020
 // last update: cleaned up
-func getDayOfWeekAsString(_ dayOfWeek: Int, length: String) -> String {
-    debugPrint("CustomDate", "getDayOfWeekString", "start", true)
+func getWeekdayAsString(_ dayOfWeek: Int, length: String) -> String {
+    debugPrint("CustomDate", "getWeekdayAsString", "start", true)
     if (length == "long") {
-        debugPrint("CustomDate", "getDayOfWeekString", "end", true)
+        debugPrint("CustomDate", "getWeekdayAsString", "end", true)
         switch(dayOfWeek) {
         case (1): return ("Sunday")
         case (2): return ("Monday")
@@ -398,7 +403,7 @@ func getDayOfWeekAsString(_ dayOfWeek: Int, length: String) -> String {
         }
     // else if short spelling
     } else if (length == "short") {
-        debugPrint("CustomDate", "getDayOfWeekString", "end", true)
+        debugPrint("CustomDate", "getWeekdayAsString", "end", true)
         switch(dayOfWeek) {
         case (1): return ("Sun")
         case (2): return ("Mon")
@@ -411,7 +416,7 @@ func getDayOfWeekAsString(_ dayOfWeek: Int, length: String) -> String {
         }
         // else return single letter spelling "S"
     } else {
-        debugPrint("CustomDate", "getDayOfWeekString", "end", true)
+        debugPrint("CustomDate", "getWeekdayAsString", "end", true)
         switch(dayOfWeek) {
         case (1): return ("S")
         case (2): return ("M")

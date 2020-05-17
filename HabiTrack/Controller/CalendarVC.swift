@@ -21,16 +21,16 @@ class ChangeDateCVCell: UICollectionViewCell {
 
 // name: CalendarVC
 // desc: calendar view controller class
-// last updated: 5/1/2020
-// last update: new
+// last updated: 5/16/2020
+// last update: cleaned up, added a few functions
 class CalendarVC: UIViewController {
     // variables
     var changeDateCV: ChangeDateCV?
-//    var daysArray: Array<Date> = []
     // IBOutlet connections
     @IBOutlet weak var dateUICollectionView: UICollectionView!
     @IBOutlet weak var saveUIButton: UIButton!
     @IBOutlet weak var cancelUIButton: UIButton!
+    @IBOutlet weak var todayUIButton: UIButton!
     
     
     // name: saveChanges
@@ -40,6 +40,7 @@ class CalendarVC: UIViewController {
     @IBAction func saveChanges(_ sender: Any) {
         print("\t\tdateSelected: \(dateSelected)")
         dateSelected = changeDateCV?.tempDateSelected ?? Date()
+        DataManager.shared.journalVC.updateDateButton()
         DataManager.shared.journalVC.journalUITableView.reloadData()
         DataManager.shared.journalVC.dateUICollectionView.reloadData()
         dismiss(animated: true, completion: nil)
@@ -52,6 +53,18 @@ class CalendarVC: UIViewController {
     // last update: new
     @IBAction func cancelChanges(_ sender: Any) {
         dismiss(animated: true, completion: nil)
+    }
+    
+    
+    // name: changeDateToday
+    // desc: change date to today button
+    // last updated: 5/16/2020
+    // last update: new
+    @IBAction func changeDateToday(_ sender: Any) {
+        debugPrint("CalendarVC", "changeDateToday", "start", false)
+        self.changeDateCV?.tempDateSelected = Date()
+        self.dateUICollectionView.reloadData()
+        debugPrint("CalendarVC", "changeDateToday", "end", false)
     }
     
     

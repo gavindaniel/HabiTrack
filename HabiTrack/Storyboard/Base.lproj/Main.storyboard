@@ -125,7 +125,7 @@
                                 </connections>
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NgV-fr-8Ez">
-                                <rect key="frame" x="160" y="67" width="70" height="38"/>
+                                <rect key="frame" x="160" y="67" width="150" height="38"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="24"/>
                                 <state key="normal" title="Month"/>
@@ -198,7 +198,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Qcf-zC-nfz">
-                                <rect key="frame" x="0.0" y="123" width="414" height="490"/>
+                                <rect key="frame" x="0.0" y="83" width="414" height="551"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="7" minimumInteritemSpacing="7" id="I6G-pO-Wf5">
@@ -242,6 +242,15 @@
                                     <outlet property="delegate" destination="fxH-LM-SH4" id="tPf-Be-gDd"/>
                                 </connections>
                             </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8RU-we-zUQ">
+                                <rect key="frame" x="182" y="642" width="51" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                <state key="normal" title="Today"/>
+                                <connections>
+                                    <action selector="changeDateToday:" destination="fxH-LM-SH4" eventType="touchUpInside" id="4Mn-ja-G0X"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="wHb-c9-M3V"/>
@@ -251,6 +260,7 @@
                         <outlet property="cancelUIButton" destination="1WI-O6-e1q" id="u9K-fu-lDe"/>
                         <outlet property="dateUICollectionView" destination="Qcf-zC-nfz" id="cPB-lS-Eez"/>
                         <outlet property="saveUIButton" destination="AyN-C3-uGz" id="vka-cg-Cgq"/>
+                        <outlet property="todayUIButton" destination="8RU-we-zUQ" id="fKt-18-sQh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="In3-7f-hTK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
