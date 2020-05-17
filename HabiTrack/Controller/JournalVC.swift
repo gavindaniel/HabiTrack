@@ -127,8 +127,10 @@ class JournalVC: UIViewController {
         super.viewDidAppear(animated)
         debugPrint("JournalVC", "viewDidAppear", "start", false)
         // update views
-        journalHabitsTV?.updateUITableView(journalUITableView)
-        journalDateCV?.updateUICollectionView(dateUICollectionView)
+        self.journalUITableView.reloadData()
+        self.dateUICollectionView.reloadData()
+//        journalHabitsTV?.updateUITableView(journalUITableView)
+//        journalDateCV?.updateUICollectionView(dateUICollectionView)
         // set observer of application entering foreground
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(applicationWillEnterForeground),
@@ -203,8 +205,10 @@ class JournalVC: UIViewController {
                 self.habits.database = database
                 self.habits.entries.database = database
                 
-                self.journalHabitsTV?.updateUITableView(journalUITableView)
-                self.journalDateCV?.updateUICollectionView(dateUICollectionView)
+//                self.journalHabitsTV?.updateUITableView(journalUITableView)
+//                self.journalDateCV?.updateUICollectionView(dateUICollectionView)
+                self.journalUITableView.reloadData()
+                self.dateUICollectionView.reloadData()
             } catch {
                 print(error)
             }
@@ -216,9 +220,9 @@ class JournalVC: UIViewController {
             self.journalUITableView.reloadData()
             self.dateUICollectionView.reloadData()
             // update days array and views
-            self.journalDateCV?.dateArray = updateDateArray(dateToday)
-            self.journalHabitsTV?.updateUITableView(journalUITableView)
-            self.journalDateCV?.updateUICollectionView(dateUICollectionView)
+//            self.journalDateCV?.dateArray = updateDateArray(dateToday)
+//            self.journalHabitsTV?.updateUITableView(journalUITableView)
+//            self.journalDateCV?.updateUICollectionView(dateUICollectionView)
             // reload the views
             self.journalUITableView.reloadData()
             self.dateUICollectionView.reloadData()
