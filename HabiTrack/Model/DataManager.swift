@@ -11,4 +11,5 @@ import Foundation
 class DataManager {
     static let shared = DataManager()
     var journalVC = JournalVC()
+    var customizeVC = CustomizeVC()
 }

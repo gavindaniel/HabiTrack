@@ -10,14 +10,16 @@ import Foundation
 import UIKit
 
 
-// name: ManageDisplayVC
+// name: CustomizeVC
 // desc: display manage view controller class
 // last updated: 4/28/2020
 // last update: cleaned up
-class ManageDisplayVC: UIViewController {
+class CustomizeVC: UIViewController {
     // variables
     var manageColorCV: ManageColorCV?
+    var customizeTV: CustomizeTV?
     // IBOutlet connections
+    @IBOutlet weak var journalUITableView: UITableView!
     @IBOutlet weak var colorUICollectionView: UICollectionView!
     @IBOutlet weak var closeUIButton: UIButton!
     @IBOutlet weak var saveDispUIButton: UIButton!
@@ -32,7 +34,8 @@ class ManageDisplayVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         debugPrint("ManageDisplayVC", "viewDidAppear", "start", true)
-        manageColorCV?.updateUICollectionView(colorUICollectionView)
+        self.colorUICollectionView.reloadData()
+        self.journalUITableView.reloadData()
         debugPrint("ManageDisplayVC", "viewDidAppear", "end", true)
     }
 
@@ -50,9 +53,12 @@ class ManageDisplayVC: UIViewController {
         self.longestUISwitch.isOn = getShowLongestLabel()
         // initialize views
         self.manageColorCV = ManageColorCV(colorUICollectionView: colorUICollectionView)
+        self.customizeTV = CustomizeTV(journalUITableView)
         // set the dataSource and delegate
         self.colorUICollectionView.dataSource = manageColorCV
         self.colorUICollectionView.delegate = manageColorCV
+        self.journalUITableView.dataSource = customizeTV
+        self.journalUITableView.delegate = customizeTV
         debugPrint("ManageDisplayVC", "viewDidLoad", "end", false)
     }
     
@@ -68,6 +74,7 @@ class ManageDisplayVC: UIViewController {
         saveDispUIButton?.tintColor = getColor("System")
         // reload the views
         self.colorUICollectionView.reloadData()
+        self.journalUITableView.reloadData()
         debugPrint("ManageDisplayVC", "viewWillAppear", "end", false)
     }
     
@@ -84,6 +91,7 @@ class ManageDisplayVC: UIViewController {
             // handle theme change here.
         }
         self.colorUICollectionView.reloadData()
+        self.journalUITableView.reloadData()
         debugPrint("ManageDisplayVC", "traitCollectionDidChange", "end", true)
     }
     
@@ -129,14 +137,25 @@ class ManageDisplayVC: UIViewController {
     @IBAction func saveChanges(_ sender: Any) {
         debugPrint("ManageColorCV", "saveChanges", "start", false)
         let defaultColor = getColor("System")
-        let selectedColor = getColor(self.manageColorCV!.getColorSelected())
+        let selectedColor = getColor(colorSelected)
         if (defaultColor != selectedColor) {
-            UserDefaults.standard.set(self.manageColorCV!.colorSelected, forKey: "defaultColor")
+            UserDefaults.standard.set(colorSelected, forKey: "defaultColor")
         }
         self.colorUICollectionView.reloadData()
+        self.journalUITableView.reloadData()
         debugPrint("ManageColorCV", "saveChanges", "end", false)
 //        UITabBar.appearance().tintColor = getColor("System")
 //        dismiss(animated: true, completion: nil)
         exit(-1)
+    }
+    
+    
+    // name: updateButtons
+    // desc:
+    // last updated: 5/16/2020
+    // last update: new
+    func updateButtons() {
+//        self.saveDispUIButton.setTitleColor(getColor(colorSelected), for: .normal)
+//        self.closeUIButton.setTitleColor(getColor(colorSelected), for: .normal)
     }
 }

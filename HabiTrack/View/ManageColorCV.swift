@@ -9,6 +9,8 @@
 import Foundation
 
 
+public var colorSelected = "blue"
+
 // name: JournalDateCV
 // desc: journal date collection view class
 // last updated: 4/28/2020
@@ -23,7 +25,7 @@ class ManageColorCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
                      "pink",
                      "red",
                      "orange"]
-    var colorSelected = "blue"
+//    var colorSelected = "blue"
     
     
     // name: init
@@ -34,7 +36,7 @@ class ManageColorCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
         debugPrint("ManageColorCV", "init", "start", true)
         self.colorUICollectionView = colorUICollectionView
         let defaultColor = getColor("System")
-        self.colorSelected = getColorString(color: defaultColor)
+        colorSelected = getColorString(color: defaultColor)
         super.init()
         debugPrint("ManageColorCV", "init", "end", true)
     }
@@ -120,6 +122,10 @@ class ManageColorCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
                     colorSelected = getColorString(color: cell.colorUIImageView!.tintColor)
                     print("\tManageColorCV : colorSelected..\(colorSelected)")
                     collectionView.reloadData()
+//                    DataManager.shared.customizeVC.updateButtons()
+//                    DataManager.shared.customizeVC.saveDispUIButton.setTitleColor(getColor(colorSelected), for: .normal)
+//                    DataManager.shared.customizeVC.closeUIButton.setTitleColor(getColor(colorSelected), for: .normal)
+//                    DataManager.shared.customizeVC.journalUITableView.reloadData()
                 }
             }
             debugPrint("ManageColorCV", "didSelectItemAt", "end", true, indexPath.row)
@@ -155,10 +161,5 @@ class ManageColorCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
         debugPrint("ManageColorCV", "updatedUICollectionView", "start", true)
         self.colorUICollectionView = colorUICollectionView
         debugPrint("ManageColorCV", "updatedUICollectionView", "end", true)
-    }
-    
-    
-    func getColorSelected() -> String {
-        return colorSelected
     }
 }

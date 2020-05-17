@@ -95,7 +95,7 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         else if (settingList[indexPath.row] == "Customize Display") {
             debugPrint("\tdidSelectRowAt", "Customize Display", "start", false)
             let storyBoard = UIStoryboard(name: "Main", bundle:nil)
-            let manageDisplayVC = storyBoard.instantiateViewController(withIdentifier: "manageDisplayVC") as! ManageDisplayVC
+            let manageDisplayVC = storyBoard.instantiateViewController(withIdentifier: "customizeVC") as! CustomizeVC
             debugPrint("\tdidSelectRowAt", "Customize Display", "end", false)
             self.present(manageDisplayVC, animated: true, completion: nil)
         }
