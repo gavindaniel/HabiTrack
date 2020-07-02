@@ -97,7 +97,7 @@ class JournalVC: UIViewController {
             
             self.dateUIButton.tintColor = getColor("System")
             self.addHabitUIButton.tintColor = getColor("System")
-            updateDateButton()
+            updateDateButton(dateSelected)
         } catch {
             print(error)
         }
@@ -260,9 +260,9 @@ class JournalVC: UIViewController {
     // desc:
     // last updated: 5/1/2020
     // last update: added
-    func updateDateButton() {
-        let monthString = getMonthAsString(date: dateSelected, length: "long")
-        let dateString = monthString + " \(getDay(dateSelected))\(getDayOfMonthSuffix(dateSelected))"
+    func updateDateButton(_ date: Date) {
+        let monthString = getMonthAsString(date: date, length: "long")
+        let dateString = monthString + " \(getDay(date))\(getDayOfMonthSuffix(date))"
         self.dateUIButton.setTitle(dateString, for: .normal)
     }
 }

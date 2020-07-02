@@ -8,6 +8,10 @@
 
 import Foundation
 
+let calendar = Calendar.current
+var dateArray = [Date]()
+var lastSelectedCell = -1
+var lastSelectedMonth = -1
 
 // name: isKeyPresentInUserDefaults
 // desc:
@@ -103,31 +107,47 @@ func checkDayOfWeek(days: Int, dayOfWeek: Int) -> Bool {
 
 func updateDateArray(_ date: Date) -> [Date] {
     debugPrint("CustomDate", "updateDaysArray", "start", true)
-    var dateArray = [Date]()
     let calendar = Calendar.current
-    // get first day of month of the selected date
-//    let dateComponents = DateComponents(year: calendar.component(.year, from: date), month: calendar.component(.month, from: date), day: 1)
-//    var tempDate = calendar.date(from: dateComponents)!
-    var tempDate = date
-    let weekday = calendar.component(.weekday, from: date)
-    // check if not sunday
-    if (weekday != 1) {
-        let buffer = 1 - weekday
-        tempDate = calendar.date(byAdding: .day, value: buffer, to: tempDate)!
-    }
-    print("start date: \(tempDate)")
-//        let range = calendar.range(of: .day, in: .month, for: tempDate)!
-//        let numDays = range.count
-//        print(numDays) // 31
-    for _ in 1...7 {
-        for _ in 1...5 {
-        dateArray.append(tempDate)
-        // increment day count
-        tempDate = calendar.date(byAdding: .day, value: 1, to: tempDate)!
-//            print("\tday: \(day)")
+    if (lastSelectedMonth != calendar.component(.month, from: date)) {
+        var tempDateArray = [Date]()
+        // get first day of month of the selected date
+        let dateComponents = DateComponents(year: calendar.component(.year, from: date), month: calendar.component(.month, from: date), day: 1)
+        var tempDate = calendar.date(from: dateComponents)!
+//        var tempDate = date
+    //    print("start date: \(tempDate)")
+        let weekday = calendar.component(.weekday, from: date)
+        // check if not sunday
+//        if (weekday != 1) {
+//            let buffer = 1 - weekday
+            let buffer = -7
+            tempDate = calendar.date(byAdding: .day, value: buffer, to: tempDate)!
+//        }
+    //    print("\tstart date: \(tempDate)")
+    //        let range = calendar.range(of: .day, in: .month, for: tempDate)!
+    //        let numDays = range.count
+    //        print(numDays) // 31
+        for _ in 1...8 {
+            for _ in 1...5 {
+            tempDateArray.append(tempDate)
+            // increment day count
+            tempDate = calendar.date(byAdding: .day, value: 1, to: tempDate)!
+    //            print("\tday: \(day)")
+            }
         }
+        print("start date: \(date)")
+        print("\tstart date: \(dateSelected)")
+        print()
+        
+        
+        lastSelectedMonth = calendar.component(.month, from: date)
+        
+        debugPrint("CustomDate", "updateDaysArray", "end", true)
+        return tempDateArray
     }
 //        self.journalUITableView.reloadData()
+    
+    
+    
     debugPrint("CustomDate", "updateDaysArray", "end", true)
     return dateArray
 }

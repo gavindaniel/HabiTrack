@@ -18,6 +18,7 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 "Print Local Journal Table",
                 "Print Current Date",
                 "Print Date Selected",
+                "Print Last Cell Selected",
                 "Add Entry Days for Habit",
                 "Delete Habit Entry Days",
                 "Delete Habit From Database",
@@ -89,7 +90,9 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
             printDayOfWeek()
         case "Print Date Selected":
             printDateSelected()
-            break
+//            break
+        case "Print Last Cell Selected":
+            printLastCellSelected()
         case "Add Entry Days for Habit":
             addDays()
         case "Delete Habit Entry Days":
@@ -238,6 +241,15 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
     // last update: new
     func printDateSelected() {
         print("date selected: \(dateSelected)")
+    }
+    
+    
+    // name: printLastCellSelected
+    // desc: print journal date cell selected
+    // last updated: 7/1/2020
+    // last update: new
+    func printLastCellSelected() {
+        print("last cell selected: \(lastSelectedCell)")
     }
     
     

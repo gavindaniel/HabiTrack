@@ -36,7 +36,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KJo-Sv-jMQ">
-                                                    <rect key="frame" x="342" y="21" width="13" height="28"/>
+                                                    <rect key="frame" x="371" y="21" width="13" height="28"/>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -58,7 +58,7 @@
                                             <constraints>
                                                 <constraint firstItem="W2s-1e-6jA" firstAttribute="leading" secondItem="VAy-mG-wGZ" secondAttribute="leading" constant="20" id="0ca-6A-ROT"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="sFh-Be-gNb" secondAttribute="bottom" constant="10" id="19b-8v-yMC"/>
-                                                <constraint firstAttribute="leading" secondItem="KJo-Sv-jMQ" secondAttribute="trailing" constant="-355" id="4z8-TG-0Rt"/>
+                                                <constraint firstAttribute="trailing" secondItem="KJo-Sv-jMQ" secondAttribute="trailing" constant="30" id="4z8-TG-0Rt"/>
                                                 <constraint firstItem="sFh-Be-gNb" firstAttribute="leading" secondItem="VAy-mG-wGZ" secondAttribute="leading" constant="52" id="5Cy-3M-r7H"/>
                                                 <constraint firstItem="KJo-Sv-jMQ" firstAttribute="top" secondItem="VAy-mG-wGZ" secondAttribute="topMargin" constant="10" id="AGR-q8-jPf"/>
                                                 <constraint firstAttribute="bottom" secondItem="W2s-1e-6jA" secondAttribute="bottom" constant="10" id="Seq-Q3-cEd"/>
@@ -124,9 +124,8 @@
                                     <outlet property="delegate" destination="9pv-A4-QxB" id="hwi-aa-YCB"/>
                                 </connections>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NgV-fr-8Ez">
-                                <rect key="frame" x="160" y="67" width="150" height="38"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NgV-fr-8Ez">
+                                <rect key="frame" x="170" y="45" width="70" height="41"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="24"/>
                                 <state key="normal" title="Month"/>
                                 <connections>
@@ -134,7 +133,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vbe-UX-DXt">
-                                <rect key="frame" x="378.66666666666669" y="30" width="25.333333333333314" height="23.666666666666671"/>
+                                <rect key="frame" x="368.66666666666669" y="52.999999999999993" width="25.333333333333314" height="23.666666666666664"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <state key="normal" image="square.and.pencil" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="medium"/>
@@ -146,8 +145,10 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="Vbe-UX-DXt" secondAttribute="trailing" constant="10" id="UXv-4v-85C"/>
-                            <constraint firstItem="Vbe-UX-DXt" firstAttribute="top" secondItem="PQr-Ze-W5v" secondAttribute="top" constant="30" id="aZv-8w-JbF"/>
+                            <constraint firstItem="NgV-fr-8Ez" firstAttribute="top" secondItem="PQr-Ze-W5v" secondAttribute="top" constant="45" id="3qa-FA-9KG"/>
+                            <constraint firstAttribute="trailing" secondItem="Vbe-UX-DXt" secondAttribute="trailing" constant="20" id="UXv-4v-85C"/>
+                            <constraint firstItem="Vbe-UX-DXt" firstAttribute="top" secondItem="PQr-Ze-W5v" secondAttribute="top" constant="53" id="aZv-8w-JbF"/>
+                            <constraint firstItem="NgV-fr-8Ez" firstAttribute="leading" secondItem="PQr-Ze-W5v" secondAttribute="leading" constant="170" id="mp2-Gr-Bi8"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
                     </view>

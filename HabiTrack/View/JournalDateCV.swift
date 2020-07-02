@@ -21,7 +21,7 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
     var journalUITableView: UITableView
     var journalHabitsTV: JournalHabitsTV?
     // variables unique to this view
-    var dateArray = [Date]()
+//    var dateArray = [Date]()
     var selectedCell = [IndexPath]()
     
     
@@ -92,9 +92,9 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
             cell.monthUILabel?.font = UIFont.systemFont(ofSize: 16.0)
             cell.dayUILabel?.font = UIFont.systemFont(ofSize: 16.0)
             // testing if today, make a different shade of gray so people know which day is today if not selected.
-            if (Calendar.current.component(.day, from: Date()) == Calendar.current.component(.day, from: dateArray[indexPath.row]) &&
-                Calendar.current.component(.month, from: Date()) == Calendar.current.component(.month, from: dateArray[indexPath.row]) &&
-                Calendar.current.component(.year, from: Date()) == Calendar.current.component(.year, from: dateArray[indexPath.row])) {
+            if (calendar.component(.day, from: Date()) == calendar.component(.day, from: dateArray[indexPath.row]) &&
+                calendar.component(.month, from: Date()) == calendar.component(.month, from: dateArray[indexPath.row]) &&
+                calendar.component(.year, from: Date()) == calendar.component(.year, from: dateArray[indexPath.row])) {
                 cell.layer.borderWidth = 2.0
                 if #available(iOS 13.0, *) {
                     cell.layer.borderColor = UIColor.systemGray.cgColor
@@ -181,38 +181,56 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
     // last updated: 4/28/2020
     // last update: cleaned up
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        debugPrint("JournalDateCV", "didSelectItemAt", "start", true, indexPath.row)
+        debugPrint("JournalDateCV", "didSelectItemAt", "start", false, indexPath.row)
         // get the cell from the tableView
         if let cell: JournalDateCVCell = (collectionView.cellForItem(at: indexPath) as? JournalDateCVCell) {
             // if the selected item is different from the last, deselect the last item
-            let lastSelectedItem = indexPath.row
+            print("lastSelectedCell: \(lastSelectedCell)")
+            print("indexPath.row: \(indexPath.row)")
+//            if (lastSelectedCell != indexPath.row) {
             let calendar = Calendar.current
-            let day = Int(cell.dayUILabel?.text ?? "1") ?? 1
-            let month = calendar.component(.month, from: dateArray[indexPath.row])
-            let year = calendar.component(.year, from: Date())
-            let date = getDateFromComponents(day, month, year)
-            dateSelected = date
-            // loop through cells and deselect
-            var tempIndex = 0
-            // check to deselect cells not selected
-            while tempIndex < dateArray.count {
-                if (tempIndex != lastSelectedItem) {
-                    self.dateUICollectionView.deselectItem(at: IndexPath(row: tempIndex, section: 0), animated: false)
+            print("dateSelected: \(dateSelected)")
+            print("\(calendar.component(.month, from: dateArray[indexPath.row]))")
+            print("\t\(calendar.component(.month, from: dateSelected))")
+            print()
+            print("\(calendar.component(.day, from: dateArray[indexPath.row]))")
+            print("\t\(calendar.component(.day, from: dateSelected))")
+            if (calendar.component(.month, from: dateArray[indexPath.row]) != calendar.component(.month, from: dateSelected) ||
+                calendar.component(.day, from: dateArray[indexPath.row]) != calendar.component(.day, from: dateSelected)) {
+                print("work please")
+                let lastSelectedItem = indexPath.row
+                lastSelectedCell = lastSelectedItem
+                let calendar = Calendar.current
+                let day = Int(cell.dayUILabel?.text ?? "1") ?? 1
+                let month = calendar.component(.month, from: dateArray[indexPath.row])
+                let year = calendar.component(.year, from: Date())
+                let date = getDateFromComponents(day, month, year)
+//                dateSelected = date
+                // loop through cells and deselect
+                var tempIndex = 0
+                // check to deselect cells not selected
+                while tempIndex < dateArray.count {
+                    if (tempIndex != lastSelectedItem) {
+                        self.dateUICollectionView.deselectItem(at: IndexPath(row: tempIndex, section: 0), animated: false)
+                    }
+                    // increment index
+                    tempIndex += 1
                 }
-                // increment index
-                tempIndex += 1
+                // change the border fo the selected item
+                let defaultColor = getColor("System")
+                cell.layer.borderColor = defaultColor.cgColor
+                cell.monthUILabel?.textColor = defaultColor
+                cell.dayUILabel?.textColor = defaultColor
+    //        dateArray = updateDateArray(dateSelected)
+                print("\tupdate plz")
+                dateArray = updateDateArray(date)
+                DataManager.shared.journalVC.updateDateButton(date)
+                DataManager.shared.journalVC.dateUICollectionView.reloadData()
+                DataManager.shared.journalVC.journalUITableView.reloadData()
+                dateSelected = date
             }
-            // change the border fo the selected item
-            let defaultColor = getColor("System")
-            cell.layer.borderColor = defaultColor.cgColor
-            cell.monthUILabel?.textColor = defaultColor
-            cell.dayUILabel?.textColor = defaultColor
         }
-        dateArray = updateDateArray(dateSelected)
-        DataManager.shared.journalVC.updateDateButton()
-        DataManager.shared.journalVC.dateUICollectionView.reloadData()
-        DataManager.shared.journalVC.journalUITableView.reloadData()
-        debugPrint("JournalDateCV", "didSelectItemAt", "end", true, indexPath.row)
+        debugPrint("JournalDateCV", "didSelectItemAt", "end", false, indexPath.row)
     }
     
     
