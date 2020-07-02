@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -36,7 +36,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KJo-Sv-jMQ">
-                                                    <rect key="frame" x="362" y="21" width="13" height="28"/>
+                                                    <rect key="frame" x="342" y="21" width="13" height="28"/>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -58,7 +58,7 @@
                                             <constraints>
                                                 <constraint firstItem="W2s-1e-6jA" firstAttribute="leading" secondItem="VAy-mG-wGZ" secondAttribute="leading" constant="20" id="0ca-6A-ROT"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="sFh-Be-gNb" secondAttribute="bottom" constant="10" id="19b-8v-yMC"/>
-                                                <constraint firstAttribute="leading" secondItem="KJo-Sv-jMQ" secondAttribute="trailing" constant="-375" id="4z8-TG-0Rt"/>
+                                                <constraint firstAttribute="leading" secondItem="KJo-Sv-jMQ" secondAttribute="trailing" constant="-355" id="4z8-TG-0Rt"/>
                                                 <constraint firstItem="sFh-Be-gNb" firstAttribute="leading" secondItem="VAy-mG-wGZ" secondAttribute="leading" constant="52" id="5Cy-3M-r7H"/>
                                                 <constraint firstItem="KJo-Sv-jMQ" firstAttribute="top" secondItem="VAy-mG-wGZ" secondAttribute="topMargin" constant="10" id="AGR-q8-jPf"/>
                                                 <constraint firstAttribute="bottom" secondItem="W2s-1e-6jA" secondAttribute="bottom" constant="10" id="Seq-Q3-cEd"/>
@@ -133,9 +133,8 @@
                                     <action selector="changeDate:" destination="9pv-A4-QxB" eventType="touchUpInside" id="IJg-Fh-xCh"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vbe-UX-DXt">
-                                <rect key="frame" x="365" y="71" width="38" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vbe-UX-DXt">
+                                <rect key="frame" x="378.66666666666669" y="30" width="25.333333333333314" height="23.666666666666671"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <state key="normal" image="square.and.pencil" catalog="system">
                                     <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="medium"/>
@@ -146,6 +145,10 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Vbe-UX-DXt" secondAttribute="trailing" constant="10" id="UXv-4v-85C"/>
+                            <constraint firstItem="Vbe-UX-DXt" firstAttribute="top" secondItem="PQr-Ze-W5v" secondAttribute="top" constant="30" id="aZv-8w-JbF"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Journal" image="list.bullet" catalog="system" id="jYE-Qy-XGj">
@@ -181,9 +184,8 @@
                                     <action selector="cancelChanges:" destination="fxH-LM-SH4" eventType="touchUpInside" id="vqQ-1b-8hs"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AyN-C3-uGz">
-                                <rect key="frame" x="354" y="23" width="40" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AyN-C3-uGz">
+                                <rect key="frame" x="364" y="23" width="40" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <state key="normal" title="Save"/>
                                 <connections>
@@ -253,6 +255,9 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="AyN-C3-uGz" secondAttribute="trailing" constant="10" id="SQA-rU-BcB"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="wHb-c9-M3V"/>
                     </view>
                     <modalPageSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -319,7 +324,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" keyboardDismissMode="interactive" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="bNp-Ye-kqt">
-                                        <rect key="frame" x="0.0" y="203" width="414" height="56"/>
+                                        <rect key="frame" x="0.0" y="203" width="374" height="56"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="7" minimumInteritemSpacing="0.0" id="Cve-hM-AgH">
@@ -357,9 +362,8 @@
                                     </collectionView>
                                 </subviews>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NZw-sv-9NZ">
-                                <rect key="frame" x="351" y="22" width="41" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NZw-sv-9NZ">
+                                <rect key="frame" x="363" y="22" width="41" height="34"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
                                 <state key="normal" title="Save"/>
                                 <connections>
@@ -377,6 +381,9 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="NZw-sv-9NZ" secondAttribute="trailing" constant="10" id="aMm-0w-AsO"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="n70-Ye-RtY"/>
                     </view>
                     <navigationItem key="navigationItem" id="ACJ-P4-4C0"/>
@@ -394,7 +401,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c5z-Ls-2WU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1653.6231884057972" y="-319.56521739130437"/>
+            <point key="canvasLocation" x="1653.5999999999999" y="-319.95073891625617"/>
         </scene>
         <!--Development-->
         <scene sceneID="OcH-4T-Sll">
@@ -580,14 +587,16 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qza-L4-Aaf">
-                                <rect key="frame" x="355" y="23" width="32" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qza-L4-Aaf">
+                                <rect key="frame" x="372" y="23" width="32" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <state key="normal" title="Edit"/>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Qza-L4-Aaf" secondAttribute="trailing" constant="10" id="kiU-IP-dt7"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="WVH-jy-VwY"/>
                     </view>
                     <modalPageSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
