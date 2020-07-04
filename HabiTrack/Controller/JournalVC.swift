@@ -98,6 +98,8 @@ class JournalVC: UIViewController {
             self.dateUIButton.tintColor = getColor("System")
             self.addHabitUIButton.tintColor = getColor("System")
             updateDateButton(dateSelected)
+//            updateDateArray(dateSelected)
+            self.dateUICollectionView.scrollToItem(at:IndexPath(item: lastSelectedItem, section: 0), at: .right, animated: false)
         } catch {
             print(error)
         }

@@ -110,36 +110,31 @@ func updateDateArray(_ date: Date) -> [Date] {
     let calendar = Calendar.current
     if (lastSelectedMonth != calendar.component(.month, from: date)) {
         var tempDateArray = [Date]()
+        var indexSelected = -1
         // get first day of month of the selected date
         let dateComponents = DateComponents(year: calendar.component(.year, from: date), month: calendar.component(.month, from: date), day: 1)
         var tempDate = calendar.date(from: dateComponents)!
-//        var tempDate = date
-    //    print("start date: \(tempDate)")
         let weekday = calendar.component(.weekday, from: date)
-        // check if not sunday
-//        if (weekday != 1) {
-//            let buffer = 1 - weekday
-            let buffer = -7
-            tempDate = calendar.date(byAdding: .day, value: buffer, to: tempDate)!
-//        }
-    //    print("\tstart date: \(tempDate)")
-    //        let range = calendar.range(of: .day, in: .month, for: tempDate)!
-    //        let numDays = range.count
-    //        print(numDays) // 31
+        let buffer = 1 - weekday
+        tempDate = calendar.date(byAdding: .day, value: buffer, to: tempDate)!
+        var index = 1
         for _ in 1...8 {
             for _ in 1...5 {
             tempDateArray.append(tempDate)
             // increment day count
             tempDate = calendar.date(byAdding: .day, value: 1, to: tempDate)!
     //            print("\tday: \(day)")
+                if (tempDate == date) {
+                    indexSelected = index + 3
+                    print("fa;sdlfkja;dslkfja;sdlkfja;lkdsfja;ldskjf;aldfkjs")
+                    DataManager.shared.journalVC.lastSelectedItem = indexSelected
+                }
+            index += 1
             }
         }
-        print("start date: \(date)")
-        print("\tstart date: \(dateSelected)")
-        print()
-        
-        
         lastSelectedMonth = calendar.component(.month, from: date)
+        DataManager.shared.journalVC.dateUICollectionView.scrollToItem(at:IndexPath(item: indexSelected, section: 0), at: .right, animated: false)
+//        DataManager.shared.journalVC.dateUICollectionView.scrollToItem(at:IndexPath(item: DataManager.shared.journalVC.lastSelectedItem, section: 0), at: .right, animated: false)
         
         debugPrint("CustomDate", "updateDaysArray", "end", true)
         return tempDateArray
@@ -151,6 +146,7 @@ func updateDateArray(_ date: Date) -> [Date] {
     debugPrint("CustomDate", "updateDaysArray", "end", true)
     return dateArray
 }
+
 
 //func updateDateArray(_ date: Date) -> [Date] {
 //    debugPrint("CustomDate", "updateDaysArray", "start", true)
