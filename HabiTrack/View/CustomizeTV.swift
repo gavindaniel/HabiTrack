@@ -6,7 +6,7 @@
 //  Copyright © 2020 Gavin Daniel. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 public var cellCompleted = false
 public var cellStreak = 0
@@ -48,36 +48,36 @@ class CustomizeTV: NSObject, UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         debugPrint("JournalHabitsTV", "cellForRowAt", "start", true, indexPath.row)
         // create tableView cell
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-            as! JournalHabitsTVCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "HabitCell", for: indexPath)
+            as! HabitCell
         
-            cell.habitUILabel?.text = "Habit"
-            cell.habitUILabel?.isHidden = false
+            cell.title?.text = "Habit"
+            cell.title?.isHidden = false
             // get the name of habit and size of habit entries table
             // set the streak
-            cell.streakUILabel?.text = String(cellStreak)
-            cell.streakUILabel?.isHidden = false
+            cell.streak?.text = String(cellStreak)
+            cell.streak?.isHidden = false
             // check if today has already been completed
             if (cellCompleted) {
                 if #available(iOS 13.0, *) {
-                    cell.checkImageView?.image = UIImage(systemName: "checkmark.circle.fill")
-                    cell.streakUILabel?.textColor = getColor("System")
-                    cell.checkImageView?.tintColor = getColor("System")
+                    cell.check?.image = UIImage(systemName: "checkmark.circle.fill")
+                    cell.streak?.textColor = getColor("System")
+                    cell.check?.tintColor = getColor("System")
                 } else {
                     // Fallback on earlier versions
                     cell.accessoryType = .checkmark
                 }
             } else {
                 if #available(iOS 13.0, *) {
-                    cell.checkImageView?.image = UIImage(systemName: "circle")
-                    cell.checkImageView?.tintColor = UIColor.systemGray
-                    cell.streakUILabel?.textColor = UIColor.label
+                    cell.check?.image = UIImage(systemName: "circle")
+                    cell.check?.tintColor = UIColor.systemGray
+                    cell.streak?.textColor = UIColor.label
                 } else {
                     // Fallback on earlier versions
                     cell.accessoryType = .none
                 }
             }
-            cell.checkImageView?.isHidden = false
+            cell.check?.isHidden = false
             debugPrint("\tJournalHabitsTV", "cellForRowAt", "end", true, indexPath.row)
             return (cell)
     }
@@ -90,17 +90,17 @@ class CustomizeTV: NSObject, UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         debugPrint("JournalHabitsTV", "didSelectRowAt", "start", false, indexPath.row)
         // get the cell from the tableView
-        if let cell: JournalHabitsTVCell = (tableView.cellForRow(at: indexPath) as? JournalHabitsTVCell) {
+        if let cell: HabitCell = (tableView.cellForRow(at: indexPath) as? HabitCell) {
             // check if the cell has been completed
             if #available(iOS 13.0, *) {
-                if cell.checkImageView?.image == UIImage(systemName: "checkmark.circle.fill") {
-                    cell.checkImageView?.image = UIImage(systemName: "circle")
-                    cell.checkImageView?.tintColor = UIColor.systemGray
+                if cell.check?.image == UIImage(systemName: "checkmark.circle.fill") {
+                    cell.check?.image = UIImage(systemName: "circle")
+                    cell.check?.tintColor = UIColor.systemGray
                     cellStreak = 0
                     cellCompleted = false
                 } else {
-                    cell.checkImageView?.image = UIImage(systemName: "checkmark.circle.fill")
-                    cell.checkImageView?.tintColor = getColor("System")
+                    cell.check?.image = UIImage(systemName: "checkmark.circle.fill")
+                    cell.check?.tintColor = getColor("System")
                     cellStreak = 1
                     cellCompleted = true
                 }

@@ -16,27 +16,6 @@ import CoreData
 public var dateSelected = Date()
 
 
-// name: JournalDateCVCell
-// desc: date selection collection view cell class
-// last updated: 4/28/2020
-// last update: cleaned up
-class JournalDateCVCell: UICollectionViewCell {
-    @IBOutlet weak var monthUILabel: UILabel!
-    @IBOutlet weak var dayUILabel: UILabel!
-}
-
-
-// name: JournalHabitsTVCell
-// desc: journal habits table view cell class
-// last updated: 4/28/2020
-// last update: cleaned up
-class JournalHabitsTVCell: UITableViewCell {
-    @IBOutlet weak var habitUILabel: UILabel!
-    @IBOutlet weak var streakUILabel: UILabel!
-    @IBOutlet weak var checkImageView: UIImageView!
-}
-
-
 // name: JournalVC
 // desc: journal view controller class
 // last updated: 4/28/2020
@@ -80,14 +59,14 @@ class JournalVC: UIViewController {
         // set the databases, dataSources and delegates
         do {
             // set the databases
-            let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-            let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
-            let database = try Connection(fileUrl.path)
-            self.habits.database = database
-            self.habits.entries.database = database
+//            let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+//            let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
+//            let database = try Connection(fileUrl.path)
+//            self.habits.database = database
+//            self.habits.entries.database = database
             // set the dataSource and delegate
-            self.journalUITableView.dataSource = journalHabitsTV
-            self.journalUITableView.delegate = journalHabitsTV
+            self.journalUITableView.dataSource = (journalHabitsTV as! UITableViewDataSource)
+            self.journalUITableView.delegate = (journalHabitsTV as! UITableViewDelegate)
             // set the dataSource and delegate
             self.dateUICollectionView.dataSource = journalDateCV
             self.dateUICollectionView.delegate = journalDateCV
@@ -199,11 +178,11 @@ class JournalVC: UIViewController {
             // update the databases and views
             do {
                 // update the database
-                let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-                let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
-                let database = try Connection(fileUrl.path)
-                self.habits.database = database
-                self.habits.entries.database = database
+//                let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+//                let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
+//                let database = try Connection(fileUrl.path)
+//                self.habits.database = database
+//                self.habits.entries.database = database
                 // reload the views
                 self.journalUITableView.reloadData()
                 self.dateUICollectionView.reloadData()

@@ -10,16 +10,6 @@ import UIKit
 import CoreData
 
 
-// name: SettingsTVCell
-// desc: settings table view cell class
-// last updated: 4/28/2020
-// last update: cleaned up
-class SettingsTVCell: UITableViewCell {
-    @IBOutlet weak var settingUILabel: UILabel!
-    @IBOutlet weak var settingUISwitch: UISwitch!
-}
-
-
 // name: SettingsVC
 // desc: settings view controller class
 // last updated: 4/28/2020
@@ -27,7 +17,7 @@ class SettingsTVCell: UITableViewCell {
 class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     // variables
     var settingList = ["Manage Habits", "Customize Display"]
-    var database: Connection!
+//    var database: Connection!
     let habits = Habits()
     // IBOutlet connections
     @IBOutlet weak var settingsTableView: UITableView!
@@ -42,10 +32,10 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         // Do any additional setup after loading the view.
         debugPrint("SettingsVC", "viewDidLoad", "start", true)
         do {
-            let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-            let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
-            let database = try Connection(fileUrl.path)
-            self.database = database
+//            let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+//            let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
+//            let database = try Connection(fileUrl.path)
+//            self.database = database
         } catch {
             print(error)
         }
@@ -70,9 +60,9 @@ class SettingsVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     // last update: cleaned up
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         debugPrint("SettingsVC", "cellForRowAt", "start", true, indexPath.row)
-        let cell = tableView.dequeueReusableCell(withIdentifier: "settingCell", for: indexPath)
-        as! SettingsTVCell
-        cell.settingUILabel.text = settingList[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell", for: indexPath)
+        as! SettingsCell
+        cell.title.text = settingList[indexPath.row]
         debugPrint("SettingsVC", "cellForRowAt", "end", true, indexPath.row)
         return (cell)
     }

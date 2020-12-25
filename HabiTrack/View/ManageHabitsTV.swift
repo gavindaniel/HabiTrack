@@ -6,7 +6,7 @@
 //  Copyright © 2019 Gavin Daniel. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import CoreData
 import MobileCoreServices
 
@@ -53,22 +53,22 @@ class ManageHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate, UITa
 //        print()
         
         // create tableView cell
-        let cell = tableView.dequeueReusableCell(withIdentifier: "settings_cell", for: indexPath)
-            as! ManageHabitsTVCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ManageCell", for: indexPath)
+            as! ManageCell
         do {
             // get the table
-            let habits = try self.habits.database.prepare(self.habits.habitsTable)
+//            let habits = try self.habits.database.prepare(self.habits.habitsTable)
             // loop through the list of habits
-            for habit in habits {
-                if (habit[self.habits.id] == (indexPath.row+1)) {
-                    cell.habitNameUILabel?.text = habit[self.habits.name]
-                    let tempString = getRepeatDaysAsString(habit[self.habits.days])
-                    cell.habitRepeatUILabel?.text = tempString
-                    cell.habitRepeatUILabel?.textColor = getColor("System")
-                    debugPrint("\tManageHabitsTV", "cellForRowAt", "end", false, indexPath.row)
-                    return (cell)
-                }
-            }
+//            for habit in habits {
+//                if (habit[self.habits.id] == (indexPath.row+1)) {
+//                    cell.habitNameUILabel?.text = habit[self.habits.name]
+//                    let tempString = getRepeatDaysAsString(habit[self.habits.days])
+//                    cell.habitRepeatUILabel?.text = tempString
+//                    cell.habitRepeatUILabel?.textColor = getColor("System")
+//                    debugPrint("\tManageHabitsTV", "cellForRowAt", "end", false, indexPath.row)
+//                    return (cell)
+//                }
+//            }
         } catch {
             print(error)
         }
@@ -90,39 +90,39 @@ class ManageHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate, UITa
             var firstId = 0
             var nameString = ""
             // get the habit string from the tableview cell
-            if let cell: ManageHabitsTVCell = (tableView.cellForRow(at: indexPath) as? ManageHabitsTVCell) {
-                nameString = cell.habitNameUILabel?.text ?? "error"
+            if let cell: ManageCell = (tableView.cellForRow(at: indexPath) as? ManageCell) {
+                nameString = cell.title?.text ?? "error"
             }
             // delete the habit from the table
             habits.entries.deleteTable(habit: nameString)
             do {
                 // get the habits table
-                let habits = try self.habits.database.prepare(self.habits.habitsTable)
+//                let habits = try self.habits.database.prepare(self.habits.habitsTable)
                 // loop through the table
-                for habit in habits {
-                    // get the id of the first habit
-                    if (count == 0) {
-                        firstId = habit[self.habits.id]
-                    }
-                    if (habit[self.habits.name] == nameString) {
-                        // get the habit whose id matches the count + first ID in the tableView
-                        let habit = self.habits.habitsTable.filter(self.habits.id == (firstId+count))
-                        // delete the habit
-                        let deleteHabit = habit.delete()
-                        do {
-                            try self.habits.database.run(deleteHabit)
-                            print("\tDeleted habit...\(nameString)...from database")
-                            updateHabitIDs()
-                            updateLocalTable()
-                            manageUITableView.reloadData()
-                            return
-                        } catch {
-                            print(error)
-                        }
-                    } else {
-                        count += 1
-                    }
-                }
+//                for habit in habits {
+//                    // get the id of the first habit
+//                    if (count == 0) {
+//                        firstId = habit[self.habits.id]
+//                    }
+//                    if (habit[self.habits.name] == nameString) {
+//                        // get the habit whose id matches the count + first ID in the tableView
+//                        let habit = self.habits.habitsTable.filter(self.habits.id == (firstId+count))
+//                        // delete the habit
+//                        let deleteHabit = habit.delete()
+//                        do {
+//                            try self.habits.database.run(deleteHabit)
+//                            print("\tDeleted habit...\(nameString)...from database")
+//                            updateHabitIDs()
+//                            updateLocalTable()
+//                            manageUITableView.reloadData()
+//                            return
+//                        } catch {
+//                            print(error)
+//                        }
+//                    } else {
+//                        count += 1
+//                    }
+//                }
             } catch {
                 print (error)
             }
@@ -154,13 +154,13 @@ class ManageHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate, UITa
             defaults.set([String](), forKey: "localHabits")
         }
         do {
-            let table = Table("habits")
-            let habits = try self.habits.database.prepare(table)
+//            let table = Table("habits")
+//            let habits = try self.habits.database.prepare(table)
             let defaults = UserDefaults.standard
             var localHabits = [String]()
-            for habit in habits {
-                localHabits.append(habit[self.habits.name])
-            }
+//            for habit in habits {
+//                localHabits.append(habit[self.habits.name])
+//            }
             defaults.set(localHabits, forKey: "localHabits")
         } catch {
             print(error)
@@ -177,33 +177,33 @@ class ManageHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate, UITa
         debugPrint("ManageHabitsTV", "updateHabitIDs", "start", false)
         do {
             // define variable(s)
-            let table = Table("habits")
-            let habits = try self.habits.database.prepare(table)
+//            let table = Table("habits")
+//            let habits = try self.habits.database.prepare(table)
             var index = 1, currId = 1, diff = 0, numUpdates = 0
             // loop through habits table
-            for habit in habits {
-                // calculate difference = current habit ID - loop index
-                currId = habit[self.habits.id]
-                diff = currId - index
-                // check if there is a difference
-                if (diff > 0) {
-                    // calculate the new ID based on the difference between database table and local table
-                    let newId = currId - diff
-                    // get the habit with the current ID
-                    let tempHabit = self.habits.habitsTable.filter(self.habits.id == currId)
-                    let updateHabit = tempHabit.update(self.habits.id <- newId)
-                    // attempt to update the database
-                    do {
-                        try self.habits.database.run(updateHabit)
-                        print("\tupdated habit ID...\(habit[self.habits.id])->\(newId)")
-                        numUpdates += 1
-                    } catch {
-                        print(error)
-                    }
-                }
-                // increment ID
-                index += 1
-            } // end for loop
+//            for habit in habits {
+//                // calculate difference = current habit ID - loop index
+//                currId = habit[self.habits.id]
+//                diff = currId - index
+//                // check if there is a difference
+//                if (diff > 0) {
+//                    // calculate the new ID based on the difference between database table and local table
+//                    let newId = currId - diff
+//                    // get the habit with the current ID
+//                    let tempHabit = self.habits.habitsTable.filter(self.habits.id == currId)
+//                    let updateHabit = tempHabit.update(self.habits.id <- newId)
+//                    // attempt to update the database
+//                    do {
+//                        try self.habits.database.run(updateHabit)
+//                        print("\tupdated habit ID...\(habit[self.habits.id])->\(newId)")
+//                        numUpdates += 1
+//                    } catch {
+//                        print(error)
+//                    }
+//                }
+//                // increment ID
+//                index += 1
+//            } // end for loop
             // check for no updates
             if (numUpdates == 0) {
                 print("\tno IDs updated")

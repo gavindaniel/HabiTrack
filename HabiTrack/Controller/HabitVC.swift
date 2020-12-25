@@ -9,13 +9,6 @@
 import UIKit
 import CoreData
 
-// name: AddDateCVCell
-// desc: date selection collection view cell class
-// last updated: 4/28/2020
-// last update: cleaned up
-class HabitDateCVCell: UICollectionViewCell {
-    @IBOutlet weak var dayUILabel: UILabel!
-}
 
 // name: HabitVC
 // desc: add habit view controller class
@@ -53,9 +46,9 @@ class HabitVC: UIViewController, UITextFieldDelegate {
         do {
             let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
             let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
-            let database = try Connection(fileUrl.path)
-            self.habits.database = database
-            self.habits.entries.database = database
+//            let database = try Connection(fileUrl.path)
+//            self.habits.database = database
+//            self.habits.entries.database = database
             // set the dataSource and delegate
             self.dateUICollectionView.dataSource = habitDateCV
             self.dateUICollectionView.delegate = habitDateCV
@@ -242,15 +235,15 @@ class HabitVC: UIViewController, UITextFieldDelegate {
                 i += 1
             }
             print("\tdaysString: \(daysString)")
-            let addHabit = self.habits.habitsTable.insert(self.habits.name <- nameString ?? "error",
-            self.habits.days <- Int(daysString) ?? 1,
-            self.habits.streak <- 0,
-            self.habits.startYear <- Int(year),
-            self.habits.startMonth <- Int(month),
-            self.habits.startDay <- Int(day))
+//            let addHabit = self.habits.habitsTable.insert(self.habits.name <- nameString ?? "error",
+//            self.habits.days <- Int(daysString) ?? 1,
+//            self.habits.streak <- 0,
+//            self.habits.startYear <- Int(year),
+//            self.habits.startMonth <- Int(month),
+//            self.habits.startDay <- Int(day))
             // attempt to add habit to database
             do {
-                try self.habits.database.run(addHabit)
+//                try self.habits.database.run(addHabit)
                 // testing ...
                 let defaults = UserDefaults.standard
                 if (isKeyPresentInUserDefaults(key: "localHabits") == false) {

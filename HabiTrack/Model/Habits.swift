@@ -16,17 +16,17 @@ import CoreData
 // last update: refactored from 'Journal' to 'Habits'. Refactored column names. Added start date.
 class Habits {
     // variables
-    var database: Connection!
-    let habitsTable = Table("habits")
+//    var database: Connection!
+//    let habitsTable = Table("habits")
     let entries = Entries()
     // habits table columns
-    let id = Expression<Int>("id")
-    let name = Expression<String>("name")
-    let days = Expression<Int>("days")
-    let streak = Expression<Int>("streak")
-    let startYear = Expression<Int>("startYear")
-    let startMonth = Expression<Int>("startMonth")
-    let startDay = Expression<Int>("startDay")
+//    let id = Expression<Int>("id")
+//    let name = Expression<String>("name")
+//    let days = Expression<Int>("days")
+//    let streak = Expression<Int>("streak")
+//    let startYear = Expression<Int>("startYear")
+//    let startMonth = Expression<Int>("startMonth")
+//    let startDay = Expression<Int>("startDay")
     
     
     // name: createTable
@@ -36,18 +36,18 @@ class Habits {
     func createTable() {
         debugPrint("Habits", "createTable", "start", false)
         // create the habit table with the columns specified below
-        let createTable = self.habitsTable.create { (table) in
-            table.column(self.id, primaryKey: true)
-            table.column(self.name)
-            table.column(self.days)
-            table.column(self.streak)
-            table.column(self.startYear)
-            table.column(self.startMonth)
-            table.column(self.startDay)
-        }
+//        let createTable = self.habitsTable.create { (table) in
+//            table.column(self.id, primaryKey: true)
+//            table.column(self.name)
+//            table.column(self.days)
+//            table.column(self.streak)
+//            table.column(self.startYear)
+//            table.column(self.startMonth)
+//            table.column(self.startDay)
+//        }
         do {
             // try to create the table in the database
-            try self.database.run(createTable)
+//            try self.database.run(createTable)
         // catch any errors while creating table in database
         } catch {
             print (error)
@@ -66,11 +66,11 @@ class Habits {
         var count = 0   // table size counter
         do {
             // try to get the habits table from the database
-            let habits = try self.database.prepare(self.habitsTable)
+//            let habits = try self.database.prepare(self.habitsTable)
             // loop through the habits
-            for _ in habits {
-                count += 1  // increment table size count
-            }
+//            for _ in habits {
+//                count += 1  // increment table size count
+//            }
         // catch any errors while getting the table from the database
         } catch {
             print (error)
@@ -93,21 +93,21 @@ class Habits {
         print("\tupdateStreak...\(row) \(habitString) \(inc) \(date)")
         do {
             // try to get the table of habits from the database
-            let habits = try self.database.prepare(self.habitsTable)
+//            let habits = try self.database.prepare(self.habitsTable)
             var days = 1
-            for habit in habits {
-                if (habit[self.name] == habitString) {
-                    days = habit[self.days]
-                }
-            }
-            let tempHabit = self.habitsTable.filter(self.name == habitString)
+//            for habit in habits {
+//                if (habit[self.name] == habitString) {
+//                    days = habit[self.days]
+//                }
+//            }
+//            let tempHabit = self.habitsTable.filter(self.name == habitString)
 //            let days = 1234567
             entries.markCompleted(habit: habitString, date: date, val: inc)
             let currentStreak = entries.countStreak(habit: habitString, date: date, habitRepeat: days) // repeatString
-            let updateHabit = tempHabit.update(self.streak <- currentStreak)
+//            let updateHabit = tempHabit.update(self.streak <- currentStreak)
             do {
                 // try to update the database with the updated habit
-                try self.database.run(updateHabit)
+//                try self.database.run(updateHabit)
                 debugPrint("Habits", "updateStreak", "end", false)
                 return
             // catch any errors while trying to update the database
@@ -136,17 +136,17 @@ class Habits {
         while index < numDays {
             do {
                 // try to get the table of habits from the database
-                let habits = try self.database.prepare(self.habitsTable)
+//                let habits = try self.database.prepare(self.habitsTable)
                 // loop through the habits table
-                for habit in habits {
-                    // get the string of the current habit in the table
-                    let nameString = habit[self.name]
-                    // check if the next day exists in the entries table for the current habit
-                    if (entries.checkDayExists(habit: nameString, date: nextDay ?? Date()) == false) {
-                        // add the next day to the entries table for the current habit
-                        entries.addDay(habit: nameString, date: nextDay ?? Date())
-                    }
-                }
+//                for habit in habits {
+//                    // get the string of the current habit in the table
+//                    let nameString = habit[self.name]
+//                    // check if the next day exists in the entries table for the current habit
+//                    if (entries.checkDayExists(habit: nameString, date: nextDay ?? Date()) == false) {
+//                        // add the next day to the entries table for the current habit
+//                        entries.addDay(habit: nameString, date: nextDay ?? Date())
+//                    }
+//                }
             // catch any errors while trying to get the table of habits from the database
             } catch {
                 print(error)
@@ -169,14 +169,14 @@ class Habits {
         debugPrint("Habits", "deleteDays", "start", false)
         do {
             // try to get the table of habits from the database
-            let habits = try self.database.prepare(self.habitsTable)
+//            let habits = try self.database.prepare(self.habitsTable)
             // loop through the habits
-            for habit in habits {
-                // get the string of the current habit
-                let nameString = habit[self.name]
-                // delete the day specified for the current habit
-                entries.deleteDay(habit: nameString, date: date)
-            }
+//            for habit in habits {
+//                // get the string of the current habit
+//                let nameString = habit[self.name]
+//                // delete the day specified for the current habit
+//                entries.deleteDay(habit: nameString, date: date)
+//            }
         // catch any errors while getting the table of habits from the database
         } catch {
             print(error)
@@ -236,55 +236,55 @@ class Habits {
         var flag2 = false
         do {
             // try to get the table of habits from the database
-            let habits = try self.database.prepare(self.habitsTable)
+//            let habits = try self.database.prepare(self.habitsTable)
             // get the habit string of the first habit to update
-            let oldHabit = self.habitsTable.filter(self.id == oldId)
+//            let oldHabit = self.habitsTable.filter(self.id == oldId)
             // get the habit string of the second habit to update
-            let newHabit = self.habitsTable.filter(self.id == newId)
+//            let newHabit = self.habitsTable.filter(self.id == newId)
             // loop through the table of habits
-            for habit in habits {
-                // check if the current habit ID matches the first ID specified
-                if (habit[self.id] == oldId) {
-                    flag1 = true    // set flag to true, found the first habit to update
-                // check if the current habit ID matches the second ID specified
-                } else if (habit[self.id] == newId) {
-                    flag2 = true    // set flag to true, found the second habit to update
-                }
-                // check if both habits to be updated have been found
-                if (flag1 == true && flag2 == true) {
-                    // update the first habits id to an ID that is not being used (has to be unique)
-                    let updateOldHabitIdTemp = oldHabit.update(self.id <- 999)
-                    do {
-                        // try to update the habit in the database
-                        try self.database.run(updateOldHabitIdTemp)
-                    // catch any errors while trying to update the habit in the database
-                    } catch {
-                        print(error)
-                    }
-                    // update the second habits id to the first habits ID since it is no longer being used
-                    let updateNewHabitId = newHabit.update(self.id <- oldId)
-                    do {
-                        // try to update the habit in the database
-                        try self.database.run(updateNewHabitId)
-                    // catch any errors while trying to update the habit in the database
-                    } catch {
-                        print(error)
-                    }
-                    // find the first habit whose id was updated to an ID not being used
-                    let tempHabit = self.habitsTable.filter(self.id == 999)
-                    // update the first habits id to the second habits ID since it is no longer being used
-                    let updateOldHabitId = tempHabit.update(self.id <- newId)
-                    do {
-                        // try to update the habit in the database
-                        try self.database.run(updateOldHabitId)
-                    // catch any errors while trying to update the habit in the database
-                    } catch {
-                        print(error)
-                    }
-                    // exit the loop since both habits have been updated
-                    return
-                }
-            } // end for loop
+//            for habit in habits {
+//                // check if the current habit ID matches the first ID specified
+//                if (habit[self.id] == oldId) {
+//                    flag1 = true    // set flag to true, found the first habit to update
+//                // check if the current habit ID matches the second ID specified
+//                } else if (habit[self.id] == newId) {
+//                    flag2 = true    // set flag to true, found the second habit to update
+//                }
+//                // check if both habits to be updated have been found
+//                if (flag1 == true && flag2 == true) {
+//                    // update the first habits id to an ID that is not being used (has to be unique)
+////                    let updateOldHabitIdTemp = oldHabit.update(self.id <- 999)
+//                    do {
+//                        // try to update the habit in the database
+//                        try self.database.run(updateOldHabitIdTemp)
+//                    // catch any errors while trying to update the habit in the database
+//                    } catch {
+//                        print(error)
+//                    }
+//                    // update the second habits id to the first habits ID since it is no longer being used
+////                    let updateNewHabitId = newHabit.update(self.id <- oldId)
+//                    do {
+//                        // try to update the habit in the database
+//                        try self.database.run(updateNewHabitId)
+//                    // catch any errors while trying to update the habit in the database
+//                    } catch {
+//                        print(error)
+//                    }
+//                    // find the first habit whose id was updated to an ID not being used
+////                    let tempHabit = self.habitsTable.filter(self.id == 999)
+//                    // update the first habits id to the second habits ID since it is no longer being used
+////                    let updateOldHabitId = tempHabit.update(self.id <- newId)
+//                    do {
+//                        // try to update the habit in the database
+//                        try self.database.run(updateOldHabitId)
+//                    // catch any errors while trying to update the habit in the database
+//                    } catch {
+//                        print(error)
+//                    }
+//                    // exit the loop since both habits have been updated
+//                    return
+//                }
+//            } // end for loop
         // catch any errors while trying to get the table of habits from the database
         } catch {
             print(error)

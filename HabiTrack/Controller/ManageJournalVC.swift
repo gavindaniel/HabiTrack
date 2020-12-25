@@ -6,27 +6,8 @@
 //  Copyright © 2019 Gavin Daniel. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import CoreData
-
-
-// name: ColorCVCell
-// desc: color selection collection view cell class
-// last updated: 4/28/2020
-// last update: cleaned up
-class ColorCVCell: UICollectionViewCell {
-    @IBOutlet weak var colorUIImageView: UIImageView!
-}
-
-
-// name: ManageHabitsTVCell
-// desc: journal habits table view cell class
-// last updated: 4/28/2020
-// last update: cleaned up
-class ManageHabitsTVCell: UITableViewCell {
-    @IBOutlet weak var habitNameUILabel: UILabel!
-    @IBOutlet weak var habitRepeatUILabel: UILabel!
-}
 
 
 // name: ManageJournalVC
@@ -70,18 +51,18 @@ class ManageJournalVC: UIViewController {
         // set the databases, dataSources and delegates
         do {
             // set the databases
-            let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-            let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
-            let database = try Connection(fileUrl.path)
-            self.habits.database = database
-            self.habits.entries.database = database
+//            let documentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+//            let fileUrl = documentDirectory.appendingPathComponent("habits").appendingPathExtension("sqlite3")
+//            let database = try Connection(fileUrl.path)
+//            self.habits.database = database
+//            self.habits.entries.database = database
             // set the dataSource and delegate
-            self.manageUITableView.dataSource = manageHabitsTV
-            self.manageUITableView.delegate = manageHabitsTV
+            self.manageUITableView.dataSource = (manageHabitsTV as! UITableViewDataSource)
+            self.manageUITableView.delegate = (manageHabitsTV as! UITableViewDelegate)
             // testing drag and drop delegate
             self.manageUITableView.dragInteractionEnabled = true
-            self.manageUITableView.dragDelegate = manageHabitsTV
-            self.manageUITableView.dragDelegate = manageHabitsTV
+            self.manageUITableView.dragDelegate = (manageHabitsTV as! UITableViewDragDelegate)
+            self.manageUITableView.dragDelegate = (manageHabitsTV as! UITableViewDragDelegate)
         } catch {
             print(error)
         }

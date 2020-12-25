@@ -62,8 +62,8 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         debugPrint("JournalDateCV", "cellForItemAt", "start", true, indexPath.row)
         // create collectionView item
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "dateCell", for: indexPath)
-            as! JournalDateCVCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DateCell", for: indexPath)
+            as! DateCell
         // add labels and style
         // comment/uncomment for month 'Oct' in date collection view
 //        cell.monthUILabel?.text = getMonthAsString(date: dateArray[indexPath.row], length: "short")
@@ -144,7 +144,7 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
     // last update: cleaned up
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         debugPrint("JournalDateCV", "didDeselectItemAt", "start", true, indexPath.row)
-        if let cell: JournalDateCVCell = (collectionView.cellForItem(at: indexPath) as? JournalDateCVCell) {
+        if let cell: DateCell = (collectionView.cellForItem(at: indexPath) as? DateCell) {
             // clear the selection
             let tempDay = Calendar.current.component(.day, from: Date())
             // check if date selected, mark a different shade of gray
@@ -183,7 +183,7 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         debugPrint("JournalDateCV", "didSelectItemAt", "start", false, indexPath.row)
         // get the cell from the tableView
-        if let cell: JournalDateCVCell = (collectionView.cellForItem(at: indexPath) as? JournalDateCVCell) {
+        if let cell: DateCell = (collectionView.cellForItem(at: indexPath) as? DateCell) {
             // if the selected item is different from the last, deselect the last item
             print("lastSelectedCell: \(lastSelectedCell)")
             print("indexPath.row: \(indexPath.row)")

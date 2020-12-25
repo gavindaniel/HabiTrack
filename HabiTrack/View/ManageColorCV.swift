@@ -6,7 +6,7 @@
 //  Copyright © 2019 Gavin Daniel. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 
 public var colorSelected = "blue"
@@ -60,21 +60,21 @@ class ManageColorCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         debugPrint("ManageColorCV", "cellForItemAt", "start", true, indexPath.row)
         // create collectionView item
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "colorCell", for: indexPath)
-            as! ColorCVCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ColorCell", for: indexPath)
+            as! ColorCell
         let defaultColor = getColor("System")
         let selectedColor = getColor(colorSelected)
         let listColor = getColor(colorList[indexPath.row])
         if(defaultColor == selectedColor) {
             if (defaultColor == listColor) {
                 if #available(iOS 13.0, *) {
-                    cell.colorUIImageView?.image = UIImage(systemName: "largecircle.fill.circle")
+                    cell.color?.image = UIImage(systemName: "largecircle.fill.circle")
                 } else {
                     // Fallback on earlier versions
                 }
             } else {
                 if #available(iOS 13.0, *) {
-                    cell.colorUIImageView?.image = UIImage(systemName: "circle.fill")
+                    cell.color?.image = UIImage(systemName: "circle.fill")
                 } else {
                     // Fallback on earlier versions
                 }
@@ -82,19 +82,19 @@ class ManageColorCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
         } else {
             if (selectedColor == listColor) {
                 if #available(iOS 13.0, *) {
-                    cell.colorUIImageView?.image = UIImage(systemName: "largecircle.fill.circle")
+                    cell.color?.image = UIImage(systemName: "largecircle.fill.circle")
                 } else {
                     // Fallback on earlier versions
                 }
             } else {
                 if #available(iOS 13.0, *) {
-                    cell.colorUIImageView?.image = UIImage(systemName: "circle.fill")
+                    cell.color?.image = UIImage(systemName: "circle.fill")
                 } else {
                     // Fallback on earlier versions
                 }
             }
         }
-        cell.colorUIImageView?.tintColor = listColor
+        cell.color?.tintColor = listColor
         // return initialized item
         debugPrint("ManageColorCV", "cellForItemAt", "end", true, indexPath.row)
         return (cell)
@@ -109,17 +109,17 @@ class ManageColorCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
             debugPrint("ManageColorCV", "didSelectItemAt", "start", true, indexPath.row)
             
             // get the cell from the tableView
-            if let cell: ColorCVCell = (collectionView.cellForItem(at: indexPath) as? ColorCVCell) {
+            if let cell: ColorCell = (collectionView.cellForItem(at: indexPath) as? ColorCell) {
                 let defaultColor = getColor(colorSelected)
                 // selected a different color than what is currently selected
-                if (cell.colorUIImageView?.tintColor != defaultColor) {
+                if (cell.color?.tintColor != defaultColor) {
                     if #available(iOS 13.0, *) {
-                        cell.colorUIImageView?.image = UIImage(systemName: "largecircle.fill.circle")
+                        cell.color?.image = UIImage(systemName: "largecircle.fill.circle")
                     } else {
                         // Fallback on earlier versions
                     }
                     print("\tManageColorCV : colorSelected..\(colorSelected)")
-                    colorSelected = getColorString(color: cell.colorUIImageView!.tintColor)
+                    colorSelected = getColorString(color: cell.color!.tintColor)
                     print("\tManageColorCV : colorSelected..\(colorSelected)")
                     collectionView.reloadData()
 //                    DataManager.shared.customizeVC.updateButtons()
@@ -138,12 +138,12 @@ class ManageColorCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
     // last update: cleaned up
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         debugPrint("ManageColorCV", "didDeselectItemAt", "start", true, indexPath.row)
-        if let cell: ColorCVCell = (collectionView.cellForItem(at: indexPath) as? ColorCVCell) {
+        if let cell: ColorCell = (collectionView.cellForItem(at: indexPath) as? ColorCell) {
             let defaultColor = getColor("System")
             // selected a different color than what is currently selected
-            if (cell.colorUIImageView?.tintColor != defaultColor) {
+            if (cell.color?.tintColor != defaultColor) {
                 if #available(iOS 13.0, *) {
-                    cell.colorUIImageView?.image = UIImage(systemName: "circle.fill")
+                    cell.color?.image = UIImage(systemName: "circle.fill")
                 } else {
                     // Fallback on earlier versions
                 }

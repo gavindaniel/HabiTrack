@@ -24,6 +24,12 @@
 		4C4FF7BB230F620D00DAC450 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C4FF7B9230F620D00DAC450 /* LaunchScreen.storyboard */; };
 		4C4FF7C6230F620D00DAC450 /* HabiTrackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4FF7C5230F620D00DAC450 /* HabiTrackTests.swift */; };
 		4C4FF7D1230F620D00DAC450 /* HabiTrackUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4FF7D0230F620D00DAC450 /* HabiTrackUITests.swift */; };
+		4C62C196259688F000BFFDAF /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C62C195259688F000BFFDAF /* ColorCell.swift */; };
+		4C62C19A259689E900BFFDAF /* ManageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C62C199259689E900BFFDAF /* ManageCell.swift */; };
+		4C62C19E25968FB500BFFDAF /* DateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C62C19D25968FB500BFFDAF /* DateCell.swift */; };
+		4C62C1A22596905400BFFDAF /* HabitCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C62C1A12596905400BFFDAF /* HabitCell.swift */; };
+		4C62C1A6259691AA00BFFDAF /* WeekCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C62C1A5259691AA00BFFDAF /* WeekCell.swift */; };
+		4C62C1AA2596946000BFFDAF /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C62C1A92596946000BFFDAF /* SettingsCell.swift */; };
 		4C6A161A2320BA4000274316 /* CustomDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A16192320BA4000274316 /* CustomDate.swift */; };
 		4C6FDDBD23617A7F00E54485 /* CustomDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6FDDBC23617A7F00E54485 /* CustomDisplay.swift */; };
 		4C6FDDC523618D2A00E54485 /* CustomizeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6FDDC423618D2A00E54485 /* CustomizeVC.swift */; };
@@ -92,6 +98,12 @@
 		4C4FF7CC230F620D00DAC450 /* HabiTrackUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HabiTrackUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C4FF7D0230F620D00DAC450 /* HabiTrackUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabiTrackUITests.swift; sourceTree = "<group>"; };
 		4C4FF7D2230F620D00DAC450 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4C62C195259688F000BFFDAF /* ColorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCell.swift; sourceTree = "<group>"; };
+		4C62C199259689E900BFFDAF /* ManageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageCell.swift; sourceTree = "<group>"; };
+		4C62C19D25968FB500BFFDAF /* DateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCell.swift; sourceTree = "<group>"; };
+		4C62C1A12596905400BFFDAF /* HabitCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitCell.swift; sourceTree = "<group>"; };
+		4C62C1A5259691AA00BFFDAF /* WeekCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekCell.swift; sourceTree = "<group>"; };
+		4C62C1A92596946000BFFDAF /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		4C6A16192320BA4000274316 /* CustomDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDate.swift; sourceTree = "<group>"; };
 		4C6FDDBC23617A7F00E54485 /* CustomDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDisplay.swift; sourceTree = "<group>"; };
 		4C6FDDC423618D2A00E54485 /* CustomizeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeVC.swift; sourceTree = "<group>"; };
@@ -176,6 +188,12 @@
 				4C89B814231B62D500AE45F4 /* Habits.swift */,
 				4C89B81C231C44E400AE45F4 /* Entries.swift */,
 				4C0820CC24709CFA0079E5BF /* DataManager.swift */,
+				4C62C195259688F000BFFDAF /* ColorCell.swift */,
+				4C62C199259689E900BFFDAF /* ManageCell.swift */,
+				4C62C19D25968FB500BFFDAF /* DateCell.swift */,
+				4C62C1A12596905400BFFDAF /* HabitCell.swift */,
+				4C62C1A5259691AA00BFFDAF /* WeekCell.swift */,
+				4C62C1A92596946000BFFDAF /* SettingsCell.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -378,6 +396,7 @@
 				4C89B81D231C44E400AE45F4 /* Entries.swift in Sources */,
 				4C4FF7AF230F620B00DAC450 /* AppDelegate.swift in Sources */,
 				4C225B8A233E6EEC0062E195 /* JournalDateCV.swift in Sources */,
+				4C62C19E25968FB500BFFDAF /* DateCell.swift in Sources */,
 				4CAAAC82232B5CD5000C9AD8 /* HabitVC.swift in Sources */,
 				4C283322235B86FE00A10642 /* CustomColor.swift in Sources */,
 				4C4FF7B1230F620B00DAC450 /* JournalVC.swift in Sources */,
@@ -388,8 +407,13 @@
 				4CA7A58D245D48140010E192 /* ChangeDateCV.swift in Sources */,
 				4C89B815231B62D500AE45F4 /* Habits.swift in Sources */,
 				4C2D42DE235A9A2700D5C628 /* ManageHabitsTV.swift in Sources */,
+				4C62C1A6259691AA00BFFDAF /* WeekCell.swift in Sources */,
+				4C62C1AA2596946000BFFDAF /* SettingsCell.swift in Sources */,
 				4C28331A235B7A4100A10642 /* ManageColorCV.swift in Sources */,
+				4C62C1A22596905400BFFDAF /* HabitCell.swift in Sources */,
 				4C17109E2470FE9700CA1A00 /* CustomizeTV.swift in Sources */,
+				4C62C19A259689E900BFFDAF /* ManageCell.swift in Sources */,
+				4C62C196259688F000BFFDAF /* ColorCell.swift in Sources */,
 				4C15613B235EBEA80026E770 /* TabBarVC.swift in Sources */,
 				4C6FDDBD23617A7F00E54485 /* CustomDisplay.swift in Sources */,
 				4C89B81F231CE2A600AE45F4 /* SettingsVC.swift in Sources */,
