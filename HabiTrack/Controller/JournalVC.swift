@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import SQLite
+import CoreData
 
 // name: Global Variables
 // desc: global variables

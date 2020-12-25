@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import SQLite
+import CoreData
 import MobileCoreServices
 
 class ManageHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate, UITableViewDragDelegate {

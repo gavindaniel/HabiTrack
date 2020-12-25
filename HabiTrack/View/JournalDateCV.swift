@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-import SQLite
+import CoreData
 
 
 // name: JournalDateCV

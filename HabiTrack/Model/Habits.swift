@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import SQLite
+import CoreData
 
 
 // name: Habits

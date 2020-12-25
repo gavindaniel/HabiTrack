@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import SQLite
+import CoreData
 
 // name: AddDateCVCell
 // desc: date selection collection view cell class
