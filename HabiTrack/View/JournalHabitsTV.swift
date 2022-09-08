@@ -17,7 +17,7 @@ import MobileCoreServices
 // last update: cleaned up
 class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
     // variables
-    var habits: Habits
+//    var habits: Habits
     var journalUITableView: UITableView
 //    var dateSelected: Date
     var buffer = 0
@@ -28,9 +28,9 @@ class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
     // desc:
     // last updated: 4/28/2020
     // last update: cleaned up
-    init(_ habits: Habits,_ habitTableView: UITableView,_ date: Date) {
+    init(_ habitTableView: UITableView,_ date: Date) {
         debugPrint("JournalHabitsTV", "init", "start", true)
-        self.habits = habits
+//        self.habits = habits
         self.journalUITableView = habitTableView
         dateSelected = date
         super.init()
@@ -175,20 +175,20 @@ class JournalHabitsTV: NSObject, UITableViewDataSource, UITableViewDelegate {
                 if cell.check?.image == UIImage(systemName: "checkmark.circle.fill") {
                     cell.check?.image = UIImage(systemName: "circle")
                     cell.check?.tintColor = UIColor.systemGray
-                    habits.updateStreak(row: indexPath.row, inc: 0, date: dateSelected, habitString: tempString ?? "none")
+//                    habits.updateStreak(row: indexPath.row, inc: 0, date: dateSelected, habitString: tempString ?? "none")
                 } else {
                     cell.check?.image = UIImage(systemName: "checkmark.circle.fill")
                     cell.check?.tintColor = getColor("System")
-                    habits.updateStreak(row: indexPath.row, inc: 1, date: dateSelected, habitString: tempString ?? "none")
+//                    habits.updateStreak(row: indexPath.row, inc: 1, date: dateSelected, habitString: tempString ?? "none")
                 }
             } else {
                 // Fallback on earlier versions
                 if cell.accessoryType == UITableViewCell.AccessoryType.checkmark {
                     cell.accessoryType = .none
-                    habits.updateStreak(row: indexPath.row, inc: 0, date: dateSelected, habitString: tempString ?? "none")
+//                    habits.updateStreak(row: indexPath.row, inc: 0, date: dateSelected, habitString: tempString ?? "none")
                 } else {
                     cell.accessoryType = .checkmark
-                    habits.updateStreak(row: indexPath.row, inc: 1, date: dateSelected, habitString: tempString ?? "none")
+//                    habits.updateStreak(row: indexPath.row, inc: 1, date: dateSelected, habitString: tempString ?? "none")
                 }
             }
         }

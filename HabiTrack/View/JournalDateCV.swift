@@ -224,7 +224,7 @@ class JournalDateCV: NSObject, UICollectionViewDelegate, UICollectionViewDataSou
     //        dateArray = updateDateArray(dateSelected)
                 print("\tupdate plz")
                 dateArray = updateDateArray(date)
-                DataManager.shared.journalVC.updateDateButton(date)
+//                DataManager.shared.journalVC.updateDateButton(date)
                 DataManager.shared.journalVC.dateUICollectionView.reloadData()
                 DataManager.shared.journalVC.journalUITableView.reloadData()
                 dateSelected = date

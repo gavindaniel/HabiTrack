@@ -1,2 +1,5 @@
 # Privacy Policy
-I don't collect data. The end.
+
+I don't collect data  
+
+##	¯\_(ツ)_/¯

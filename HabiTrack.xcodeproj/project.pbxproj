@@ -7,40 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4C0820CD24709CFA0079E5BF /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0820CC24709CFA0079E5BF /* DataManager.swift */; };
-		4C15613B235EBEA80026E770 /* TabBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C15613A235EBEA80026E770 /* TabBarVC.swift */; };
-		4C17109E2470FE9700CA1A00 /* CustomizeTV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C17109D2470FE9700CA1A00 /* CustomizeTV.swift */; };
-		4C225B88233E6EDD0062E195 /* JournalHabitsTV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C225B87233E6EDD0062E195 /* JournalHabitsTV.swift */; };
-		4C225B8A233E6EEC0062E195 /* JournalDateCV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C225B89233E6EEC0062E195 /* JournalDateCV.swift */; };
-		4C28331A235B7A4100A10642 /* ManageColorCV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C283319235B7A4100A10642 /* ManageColorCV.swift */; };
-		4C283322235B86FE00A10642 /* CustomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C283321235B86FE00A10642 /* CustomColor.swift */; };
-		4C2D42D6235A7D1800D5C628 /* ManageJournalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2D42D5235A7D1800D5C628 /* ManageJournalVC.swift */; };
-		4C2D42DE235A9A2700D5C628 /* ManageHabitsTV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2D42DD235A9A2700D5C628 /* ManageHabitsTV.swift */; };
 		4C4FF7AF230F620B00DAC450 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4FF7AE230F620B00DAC450 /* AppDelegate.swift */; };
 		4C4FF7B1230F620B00DAC450 /* JournalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4FF7B0230F620B00DAC450 /* JournalVC.swift */; };
-		4C4FF7B3230F620B00DAC450 /* DevelopmentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4FF7B2230F620B00DAC450 /* DevelopmentVC.swift */; };
 		4C4FF7B6230F620B00DAC450 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C4FF7B4230F620B00DAC450 /* Main.storyboard */; };
 		4C4FF7B8230F620D00DAC450 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C4FF7B7230F620D00DAC450 /* Assets.xcassets */; };
 		4C4FF7BB230F620D00DAC450 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C4FF7B9230F620D00DAC450 /* LaunchScreen.storyboard */; };
 		4C4FF7C6230F620D00DAC450 /* HabiTrackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4FF7C5230F620D00DAC450 /* HabiTrackTests.swift */; };
 		4C4FF7D1230F620D00DAC450 /* HabiTrackUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4FF7D0230F620D00DAC450 /* HabiTrackUITests.swift */; };
-		4C62C196259688F000BFFDAF /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C62C195259688F000BFFDAF /* ColorCell.swift */; };
-		4C62C19A259689E900BFFDAF /* ManageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C62C199259689E900BFFDAF /* ManageCell.swift */; };
-		4C62C19E25968FB500BFFDAF /* DateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C62C19D25968FB500BFFDAF /* DateCell.swift */; };
 		4C62C1A22596905400BFFDAF /* HabitCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C62C1A12596905400BFFDAF /* HabitCell.swift */; };
-		4C62C1A6259691AA00BFFDAF /* WeekCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C62C1A5259691AA00BFFDAF /* WeekCell.swift */; };
-		4C62C1AA2596946000BFFDAF /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C62C1A92596946000BFFDAF /* SettingsCell.swift */; };
-		4C6A161A2320BA4000274316 /* CustomDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A16192320BA4000274316 /* CustomDate.swift */; };
-		4C6FDDBD23617A7F00E54485 /* CustomDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6FDDBC23617A7F00E54485 /* CustomDisplay.swift */; };
-		4C6FDDC523618D2A00E54485 /* CustomizeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6FDDC423618D2A00E54485 /* CustomizeVC.swift */; };
-		4C89B815231B62D500AE45F4 /* Habits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C89B814231B62D500AE45F4 /* Habits.swift */; };
-		4C89B81D231C44E400AE45F4 /* Entries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C89B81C231C44E400AE45F4 /* Entries.swift */; };
-		4C89B81F231CE2A600AE45F4 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C89B81E231CE2A600AE45F4 /* SettingsVC.swift */; };
-		4CA7A58B245D44670010E192 /* CalendarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA7A58A245D44670010E192 /* CalendarVC.swift */; };
-		4CA7A58D245D48140010E192 /* ChangeDateCV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CA7A58C245D48140010E192 /* ChangeDateCV.swift */; };
-		4CAAAC82232B5CD5000C9AD8 /* HabitVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAAAC81232B5CD5000C9AD8 /* HabitVC.swift */; };
-		4CB577A92456500E00244CAD /* HabitDateCV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3C9DD12456416C0070EC94 /* HabitDateCV.swift */; };
-		4CB577AB2458C87B00244CAD /* CustomPrint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB577AA2458C87B00244CAD /* CustomPrint.swift */; };
+		4C8395E52611017100789204 /* Habits.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4C8395E32611017100789204 /* Habits.xcdatamodeld */; };
+		4C8395E72611036400789204 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8395E62611036400789204 /* SceneDelegate.swift */; };
+		4C8395E92611049E00789204 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8395E82611049E00789204 /* Entry.swift */; };
+		4C8395EB26110B3400789204 /* SampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8395EA26110B3400789204 /* SampleData.swift */; };
+		4C8395ED26110B6000789204 /* ColorToDataTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C8395EC26110B6000789204 /* ColorToDataTransformer.swift */; };
+		4C89B815231B62D500AE45F4 /* Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C89B814231B62D500AE45F4 /* Habit.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,20 +54,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4C0820CC24709CFA0079E5BF /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
-		4C15613A235EBEA80026E770 /* TabBarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarVC.swift; sourceTree = "<group>"; };
-		4C17109D2470FE9700CA1A00 /* CustomizeTV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeTV.swift; sourceTree = "<group>"; };
-		4C225B87233E6EDD0062E195 /* JournalHabitsTV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalHabitsTV.swift; sourceTree = "<group>"; };
-		4C225B89233E6EEC0062E195 /* JournalDateCV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalDateCV.swift; sourceTree = "<group>"; };
-		4C283319235B7A4100A10642 /* ManageColorCV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageColorCV.swift; sourceTree = "<group>"; };
-		4C283321235B86FE00A10642 /* CustomColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColor.swift; sourceTree = "<group>"; };
-		4C2D42D5235A7D1800D5C628 /* ManageJournalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageJournalVC.swift; sourceTree = "<group>"; };
-		4C2D42DD235A9A2700D5C628 /* ManageHabitsTV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageHabitsTV.swift; sourceTree = "<group>"; };
-		4C3C9DD12456416C0070EC94 /* HabitDateCV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitDateCV.swift; sourceTree = "<group>"; };
 		4C4FF7AB230F620B00DAC450 /* HabiTrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HabiTrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C4FF7AE230F620B00DAC450 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4C4FF7B0230F620B00DAC450 /* JournalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalVC.swift; sourceTree = "<group>"; };
-		4C4FF7B2230F620B00DAC450 /* DevelopmentVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevelopmentVC.swift; sourceTree = "<group>"; };
 		4C4FF7B5230F620B00DAC450 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4C4FF7B7230F620D00DAC450 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4C4FF7BA230F620D00DAC450 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -98,22 +67,13 @@
 		4C4FF7CC230F620D00DAC450 /* HabiTrackUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HabiTrackUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C4FF7D0230F620D00DAC450 /* HabiTrackUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabiTrackUITests.swift; sourceTree = "<group>"; };
 		4C4FF7D2230F620D00DAC450 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4C62C195259688F000BFFDAF /* ColorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCell.swift; sourceTree = "<group>"; };
-		4C62C199259689E900BFFDAF /* ManageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageCell.swift; sourceTree = "<group>"; };
-		4C62C19D25968FB500BFFDAF /* DateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCell.swift; sourceTree = "<group>"; };
 		4C62C1A12596905400BFFDAF /* HabitCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitCell.swift; sourceTree = "<group>"; };
-		4C62C1A5259691AA00BFFDAF /* WeekCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekCell.swift; sourceTree = "<group>"; };
-		4C62C1A92596946000BFFDAF /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
-		4C6A16192320BA4000274316 /* CustomDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDate.swift; sourceTree = "<group>"; };
-		4C6FDDBC23617A7F00E54485 /* CustomDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDisplay.swift; sourceTree = "<group>"; };
-		4C6FDDC423618D2A00E54485 /* CustomizeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeVC.swift; sourceTree = "<group>"; };
-		4C89B814231B62D500AE45F4 /* Habits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Habits.swift; sourceTree = "<group>"; };
-		4C89B81C231C44E400AE45F4 /* Entries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entries.swift; sourceTree = "<group>"; };
-		4C89B81E231CE2A600AE45F4 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
-		4CA7A58A245D44670010E192 /* CalendarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarVC.swift; sourceTree = "<group>"; };
-		4CA7A58C245D48140010E192 /* ChangeDateCV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeDateCV.swift; sourceTree = "<group>"; };
-		4CAAAC81232B5CD5000C9AD8 /* HabitVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitVC.swift; sourceTree = "<group>"; };
-		4CB577AA2458C87B00244CAD /* CustomPrint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPrint.swift; sourceTree = "<group>"; };
+		4C8395E42611017100789204 /* Habits.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Habits.xcdatamodel; sourceTree = "<group>"; };
+		4C8395E62611036400789204 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		4C8395E82611049E00789204 /* Entry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entry.swift; sourceTree = "<group>"; };
+		4C8395EA26110B3400789204 /* SampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleData.swift; sourceTree = "<group>"; };
+		4C8395EC26110B6000789204 /* ColorToDataTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorToDataTransformer.swift; sourceTree = "<group>"; };
+		4C89B814231B62D500AE45F4 /* Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Habit.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,14 +112,8 @@
 			isa = PBXGroup;
 			children = (
 				4C4FF7AE230F620B00DAC450 /* AppDelegate.swift */,
-				4CA7A58A245D44670010E192 /* CalendarVC.swift */,
-				4C6FDDC423618D2A00E54485 /* CustomizeVC.swift */,
-				4C4FF7B2230F620B00DAC450 /* DevelopmentVC.swift */,
-				4CAAAC81232B5CD5000C9AD8 /* HabitVC.swift */,
+				4C8395E62611036400789204 /* SceneDelegate.swift */,
 				4C4FF7B0230F620B00DAC450 /* JournalVC.swift */,
-				4C2D42D5235A7D1800D5C628 /* ManageJournalVC.swift */,
-				4C89B81E231CE2A600AE45F4 /* SettingsVC.swift */,
-				4C15613A235EBEA80026E770 /* TabBarVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -167,13 +121,6 @@
 		4C225B85233E6CEA0062E195 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				4CA7A58C245D48140010E192 /* ChangeDateCV.swift */,
-				4C3C9DD12456416C0070EC94 /* HabitDateCV.swift */,
-				4C225B89233E6EEC0062E195 /* JournalDateCV.swift */,
-				4C225B87233E6EDD0062E195 /* JournalHabitsTV.swift */,
-				4C283319235B7A4100A10642 /* ManageColorCV.swift */,
-				4C2D42DD235A9A2700D5C628 /* ManageHabitsTV.swift */,
-				4C17109D2470FE9700CA1A00 /* CustomizeTV.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -181,19 +128,11 @@
 		4C225B86233E6CEF0062E195 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				4C283321235B86FE00A10642 /* CustomColor.swift */,
-				4C6A16192320BA4000274316 /* CustomDate.swift */,
-				4C6FDDBC23617A7F00E54485 /* CustomDisplay.swift */,
-				4CB577AA2458C87B00244CAD /* CustomPrint.swift */,
-				4C89B814231B62D500AE45F4 /* Habits.swift */,
-				4C89B81C231C44E400AE45F4 /* Entries.swift */,
-				4C0820CC24709CFA0079E5BF /* DataManager.swift */,
-				4C62C195259688F000BFFDAF /* ColorCell.swift */,
-				4C62C199259689E900BFFDAF /* ManageCell.swift */,
-				4C62C19D25968FB500BFFDAF /* DateCell.swift */,
+				4C8395E82611049E00789204 /* Entry.swift */,
+				4C89B814231B62D500AE45F4 /* Habit.swift */,
 				4C62C1A12596905400BFFDAF /* HabitCell.swift */,
-				4C62C1A5259691AA00BFFDAF /* WeekCell.swift */,
-				4C62C1A92596946000BFFDAF /* SettingsCell.swift */,
+				4C8395EA26110B3400789204 /* SampleData.swift */,
+				4C8395EC26110B6000789204 /* ColorToDataTransformer.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -236,6 +175,7 @@
 				4C225B84233E6CE10062E195 /* Controller */,
 				4C225B8C233FC6F00062E195 /* Storyboard */,
 				4C4FF7B7230F620D00DAC450 /* Assets.xcassets */,
+				4C8395E32611017100789204 /* Habits.xcdatamodeld */,
 				4C4FF7BC230F620D00DAC450 /* Info.plist */,
 			);
 			path = HabiTrack;
@@ -391,35 +331,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4C4FF7B3230F620B00DAC450 /* DevelopmentVC.swift in Sources */,
-				4C225B88233E6EDD0062E195 /* JournalHabitsTV.swift in Sources */,
-				4C89B81D231C44E400AE45F4 /* Entries.swift in Sources */,
+				4C8395E72611036400789204 /* SceneDelegate.swift in Sources */,
 				4C4FF7AF230F620B00DAC450 /* AppDelegate.swift in Sources */,
-				4C225B8A233E6EEC0062E195 /* JournalDateCV.swift in Sources */,
-				4C62C19E25968FB500BFFDAF /* DateCell.swift in Sources */,
-				4CAAAC82232B5CD5000C9AD8 /* HabitVC.swift in Sources */,
-				4C283322235B86FE00A10642 /* CustomColor.swift in Sources */,
+				4C8395EB26110B3400789204 /* SampleData.swift in Sources */,
+				4C8395ED26110B6000789204 /* ColorToDataTransformer.swift in Sources */,
 				4C4FF7B1230F620B00DAC450 /* JournalVC.swift in Sources */,
-				4CB577AB2458C87B00244CAD /* CustomPrint.swift in Sources */,
-				4C6A161A2320BA4000274316 /* CustomDate.swift in Sources */,
-				4CA7A58B245D44670010E192 /* CalendarVC.swift in Sources */,
-				4CB577A92456500E00244CAD /* HabitDateCV.swift in Sources */,
-				4CA7A58D245D48140010E192 /* ChangeDateCV.swift in Sources */,
-				4C89B815231B62D500AE45F4 /* Habits.swift in Sources */,
-				4C2D42DE235A9A2700D5C628 /* ManageHabitsTV.swift in Sources */,
-				4C62C1A6259691AA00BFFDAF /* WeekCell.swift in Sources */,
-				4C62C1AA2596946000BFFDAF /* SettingsCell.swift in Sources */,
-				4C28331A235B7A4100A10642 /* ManageColorCV.swift in Sources */,
+				4C89B815231B62D500AE45F4 /* Habit.swift in Sources */,
+				4C8395E92611049E00789204 /* Entry.swift in Sources */,
 				4C62C1A22596905400BFFDAF /* HabitCell.swift in Sources */,
-				4C17109E2470FE9700CA1A00 /* CustomizeTV.swift in Sources */,
-				4C62C19A259689E900BFFDAF /* ManageCell.swift in Sources */,
-				4C62C196259688F000BFFDAF /* ColorCell.swift in Sources */,
-				4C15613B235EBEA80026E770 /* TabBarVC.swift in Sources */,
-				4C6FDDBD23617A7F00E54485 /* CustomDisplay.swift in Sources */,
-				4C89B81F231CE2A600AE45F4 /* SettingsVC.swift in Sources */,
-				4C0820CD24709CFA0079E5BF /* DataManager.swift in Sources */,
-				4C2D42D6235A7D1800D5C628 /* ManageJournalVC.swift in Sources */,
-				4C6FDDC523618D2A00E54485 /* CustomizeVC.swift in Sources */,
+				4C8395E52611017100789204 /* Habits.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -758,6 +678,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		4C8395E32611017100789204 /* Habits.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				4C8395E42611017100789204 /* Habits.xcdatamodel */,
+			);
+			currentVersion = 4C8395E42611017100789204 /* Habits.xcdatamodel */;
+			path = Habits.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 4C4FF7A3230F620B00DAC450 /* Project object */;
 }

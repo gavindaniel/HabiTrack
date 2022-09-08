@@ -33,36 +33,7 @@ class CalendarVC: UIViewController {
     @IBOutlet weak var todayUIButton: UIButton!
     
     
-    // name: saveChanges
-    // desc: save date change button
-    // last updated: 5/4/2020
-    // last update: new
-    @IBAction func saveChanges(_ sender: Any) {
-        dateSelected = changeDateCV?.tempDateSelected ?? Date()
-        DataManager.shared.journalVC.updateDateButton(dateSelected)
-        DataManager.shared.journalVC.journalUITableView.reloadData()
-        DataManager.shared.journalVC.dateUICollectionView.reloadData()
-        dismiss(animated: true, completion: nil)
-    }
-    
-    
-    // name: cancelChanges
-    // desc: cancel date change button
-    // last updated: 5/4/2020
-    // last update: new
-    @IBAction func cancelChanges(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    
-    // name: changeDateToday
-    // desc: change date to today button
-    // last updated: 5/16/2020
-    // last update: new
-    @IBAction func changeDateToday(_ sender: Any) {
-        self.changeDateCV?.tempDateSelected = Date()
-        self.dateUICollectionView.reloadData()
-    }
+
     
     
     // name: viewDidLoad

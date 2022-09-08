@@ -27,7 +27,7 @@ class HabitVC: UIViewController, UITextFieldDelegate {
     var habitDateCV: HabitDateCV?
     var activeTextField = UITextField()
     var lastActiveTextField: String!
-    var habits = Habits()
+//    var habits = Habits()
     
     let datePicker = UIDatePicker() // new
     
@@ -204,7 +204,7 @@ class HabitVC: UIViewController, UITextFieldDelegate {
     @IBAction func addHabit(_ sender: AnyObject) {
         debugPrint("HabitVC", "addHabit", "start", false)
         // create table if there isn't one
-        habits.createTable()
+//        habits.createTable()
         // insert new habit into journal
         let nameString = nameTextField.text
         let dateString = dateTextField.text
@@ -253,7 +253,7 @@ class HabitVC: UIViewController, UITextFieldDelegate {
                 localHabits.append(nameString!)
                 defaults.set(localHabits, forKey: "localHabits")
                 print("\tHabit Added -> name: \(nameString ?? "error"), startDay: \(day)")
-                self.habits.entries.addDay(habit: nameString ?? "error", date: date)
+//                self.habits.entries.addDay(habit: nameString ?? "error", date: date)
                 nameTextField.text = ""
                 // return to journal view controller
 

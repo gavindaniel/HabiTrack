@@ -16,8 +16,8 @@ import CoreData
 // last update: cleaned up
 class ManageJournalVC: UIViewController {
     // variables
-    var habits = Habits()
-    var manageHabitsTV: ManageHabitsTV?
+//    var habits = Habits()
+//    var manageHabitsTV: ManageHabitsTV?
     // IBOutlet connections
     @IBOutlet weak var manageUIView: UIView!
     @IBOutlet weak var manageUITableView: UITableView!
@@ -33,7 +33,7 @@ class ManageJournalVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         debugPrint("ManageJournalVC", "viewDidAppear", "start", false)
-        manageHabitsTV?.updateUITableView(manageUITableView)
+//        manageHabitsTV?.updateUITableView(manageUITableView)
         debugPrint("ManageJournalVC", "viewDidAppear", "end", false)
     }
 
@@ -47,7 +47,7 @@ class ManageJournalVC: UIViewController {
         // Do any additional setup after loading the view.
         debugPrint("ManageJournalVC", "viewDidLoad", "start", false)
         // initialize views
-        self.manageHabitsTV = ManageHabitsTV(habits, manageUITableView)
+//        self.manageHabitsTV = ManageHabitsTV(habits, manageUITableView)
         // set the databases, dataSources and delegates
         do {
             // set the databases
@@ -57,12 +57,12 @@ class ManageJournalVC: UIViewController {
 //            self.habits.database = database
 //            self.habits.entries.database = database
             // set the dataSource and delegate
-            self.manageUITableView.dataSource = (manageHabitsTV as! UITableViewDataSource)
-            self.manageUITableView.delegate = (manageHabitsTV as! UITableViewDelegate)
+//            self.manageUITableView.dataSource = (manageHabitsTV as! UITableViewDataSource)
+//            self.manageUITableView.delegate = (manageHabitsTV as! UITableViewDelegate)
             // testing drag and drop delegate
             self.manageUITableView.dragInteractionEnabled = true
-            self.manageUITableView.dragDelegate = (manageHabitsTV as! UITableViewDragDelegate)
-            self.manageUITableView.dragDelegate = (manageHabitsTV as! UITableViewDragDelegate)
+//            self.manageUITableView.dragDelegate = (manageHabitsTV as! UITableViewDragDelegate)
+//            self.manageUITableView.dragDelegate = (manageHabitsTV as! UITableViewDragDelegate)
         } catch {
             print(error)
         }

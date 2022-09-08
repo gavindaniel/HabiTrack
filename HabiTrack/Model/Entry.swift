@@ -10,11 +10,11 @@ import Foundation
 import CoreData
 
 
-// name: JournalDateCV
-// desc: journal date collection view class
-// last updated: 4/28/2020
-// last update: cleaned up
-class Entries {
+// name: Entry
+// desc: entry class
+// last updated: 3/28/2021
+// last update: refactored from 'Entries' to 'Entry'
+class Entry {
     // variables
 //    var database: Connection!
     // individual habit journal entry table columns

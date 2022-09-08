@@ -127,7 +127,7 @@ func updateDateArray(_ date: Date) -> [Date] {
                 if (tempDate == date) {
                     indexSelected = index + 3
                     print("fa;sdlfkja;dslkfja;sdlkfja;lkdsfja;ldskjf;aldfkjs")
-                    DataManager.shared.journalVC.lastSelectedItem = indexSelected
+//                    DataManager.shared.journalVC.lastSelectedItem = indexSelected
                 }
             index += 1
             }

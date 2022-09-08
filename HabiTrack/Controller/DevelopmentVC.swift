@@ -25,7 +25,7 @@ class DevelopmentVC: UIViewController, UITableViewDelegate, UITableViewDataSourc
                 "Update Habit Weekdays"]
     
 //    var database: Connection!
-    let habits = Habits()
+//    let habits = Habits()
     
     @IBOutlet weak var devTableView: UITableView!
     
